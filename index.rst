@@ -15,7 +15,9 @@ Overview
 - 🚀 **Lightweight and simple to deploy**, using a single binary and a parameter file for configuration.
 - 🧪 **Simulation-ready**, thanks to a rich collection of **PlayGrounds** with different robots and environments.
 
-EasyNav is developed by the [Intelligent Robotics Lab](https://intelligentroboticslab.gsyc.urjc.es/) at Universidad Rey Juan Carlos and aims to be a flexible, extensible, and practical alternative to existing ROS 2 navigation stacks like Nav2.
+EasyNav is developed by the `Intelligent Robotics Lab <https://intelligentroboticslab.gsyc.urjc.es/>`_ at Universidad Rey Juan Carlos and aims to be a flexible, extensible, and practical alternative to existing ROS 2 navigation stacks like Nav2.
+
+We believe in Open Source and in giving the community multiple options to choose from — options that adapt to different scenarios and constraints. **EasyNav is not intended to replace Nav2**, which we admire and take as inspiration. Instead, it aims to offer flexibility and meet specific requirements in areas where Nav2 might be less suitable.
 
 It is structured around:
 
