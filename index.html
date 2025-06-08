@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EasyNavigation &mdash; EasyNavigation 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=86f27845" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+
+  
+    <link rel="shortcut icon" href="_static/easynav_48x48.png"/>
+  
+        <script src="_static/jquery.js?v=8dae8fb0"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="getting_started/index.html" />
+
+<link rel="stylesheet" href="_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            EasyNavigation
+              <img src="_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_instructions/index.html">Build and Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="build_instructions/index.html#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_instructions/index.html#build">Build</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="build_instructions/index.html#install-ros">Install ROS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build_instructions/index.html#build-easynav">Build EasyNav</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">EasyNavigation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lpn">
+<span id="documentation-home"></span><h1>EasyNavigation<a class="headerlink" href="#lpn" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p><strong>EasyNavigation (EasyNav)</strong> is an open-source navigation system for ROS 2, designed to be:</p>
+<ul class="simple">
+<li><p>✅ <strong>Representation-agnostic</strong>, supporting a wide variety of environment models: 2D costmaps, elevation-aware gridmaps, Octomap-based 3D representations, raw point clouds, or hybrid combinations.</p></li>
+<li><p>⚡ <strong>Real-time capable</strong>, minimizing latency between perception and action.</p></li>
+<li><p>🧩 <strong>Modular</strong>, through a plugin architecture and reusable navigation stacks.</p></li>
+<li><p>🚀 <strong>Lightweight and simple to deploy</strong>, using a single binary and a parameter file for configuration.</p></li>
+<li><p>🧪 <strong>Simulation-ready</strong>, thanks to a rich collection of <strong>PlayGrounds</strong> with different robots and environments.</p></li>
+</ul>
+<p>EasyNav is developed by the [Intelligent Robotics Lab](<a class="reference external" href="https://intelligentroboticslab.gsyc.urjc.es/">https://intelligentroboticslab.gsyc.urjc.es/</a>) at Universidad Rey Juan Carlos and aims to be a flexible, extensible, and practical alternative to existing ROS 2 navigation stacks like Nav2.</p>
+<p>It is structured around:</p>
+<ul class="simple">
+<li><p>A <strong>core</strong>, responsible for real-time data processing and behavior execution.</p></li>
+<li><p><strong>Stacks</strong>, which specialize the system for different environment types or use cases.</p></li>
+<li><p><strong>Plugins</strong>, that define localization, path planning, control, and map representation methods.</p></li>
+<li><p><strong>PlayGrounds</strong>, which offer complete simulation scenarios with robots, maps, and example configurations.</p></li>
+</ul>
+<p>Whether you are building robots for indoor or outdoor environments, structured or unstructured terrains, EasyNav provides the flexibility and performance needed to achieve robust autonomous navigation.</p>
+<p>We invite you to explore, use, and contribute to this project!</p>
+<p>📚 Learn more about the contributors and project organization in <a class="reference internal" href="about/index.html#about"><span class="std std-ref">About and Contact</span></a>.</p>
+<p>📦 Source code: <a class="reference external" href="https://github.com/EasyNavigation/EasyNavigation">github.com/EasyNavigation/EasyNavigation</a></p>
+<p>📢 Want to contribute? Feel free to open an issue, suggest a feature, or submit a pull request!</p>
+<p>If you use this software in your work, please consider citing our next paper.</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>
