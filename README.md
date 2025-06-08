@@ -1,4 +1,4 @@
-# /EasyNavigation.github.io
+# EasyNavigation.github.io
 
 https://github.com/EasyNavigation/EasyNavigation.github.io
 
