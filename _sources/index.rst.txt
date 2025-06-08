@@ -34,7 +34,7 @@ We invite you to explore, use, and contribute to this project!
 
 📢 Want to contribute? Feel free to open an issue, suggest a feature, or submit a pull request!
 
-If you use this software in your work, please consider citing our incoming next paper.
+If you use this software in your work, please consider citing our next paper.
 
 .. toctree::
    :hidden:
