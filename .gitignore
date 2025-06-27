@@ -1,5 +1,5 @@
 # Ignore _build folder
 
-./_build/
+_build/
 
 # Ignored files
