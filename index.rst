@@ -43,4 +43,5 @@ If you use this software in your work, please consider citing our next paper.
 
    getting_started/index.rst
    design/index.rst
+   software/index.rst
    about/index.rst
