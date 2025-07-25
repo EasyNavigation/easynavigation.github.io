@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core Design and Architecture &mdash; EasyNavigation 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=86f27845" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+
+  
+    <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  
+        <script src="../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="About and Contact" href="../about/index.html" />
+    <link rel="prev" title="Build and Install" href="../build_instructions/index.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EasyNavigation
+              <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build_instructions/index.html">Build and Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build_instructions/index.html#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_instructions/index.html#build">Build</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_instructions/index.html#install-ros">Install ROS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_instructions/index.html#build-easynav">Build EasyNav</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Core Design and Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#main-concepts">Main Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#navstate">NavState</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execution-model">Execution Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plugin-types">Plugin Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Core Design and Architecture</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="core-design-and-architecture">
+<span id="design"></span><h1>Core Design and Architecture<a class="headerlink" href="#core-design-and-architecture" title="Link to this heading"></a></h1>
+<p>EasyNav is designed around <strong>modularity</strong>, <strong>real-time performance</strong>, and <strong>extensibility</strong>. Its architecture separates concerns clearly, making it both easy to adapt and efficient to run.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/easynav_simple_design.png"><img alt="EasyNav Core Design" src="../_images/easynav_simple_design.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figure 1 </span><span class="caption-text">Figure: Core architecture of EasyNav.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/easynav_cycle.png"><img alt="EasyNav Cycles view" src="../_images/easynav_cycle.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figure 2 </span><span class="caption-text">Figure: Ral-Time and no real-Time cycle accesing to the NavState.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/easynav_design.png"><img alt="EasyNav Core Design" src="../_images/easynav_design.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure: Core architecture of EasyNav with real-time and non-real-time flows.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/easynav_cycle.png"><img alt="EasyNav Cycles view" src="../_images/easynav_cycle.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure: Ral-Time and no real-Time cycle accesing to the NavState.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="main-concepts">
+<h2>Main Concepts<a class="headerlink" href="#main-concepts" title="Link to this heading"></a></h2>
+<p>At the heart of EasyNav lies a <strong>EasyNav Node</strong>, responsible for orchestrating the entire navigation process. It coordinates multiple subordinate nodes and delegates the actual implementation of functionality to plugins.</p>
+<p>These subordinate modules include:</p>
+<ul class="simple">
+<li><p><strong>Sensor Manager</strong>: Acquires and integrates raw sensor data into the system.</p></li>
+<li><p><strong>Maps Manager</strong>: Maintains maps.</p></li>
+<li><p><strong>Localizer</strong>: Estimates the robot pose.</p></li>
+<li><p><strong>Planner</strong>: Generates global paths.</p></li>
+<li><p><strong>Controller</strong>: Translates paths into velocity commands.</p></li>
+</ul>
+<p>Each of these (except the Sensor Manager) is implemented as a <strong>plugin</strong> and loaded dynamically based on the configuration file. This enables the user to choose or create alternative implementations as needed.</p>
+</section>
+<section id="navstate">
+<h2>NavState<a class="headerlink" href="#navstate" title="Link to this heading"></a></h2>
+<p>All modules operate over a central data structure called <strong>NavState</strong>, which contains the current state of the system:</p>
+<ul class="simple">
+<li><p>Sensor perceptions</p></li>
+<li><p>Robot pose</p></li>
+<li><p>Dynamic and static maps</p></li>
+<li><p>Planned path</p></li>
+<li><p>Velocity commands</p></li>
+</ul>
+<p>Each plugin reads from the NavState <strong>in read-only mode</strong>. Only the main node is allowed to update it. This guarantees data consistency and avoids race conditions during concurrent execution.</p>
+</section>
+<section id="execution-model">
+<h2>Execution Model<a class="headerlink" href="#execution-model" title="Link to this heading"></a></h2>
+<p>The execution model is built around two parallel loops:</p>
+<ul class="simple">
+<li><p><strong>Real-time loop (RT)</strong>: High-frequency operations, typically 10–100 Hz. Prioritizes minimal latency.</p></li>
+<li><p><strong>Non-real-time loop (NRT)</strong>: Lower-frequency operations for background or heavy processing tasks.</p></li>
+</ul>
+<p>Each plugin specifies its desired execution frequencies for both loops. If invoked prematurely, it simply returns, ensuring no over-execution or priority inversion occurs.</p>
+<p>Unlike typical ROS 2 systems, EasyNav <strong>avoids using ROS timers</strong> for execution. Instead, the main node directly calls each plugin, improving determinism and lowering latency.</p>
+<p>In the RT loop, a plugin can <strong>propagate an execution trigger</strong> to the next module when new data is available. For example, when the maps manager updates a dynamic map, it can immediately notify the localizer to react, followed by the planner and controller. This reduces total response time from perception to action.</p>
+</section>
+<section id="plugin-types">
+<h2>Plugin Types<a class="headerlink" href="#plugin-types" title="Link to this heading"></a></h2>
+<p>Each subordinate module loads one or more plugins. These are implemented as classes derived from a common interface and declared via ROS 2 pluginlib.</p>
+<p>The most common plugin types are:</p>
+<ul class="simple">
+<li><p><cite>MapsManagerMethodBase</cite></p></li>
+<li><p><cite>LocalizerMethodBase</cite></p></li>
+<li><p><cite>PlannerMethodBase</cite></p></li>
+<li><p><cite>ControllerMethodBase</cite></p></li>
+</ul>
+<p>Each plugin must implement:</p>
+<ul class="simple">
+<li><p><cite>internal_update_rt()</cite> – for fast real-time updates</p></li>
+<li><p><cite>internal_update()</cite> – for slower, background updates</p></li>
+<li><p>Configuration parameters for frequency, QoS, and logic</p></li>
+</ul>
+<p>Refer to the source code or stack-specific documentation for implementation details.</p>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p>The EasyNav core:</p>
+<ul class="simple">
+<li><p>Offers a <strong>minimal and efficient</strong> architecture for robot navigation.</p></li>
+<li><p>Enables <strong>runtime modularity</strong> through plugins.</p></li>
+<li><p>Is optimized for <strong>real-time response</strong> and <strong>deterministic execution</strong>.</p></li>
+<li><p>Provides a unified access point to all navigation data via <cite>NavState</cite>.</p></li>
+</ul>
+<p>For details on each plugin type and examples, see the <span class="xref std std-ref">stacks</span> section.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

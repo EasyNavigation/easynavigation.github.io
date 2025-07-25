@@ -1,0 +1,120 @@
+.. _design:
+
+Core Design and Architecture
+############################
+
+EasyNav is designed around **modularity**, **real-time performance**, and **extensibility**. Its architecture separates concerns clearly, making it both easy to adapt and efficient to run.
+
+
+
+.. figure:: ../images/easynav_simple_design.png
+   :align: center
+   :width: 90%
+   :alt: EasyNav Core Design
+
+   Figure: Core architecture of EasyNav.
+
+
+
+.. figure:: ../images/easynav_cycle.png
+   :align: center
+   :width: 90%
+   :alt: EasyNav Cycles view
+
+   Figure: Ral-Time and no real-Time cycle accesing to the NavState.
+
+
+
+.. figure:: ../images/easynav_design.png
+   :align: center
+   :width: 90%
+   :alt: EasyNav Core Design
+
+   Figure: Core architecture of EasyNav with real-time and non-real-time flows.
+
+
+
+.. figure:: ../images/easynav_cycle.png
+   :align: center
+   :width: 90%
+   :alt: EasyNav Cycles view
+
+   Figure: Ral-Time and no real-Time cycle accesing to the NavState.
+
+
+Main Concepts
+*************
+
+At the heart of EasyNav lies a **EasyNav Node**, responsible for orchestrating the entire navigation process. It coordinates multiple subordinate nodes and delegates the actual implementation of functionality to plugins.
+
+These subordinate modules include:
+
+- **Sensor Manager**: Acquires and integrates raw sensor data into the system.
+- **Maps Manager**: Maintains maps.
+- **Localizer**: Estimates the robot pose.
+- **Planner**: Generates global paths.
+- **Controller**: Translates paths into velocity commands.
+
+Each of these (except the Sensor Manager) is implemented as a **plugin** and loaded dynamically based on the configuration file. This enables the user to choose or create alternative implementations as needed.
+
+NavState
+********
+
+All modules operate over a central data structure called **NavState**, which contains the current state of the system:
+
+- Sensor perceptions
+- Robot pose
+- Dynamic and static maps
+- Planned path
+- Velocity commands
+
+Each plugin reads from the NavState **in read-only mode**. Only the main node is allowed to update it. This guarantees data consistency and avoids race conditions during concurrent execution.
+
+Execution Model
+***************
+
+The execution model is built around two parallel loops:
+
+- **Real-time loop (RT)**: High-frequency operations, typically 10–100 Hz. Prioritizes minimal latency.
+- **Non-real-time loop (NRT)**: Lower-frequency operations for background or heavy processing tasks.
+
+Each plugin specifies its desired execution frequencies for both loops. If invoked prematurely, it simply returns, ensuring no over-execution or priority inversion occurs.
+
+Unlike typical ROS 2 systems, EasyNav **avoids using ROS timers** for execution. Instead, the main node directly calls each plugin, improving determinism and lowering latency.
+
+In the RT loop, a plugin can **propagate an execution trigger** to the next module when new data is available. For example, when the maps manager updates a dynamic map, it can immediately notify the localizer to react, followed by the planner and controller. This reduces total response time from perception to action.
+
+
+
+Plugin Types
+************
+
+Each subordinate module loads one or more plugins. These are implemented as classes derived from a common interface and declared via ROS 2 pluginlib.
+
+The most common plugin types are:
+
+- `MapsManagerMethodBase`
+- `LocalizerMethodBase`
+- `PlannerMethodBase`
+- `ControllerMethodBase`
+
+Each plugin must implement:
+
+- `internal_update_rt()` – for fast real-time updates
+- `internal_update()` – for slower, background updates
+- Configuration parameters for frequency, QoS, and logic
+
+Refer to the source code or stack-specific documentation for implementation details.
+
+Summary
+*******
+
+The EasyNav core:
+
+- Offers a **minimal and efficient** architecture for robot navigation.
+- Enables **runtime modularity** through plugins.
+- Is optimized for **real-time response** and **deterministic execution**.
+- Provides a unified access point to all navigation data via `NavState`.
+
+For details on each plugin type and examples, see the :ref:`stacks <stacks>` section.
+

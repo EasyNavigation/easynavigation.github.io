@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="About and Contact" href="../about/index.html" />
+    <link rel="next" title="Core Design and Architecture" href="../design/index.html" />
     <link rel="prev" title="Getting Started" href="../getting_started/index.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
@@ -60,6 +60,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#build-easynav">Build EasyNav</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../design/index.html">Core Design and Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#main-concepts">Main Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#navstate">NavState</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#execution-model">Execution Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#plugin-types">Plugin Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design/index.html#summary">Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
@@ -115,7 +123,7 @@
 <p>Create a new workspace, <code class="docutils literal notranslate"><span class="pre">easynav_ws</span></code>, and clone EasyNav master branch into it and build it.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/easynav_ws/src
 <span class="nb">cd</span><span class="w"> </span>~/easynav_ws/src
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/EasyNavigation.git
+git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/EasyNavigation/EasyNavigation.git
 
 <span class="nb">cd</span><span class="w"> </span>~/easynav_ws
 rosdep<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>-r<span class="w"> </span>-q<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>--rosdistro<span class="w"> </span>&lt;ros2-distro&gt;
