@@ -17,7 +17,7 @@ Overview
 
 EasyNav is developed by the `Intelligent Robotics Lab <https://intelligentroboticslab.gsyc.urjc.es/>`_ at Universidad Rey Juan Carlos and aims to be a flexible, extensible, and practical alternative to existing ROS 2 navigation stacks like Nav2.
 
-We believe in Open Source and in giving the community multiple options to choose from — options that adapt to different scenarios and constraints. **EasyNav is not intended to replace Nav2**, which we admire and take as inspiration. Instead, it aims to offer flexibility and meet specific requirements in areas where Nav2 might be less suitable.
+We believe in Open Source and in giving the community multiple options to choose from, that adapt to different scenarios and constraints. **EasyNav is not intended to replace Nav2**, which we admire and take as inspiration. Instead, it aims to offer flexibility and meet specific requirements in areas where Nav2 might be less suitable.
 
 It is structured around:
 
@@ -43,4 +43,5 @@ If you use this software in your work, please consider citing our next paper.
 
    getting_started/index.rst
    build_instructions/index.rst
+   design/index.rst
    about/index.rst
