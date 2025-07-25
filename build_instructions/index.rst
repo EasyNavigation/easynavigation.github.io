@@ -26,7 +26,7 @@ Create a new workspace, ``easynav_ws``, and clone EasyNav master branch into it 
 
   mkdir -p ~/easynav_ws/src
   cd ~/easynav_ws/src
-  git clone https://github.com/EasyNavigation/EasyNavigation.git
+  git clone --recursive https://github.com/EasyNavigation/EasyNavigation.git
     
   cd ~/easynav_ws
   rosdep install -y -r -q --from-paths src --ignore-src --rosdistro <ros2-distro>
