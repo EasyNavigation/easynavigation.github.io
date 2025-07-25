@@ -42,6 +42,5 @@ If you use this software in your work, please consider citing our next paper.
    :hidden:
 
    getting_started/index.rst
-   build_instructions/index.rst
    design/index.rst
    about/index.rst
