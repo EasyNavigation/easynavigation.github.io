@@ -5,6 +5,26 @@ EasyNav Software
 
 The EasyNav software is developed under the `EasyNavigation GitHub organization <https://github.com/EasyNavigation>`_, and it follows a **highly modular structure**. This modularity is reflected in the separation of functionality across multiple repositories, each dedicated to a specific role or typology:
 
+
+C++ API
+*******
+
+- `EasyNav Core <https://easynavigation.github.io/EasyNavigation/>`_
+- `EasyNav Simple Stack <https://easynavigation.github.io/easynav_simple_stack/>`_
+- `EasyNav GridMap Stack <https://easynavigation.github.io/easynav_gridmap_stack/>`_
+
+**HowTo's**:
+
+.. toctree::
+   :maxdepth: 1
+
+   ./blackboard.rst
+   ./perceptions.rst
+
+
+Repositories
+************
+
 Core
 ----
 
