@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="About and Contact" href="../about/index.html" />
+    <link rel="next" title="How to use the NavState BlackBoard" href="blackboard.html" />
     <link rel="prev" title="Core Design and Architecture" href="../design/index.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
@@ -60,11 +60,35 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">EasyNav Software</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#core">Core</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#plugins">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stacks">Stacks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#test-cases">Test Cases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#playgrounds">Playgrounds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#c-api">C++ API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blackboard.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#repositories">Repositories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core">Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plugins">Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stacks">Stacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-cases">Test Cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#playgrounds">Playgrounds</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
@@ -106,22 +130,39 @@
   <section id="easynav-software">
 <span id="software"></span><h1>EasyNav Software<a class="headerlink" href="#easynav-software" title="Link to this heading"></a></h1>
 <p>The EasyNav software is developed under the <a class="reference external" href="https://github.com/EasyNavigation">EasyNavigation GitHub organization</a>, and it follows a <strong>highly modular structure</strong>. This modularity is reflected in the separation of functionality across multiple repositories, each dedicated to a specific role or typology:</p>
+<section id="c-api">
+<h2>C++ API<a class="headerlink" href="#c-api" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://easynavigation.github.io/EasyNavigation/">EasyNav Core</a></p></li>
+<li><p><a class="reference external" href="https://easynavigation.github.io/easynav_simple_stack/">EasyNav Simple Stack</a></p></li>
+<li><p><a class="reference external" href="https://easynavigation.github.io/easynav_gridmap_stack/">EasyNav GridMap Stack</a></p></li>
+</ul>
+<p><strong>HowTo’s</strong>:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="blackboard.html">How to use the NavState BlackBoard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="perceptions.html">Sensor Input and Perception Handling</a></li>
+</ul>
+</div>
+</section>
+<section id="repositories">
+<h2>Repositories<a class="headerlink" href="#repositories" title="Link to this heading"></a></h2>
 <section id="core">
-<h2>Core<a class="headerlink" href="#core" title="Link to this heading"></a></h2>
+<h3>Core<a class="headerlink" href="#core" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/EasyNavigation/EasyNavigation">EasyNavigation</a>
 This is the main repository that contains the core infrastructure of EasyNav, including the lifecycle management, execution engine, and common interfaces.</p></li>
 </ul>
 </section>
 <section id="plugins">
-<h2>Plugins<a class="headerlink" href="#plugins" title="Link to this heading"></a></h2>
+<h3>Plugins<a class="headerlink" href="#plugins" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins">easynav_plugins</a>
 A collection of lightweight plugins that do not depend on external libraries. It includes generic implementations for controllers, planners, localizers, etc.</p></li>
 </ul>
 </section>
 <section id="stacks">
-<h2>Stacks<a class="headerlink" href="#stacks" title="Link to this heading"></a></h2>
+<h3>Stacks<a class="headerlink" href="#stacks" title="Link to this heading"></a></h3>
 <p>Stacks are collections of plugins that typically share a common representation of the environment and often rely on specific third-party libraries.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_simple_stack">easynav_simple_stack</a>
@@ -135,7 +176,7 @@ Plugins that use the <a class="reference external" href="https://pointclouds.org
 </ul>
 </section>
 <section id="test-cases">
-<h2>Test Cases<a class="headerlink" href="#test-cases" title="Link to this heading"></a></h2>
+<h3>Test Cases<a class="headerlink" href="#test-cases" title="Link to this heading"></a></h3>
 <p>These repositories provide maps and configuration files tailored to common application scenarios:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_indoor_testcase">easynav_indoor_testcase</a>
@@ -145,7 +186,7 @@ Focused on outdoor scenarios involving uneven terrain and unstructured environme
 </ul>
 </section>
 <section id="playgrounds">
-<h2>Playgrounds<a class="headerlink" href="#playgrounds" title="Link to this heading"></a></h2>
+<h3>Playgrounds<a class="headerlink" href="#playgrounds" title="Link to this heading"></a></h3>
 <p>Playgrounds define simulation setups for specific robot platforms in various environments.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_playground_kobuki">easynav_playground_kobuki</a>
@@ -153,6 +194,7 @@ Simulation models and example scenarios for the Turtlebot2 (Kobuki) robot.</p></
 <li><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_playground_summit">easynav_playground_summit</a>
 Simulation of the SUMMIT XL robot from Robotnik, designed for both indoor and outdoor navigation tasks.</p></li>
 </ul>
+</section>
 </section>
 </section>
 
