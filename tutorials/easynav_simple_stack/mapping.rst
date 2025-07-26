@@ -39,8 +39,8 @@ It can directly consume this output. EasyNav also exposes the following service:
 
 to save the current map (by default to `/tmp/default.map`).
 
-Step-by-Step Instructions
--------------------------
+Step-by-Step Instructions:
+
 
 1. **Launch the simulator (with or without GUI)**
 
