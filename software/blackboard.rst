@@ -1,7 +1,7 @@
 .. _blackboard:
 
 How to use the NavState BlackBoard
-##################################
+==================================
 
 The `NavState` class is a central component in the EasyNav architecture. It implements a **shared blackboard**, which allows all modules (localizers, planners, controllers, etc.) to **read and write shared data without using ROS 2 communication mechanisms** internally. This design improves **determinism**, simplifies debugging, and avoids unnecessary overhead.
 
