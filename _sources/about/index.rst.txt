@@ -1,10 +1,10 @@
 .. _about:
 
 About and Contact
-#################
+*****************
 
 About
-*****
+=====
 
 **EasyNavigation (EasyNav)** is an open-source navigation system for ROS 2, developed by the Intelligent Robotics Lab at Universidad Rey Juan Carlos. Its goal is to provide a lightweight, real-time-capable alternative to Nav2 that is agnostic to the internal representation of the robot's environment.
 
@@ -71,7 +71,7 @@ Our current team includes:
 .. _beltransen: https://github.com/beltransen
 
 Contact
-*******
+=======
 
 If you are interested in EasyNavigation, ROS 2 navigation, or robotics research in general, please feel free to reach out to the project lead.
 

@@ -51,7 +51,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../design/index.html">Core Design and Architecture</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
@@ -61,6 +61,12 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../software/index.html">EasyNav Software</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../software/index.html#c-api">C++ API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../software/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../software/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../software/blackboard.html">How to use the NavState BlackBoard</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../software/blackboard.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../software/blackboard.html#basic-api">Basic API</a></li>
@@ -87,6 +93,25 @@
 <li class="toctree-l3"><a class="reference internal" href="../../software/index.html#stacks">Stacks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../software/index.html#test-cases">Test Cases</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../software/index.html#playgrounds">Playgrounds</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">EasyNav Stack Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">EasyNav Simple Stack Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-simplemap-representation">The SimpleMap Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#howto">HowTo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mapping.html">Mapping with SLAM Toolbox and EasyNav</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#stack-reference">Stack Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#easynav-simple-maps-manager">easynav_simple_maps_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#easynav-simple-localizer">easynav_simple_localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#easynav-simple-planner">easynav_simple_planner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#easynav-simple-controller">easynav_simple_controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-configuration">Example Configuration</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -157,15 +182,13 @@ where each cell can be either 0 (free), 1 (occupied), or -1 (unknown). <code cla
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="mapping.html">Mapping with SLAM Toolbox and EasyNav</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
 </ul>
 </div>
 </section>
 <section id="stack-reference">
 <h2>Stack Reference<a class="headerlink" href="#stack-reference" title="Link to this heading"></a></h2>
-</section>
 <section id="easynav-simple-maps-manager">
-<h2>easynav_simple_maps_manager<a class="headerlink" href="#easynav-simple-maps-manager" title="Link to this heading"></a></h2>
+<h3>easynav_simple_maps_manager<a class="headerlink" href="#easynav-simple-maps-manager" title="Link to this heading"></a></h3>
 <p>This component manages and fuses the static map and incoming perceptions into a dynamic map.</p>
 <p><strong>ROS Parameters:</strong></p>
 <table class="docutils align-default">
@@ -219,7 +242,7 @@ where each cell can be either 0 (free), 1 (occupied), or -1 (unknown). <code cla
 </table>
 </section>
 <section id="easynav-simple-localizer">
-<h2>easynav_simple_localizer<a class="headerlink" href="#easynav-simple-localizer" title="Link to this heading"></a></h2>
+<h3>easynav_simple_localizer<a class="headerlink" href="#easynav-simple-localizer" title="Link to this heading"></a></h3>
 <p>A basic AMCL-style localizer using particles and static maps.</p>
 <p><strong>ROS Parameters:</strong></p>
 <table class="docutils align-default">
@@ -280,7 +303,7 @@ where each cell can be either 0 (free), 1 (occupied), or -1 (unknown). <code cla
 </table>
 </section>
 <section id="easynav-simple-planner">
-<h2>easynav_simple_planner<a class="headerlink" href="#easynav-simple-planner" title="Link to this heading"></a></h2>
+<h3>easynav_simple_planner<a class="headerlink" href="#easynav-simple-planner" title="Link to this heading"></a></h3>
 <p>An A* planner over <code class="docutils literal notranslate"><span class="pre">SimpleMap</span></code> representations.</p>
 <p><strong>ROS Parameters:</strong></p>
 <table class="docutils align-default">
@@ -330,7 +353,7 @@ where each cell can be either 0 (free), 1 (occupied), or -1 (unknown). <code cla
 </table>
 </section>
 <section id="easynav-simple-controller">
-<h2>easynav_simple_controller<a class="headerlink" href="#easynav-simple-controller" title="Link to this heading"></a></h2>
+<h3>easynav_simple_controller<a class="headerlink" href="#easynav-simple-controller" title="Link to this heading"></a></h3>
 <p>A PID-based controller that tracks a path in real time.</p>
 <p><strong>ROS Parameters:</strong></p>
 <table class="docutils align-default">
@@ -385,7 +408,7 @@ where each cell can be either 0 (free), 1 (occupied), or -1 (unknown). <code cla
 </table>
 </section>
 <section id="example-configuration">
-<h2>Example Configuration<a class="headerlink" href="#example-configuration" title="Link to this heading"></a></h2>
+<h3>Example Configuration<a class="headerlink" href="#example-configuration" title="Link to this heading"></a></h3>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -459,6 +482,7 @@ where each cell can be either 0 (free), 1 (occupied), or -1 (unknown). <code cla
 <span class="w">    </span><span class="nt">angle_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
 </pre></div>
 </div>
+</section>
 </section>
 </section>
 

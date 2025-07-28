@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="EasyNav Software" href="../software/index.html" />
+    <link rel="prev" title="Mapping with SLAM Toolbox and EasyNav" href="../tutorials/easynav_simple_stack/mapping.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
 
@@ -59,11 +59,60 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../software/index.html">EasyNav Software</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../software/index.html#core">Core</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../software/index.html#plugins">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../software/index.html#stacks">Stacks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../software/index.html#test-cases">Test Cases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../software/index.html#playgrounds">Playgrounds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software/index.html#c-api">C++ API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../software/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../software/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../software/blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../software/blackboard.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../software/perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../software/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../software/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../software/index.html#repositories">Repositories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../software/index.html#core">Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../software/index.html#plugins">Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../software/index.html#stacks">Stacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../software/index.html#test-cases">Test Cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../software/index.html#playgrounds">Playgrounds</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">EasyNav Stack Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html">EasyNav Simple Stack Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#the-simplemap-representation">The SimpleMap Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#howto">HowTo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/mapping.html">Mapping with SLAM Toolbox and EasyNav</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#stack-reference">Stack Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#easynav-simple-maps-manager">easynav_simple_maps_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#easynav-simple-localizer">easynav_simple_localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#easynav-simple-planner">easynav_simple_planner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#easynav-simple-controller">easynav_simple_controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#example-configuration">Example Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About and Contact</a><ul>

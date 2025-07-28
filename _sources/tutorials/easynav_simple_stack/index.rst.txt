@@ -15,9 +15,9 @@ It includes the following packages:
 - ``easynav_simple_maps_manager``: A manager that fuses a static map with incoming perceptions.
 - ``easynav_simple_planner``: A basic A* planner that generates paths over the map.
 
--------------------------------
+
 The SimpleMap Representation
--------------------------------
+============================
 
 At the heart of this stack is the ``SimpleMap`` data structure. It represents the environment as a 2D occupancy grid
 where each cell can be either 0 (free), 1 (occupied), or -1 (unknown). ``SimpleMap`` supports:
@@ -30,9 +30,9 @@ where each cell can be either 0 (free), 1 (occupied), or -1 (unknown). ``SimpleM
 ``SimpleMap`` is used for both static maps (loaded from file) and dynamic maps (updated from perceptions).
 
 
------
+
 HowTo
------
+=====
 
 .. toctree::
    :maxdepth: 1
@@ -41,13 +41,12 @@ HowTo
 
 
 
----------------
 Stack Reference
----------------
+===============
 
--------------------------------
+
 easynav_simple_maps_manager
--------------------------------
+---------------------------
 
 This component manages and fuses the static map and incoming perceptions into a dynamic map.
 
@@ -83,9 +82,8 @@ Publishes:
 | map.dynamic      | SimpleMap                | Write      |
 +------------------+--------------------------+------------+
 
--------------------------------
 easynav_simple_localizer
--------------------------------
+------------------------
 
 A basic AMCL-style localizer using particles and static maps.
 
@@ -123,9 +121,8 @@ A basic AMCL-style localizer using particles and static maps.
 | robot_pose       | nav_msgs/msg/Odometry    | Write      |
 +------------------+--------------------------+------------+
 
--------------------------------
 easynav_simple_planner
--------------------------------
+----------------------
 
 An A* planner over ``SimpleMap`` representations.
 
@@ -155,9 +152,9 @@ An A* planner over ``SimpleMap`` representations.
 | path             | nav_msgs/msg/Path            | Write      |
 +------------------+------------------------------+------------+
 
--------------------------------
+
 easynav_simple_controller
--------------------------------
+-------------------------
 
 A PID-based controller that tracks a path in real time.
 
@@ -191,9 +188,9 @@ A PID-based controller that tracks a path in real time.
 | cmd_vel          | geometry_msgs/msg/TwistStamped | Write      |
 +------------------+--------------------------------+------------+
 
--------------------------------
+
 Example Configuration
--------------------------------
+---------------------
 
 .. code-block:: yaml
 

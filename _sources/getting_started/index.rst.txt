@@ -1,7 +1,7 @@
 .. _getting_started:
 
 Getting Started
-###############
+***************
 
 To get started with **EasyNav**, we will use a simple example: a Turtlebot2 robot navigating in a domestic environment.
 

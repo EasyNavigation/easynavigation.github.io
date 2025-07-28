@@ -20,6 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="EasyNav Stack Tutorials" href="../tutorials/index.html" />
+    <link rel="prev" title="How to use the NavState BlackBoard" href="blackboard.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
 
@@ -49,7 +51,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../design/index.html">Core Design and Architecture</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../design/index.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
@@ -57,8 +59,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../design/index.html#plugin-configuration">Plugin Configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">EasyNav Software</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#c-api">C++ API</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">EasyNav Software</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#c-api">C++ API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="blackboard.html">How to use the NavState BlackBoard</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="blackboard.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="blackboard.html#basic-api">Basic API</a></li>
@@ -66,6 +74,15 @@
 <li class="toctree-l4"><a class="reference internal" href="blackboard.html#advanced-features">Advanced Features</a></li>
 <li class="toctree-l4"><a class="reference internal" href="blackboard.html#best-practices">Best Practices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operation-summary">Operation Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extending-to-other-modalities">Extending to Other Modalities</a></li>
 </ul>
 </li>
 </ul>
@@ -76,6 +93,25 @@
 <li class="toctree-l3"><a class="reference internal" href="index.html#stacks">Stacks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="index.html#test-cases">Test Cases</a></li>
 <li class="toctree-l3"><a class="reference internal" href="index.html#playgrounds">Playgrounds</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">EasyNav Stack Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html">EasyNav Simple Stack Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#the-simplemap-representation">The SimpleMap Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#howto">HowTo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/mapping.html">Mapping with SLAM Toolbox and EasyNav</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#stack-reference">Stack Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#easynav-simple-maps-manager">easynav_simple_maps_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#easynav-simple-localizer">easynav_simple_localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#easynav-simple-planner">easynav_simple_planner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#easynav-simple-controller">easynav_simple_controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tutorials/easynav_simple_stack/index.html#example-configuration">Example Configuration</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -107,6 +143,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">EasyNav Software</a></li>
       <li class="breadcrumb-item active">Sensor Input and Perception Handling</li>
       <li class="wy-breadcrumbs-aside">
       </li>
