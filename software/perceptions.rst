@@ -2,7 +2,7 @@
 
 
 Sensor Input and Perception Handling
-####################################
+====================================
 
 In EasyNav, **all sensor input flows through a single component**: the ``SensorsNode``. This node is responsible for:
 

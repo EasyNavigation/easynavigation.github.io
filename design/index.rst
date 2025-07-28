@@ -1,7 +1,7 @@
 .. _design:
 
 Core Design and Architecture
-############################
+****************************
 
 **EasyNav** is designed with three core principles in mind: modularity, real-time performance, and extensibility. Its architecture separates concerns into well-defined components, making it both easy to adapt and efficient to execute.
 
@@ -25,7 +25,7 @@ EasyNav runs within a single process that hosts a ROS 2 **Lifecycle Node** calle
 
 
 NavState: The Shared Blackboard
--------------------------------
+===============================
 
 A key architectural component of EasyNav is the **NavState**, a shared *blackboard* that holds all the internal state information required by the navigation system.
 
@@ -52,7 +52,7 @@ Future versions of EasyNav may include graphical or CLI-based tools to explore a
 
 
 Real-Time Execution Model
---------------------------
+=========================
 
 Another key feature of EasyNav is its emphasis on **real-time performance**. The navigation system is designed to react with strict timing constraints, minimizing latency from perception to action.
 
@@ -85,7 +85,7 @@ This dual-cycle model balances **responsiveness** with **computational stability
 
 
 Plugin Configuration
----------------------
+====================
 
 Let us examine the parameter file used in the *Getting Started* section. Each node loads its corresponding plugin by name. The following example shows how plugins are declared for each module:
 
