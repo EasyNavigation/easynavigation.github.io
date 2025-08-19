@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SeReST Controller Fine-Tuning &mdash; EasyNavigation 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=86f27845" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+    <link rel="shortcut icon" href="../../_static/easynav_48x48.png"/>
+  
+        <script src="../../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="About and Contact" href="../../about/index.html" />
+    <link rel="prev" title="EasyNav Costmap Stack Tutorials" href="index.html" />
+
+<link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            EasyNavigation
+              <img src="../../_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../design/index.html">Core Design and Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#real-time-execution-model">Real-Time Execution Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design/index.html#plugin-configuration">Plugin Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../software/index.html">EasyNav Software</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../software/index.html#c-api">C++ API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../software/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../software/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../software/blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../software/blackboard.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../software/perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../software/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../software/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../software/index.html#repositories">Repositories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../software/index.html#core">Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../software/index.html#plugins">Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../software/index.html#stacks">Stacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../software/index.html#test-cases">Test Cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../software/index.html#playgrounds">Playgrounds</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">EasyNav Stack Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../easynav_simple_stack/index.html">EasyNav Simple Stack Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../easynav_simple_stack/index.html#the-simplemap-representation">The SimpleMap Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../easynav_simple_stack/index.html#howto">HowTo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_simple_stack/mapping.html">Mapping with SLAM Toolbox and EasyNav</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../easynav_simple_stack/index.html#stack-reference">Stack Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_simple_stack/index.html#easynav-simple-maps-manager">easynav_simple_maps_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_simple_stack/index.html#easynav-simple-localizer">easynav_simple_localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_simple_stack/index.html#easynav-simple-planner">easynav_simple_planner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_simple_stack/index.html#easynav-simple-controller">easynav_simple_controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_simple_stack/index.html#example-configuration">Example Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">EasyNav Costmap Stack Tutorials</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tuning-order-of-operations">Tuning Order of Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">EasyNav Stack Tutorials</a></li>
+          <li class="breadcrumb-item"><a href="index.html">EasyNav Costmap Stack Tutorials</a></li>
+      <li class="breadcrumb-item active">SeReST Controller Fine-Tuning</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="serest-controller-fine-tuning">
+<h1>SeReST Controller Fine-Tuning<a class="headerlink" href="#serest-controller-fine-tuning" title="Link to this heading"></a></h1>
+<p>This guide helps you tune the SeReST (Safe Reparameterized Time) controller to
+track discrete paths (e.g., A* polylines) crisply, slow down gracefully near
+the goal, and behave safely around dynamic obstacles.</p>
+<p>The parameters below are grouped by purpose. Typical starting values and
+actionable “if you see X, change Y” advice are included.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#quick-start-defaults" id="id1">Quick-Start Defaults</a></p></li>
+<li><p><a class="reference internal" href="#core-concepts" id="id2">Core Concepts</a></p></li>
+<li><p><a class="reference internal" href="#parameter-by-parameter-guidance" id="id3">Parameter-by-Parameter Guidance</a></p>
+<ul>
+<li><p><a class="reference internal" href="#tracking-gains" id="id4">Tracking Gains</a></p></li>
+<li><p><a class="reference internal" href="#motion-limits-reference" id="id5">Motion Limits &amp; Reference</a></p></li>
+<li><p><a class="reference internal" href="#progress-robustness" id="id6">Progress Robustness</a></p></li>
+<li><p><a class="reference internal" href="#safety-governor" id="id7">Safety Governor</a></p></li>
+<li><p><a class="reference internal" href="#local-heading-smoothing-corners-on-polylines" id="id8">Local Heading Smoothing (Corners on Polylines)</a></p></li>
+<li><p><a class="reference internal" href="#goal-behavior-smooth-arrival" id="id9">Goal Behavior (Smooth Arrival)</a></p></li>
+<li><p><a class="reference internal" href="#corner-guard-tight-turns" id="id10">Corner Guard (Tight Turns)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#troubleshooting-by-symptom" id="id11">Troubleshooting by Symptom</a></p>
+<ul>
+<li><p><a class="reference internal" href="#robot-moonwalks-tries-to-go-backwards" id="id12">Robot “moonwalks” (tries to go backwards)</a></p></li>
+<li><p><a class="reference internal" href="#stalls-near-corners-or-from-standstill" id="id13">Stalls near corners or from standstill</a></p></li>
+<li><p><a class="reference internal" href="#oscillates-near-goal" id="id14">Oscillates near goal</a></p></li>
+<li><p><a class="reference internal" href="#cuts-corners-rides-outside-in-tight-turns" id="id15">Cuts corners / rides outside in tight turns</a></p></li>
+<li><p><a class="reference internal" href="#overreacts-laterally-snappy-nervous-path-hugging" id="id16">Overreacts laterally (snappy, “nervous” path hugging)</a></p></li>
+<li><p><a class="reference internal" href="#feels-sluggish-to-turn-on-straights" id="id17">Feels sluggish to turn on straights</a></p></li>
+<li><p><a class="reference internal" href="#emergency-stops-too-often" id="id18">Emergency stops too often</a></p></li>
+<li><p><a class="reference internal" href="#costmap-based-obstacle-distance-seems-too-pessimistic" id="id19">Costmap-based obstacle distance seems too pessimistic</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tuning-order-of-operations" id="id20">Tuning Order of Operations</a></p></li>
+<li><p><a class="reference internal" href="#faq" id="id21">FAQ</a></p></li>
+</ul>
+</nav>
+<section id="quick-start-defaults">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Quick-Start Defaults</a><a class="headerlink" href="#quick-start-defaults" title="Link to this heading"></a></h2>
+<p>Put these into your YAML (adjust namespace to your setup):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">serest_controller</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># motion policy</span>
+<span class="w">    </span><span class="nt">v_ref</span><span class="p">:</span><span class="w">                </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">    </span><span class="nt">max_linear_speed</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">    </span><span class="nt">max_angular_speed</span><span class="p">:</span><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
+<span class="w">    </span><span class="nt">max_linear_acc</span><span class="p">:</span><span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">0.8</span>
+<span class="w">    </span><span class="nt">max_angular_acc</span><span class="p">:</span><span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
+<span class="w">    </span><span class="nt">allow_reverse</span><span class="p">:</span><span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">    </span><span class="c1"># tracking gains</span>
+<span class="w">    </span><span class="nt">k_theta</span><span class="p">:</span><span class="w">              </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
+<span class="w">    </span><span class="nt">k_y</span><span class="p">:</span><span class="w">                  </span><span class="l l-Scalar l-Scalar-Plain">1.2</span>
+<span class="w">    </span><span class="nt">k_s</span><span class="p">:</span><span class="w">                  </span><span class="l l-Scalar l-Scalar-Plain">0.8</span>
+<span class="w">    </span><span class="nt">ell</span><span class="p">:</span><span class="w">                  </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+
+<span class="w">    </span><span class="c1"># safety governor</span>
+<span class="w">    </span><span class="nt">a_brake</span><span class="p">:</span><span class="w">              </span><span class="l l-Scalar l-Scalar-Plain">1.2</span>
+<span class="w">    </span><span class="nt">a_lat_max</span><span class="p">:</span><span class="w">            </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
+<span class="w">    </span><span class="nt">d0_margin</span><span class="p">:</span><span class="w">            </span><span class="l l-Scalar l-Scalar-Plain">0.20</span>
+<span class="w">    </span><span class="nt">tau_latency</span><span class="p">:</span><span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">0.10</span>
+<span class="w">    </span><span class="nt">d_hard</span><span class="p">:</span><span class="w">               </span><span class="l l-Scalar l-Scalar-Plain">0.15</span>
+<span class="w">    </span><span class="nt">t_emerg</span><span class="p">:</span><span class="w">              </span><span class="l l-Scalar l-Scalar-Plain">0.25</span>
+
+<span class="w">    </span><span class="c1"># local heading smoothing</span>
+<span class="w">    </span><span class="nt">blend_base</span><span class="p">:</span><span class="w">           </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">    </span><span class="nt">blend_k_per_v</span><span class="p">:</span><span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">    </span><span class="nt">kappa_max</span><span class="p">:</span><span class="w">            </span><span class="l l-Scalar l-Scalar-Plain">2.5</span>
+
+<span class="w">    </span><span class="c1"># progress robustness</span>
+<span class="w">    </span><span class="nt">v_progress_min</span><span class="p">:</span><span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+<span class="w">    </span><span class="nt">k_s_share_max</span><span class="p">:</span><span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+
+<span class="w">    </span><span class="c1"># goal behavior</span>
+<span class="w">    </span><span class="nt">goal_pos_tol</span><span class="p">:</span><span class="w">         </span><span class="l l-Scalar l-Scalar-Plain">0.07</span>
+<span class="w">    </span><span class="nt">goal_yaw_tol_deg</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">6.0</span>
+<span class="w">    </span><span class="nt">slow_radius</span><span class="p">:</span><span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">0.60</span>
+<span class="w">    </span><span class="nt">slow_min_speed</span><span class="p">:</span><span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">0.03</span>
+<span class="w">    </span><span class="nt">final_align_k</span><span class="p">:</span><span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
+<span class="w">    </span><span class="nt">final_align_wmax</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+
+<span class="w">    </span><span class="c1"># corner guard (tight turns)</span>
+<span class="w">    </span><span class="nt">corner_guard_enable</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">a_lat_soft</span><span class="p">:</span><span class="w">           </span><span class="l l-Scalar l-Scalar-Plain">1.1</span>
+<span class="w">    </span><span class="nt">corner_gain_ey</span><span class="p">:</span><span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
+<span class="w">    </span><span class="nt">corner_gain_eth</span><span class="p">:</span><span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">0.7</span>
+<span class="w">    </span><span class="nt">corner_gain_kappa</span><span class="p">:</span><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">0.4</span>
+<span class="w">    </span><span class="nt">corner_min_alpha</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">0.35</span>
+<span class="w">    </span><span class="nt">corner_boost_omega</span><span class="p">:</span><span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">0.8</span>
+<span class="w">    </span><span class="nt">apex_ey_des</span><span class="p">:</span><span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+</pre></div>
+</div>
+</section>
+<section id="core-concepts">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Core Concepts</a><a class="headerlink" href="#core-concepts" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Tracking controller</strong> keeps the robot close to the path using heading and
+lateral error feedback (<code class="docutils literal notranslate"><span class="pre">k_theta</span></code>, <code class="docutils literal notranslate"><span class="pre">k_y</span></code>, <code class="docutils literal notranslate"><span class="pre">ell</span></code>) and a small longitudinal
+“suction” (<code class="docutils literal notranslate"><span class="pre">k_s</span></code>).</p></li>
+<li><p><strong>Safety governor</strong> re-parameterizes time (reduces forward progress) according
+to distance to the nearest obstacle and curvature-based limits. It can also
+trigger an emergency stop via TTC / distance thresholds.</p></li>
+<li><p><strong>Local heading smoothing</strong> blends headings around polyline corners to avoid
+discontinuities; it does <em>not</em> deform the path, preserving path fidelity.</p></li>
+<li><p><strong>Goal behavior</strong> slows down within a radius and finishes with an in-place
+alignment to the final yaw when position tolerance is met.</p></li>
+<li><p><strong>Corner guard</strong> reduces speed and boosts yaw when you drift to the <em>outside</em>
+of a tight curve, preventing wide arcs.</p></li>
+</ul>
+</section>
+<section id="parameter-by-parameter-guidance">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Parameter-by-Parameter Guidance</a><a class="headerlink" href="#parameter-by-parameter-guidance" title="Link to this heading"></a></h2>
+<section id="tracking-gains">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Tracking Gains</a><a class="headerlink" href="#tracking-gains" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">k_theta</span></code> (typical: 1.5–3.0; default 2.0)
+<em>Effect:</em> heading stiffness.
+<em>Increase if:</em> turns feel sluggish or heading error decays slowly.
+<em>Decrease if:</em> oscillatory heading (wiggle) at speed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">k_y</span></code> (typical: 0.8–2.0; default 1.2)
+<em>Effect:</em> lateral correction authority.
+<em>Increase if:</em> robot rides outside of the “lane” or cuts corners.
+<em>Decrease if:</em> lateral oscillations, especially on coarse grids.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ell</span></code> (typical: 0.25–0.5 m; default 0.3)
+<em>Effect:</em> lateral nonlinearity scale (like an effective lookahead).
+<em>Increase if:</em> controller is too twitchy laterally.
+<em>Decrease if:</em> lateral convergence is too slow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">k_s</span></code> (typical: 0.4–1.2; default 0.8)
+<em>Effect:</em> longitudinal “suction” to centerline in Frenet dynamics.
+<em>Increase if:</em> robot tends to drift along the segment instead of re-centering.
+<em>Decrease if:</em> tendency to fight forward progress from standstill.</p></li>
+</ul>
+</section>
+<section id="motion-limits-reference">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Motion Limits &amp; Reference</a><a class="headerlink" href="#motion-limits-reference" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v_ref</span></code> (typical: 0.4–0.8 m/s; default 0.6)
+Desired cruise speed before safety/curvature scaling.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_linear_speed</span></code>, <code class="docutils literal notranslate"><span class="pre">max_angular_speed</span></code>
+Respect the robot’s true capabilities; don’t set these higher than your platform can achieve.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_linear_acc</span></code>, <code class="docutils literal notranslate"><span class="pre">max_angular_acc</span></code>
+<em>Increase if:</em> robot feels lethargic on starts/stops.
+<em>Decrease if:</em> traction limited, wheel slip, or tipping risk.</p></li>
+</ul>
+</section>
+<section id="progress-robustness">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Progress Robustness</a><a class="headerlink" href="#progress-robustness" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v_progress_min</span></code> (typical: 0.03–0.10 m/s; default 0.05)
+Minimum forward speed when reasonably aligned; prevents “stalls” at zero.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">k_s_share_max</span></code> (typical: 0.3–0.7; default 0.5)
+Caps how much the lateral suction term can eat into forward progress.
+<em>Increase if:</em> robot still stalls near corners.
+<em>Decrease if:</em> it pushes too hard and overshoots laterally.</p></li>
+</ul>
+</section>
+<section id="safety-governor">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Safety Governor</a><a class="headerlink" href="#safety-governor" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a_brake</span></code> (typical: 1.0–2.0 m/s²; default 1.2)
+Used in safe-speed-from-distance; set below physical max for robustness.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a_lat_max</span></code> (typical: 1.2–2.5 m/s²; default 1.5)
+Global lateral accel cap for curvature speed limit (non-corner scenarios).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">d0_margin</span></code> (typical: 0.15–0.30 m; default 0.20)
+Geometric safety buffer; increase on larger robots or noisy sensing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tau_latency</span></code> (typical: 0.08–0.15 s; default 0.10)
+Accounts for sensing + control delay; increase if you observe late braking.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">d_hard</span></code> (typical: 0.10–0.25 m; default 0.15), <code class="docutils literal notranslate"><span class="pre">t_emerg</span></code> (0.2–0.4 s; default 0.25)
+Emergency stop triggers. Make more conservative (larger <code class="docutils literal notranslate"><span class="pre">d_hard</span></code>, smaller <code class="docutils literal notranslate"><span class="pre">t_emerg</span></code>)
+if near-collisions are observed.</p></li>
+</ul>
+</section>
+<section id="local-heading-smoothing-corners-on-polylines">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Local Heading Smoothing (Corners on Polylines)</a><a class="headerlink" href="#local-heading-smoothing-corners-on-polylines" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">blend_base</span></code> (typical: 0.4–0.9 m; default 0.6)
+Base length over which to blend headings around vertices.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">blend_k_per_v</span></code> (typical: 0.4–0.9 s; default 0.6)
+Additional blend proportional to speed; higher = smoother at high speed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kappa_max</span></code> (typical: 2.0–3.5 1/m; default 2.5)
+Caps surrogate curvature used for feed-forward/limits.</p></li>
+</ul>
+</section>
+<section id="goal-behavior-smooth-arrival">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Goal Behavior (Smooth Arrival)</a><a class="headerlink" href="#goal-behavior-smooth-arrival" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">slow_radius</span></code> (typical: 0.5–1.0 m; default 0.6)
+Start slowing down here. Increase to remove overshoot near goals.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">goal_pos_tol</span></code> (typical: 0.05–0.10 m; default 0.07)
+Consider position achieved within this radius.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">goal_yaw_tol_deg</span></code> (typical: 4–10 deg; default 6)
+Orientation tolerance to declare final arrival.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">slow_min_speed</span></code> (typical: 0.02–0.05 m/s; default 0.03)
+Keeps progress inside slow zone; reduce if you see micro-oscillations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">final_align_k</span></code> (typical: 1.5–3.0; default 2.0), <code class="docutils literal notranslate"><span class="pre">final_align_wmax</span></code> (0.4–0.8 rad/s; default 0.6)
+Controls the in-place final yaw alignment. Increase <code class="docutils literal notranslate"><span class="pre">final_align_k</span></code> or
+<code class="docutils literal notranslate"><span class="pre">final_align_wmax</span></code> if final rotation is sluggish; decrease if it overshoots.</p></li>
+</ul>
+</section>
+<section id="corner-guard-tight-turns">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Corner Guard (Tight Turns)</a><a class="headerlink" href="#corner-guard-tight-turns" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">corner_guard_enable</span></code> (default: true)
+Enables the whole cornering safety scheme.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a_lat_soft</span></code> (typical: 0.9–1.4 m/s²; default 1.1)
+<em>Corner-specific</em> lateral accel cap (more conservative than <code class="docutils literal notranslate"><span class="pre">a_lat_max</span></code>).
+Reduce if you still drift wide; increase if it brakes too much in curves.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">corner_gain_ey</span></code> (typical: 1.0–2.0; default 1.5)
+Penalizes “being outside” the curve (positive signed lateral error).
+Increase to cut speed harder when you drift wide.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">corner_gain_eth</span></code> (typical: 0.5–1.0; default 0.7)
+Penalizes large heading error in turns.
+Increase if you understeer; decrease if it brakes for minor angular noise.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">corner_gain_kappa</span></code> (typical: 0.3–0.7; default 0.4)
+Penalizes high curvature itself. Increase to slow more in very tight corners.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">corner_min_alpha</span></code> (typical: 0.30–0.50; default 0.35)
+Lower bound on speed scaling in corners. Raise to prevent excessive slowdown.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">corner_boost_omega</span></code> (typical: 0.6–1.0; default 0.8)
+Multiplier that boosts yaw authority when outside the curve.
+Increase if you still open the turn; decrease if over-rotating at apex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apex_ey_des</span></code> (typical: 0.03–0.08 m; default 0.05)
+Desired small inward bias at apex to avoid riding the outside.</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting-by-symptom">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Troubleshooting by Symptom</a><a class="headerlink" href="#troubleshooting-by-symptom" title="Link to this heading"></a></h2>
+<section id="robot-moonwalks-tries-to-go-backwards">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Robot “moonwalks” (tries to go backwards)</a><a class="headerlink" href="#robot-moonwalks-tries-to-go-backwards" title="Link to this heading"></a></h3>
+<p><em>Set ``allow_reverse: false``</em> unless you intend reverse.
+Ensure forward-only clamps are active (already default) and reduce <code class="docutils literal notranslate"><span class="pre">k_s</span></code> if
+longitudinal suction is pulling progress negative at standstill.
+Increase <code class="docutils literal notranslate"><span class="pre">v_progress_min</span></code> to push out of zero-speed stiction.</p>
+</section>
+<section id="stalls-near-corners-or-from-standstill">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Stalls near corners or from standstill</a><a class="headerlink" href="#stalls-near-corners-or-from-standstill" title="Link to this heading"></a></h3>
+<p>Increase <code class="docutils literal notranslate"><span class="pre">v_progress_min</span></code>; increase <code class="docutils literal notranslate"><span class="pre">k_s_share_max</span></code> so lateral suction
+cannot cancel too much forward progress. Consider a slightly larger <code class="docutils literal notranslate"><span class="pre">blend_base</span></code>
+for smoother heading transitions.</p>
+</section>
+<section id="oscillates-near-goal">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Oscillates near goal</a><a class="headerlink" href="#oscillates-near-goal" title="Link to this heading"></a></h3>
+<p>Increase <code class="docutils literal notranslate"><span class="pre">slow_radius</span></code> and/or <code class="docutils literal notranslate"><span class="pre">goal_pos_tol</span></code> slightly. Lower
+<code class="docutils literal notranslate"><span class="pre">slow_min_speed</span></code> (but keep &gt; 0). Reduce <code class="docutils literal notranslate"><span class="pre">final_align_wmax</span></code> or
+<code class="docutils literal notranslate"><span class="pre">final_align_k</span></code> if in-place alignment overshoots.</p>
+</section>
+<section id="cuts-corners-rides-outside-in-tight-turns">
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Cuts corners / rides outside in tight turns</a><a class="headerlink" href="#cuts-corners-rides-outside-in-tight-turns" title="Link to this heading"></a></h3>
+<p>Enable corner guard (default true). Decrease <code class="docutils literal notranslate"><span class="pre">a_lat_soft</span></code>. Increase
+<code class="docutils literal notranslate"><span class="pre">corner_gain_ey</span></code> and/or <code class="docutils literal notranslate"><span class="pre">corner_boost_omega</span></code>. Increase <code class="docutils literal notranslate"><span class="pre">apex_ey_des</span></code> a bit.
+If still wide, reduce <code class="docutils literal notranslate"><span class="pre">v_ref</span></code> or raise <code class="docutils literal notranslate"><span class="pre">blend_base</span></code> to smooth heading earlier.</p>
+</section>
+<section id="overreacts-laterally-snappy-nervous-path-hugging">
+<h3><a class="toc-backref" href="#id16" role="doc-backlink">Overreacts laterally (snappy, “nervous” path hugging)</a><a class="headerlink" href="#overreacts-laterally-snappy-nervous-path-hugging" title="Link to this heading"></a></h3>
+<p>Increase <code class="docutils literal notranslate"><span class="pre">ell</span></code>. Reduce <code class="docutils literal notranslate"><span class="pre">k_y</span></code> slightly. Reduce <code class="docutils literal notranslate"><span class="pre">corner_boost_omega</span></code> if only
+in corners. If on very coarse grids, increase <code class="docutils literal notranslate"><span class="pre">blend_base</span></code> to avoid rapid
+heading changes.</p>
+</section>
+<section id="feels-sluggish-to-turn-on-straights">
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">Feels sluggish to turn on straights</a><a class="headerlink" href="#feels-sluggish-to-turn-on-straights" title="Link to this heading"></a></h3>
+<p>Increase <code class="docutils literal notranslate"><span class="pre">k_theta</span></code>. Ensure <code class="docutils literal notranslate"><span class="pre">max_angular_speed</span></code> and <code class="docutils literal notranslate"><span class="pre">max_angular_acc</span></code> are
+not too low. If corner guard reduces yaw authority too much, lower
+<code class="docutils literal notranslate"><span class="pre">corner_gain_eth</span></code> and <code class="docutils literal notranslate"><span class="pre">corner_gain_kappa</span></code>.</p>
+</section>
+<section id="emergency-stops-too-often">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Emergency stops too often</a><a class="headerlink" href="#emergency-stops-too-often" title="Link to this heading"></a></h3>
+<p>Reduce conservatism: increase <code class="docutils literal notranslate"><span class="pre">t_emerg</span></code> (e.g., 0.35), reduce <code class="docutils literal notranslate"><span class="pre">d_hard</span></code>,
+reduce <code class="docutils literal notranslate"><span class="pre">d0_margin</span></code>, or increase <code class="docutils literal notranslate"><span class="pre">v_ref</span></code> a bit. <strong>Only</strong> do this if your
+sensing/latency is trustworthy.</p>
+</section>
+<section id="costmap-based-obstacle-distance-seems-too-pessimistic">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Costmap-based obstacle distance seems too pessimistic</a><a class="headerlink" href="#costmap-based-obstacle-distance-seems-too-pessimistic" title="Link to this heading"></a></h3>
+<p>Lower <code class="docutils literal notranslate"><span class="pre">lethal_cost_threshold</span></code> (if exposed), reduce <code class="docutils literal notranslate"><span class="pre">dist_search_radius</span></code>, or
+prefer publishing a measured <code class="docutils literal notranslate"><span class="pre">closest_obstacle_distance</span></code> into the NavState.</p>
+</section>
+</section>
+<section id="tuning-order-of-operations">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">Tuning Order of Operations</a><a class="headerlink" href="#tuning-order-of-operations" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Set kinematics</strong>: <code class="docutils literal notranslate"><span class="pre">max_*</span></code>, <code class="docutils literal notranslate"><span class="pre">v_ref</span></code> to platform-safe values.</p></li>
+<li><p><strong>Basic tracking</strong>: tune <code class="docutils literal notranslate"><span class="pre">k_theta</span></code>, <code class="docutils literal notranslate"><span class="pre">k_y</span></code>, <code class="docutils literal notranslate"><span class="pre">ell</span></code> for stable path hugging.</p></li>
+<li><p><strong>Safety</strong>: verify emergency stop triggers with test obstacles.</p></li>
+<li><p><strong>Corners</strong>: set <code class="docutils literal notranslate"><span class="pre">blend_*</span></code>, <code class="docutils literal notranslate"><span class="pre">a_lat_soft</span></code>, and corner guard gains.</p></li>
+<li><p><strong>Goal behavior</strong>: adjust <code class="docutils literal notranslate"><span class="pre">slow_radius</span></code>, <code class="docutils literal notranslate"><span class="pre">goal_pos_tol</span></code>,
+<code class="docutils literal notranslate"><span class="pre">final_align_*</span></code> for a smooth, precise finish.</p></li>
+<li><p><strong>Robust progress</strong>: tweak <code class="docutils literal notranslate"><span class="pre">v_progress_min</span></code>, <code class="docutils literal notranslate"><span class="pre">k_s_share_max</span></code> if stalls occur.</p></li>
+</ol>
+</section>
+<section id="faq">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink">FAQ</a><a class="headerlink" href="#faq" title="Link to this heading"></a></h2>
+<p><strong>Q: Can I allow reverse?</strong>
+A: Yes, set <code class="docutils literal notranslate"><span class="pre">allow_reverse:</span> <span class="pre">true</span></code>. Use with care; tune goal/slow behaviors to
+avoid reverse within the final meters unless desired.</p>
+<p><strong>Q: What if my path is very jagged (low map resolution)?</strong>
+A: Increase <code class="docutils literal notranslate"><span class="pre">blend_base</span></code> and/or <code class="docutils literal notranslate"><span class="pre">blend_k_per_v</span></code>. Consider lowering
+<code class="docutils literal notranslate"><span class="pre">kappa_max</span></code> and reducing <code class="docutils literal notranslate"><span class="pre">v_ref</span></code> slightly.</p>
+<p><strong>Q: How aggressive should ``a_lat_soft`` be?</strong>
+A: For indoor AMRs with solid traction, 1.0–1.4 m/s² is typical. On slippery or
+uneven surfaces, go lower (0.8–1.0).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>
