@@ -269,8 +269,8 @@ Reduce conservatism: increase ``t_emerg`` (e.g., 0.35), reduce ``d_hard``,
 reduce ``d0_margin``, or increase ``v_ref`` a bit. **Only** do this if your
 sensing/latency is trustworthy.
 
-Costmap-based obstacle distance seems too pessimistic
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
+Abstacle distance seems too pessimistic
+"""""""""""""""""""""""""""""""""""""""
 Lower ``lethal_cost_threshold`` (if exposed), reduce ``dist_search_radius``, or
 prefer publishing a measured ``closest_obstacle_distance`` into the NavState.
 
