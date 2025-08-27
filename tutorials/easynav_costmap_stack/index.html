@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="SeReST Controller Fine-Tuning" href="serest_controller.html" />
-    <link rel="prev" title="Mapping with SLAM Toolbox and EasyNav" href="../easynav_simple_stack/mapping.html" />
+    <link rel="next" title="Mapping with the Costmap Stack" href="mapping.html" />
+    <link rel="prev" title="Navigating with SimpleStack and EasyNav" href="../easynav_simple_stack/navigating.html" />
 
 <link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
 
@@ -98,10 +98,23 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">EasyNav Stack Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../easynav_plugins/index.html">EasyNav Plugins Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../easynav_plugins/serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_plugins/serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_plugins/serest_controller.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_plugins/serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_plugins/serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_plugins/serest_controller.html#tuning-order-of-operations">Tuning Order of Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_plugins/serest_controller.html#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../easynav_simple_stack/index.html">EasyNav Simple Stack Tutorials</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../easynav_simple_stack/index.html#the-simplemap-representation">The SimpleMap Representation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../easynav_simple_stack/index.html#howto">HowTo</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../easynav_simple_stack/mapping.html">Mapping with SLAM Toolbox and EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_simple_stack/navigating.html">Navigating with SimpleStack and EasyNav</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../easynav_simple_stack/index.html#stack-reference">Stack Reference</a><ul>
@@ -115,15 +128,26 @@
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">EasyNav Costmap Stack Tutorials</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#core-concepts">Core Concepts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#tuning-order-of-operations">Tuning Order of Operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#faq">FAQ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-simplemap-representation">The SimpleMap Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#howto">HowTo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mapping.html">Mapping with the Costmap Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navigating.html">Mapping with SLAM Toolbox and EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#stack-reference">Stack Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#easynav-costmap-maps-manager">easynav_costmap_maps_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#easynav-costmap-localizer">easynav_costmap_localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#easynav-costmap-planner">easynav_costmap_planner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-configuration">Example Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#multi-robot-with-easynav">Multi-robot with EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#launching-in-simulation">Launching in Simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#example-parameters">Example Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#tips-gotchas">Tips &amp; Gotchas</a></li>
 </ul>
 </li>
 </ul>
@@ -167,11 +191,496 @@
              
   <section id="easynav-costmap-stack-tutorials">
 <h1>EasyNav Costmap Stack Tutorials<a class="headerlink" href="#easynav-costmap-stack-tutorials" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">easynav_costmap_stack</span></code> provides a working setup for EasyNav based on
+a <strong>costmap representation</strong> instead of a simple binary map.
+This stack is suitable for more advanced navigation scenarios, including
+obstacle inflation and graded traversability information.</p>
+<p>It includes the following packages:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_common</span></code>: Defines the <code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code> structure and utility functions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_maps_manager</span></code>: Handles loading, saving, filtering and publishing costmaps.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_localizer</span></code>: An AMCL-like localizer adapted to costmaps.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_planner</span></code>: A grid-based planner (A*) that operates over costmaps.</p></li>
+</ul>
+<section id="the-simplemap-representation">
+<h2>The SimpleMap Representation<a class="headerlink" href="#the-simplemap-representation" title="Link to this heading"></a></h2>
+<p>At the core of this stack lies the <code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code> data structure.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code> extends the binary occupancy grid into a graded cost representation
+with values in the range [0–255]:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: Free space, no cost to traverse.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1–252</span></code>: Gradual cost values, representing increasing difficulty or proximity to obstacles.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">253</span></code>: “Near obstacle” (inscribed obstacle) cost, traversal strongly discouraged.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">254</span></code>: Lethal obstacle, occupied cell.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">255</span></code>: Unknown space.</p></li>
+</ul>
+<p><strong>Key features of Costmap2D:</strong></p>
+<ul class="simple">
+<li><p>Resolution, width and height configuration</p></li>
+<li><p>World ↔ grid coordinate transformations</p></li>
+<li><p>Cell accessors (getCost, setCost)</p></li>
+<li><p>Conversion to and from <code class="docutils literal notranslate"><span class="pre">nav_msgs/msg/OccupancyGrid</span></code></p></li>
+<li><p>Support for layered costmaps via filters (e.g. obstacle inflation)</p></li>
+<li><p>Efficient raytracing and Bresenham line traversal utilities</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code> enables representing not only obstacles, but also graded traversability,
+which is crucial for safe path planning and smooth motion around obstacles.</p>
+</section>
+<section id="howto">
+<h2>HowTo<a class="headerlink" href="#howto" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="serest_controller.html">SeReST Controller Fine-Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mapping.html">Mapping with the Costmap Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating.html">Mapping with SLAM Toolbox and EasyNav</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a></li>
 </ul>
 </div>
+</section>
+<section id="stack-reference">
+<h2>Stack Reference<a class="headerlink" href="#stack-reference" title="Link to this heading"></a></h2>
+<section id="easynav-costmap-maps-manager">
+<h3>easynav_costmap_maps_manager<a class="headerlink" href="#easynav-costmap-maps-manager" title="Link to this heading"></a></h3>
+<p>The <strong>maps manager</strong> is responsible for:
+1) Loading the <em>static</em> costmap from a YAML+image pair (<code class="docutils literal notranslate"><span class="pre">.yaml</span></code> + <code class="docutils literal notranslate"><span class="pre">.pgm/.png</span></code>),
+2) Maintaining a <em>dynamic</em> costmap derived from the static map and sensor perceptions, and
+3) Applying an <strong>ordered pipeline of costmap filters</strong> that progressively modify the working map.</p>
+<p><strong>Filter pipeline (order matters):</strong></p>
+<ul class="simple">
+<li><p>At the beginning of every cycle, the manager copies the static map into an internal working buffer
+and stores it in the blackboard as <code class="docutils literal notranslate"><span class="pre">map.dynamic.filtered</span></code>.</p></li>
+<li><p>Then it iterates the list in <code class="docutils literal notranslate"><span class="pre">filters</span></code> <strong>in order</strong>. Each filter reads and updates
+<code class="docutils literal notranslate"><span class="pre">map.dynamic.filtered</span></code> in-place (via <code class="docutils literal notranslate"><span class="pre">NavState</span></code>).</p></li>
+<li><p>After the last filter finishes, the resulting buffer is published and also copied to <code class="docutils literal notranslate"><span class="pre">map.dynamic</span></code>.</p></li>
+</ul>
+<p>This design lets you chain effects deterministically. For example, you can <strong>first</strong> add obstacles from sensors
+and <strong>then</strong> inflate them; reversing the order would inflate nothing (because obstacles would be added after inflation).</p>
+<p><strong>ROS Parameters (plugin section of this maps manager):</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>package</p></td>
+<td><p>ROS package that contains the YAML map file</p></td>
+</tr>
+<tr class="row-odd"><td><p>map_path_file</p></td>
+<td><p>Path to the YAML file <em>relative to</em> <code class="docutils literal notranslate"><span class="pre">package</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>filters</p></td>
+<td><p><strong>Ordered</strong> list of filter IDs to load and execute</p></td>
+</tr>
+</tbody>
+</table>
+<p>For each entry <code class="docutils literal notranslate"><span class="pre">&lt;filter_id&gt;</span></code> listed in <code class="docutils literal notranslate"><span class="pre">filters</span></code>, you must create a peer subsection
+<code class="docutils literal notranslate"><span class="pre">&lt;filter_id&gt;</span></code> with at least its <code class="docutils literal notranslate"><span class="pre">plugin</span></code> field and any <strong>filter‑specific</strong> parameters.
+Those parameters belong to the filter plugin, not to the maps manager.</p>
+<p><strong>Built‑in filters:</strong></p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_maps_manager/ObstacleFilter</span></code>
+- <strong>Purpose:</strong> Fuses point‑based perceptions (<code class="docutils literal notranslate"><span class="pre">points</span></code> in NavState) into the working costmap (<code class="docutils literal notranslate"><span class="pre">map.dynamic.filtered</span></code>), marking cells as obstacles where required.
+- <strong>Parameters:</strong> <em>None.</em> This filter uses the costmap resolution and TF prefix, and reads <code class="docutils literal notranslate"><span class="pre">points</span></code> from NavState to project measurements into the map.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_maps_manager/InflationFilter</span></code>
+- <strong>Purpose:</strong> Inflates obstacles by assigning costs that decay with distance from lethal cells, producing a graded safety buffer around obstacles.
+- <strong>Parameters (declared by the plugin):</strong></p>
+<blockquote>
+<div><table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>inflation_radius</p></td>
+<td><p>Max inflation distance (meters)</p></td>
+</tr>
+<tr class="row-odd"><td><p>cost_scaling_factor</p></td>
+<td><p>Exponential decay factor for the cost field</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>Notes:</strong> The plugin internally derives cell radii from the map resolution and uses standard
+cost levels (<code class="docutils literal notranslate"><span class="pre">LETHAL_OBSTACLE=254</span></code>, <code class="docutils literal notranslate"><span class="pre">INSCRIBED_INFLATED_OBSTACLE=253</span></code>) from <code class="docutils literal notranslate"><span class="pre">cost_values.hpp</span></code>.
+Parameters like <em>inscribed</em> or <em>lethal</em> cost are <strong>not</strong> user parameters in this implementation.</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Topics:</strong></p>
+<p>Publishes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maps_manager_node/&lt;plugin_name&gt;/map</span></code> : <code class="docutils literal notranslate"><span class="pre">nav_msgs/msg/OccupancyGrid</span></code> (static). QoS: transient local, reliable</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maps_manager_node/&lt;plugin_name&gt;/dynamic_map</span></code> : <code class="docutils literal notranslate"><span class="pre">nav_msgs/msg/OccupancyGrid</span></code> (dynamic). QoS: depth 100</p></li>
+</ul>
+<p>Subscribes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maps_manager_node/&lt;plugin_name&gt;/incoming_map</span></code> : <code class="docutils literal notranslate"><span class="pre">nav_msgs/msg/OccupancyGrid</span></code> (optional override of static map).
+If a message arrives here, it replaces the internal static map and re‑publishes the static layer.</p></li>
+</ul>
+<p><strong>Services:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maps_manager_node/&lt;plugin_name&gt;/savemap</span></code> : <code class="docutils literal notranslate"><span class="pre">std_srvs/srv/Trigger</span></code> — saves the current static map back to the
+YAML path resolved from (<code class="docutils literal notranslate"><span class="pre">package</span></code>, <code class="docutils literal notranslate"><span class="pre">map_path_file</span></code>).</p></li>
+</ul>
+<p><strong>NavState Access:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Directione</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>map.static</p></td>
+<td><p>Costmap2D</p></td>
+<td><p>Read/Write</p></td>
+</tr>
+<tr class="row-odd"><td><p>map.dynamic.filtered</p></td>
+<td><p>Costmap2D</p></td>
+<td><p>Read/Write</p></td>
+</tr>
+<tr class="row-even"><td><p>map.dynamic</p></td>
+<td><p>Costmap2D</p></td>
+<td><p>Write</p></td>
+</tr>
+<tr class="row-odd"><td><p>points</p></td>
+<td><p>PointPerceptions</p></td>
+<td><p>Read</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>YAML map fields supported (loaded by ``map_io``):</strong></p>
+<p>It is <strong>the same</strong> format used in MoveBase/Nav2.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>image</p></td>
+<td><p>Path to the image file (PGM/PNG)</p></td>
+</tr>
+<tr class="row-odd"><td><p>resolution</p></td>
+<td><p>Meters per cell</p></td>
+</tr>
+<tr class="row-even"><td><p>origin</p></td>
+<td><p>[x, y, yaw] of the map origin in meters/radians</p></td>
+</tr>
+<tr class="row-odd"><td><p>negate</p></td>
+<td><p>If 1, invert colors when loading</p></td>
+</tr>
+<tr class="row-even"><td><p>free_thresh</p></td>
+<td><p>Threshold (0–1) for free cells</p></td>
+</tr>
+<tr class="row-odd"><td><p>occupied_thresh</p></td>
+<td><p>Threshold (0–1) for occupied cells</p></td>
+</tr>
+<tr class="row-even"><td><p>mode</p></td>
+<td><p>One of <code class="docutils literal notranslate"><span class="pre">Trinary</span> <span class="pre">|</span> <span class="pre">Scale</span> <span class="pre">|</span> <span class="pre">Raw</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong> Ordered filters where obstacles are inserted first and then inflated</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">maps_manager_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">map_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">costmap</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">costmap</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_costmap_maps_manager/CostmapMapsManager</span>
+<span class="w">      </span><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_maps_pkg</span>
+<span class="w">      </span><span class="nt">map_path_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">maps/office.yaml</span>
+<span class="w">      </span><span class="nt">filters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">obstacles</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">inflation</span><span class="p p-Indicator">]</span>
+
+<span class="w">      </span><span class="nt">obstacles</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_costmap_maps_manager/ObstacleFilter</span>
+<span class="w">        </span><span class="c1"># (no extra params)</span>
+
+<span class="w">      </span><span class="nt">inflation</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_costmap_maps_manager/InflationFilter</span>
+<span class="w">        </span><span class="nt">inflation_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.45</span>
+<span class="w">        </span><span class="nt">cost_scaling_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.5</span>
+</pre></div>
+</div>
+<p>Loads static costmaps from file (YAML + PGM), maintains dynamic costmaps, and applies filters
+such as inflation or obstacle masking.</p>
+<p><strong>ROS Parameters (plugin section):</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>package</p></td>
+<td><p>Package where the map YAML file is located</p></td>
+</tr>
+<tr class="row-odd"><td><p>map_path_file</p></td>
+<td><p>Path to the YAML map file</p></td>
+</tr>
+<tr class="row-even"><td><p>filters</p></td>
+<td><p>List of filters to apply (e.g. inflation)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Topics:</strong></p>
+<p>Publishes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maps_manager_node/&lt;plugin&gt;/map</span></code>: <code class="docutils literal notranslate"><span class="pre">nav_msgs/msg/OccupancyGrid</span></code> (static map)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maps_manager_node/&lt;plugin&gt;/dynamic_map</span></code>: <code class="docutils literal notranslate"><span class="pre">nav_msgs/msg/OccupancyGrid</span></code> (dynamic map)</p></li>
+</ul>
+<p>Subscribes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maps_manager_node/&lt;plugin&gt;/incoming_map</span></code>: <code class="docutils literal notranslate"><span class="pre">nav_msgs/msg/OccupancyGrid</span></code></p></li>
+</ul>
+<p><strong>Services:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maps_manager_node/&lt;plugin&gt;/savemap</span></code>: <code class="docutils literal notranslate"><span class="pre">std_srvs/srv/Trigger</span></code> — saves map back to disk</p></li>
+</ul>
+<p><strong>NavState Access:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Direction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>points</p></td>
+<td><p>PointPerceptions</p></td>
+<td><p>Read</p></td>
+</tr>
+<tr class="row-odd"><td><p>map.static</p></td>
+<td><p>Costmap2D</p></td>
+<td><p>Write</p></td>
+</tr>
+<tr class="row-even"><td><p>map.dynamic</p></td>
+<td><p>Costmap2D</p></td>
+<td><p>Write</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="easynav-costmap-localizer">
+<h3>easynav_costmap_localizer<a class="headerlink" href="#easynav-costmap-localizer" title="Link to this heading"></a></h3>
+<p>A particle-filter localizer (AMCL-like) that uses costmaps as environment representation.</p>
+<p><strong>ROS Parameters (plugin section):</strong></p>
+<ul class="simple">
+<li><p>Identical in structure to the simple AMCL localizer, with the addition that it queries <code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code> instead of <code class="docutils literal notranslate"><span class="pre">SimpleMap</span></code>.</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>num_particles (int, default: 100)</p></td>
+<td><p>Number of particles</p></td>
+</tr>
+<tr class="row-odd"><td><p>initial_pose.x (double, default: 0.0)</p></td>
+<td><p>Initial x</p></td>
+</tr>
+<tr class="row-even"><td><p>initial_pose.y (double, default: 0.0)</p></td>
+<td><p>Initial y</p></td>
+</tr>
+<tr class="row-odd"><td><p>initial_pose.yaw (double, 0.0)</p></td>
+<td><p>Initial yaw (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>initial_pose.std_dev_xy (double, 0.5)</p></td>
+<td><p>Initial stddev for x,y (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>initial_pose.std_dev_yaw (double,0.5)</p></td>
+<td><p>Initial stddev for yaw (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>reseed_freq (double, default: 1.0)</p></td>
+<td><p>Particle reseed frequency (Hz)</p></td>
+</tr>
+<tr class="row-odd"><td><p>noise_translation (double, 0.01)</p></td>
+<td><p>Motion noise (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>noise_rotation (double, 0.01)</p></td>
+<td><p>Motion noise (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>noise_translation_to_rotation (0.01)</p></td>
+<td><p>Coupling noise (m→rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>min_noise_xy (double, 0.05)</p></td>
+<td><p>Minimum XY noise clamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>min_noise_yaw (double, 0.05)</p></td>
+<td><p>Minimum Yaw noise clamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Topics:</strong></p>
+<p>Publishes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">localizer_node/&lt;plugin_name&gt;/particles</span></code>: <code class="docutils literal notranslate"><span class="pre">geometry_msgs/msg/PoseArray</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">localizer_node/&lt;plugin_name&gt;/pose</span></code>: <code class="docutils literal notranslate"><span class="pre">geometry_msgs/msg/PoseWithCovarianceStamped</span></code></p></li>
+</ul>
+<p>Subscribes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">odom</span></code>: <code class="docutils literal notranslate"><span class="pre">nav_msgs/msg/Odometry</span></code> (<code class="docutils literal notranslate"><span class="pre">rclcpp::SensorDataQoS().reliable()</span></code>)</p></li>
+</ul>
+<p><strong>TF:</strong></p>
+<ul class="simple">
+<li><p>Publishes <code class="docutils literal notranslate"><span class="pre">map</span> <span class="pre">→</span> <span class="pre">odom</span></code> transform</p></li>
+</ul>
+<p><strong>NavState Access:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Direction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>map.static</p></td>
+<td><p>Costmap2D</p></td>
+<td><p>Read</p></td>
+</tr>
+<tr class="row-odd"><td><p>points</p></td>
+<td><p>PointPerceptions</p></td>
+<td><p>Read</p></td>
+</tr>
+<tr class="row-even"><td><p>robot_pose</p></td>
+<td><p>nav_msgs/msg/Odometry</p></td>
+<td><p>Write</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="easynav-costmap-planner">
+<h3>easynav_costmap_planner<a class="headerlink" href="#easynav-costmap-planner" title="Link to this heading"></a></h3>
+<p>A planner based on the A* algorithm adapted for <code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code>.
+Takes into account costs for safer and smoother paths.</p>
+<p><strong>ROS Parameters (plugin section):</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>robot_radius</p></td>
+<td><p>Robot radius (meters)</p></td>
+</tr>
+<tr class="row-odd"><td><p>clearance_distance</p></td>
+<td><p>Additional clearance (meters)</p></td>
+</tr>
+<tr class="row-even"><td><p>cost_penalty_factor</p></td>
+<td><p>Extra penalty for higher-cost cells</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Topics:</strong></p>
+<p>Publishes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">planner_node/&lt;plugin_name&gt;/path</span></code>: <code class="docutils literal notranslate"><span class="pre">nav_msgs/msg/Path</span></code></p></li>
+</ul>
+<p><strong>NavState Access:</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Direction</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>map.dynamic</p></td>
+<td><p>Costmap2D</p></td>
+<td><p>Read</p></td>
+</tr>
+<tr class="row-odd"><td><p>robot_pose</p></td>
+<td><p>nav_msgs/msg/Odometry</p></td>
+<td><p>Read</p></td>
+</tr>
+<tr class="row-even"><td><p>goals</p></td>
+<td><p>nav_msgs/msg/Goals</p></td>
+<td><p>Read</p></td>
+</tr>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>nav_msgs/msg/Path</p></td>
+<td><p>Write</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-configuration">
+<h3>Example Configuration<a class="headerlink" href="#example-configuration" title="Link to this heading"></a></h3>
+<p>An example parameters file (from <code class="docutils literal notranslate"><span class="pre">costmap.serest.params.yaml</span></code>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">controller_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">serest</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">serest</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_costmap_controller/SerestController</span>
+<span class="w">      </span><span class="nt">max_linear_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">      </span><span class="nt">max_angular_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">      </span><span class="nt">max_linear_acc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">      </span><span class="nt">max_angular_acc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
+<span class="w">      </span><span class="nt">look_ahead_dist</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
+<span class="w">      </span><span class="nt">tolerance_dist</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+<span class="w">      </span><span class="nt">k_rot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+
+<span class="nt">localizer_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">localizer_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">amcl</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">amcl</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_costmap_localizer/AMCLLocalizer</span>
+<span class="w">      </span><span class="nt">num_particles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200</span>
+<span class="w">      </span><span class="nt">reseed_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">      </span><span class="nt">noise_translation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
+<span class="w">      </span><span class="nt">noise_rotation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
+<span class="w">      </span><span class="nt">min_noise_xy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+<span class="w">      </span><span class="nt">min_noise_yaw</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+<span class="w">      </span><span class="nt">initial_pose</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">        </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">        </span><span class="nt">yaw</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="w">        </span><span class="nt">std_dev_xy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">        </span><span class="nt">std_dev_yaw</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+
+<span class="nt">maps_manager_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">map_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">costmap</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">costmap</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_costmap_maps_manager/CostmapMapsManager</span>
+<span class="w">      </span><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_playground_kobuki</span>
+<span class="w">      </span><span class="nt">map_path_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">maps/home.yaml</span>
+<span class="w">      </span><span class="nt">filters</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">obstacles</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">inflation</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">obstacles</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_costmap_maps_manager/ObstacleFilter</span>
+<span class="w">      </span><span class="nt">inflation</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_costmap_maps_manager/InflationFilter</span>
+<span class="w">        </span><span class="nt">inflation_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4</span>
+<span class="w">        </span><span class="nt">inscribed_cost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">253</span>
+<span class="w">        </span><span class="nt">lethal_cost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">254</span>
+
+<span class="nt">planner_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">planner_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">a_star</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">a_star</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_costmap_planner/CostmapPlanner</span>
+<span class="w">      </span><span class="nt">robot_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">      </span><span class="nt">clearance_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
+<span class="w">      </span><span class="nt">cost_penalty_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
+
+<span class="nt">system_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">position_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+<span class="w">    </span><span class="nt">angle_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
 

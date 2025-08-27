@@ -1,0 +1,299 @@
+.. navigating:
+
+Deploying EasyNav in a real iCreate 3 robot
+-------------------------------------------
+
+
+Hardware Setup
+^^^^^^^^^^^^^^
+
+[Aquí voy a poner una foto general del robot]
+
+El robot está equipado con un láser RPLidar S2 (https://www.slamtec.com/en/S2) montado encima de una base iCreate3 de iRobot (https://edu.irobot.com/create3-setup). En este enlace (https://edu.irobot.com/create3-setup)
+se pueden ver los pasos para conectarlo a la wifi y actualizar su firmware. Hemos usado el último firmware, que está en https://edu.irobot.com/create3-latest-fw, y corresponde
+con la versión para la distribución Iron de ROS 2 con FastDDS. Aunque usemos esta distro en la base, hemos usado Kilted en el resto de dispositivos sin problema, usando FastDDS.
+
+[Aquí voy a poner una foto del robot abieto mostrando un RaspBerry Pi]
+
+Dentro de la base hemos equipado una Raspberry Pi 4 Model B que se alimenta directamente por el USB-C de la base. No hemos coseguido tener por este enlace Ethernet sobre USB-C, asi que la 
+Raspberry se comunica con la base por la wifi. A la Raspberry Pi le conectamos por un puerto el láser. Hemos flaseado usando las instrucciones en https://ubuntu.com/download/raspberry-pi la Raspberry con una Ubuntu 24.04 Desktop y hemos instalada la distribución Kilted de ROS 2.
+
+El tercer elemento es un ordenador portátil, desde el que ejecutaremos RViz2, fundamentalmente, y haremos ssh a la Raspberry Pi para arrancar todo.
+
+
+ROS 2 Setup en la raspberry
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+En la Raspberry Pi instalamos ROS 2 siguiendo las instrucciones que hay en https://docs.ros.org/en/kilted/Installation/Ubuntu-Install-Debs.html. Básicamente:
+
+1. Enable the Ubuntu Universe repository 
+
+ir@raspberrypi:~$ sudo apt install software-properties-common
+ir@raspberrypi:~$ sudo add-apt-repository universe
+
+2. configure ROS 2 repositories for your system:
+  
+ir@raspberrypi:~$ sudo apt update && sudo apt install curl -y
+ir@raspberrypi:~$ export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
+ir@raspberrypi:~$ curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" # If using Ubuntu derivates use $UBUNTU_CODENAME
+ir@raspberrypi:~$ sudo dpkg -i /tmp/ros2-apt-source.deb
+
+3. Install development tools and ROS 2
+
+ir@raspberrypi:~$ sudo apt update && sudo apt install ros-dev-tools
+ir@raspberrypi:~$ sudo apt update
+ir@raspberrypi:~$ sudo apt upgrade
+ir@raspberrypi:~$ sudo apt install ros-kilted-desktop
+
+4. Además de todo esto, hemos instalado otros paquetes que necesitaremos
+
+ir@raspberrypi:~$ sudo apt install openssh-server ros-kilted-rplidar-ros ros-kilted-depthai ros-kilted-depthai-ros ros-kilted-depthai-ros-driver ros-kilted-depthai-bridge ros-kilted-slam-toolbox ros-kilted-rmw-zenoh-cpp ros-kilted-zenoh-cpp-vendor 
+ir@raspberrypi:~$ sudo apt install ros-kilted-tf2-ros ros-kilted-tf2-py ros-kilted-tf2-tools
+ir@raspberrypi:~$ sudo apt install ros-kilted-irobot-create-msgs
+
+EasyNav Setup en la raspberry
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Creamos el workspace de ROS 2 para EasyNav
+
+ir@raspberrypi:~$ mkdir -p easynav_ws/src
+ir@raspberrypi:~$ cd easynav_ws/src/
+
+2. Instalamamos el stack de costmap y el del driver del rplidar.
+   
+ir@raspberrypi:~/easynav_ws/src$ git clone https://github.com/EasyNavigation/easynav_plugins.git
+ir@raspberrypi:~/easynav_ws/src$ git clone https://github.com/EasyNavigation/easynav_costmap_stack.git
+ir@raspberrypi:~/easynav_ws/src$ git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+ir@raspberrypi:~/easynav_ws/src$ git clone --recursive https://github.com/EasyNavigation/EasyNavigation.git
+ir@raspberrypi:~/easynav_ws/src$ git clone https://github.com/Slamtec/sllidar_ros2.git
+
+3. Instala dependencias
+
+ir@raspberrypi:~/easynav_ws/src$ cd ..
+ir@raspberrypi:~/easynav_ws$ rosdep install --from-paths src --ignore-src -r -y
+
+
+4. Build el workspace completo
+
+ir@raspberrypi:~/easynav_ws$ colcon build --symlink-install
+
+5. Recuerda añadir la activación del workspace a ~/.bashrc
+
+source /opt/ros/kilted/setup.bash
+source ~/easynav_ws/install/setup.bash
+
+Mapeado
+^^^^^^^
+
+.. raw:: html
+
+    <h1 align="center">
+      <div>
+        <div style="position: relative; padding-bottom: 0%; overflow: hidden; max-width: 100%; height: auto;">
+          <iframe width="450" height="300" src="https://www.youtube.com/embed/2XD2wkrfFR8" frameborder="1" allowfullscreen></iframe>
+        </div>
+      </div>
+    </h1>
+
+1. Comprueba que tanto desde el portatil como desde la raspberry puedes ver los topics de la base:
+
+
+fmrico@argo:~/ros/ros2/easynav_ws$ ros2 topic list 
+/battery_state
+/cliff_intensity
+/cmd_audio
+/cmd_lightring
+/cmd_vel
+/cmd_vel_stamped
+/dock_status
+/hazard_detection
+/imu
+/interface_buttons
+/ir_intensity
+/ir_opcode
+/kidnap_status
+/mobility_monitor/transition_event
+/mouse
+/odom
+/parameter_events
+/robot_state/transition_event
+/rosout
+/slip_status
+/static_transform/transition_event
+/stop_status
+/tf
+/tf_static
+/wheel_status
+/wheel_ticks
+/wheel_vels
+
+Haz lo mismo en las Raspberry
+
+2. Añadimos la TF de la base al frame laser
+
+ir@raspberrypi:~$ ros2 run tf2_ros static_transform_publisher --x 0.02 --z 0.22 --yaw 3.14 --frame-id base_link --child-frame-id laser
+
+Este proceso lo podemos dejar arrancado durante todo el proceso de navegación y mapeado.
+
+3. Arrancamos el driver del láser
+
+ir@raspberrypi:~$ ros2 launch sllidar_ros2 sllidar_s2_launch.py 
+
+Este proceso también lo podemos dejar arrancado durante todo el proceso de navegación y mapeado.
+
+4. Pon al robot en el suelo, en la posición que quiras que sea tu (0, 0) (recuerda esta posición) y arranca el SLAM toolbox en la raspberry Pi
+
+ir@raspberrypi:~$ ros2 launch slam_toolbox online_async_launch.py 
+
+5. En el portatil abre RViz2 para ver el mapa
+
+fmrico@argo:~/ros/ros2/easynav_ws$ ros2 run rviz2 rviz2
+
+6. Abre también un teleoperador para ir moviendo el robot
+
+fmrico@argo:~/ros/ros2/easynav_ws$ ros2 run teleop_twist_keyboard teleop_twist_keyboard 
+
+7. Empieza a mover el robot y observa como el mapa empieza a completarse. Cuando lo tengas completo, ejecuta en la raspberry (o donde quieras):
+
+ir@raspberrypi:~/easynav_ws$ ros2 service call /slam_toolbox/save_map slam_toolbox/srv/SaveMap
+
+8. Guarda el mapa (yaml+pgm) en /home/ir/easynav_ws/src/easynav_indoor_testcase/maps. Puedes renombrarlo, aunque asegúrate de cambiar el nombre del pgm en el yaml.
+
+
+
+
+Nota: Si necesitamos en algún momento reiniciar la TF odom->base_footprint, usa:
+
+ir@raspberrypi:~$ ros2 service call /reset_pose irobot_create_msgs/srv/ResetPose 
+
+
+Navegacióm
+^^^^^^^^^^
+
+.. raw:: html
+
+    <h1 align="center">
+      <div>
+        <div style="position: relative; padding-bottom: 0%; overflow: hidden; max-width: 100%; height: auto;">
+          <iframe width="450" height="300" src="https://www.youtube.com/embed/MssaLixuv2g" frameborder="1" allowfullscreen></iframe>
+        </div>
+      </div>
+    </h1>
+
+
+Repite los pasos 1-3 del proceso de mapeado si cerraste el proceso de static_transform_publisher y del driver del láser.
+
+Comprueba que /home/ir/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap.serest.params.yaml tiene este contenido, y que el mapa que hiciste está en maps/casa.yaml:
+
+.. code-block:: yaml
+
+    controller_node:
+      ros__parameters:
+        use_sim_time: false
+        controller_types: [serest]
+        serest:
+          rt_freq: 30.0
+          plugin: easynav_serest_controller/SerestController
+          allow_reverse: true
+          max_linear_speed: 0.8
+          max_angular_speed: 1.2
+          d0_margin: 0.2
+          d_hard: 0.15
+          v_progress_min: 0.08 
+          k_s_share_max: 0.5
+          k_theta: 2.5
+          k_y: 1.5
+          goal_pos_tol: 0.1
+          goal_yaw_tol_deg: 6.0
+          slow_radius: 0.60
+          slow_min_speed: 0.03
+          final_align_k: 2.0
+          final_align_wmax: 0.6
+          corner_guard_enable: true
+          corner_gain_ey: 1.8
+          corner_gain_eth: 0.7
+          corner_gain_kappa: 0.4
+          corner_min_alpha: 0.35
+          corner_boost_omega: 1.0
+          a_lat_soft: 0.9
+          apex_ey_des: 0.05
+    
+    localizer_node:
+      ros__parameters:
+        use_sim_time: false
+        localizer_types: [costmap]
+        costmap:
+          rt_freq: 50.0
+          freq: 5.0
+          reseed_freq: 1.0
+          plugin: easynav_costmap_localizer/AMCLLocalizer
+          num_particles: 100
+          compute_odom_from_tf: true
+          noise_translation: 0.01
+          noise_rotation: 0.01
+          noise_translation_to_rotation: 0.01
+          min_noise_xy: 0.02
+          min_noise_yaw: 0.02
+          initial_pose:
+            x: 0.0
+            y: 0.1
+            yaw: 0.0
+            std_dev_xy: 0.02
+            std_dev_yaw: 0.02
+    
+    maps_manager_node:
+      ros__parameters:
+        use_sim_time: false
+        map_types: [costmap]
+        costmap:
+          freq: 10.0 
+          plugin: easynav_costmap_maps_manager/CostmapMapsManager
+          package: easynav_indoor_testcase
+          map_path_file: maps/casa.yaml
+          filters: [obstacles, inflation]
+          obstacles:
+            plugin: easynav_costmap_maps_manager/CostmapMapsManager/ObstaclesFilter
+          inflation:
+            plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
+            inflation_radius: 0.4
+            cost_scaling_factor: 2.0
+    
+    planner_node:
+      ros__parameters:
+        use_sim_time: false
+        planner_types: [simple]
+        simple:
+          freq: 2.0
+          plugin: easynav_costmap_planner/CostmapPlanner
+          cost_factor: 10.0
+          # continuous_replan: false
+    
+    sensors_node:
+      ros__parameters:
+        use_sim_time: false
+        forget_time: 0.5
+        sensors: [laser1]
+        perception_default_frame: odom
+        laser1:
+          topic: scan
+          type: sensor_msgs/msg/LaserScan
+          group: points
+        camera1:
+          topic: rgbd_camera/points
+          type: sensor_msgs/msg/PointCloud2
+          group: points
+    
+    system_node:
+      ros__parameters:
+        use_sim_time: false
+        use_real_time: true
+        position_tolerance: 0.1
+        angle_tolerance: 0.05
+    
+    
+    
+Lanza EasyNav:
+
+ir@raspberrypi:~$ ros2 run  easynav_system system_main --ros-args --params-file /home/ir/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap.serest.params.yaml 
+    
+    
