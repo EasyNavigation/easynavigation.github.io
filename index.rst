@@ -15,6 +15,14 @@
       </div>
     </h1>
 
+
+
+.. important::
+
+   **EasyNav is still in an Alpha development phase and this site is under construction.
+   We expect to have a stable release before October 2025.**
+
+
 Overview
 ########
 

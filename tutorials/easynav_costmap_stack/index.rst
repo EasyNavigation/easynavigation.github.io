@@ -1,4 +1,4 @@
-.. easynav_costmap_stack:
+.. _easynav_costmap_stack:
 
 EasyNav Costmap Stack Tutorials
 *******************************

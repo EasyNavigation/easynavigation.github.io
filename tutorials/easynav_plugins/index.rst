@@ -1,4 +1,4 @@
-.. easynav_plugins:
+.. _easynav_plugins:
 
 EasyNav Plugins Tutorials
 *************************

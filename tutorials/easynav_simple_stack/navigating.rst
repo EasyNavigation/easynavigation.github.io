@@ -1,4 +1,4 @@
-.. navigating:
+.. _easynav_simple_stack/navigating:
 
 Navigating with SimpleStack and EasyNav
 ---------------------------------------
@@ -14,8 +14,44 @@ Navigating with SimpleStack and EasyNav
       </div>
     </h1>
 
+Setup from scratch
+^^^^^^^^^^^^^^^^^^
 
+1. Create your workspace if haven't done yet, and move to the `src` directory:
 
+.. code-block:: bash
+
+   mkdir -p easynav_ws/src
+   cd easynav_ws/src
+
+2. Clone, at least, these required repositories for this tutorial:
+
+.. code-block:: bash
+
+   git clone --recursive https://github.com/EasyNavigation/EasyNavigation.git
+   git clone https://github.com/EasyNavigation/easynav_simple_stack.git
+   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
+   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+
+Retrieve all third-party dependencies for simulating kobuki:
+
+.. code-block:: bash
+
+   vcs import . < easynav_playground_kobuki/thirdparty.repos
+
+3. Install dependencies and build the workspace:
+
+.. code-block:: bash
+
+   cd ..  # go back to easynav_ws
+   rosdep install --from-paths src --ignore-src -r -y
+   reset && colcon build --symlink-install
+   source install/setup.bash 
+
+4. Do the :doc:`mapping tutorial <./mapping>` to have a map, if you haven't done yet.
+
+Navigating
+^^^^^^^^^^
 
 Once the environment has been mapped, save the ``.map`` file in the directory of any package in your workspace.  
 This will be required because we will later reference it using the package name and relative path.  
