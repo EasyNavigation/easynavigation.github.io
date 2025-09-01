@@ -18,7 +18,7 @@ Mapping with SLAM Toolbox and EasyNav
 Setup from scratch
 ^^^^^^^^^^^^^^^^^^
 
-1. Create your workspace if haven't done yet, and move to the `src` directory:
+1. Create your workspace if you haven't done yet, and move to the `src` directory:
 
 .. code-block:: bash
 
