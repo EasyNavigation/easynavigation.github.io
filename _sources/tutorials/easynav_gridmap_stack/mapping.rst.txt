@@ -1,5 +1,5 @@
 
-.. mapping:
+.. _easynav_gridmap_stack/mapping:
 
 Gridmap Mapping with LidarSLAM and EasyNav
 ------------------------------------------

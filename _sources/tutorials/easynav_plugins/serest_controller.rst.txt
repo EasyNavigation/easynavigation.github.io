@@ -1,4 +1,4 @@
-.. serest_controller:
+.. _easynav_gridmap_stack/serest_controller:
 
 SeReST Controller Fine-Tuning
 -----------------------------

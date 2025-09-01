@@ -1,4 +1,4 @@
-.. mapping:
+.. _easynav_costmap_stack/mapping:
 
 
 Mapping with the Costmap Stack

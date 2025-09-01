@@ -1,5 +1,5 @@
 
-.. easynav_simple_stack:
+.. _easynav_simple_stack:
 
 EasyNav Simple Stack Tutorials
 ******************************

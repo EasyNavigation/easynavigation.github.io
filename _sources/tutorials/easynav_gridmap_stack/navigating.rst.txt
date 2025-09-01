@@ -1,4 +1,4 @@
-.. navigating:
+.. _easynav_gridmap_stack/navigating:
 
 Navigating with SimpleStack and EasyNav
 ---------------------------------------

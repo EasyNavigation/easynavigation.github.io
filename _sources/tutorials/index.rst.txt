@@ -1,4 +1,3 @@
-
 .. _tutorials:
 
 EasyNav Stack Tutorials

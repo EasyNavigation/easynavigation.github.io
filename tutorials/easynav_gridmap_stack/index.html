@@ -20,6 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gridmap Mapping with LidarSLAM and EasyNav" href="mapping.html" />
+    <link rel="prev" title="Deploying EasyNav on a Real iCreate3 Robot" href="../easynav_costmap_stack/navigating_with_icreate.html" />
 
 <link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
 
@@ -49,7 +51,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../design/index.html">Core Design and Architecture</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../design/index.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
@@ -95,7 +97,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">EasyNav Stack Tutorials</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">EasyNav Stack Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../easynav_plugins/index.html">EasyNav Plugins Tutorials</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../easynav_plugins/serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../easynav_plugins/serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
@@ -142,6 +144,23 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">EasyNav Gridmap Stack Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-gridmap-representation">The GridMap Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#howto">HowTo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mapping.html">Gridmap Mapping with LidarSLAM and EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navigating.html">Navigating with SimpleStack and EasyNav</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#stack-reference">Stack Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#easynav-gridmap-maps-manager">easynav_gridmap_maps_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#easynav-gridmap-astar-planner">easynav_gridmap_astar_planner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#localization-lidarslam-for-easynav">Localization (LidarSLAM for EasyNav)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-configuration">Example Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yaml-map-schema-gridmap">YAML Map Schema (GridMap)</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#multi-robot-with-easynav">Multi-robot with EasyNav</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#launching-in-simulation">Launching in Simulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../index.html#example-parameters">Example Parameters</a></li>
@@ -177,6 +196,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">EasyNav Stack Tutorials</a></li>
       <li class="breadcrumb-item active">EasyNav Gridmap Stack Tutorials</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -187,7 +207,7 @@
            <div itemprop="articleBody">
              
   <section id="easynav-gridmap-stack-tutorials">
-<h1>EasyNav Gridmap Stack Tutorials<a class="headerlink" href="#easynav-gridmap-stack-tutorials" title="Link to this heading"></a></h1>
+<span id="easynav-gridmap-stack"></span><h1>EasyNav Gridmap Stack Tutorials<a class="headerlink" href="#easynav-gridmap-stack-tutorials" title="Link to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">easynav_gridmap_stack</span></code> provides a working setup for EasyNav based on
 <a class="reference external" href="https://github.com/ANYbotics/grid_map">ANYbotics Grid Map</a> (<code class="docutils literal notranslate"><span class="pre">grid_map</span></code>),
 a multi-layer 2.5D grid representation well suited to outdoor or uneven terrain.

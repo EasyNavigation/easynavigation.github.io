@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="About and Contact" href="../../about/index.html" />
-    <link rel="prev" title="Mapping with SLAM Toolbox and EasyNav" href="mapping.html" />
+    <link rel="next" title="Deploying EasyNav on a Real iCreate3 Robot" href="navigating_with_icreate.html" />
+    <link rel="prev" title="Mapping with the Costmap Stack" href="mapping.html" />
 
 <link rel="stylesheet" href="../../_static/tcs_theme.css" type="text/css" />
 
@@ -130,8 +130,9 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">EasyNav Costmap Stack Tutorials</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="index.html#the-simplemap-representation">The SimpleMap Representation</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html#howto">HowTo</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="mapping.html">Mapping with SLAM Toolbox and EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mapping.html">Mapping with the Costmap Stack</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Mapping with SLAM Toolbox and EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="index.html#stack-reference">Stack Reference</a><ul>
@@ -141,6 +142,29 @@
 <li class="toctree-l4"><a class="reference internal" href="index.html#example-configuration">Example Configuration</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../easynav_gridmap_stack/index.html">EasyNav Gridmap Stack Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../easynav_gridmap_stack/index.html#the-gridmap-representation">The GridMap Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../easynav_gridmap_stack/index.html#howto">HowTo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_gridmap_stack/mapping.html">Gridmap Mapping with LidarSLAM and EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_gridmap_stack/navigating.html">Navigating with SimpleStack and EasyNav</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../easynav_gridmap_stack/index.html#stack-reference">Stack Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_gridmap_stack/index.html#easynav-gridmap-maps-manager">easynav_gridmap_maps_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_gridmap_stack/index.html#easynav-gridmap-astar-planner">easynav_gridmap_astar_planner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_gridmap_stack/index.html#localization-lidarslam-for-easynav">Localization (LidarSLAM for EasyNav)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_gridmap_stack/index.html#example-configuration">Example Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../easynav_gridmap_stack/index.html#yaml-map-schema-gridmap">YAML Map Schema (GridMap)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#multi-robot-with-easynav">Multi-robot with EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#launching-in-simulation">Launching in Simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#example-parameters">Example Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#tips-gotchas">Tips &amp; Gotchas</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +208,7 @@
            <div itemprop="articleBody">
              
   <section id="mapping-with-slam-toolbox-and-easynav">
-<h1>Mapping with SLAM Toolbox and EasyNav<a class="headerlink" href="#mapping-with-slam-toolbox-and-easynav" title="Link to this heading"></a></h1>
+<span id="easynav-costmap-stack-navigating"></span><h1>Mapping with SLAM Toolbox and EasyNav<a class="headerlink" href="#mapping-with-slam-toolbox-and-easynav" title="Link to this heading"></a></h1>
 <h1 align="center">
   <div>
     <div style="position: relative; padding-bottom: 0%; overflow: hidden; max-width: 100%; height: auto;">

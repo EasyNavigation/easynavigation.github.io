@@ -1,5 +1,5 @@
 
-.. easynav_gridmap_stack:
+.. _easynav_gridmap_stack:
 
 EasyNav Gridmap Stack Tutorials
 *******************************

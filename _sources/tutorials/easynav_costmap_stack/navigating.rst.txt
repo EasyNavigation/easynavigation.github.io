@@ -1,4 +1,4 @@
-.. navigating:
+.. _easynav_costmap_stack/navigating:
 
 Mapping with SLAM Toolbox and EasyNav
 -------------------------------------

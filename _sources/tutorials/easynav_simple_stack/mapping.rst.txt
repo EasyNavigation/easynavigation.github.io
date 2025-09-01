@@ -1,4 +1,4 @@
-.. mapping:
+.. _easynav_simple_stack/mapping:
 
 Mapping with SLAM Toolbox and EasyNav
 -------------------------------------
@@ -14,6 +14,43 @@ Mapping with SLAM Toolbox and EasyNav
       </div>
     </h1>
 
+
+Setup from scratch
+^^^^^^^^^^^^^^^^^^
+
+1. Create your workspace and move to the `src` directory:
+
+.. code-block:: bash
+
+   mkdir -p easynav_ws/src
+   cd easynav_ws/src
+
+2. Clone the required repositories for this example:
+
+.. code-block:: bash
+
+   git clone --recursive https://github.com/EasyNavigation/EasyNavigation.git
+   git clone https://github.com/EasyNavigation/easynav_simple_stack.git
+   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
+   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+
+Retrieve all third-party dependencies for simulating kobuki:
+
+.. code-block:: bash
+
+   vcs import . < easynav_playground_kobuki/thirdparty.repos
+
+3. Install dependencies and build the workspace:
+
+.. code-block:: bash
+
+   cd ..  # go back to easynav_ws
+   rosdep install --from-paths src --ignore-src -r -y
+   reset && colcon build --symlink-install
+   source install/setup.bash 
+
+Mapping
+^^^^^^^
 
 This guide explains how to map an environment using **SLAM Toolbox** and then save the map for later use with **EasyNav**.
 

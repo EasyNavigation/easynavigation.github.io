@@ -1,5 +1,5 @@
 
-.. _navigating_with_icreate:
+.. _easynav_costmap_stack/navigating_with_icreate:
 
 Deploying EasyNav on a Real iCreate3 Robot
 ------------------------------------------
