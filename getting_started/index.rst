@@ -5,7 +5,22 @@ Getting Started
 
 To get started with **EasyNav**, we will use a simple example: a Turtlebot2 robot navigating in a domestic environment.
 
-1. Create your workspace and move to the `src` directory:
+1. Install EasyNav core packages. Depending on the availability of binary packages for your distro, you have two options:
+   
+   1. From binaries:
+   
+   .. code-block:: bash
+
+      sudo apt install ros-${ROS_DISTRO}-easynav-system ros-${ROS_DISTRO}-easynav-tools
+
+   2. From sources:
+   
+   .. code-block:: bash
+
+      git clone -b ${ROS_DISTRO} https://github.com/fmrico/yaets.git  # Needed by EasyNavigation
+      git clone -b ${ROS_DISTRO} https://github.com/EasyNavigation/EasyNavigation.git
+
+2. Create your workspace and move to the `src` directory:
 
 .. code-block:: bash
 
@@ -16,12 +31,10 @@ To get started with **EasyNav**, we will use a simple example: a Turtlebot2 robo
 
 .. code-block:: bash
 
-   git clone --recursive https://github.com/EasyNavigation/EasyNavigation.git
    git clone https://github.com/EasyNavigation/easynav_simple_stack.git
    git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
    git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
 
-- The `EasyNavigation` repository contains the core framework of EasyNav.
 - The `easynav_simple_stack` repository provides a collection of plugins for a basic navigation stack. This stack is characterized by its use of a 2D occupancy grid, where each cell can be either free (`0`) or occupied (`1`).
 - The `easynav_playground_kobuki` repository includes everything needed to simulate a Turtlebot2 robot, also known as Kobuki.
 - The `easynav_indoor_testcase` repository provides you with maps and param files for some test cases.
