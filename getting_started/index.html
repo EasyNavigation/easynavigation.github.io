@@ -213,7 +213,7 @@
 <ol class="arabic simple">
 <li><p>From binaries:</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-<span class="si">${</span><span class="nv">ROS_DISTRO</span><span class="si">}</span>-easynav-system
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-<span class="si">${</span><span class="nv">ROS_DISTRO</span><span class="si">}</span>-easynav-system<span class="w"> </span>ros-<span class="si">${</span><span class="nv">ROS_DISTRO</span><span class="si">}</span>-easynav-tools
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -233,14 +233,12 @@ git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </spa
 <ol class="arabic simple" start="2">
 <li><p>Clone the required repositories for this example:</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/EasyNavigation/EasyNavigation.git
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_simple_stack.git
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_simple_stack.git
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_playground_kobuki.git
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_indoor_testcase.git
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>The <cite>EasyNavigation</cite> repository contains the core framework of EasyNav.</p></li>
 <li><p>The <cite>easynav_simple_stack</cite> repository provides a collection of plugins for a basic navigation stack. This stack is characterized by its use of a 2D occupancy grid, where each cell can be either free (<cite>0</cite>) or occupied (<cite>1</cite>).</p></li>
 <li><p>The <cite>easynav_playground_kobuki</cite> repository includes everything needed to simulate a Turtlebot2 robot, also known as Kobuki.</p></li>
 <li><p>The <cite>easynav_indoor_testcase</cite> repository provides you with maps and param files for some test cases.</p></li>

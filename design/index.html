@@ -56,7 +56,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Core Design and Architecture</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#real-time-execution-model">Real-Time Execution Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#plugin-configuration">Plugin Configuration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../software/index.html">EasyNav Software</a><ul>
@@ -208,7 +207,7 @@
   <section id="core-design-and-architecture">
 <span id="design"></span><h1>Core Design and Architecture<a class="headerlink" href="#core-design-and-architecture" title="Link to this heading"></a></h1>
 <p><strong>EasyNav</strong> is designed with three core principles in mind: modularity, real-time performance, and extensibility. Its architecture separates concerns into well-defined components, making it both easy to adapt and efficient to execute.</p>
-<img alt="EasyNav architecture diagram" class="align-center" src="../_images/easynav_simple_design.png" />
+<img alt="EasyNav architecture diagram" class="align-center" src="../_images/easynav_simple_design_v2.png" />
 <p>The figure above illustrates the general architecture of EasyNav.</p>
 <p>EasyNav runs within a single process that hosts a ROS 2 <strong>Lifecycle Node</strong> called <code class="docutils literal notranslate"><span class="pre">SystemNode</span></code>, which coordinates the entire navigation system. Through composition, <code class="docutils literal notranslate"><span class="pre">SystemNode</span></code> includes several other ROS 2 Lifecycle Nodes, each responsible for a specific function in the navigation pipeline:</p>
 <ul class="simple">
@@ -218,58 +217,12 @@
 <li><p><strong>Planner Node</strong>: Computes a path from the robot’s current position to its goal (as managed by the GoalManager). The selected plugin determines the planning algorithm used.</p></li>
 <li><p><strong>Controller Node</strong>: Generates velocity commands to follow the planned path. Its functionality is encapsulated in a plugin, which outputs either <code class="docutils literal notranslate"><span class="pre">Twist</span></code> or <code class="docutils literal notranslate"><span class="pre">TwistStamped</span></code> messages depending on configuration.</p></li>
 </ul>
-<section id="navstate-the-shared-blackboard">
-<h2>NavState: The Shared Blackboard<a class="headerlink" href="#navstate-the-shared-blackboard" title="Link to this heading"></a></h2>
-<p>A key architectural component of EasyNav is the <strong>NavState</strong>, a shared <em>blackboard</em> that holds all the internal state information required by the navigation system.</p>
-<p>Each module in EasyNav—such as the Localizer, Planner, or Controller—reads its inputs from the NavState and writes its outputs back to it. This central structure replaces the need for internal ROS 2 communications between modules.</p>
-<p>The motivation behind using a shared blackboard is to:</p>
-<ul class="simple">
-<li><p><strong>Avoid ROS 2 topic-based communication internally</strong>, reducing unnecessary overhead and complexity.</p></li>
-<li><p><strong>Improve real-time determinism</strong>, as data access becomes local and predictable.</p></li>
-<li><p><strong>Simplify integration and debugging</strong>, by consolidating all system-relevant information in a single place.</p></li>
-</ul>
-<p>The NavState contains data such as:</p>
-<ul class="simple">
-<li><p>the robot’s estimated pose,</p></li>
-<li><p>the current navigation goal,</p></li>
-<li><p>planned paths,</p></li>
-<li><p>velocity commands,</p></li>
-<li><p>perception data,</p></li>
-<li><p>and diagnostic or meta-state information.</p></li>
-</ul>
-<p>By inspecting the NavState at runtime, developers gain full visibility into the internal state of EasyNav at any given moment. This approach not only improves transparency, but also enables advanced tooling for monitoring, introspection, and explainability.</p>
-<p>Future versions of EasyNav may include graphical or CLI-based tools to explore and trace the NavState over time.</p>
-</section>
-<section id="real-time-execution-model">
-<h2>Real-Time Execution Model<a class="headerlink" href="#real-time-execution-model" title="Link to this heading"></a></h2>
-<p>Another key feature of EasyNav is its emphasis on <strong>real-time performance</strong>. The navigation system is designed to react with strict timing constraints, minimizing latency from perception to action.</p>
-<p>To achieve this, EasyNav separates execution into two distinct control loops:</p>
-<ul class="simple">
-<li><p><strong>Real-Time Cycle</strong>
-This loop is optimized for minimal end-to-end latency. Its goal is to process new sensor data and update the robot’s motion commands as quickly as possible. It includes:</p>
-<ul>
-<li><p>perception input processing,</p></li>
-<li><p>pose prediction via odometry,</p></li>
-<li><p>and velocity command generation (e.g., <code class="docutils literal notranslate"><span class="pre">Twist</span></code> or <code class="docutils literal notranslate"><span class="pre">TwistStamped</span></code>).</p></li>
-</ul>
-</li>
-<li><p><strong>Non-Real-Time Cycle</strong>
-This loop handles operations where occasional execution delays are tolerable. Tasks in this loop include:</p>
-<ul>
-<li><p>map updates,</p></li>
-<li><p>localization corrections based on perception (e.g., particle filter resampling),</p></li>
-<li><p>and path planning.</p></li>
-</ul>
-</li>
-</ul>
-<img alt="EasyNav architecture diagram with the Real-Time and Non-Real-Time cycles." class="align-center" src="../_images/easynav_design.png" />
-<p>Each EasyNav module is configured with a frequency for both real-time and non-real-time cycles. These are specified in the parameters as <cite>rt_freq</cite> and <cite>freq</cite>, respectively.</p>
-<p>Additionally, when new perception data is received, the real-time cycle is <strong>triggered immediately</strong>, allowing the system to respond as fast as possible and minimize perception-to-action latency.</p>
-<p>This dual-cycle model balances <strong>responsiveness</strong> with <strong>computational stability</strong>, ensuring critical actions happen with deterministic timing while less urgent tasks are scheduled opportunistically.</p>
-</section>
-<section id="plugin-configuration">
-<h2>Plugin Configuration<a class="headerlink" href="#plugin-configuration" title="Link to this heading"></a></h2>
-<p>Let us examine the parameter file used in the <em>Getting Started</em> section. Each node loads its corresponding plugin by name. The following example shows how plugins are declared for each module:</p>
+<p>An EasyNav application is built by combining multiple plugins from the different EasyNav components. Typical configurations may include combinations such as the following:</p>
+<img alt="Plugin combinations" class="align-center" src="../_images/plugin_combinations.png" />
+<p>This figure illustrates several possible plugin compositions. The key aspect is ensuring that the selected plugins are compatible with one another. For example, if a maps manager based on costmaps is chosen, the remaining plugins must either support this representation or operate independently of it. In practice, the localizer and planner are usually tightly coupled to the representation defined by the maps manager, whereas the controller tends to be more independent, since it typically relies on route formats that are relatively standardized.</p>
+<p>It is also possible to use <em>Dummy</em> plugins. Each component provides one in case you want to build an application that does not require that specific functionality. For example, a person-following application may not need either a map or a localizer, while an outdoor navigation application may rely on GPS for localization and simply plan a straight-line path to the target.</p>
+<img alt="Alternative plugin combinations" class="align-center" src="../_images/plugin_combinations_2.png" />
+<p>These plugin combinations are defined in the single EasyNav configuration file, where the plugins for each component and their execution frequencies are specified.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -399,6 +352,53 @@ This loop handles operations where occasional execution delays are tolerable. Ta
 </pre></div>
 </div>
 <p>This configuration is especially useful for testing system integration, message flow, and user interfaces without requiring sensor data or a simulated robot. You can later replace dummy plugins with functional ones as needed.</p>
+<section id="navstate-the-shared-blackboard">
+<h2>NavState: The Shared Blackboard<a class="headerlink" href="#navstate-the-shared-blackboard" title="Link to this heading"></a></h2>
+<p>A key architectural component of EasyNav is the <strong>NavState</strong>, a shared <em>blackboard</em> that holds all the internal state information required by the navigation system.</p>
+<p>Each module in EasyNav—such as the Localizer, Planner, or Controller—reads its inputs from the NavState and writes its outputs back to it. This central structure replaces the need for internal ROS 2 communications between modules.</p>
+<p>The motivation behind using a shared blackboard is to:</p>
+<ul class="simple">
+<li><p><strong>Avoid ROS 2 topic-based communication internally</strong>, reducing unnecessary overhead and complexity.</p></li>
+<li><p><strong>Improve real-time determinism</strong>, as data access becomes local and predictable.</p></li>
+<li><p><strong>Simplify integration and debugging</strong>, by consolidating all system-relevant information in a single place.</p></li>
+</ul>
+<p>The NavState contains data such as:</p>
+<ul class="simple">
+<li><p>the robot’s estimated pose,</p></li>
+<li><p>the current navigation goal,</p></li>
+<li><p>planned paths,</p></li>
+<li><p>velocity commands,</p></li>
+<li><p>perception data,</p></li>
+<li><p>and diagnostic or meta-state information.</p></li>
+</ul>
+<p>By inspecting the NavState at runtime, developers gain full visibility into the internal state of EasyNav at any given moment. This approach not only improves transparency, but also enables advanced tooling for monitoring, introspection, and explainability.</p>
+<p>Future versions of EasyNav may include graphical or CLI-based tools to explore and trace the NavState over time.</p>
+</section>
+<section id="real-time-execution-model">
+<h2>Real-Time Execution Model<a class="headerlink" href="#real-time-execution-model" title="Link to this heading"></a></h2>
+<p>Another key feature of EasyNav is its emphasis on <strong>real-time performance</strong>. The navigation system is designed to react with strict timing constraints, minimizing latency from perception to action.</p>
+<p>To achieve this, EasyNav separates execution into two distinct control loops:</p>
+<ul class="simple">
+<li><p><strong>Real-Time Cycle</strong>
+This loop is optimized for minimal end-to-end latency. Its goal is to process new sensor data and update the robot’s motion commands as quickly as possible. It includes:</p>
+<ul>
+<li><p>perception input processing,</p></li>
+<li><p>pose prediction via odometry,</p></li>
+<li><p>and velocity command generation (e.g., <code class="docutils literal notranslate"><span class="pre">Twist</span></code> or <code class="docutils literal notranslate"><span class="pre">TwistStamped</span></code>).</p></li>
+</ul>
+</li>
+<li><p><strong>Non-Real-Time Cycle</strong>
+This loop handles operations where occasional execution delays are tolerable. Tasks in this loop include:</p>
+<ul>
+<li><p>map updates,</p></li>
+<li><p>localization corrections based on perception (e.g., particle filter resampling),</p></li>
+<li><p>and path planning.</p></li>
+</ul>
+</li>
+</ul>
+<p>Each EasyNav module is configured with a frequency for both real-time and non-real-time cycles. These are specified in the parameters as <cite>rt_freq</cite> and <cite>freq</cite>, respectively.</p>
+<p>Additionally, when new perception data is received, the real-time cycle is <strong>triggered immediately</strong>, allowing the system to respond as fast as possible and minimize perception-to-action latency.</p>
+<p>This dual-cycle model balances <strong>responsiveness</strong> with <strong>computational stability</strong>, ensuring critical actions happen with deterministic timing while less urgent tasks are scheduled opportunistically.</p>
 </section>
 </section>
 
