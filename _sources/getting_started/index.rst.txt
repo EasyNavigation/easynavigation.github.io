@@ -5,7 +5,22 @@ Getting Started
 
 To get started with **EasyNav**, we will use a simple example: a Turtlebot2 robot navigating in a domestic environment.
 
-1. Create your workspace and move to the `src` directory:
+1. Install EasyNav core packages. Depending on the availability of binary packages for your distro, you have two options:
+   
+   1. From binaries:
+   
+   .. code-block:: bash
+
+      sudo apt install ros-${ROS_DISTRO}-easynav-system
+
+   2. From sources:
+   
+   .. code-block:: bash
+
+      git clone -b ${ROS_DISTRO} https://github.com/fmrico/yaets.git  # Needed by EasyNavigation
+      git clone -b ${ROS_DISTRO} https://github.com/EasyNavigation/EasyNavigation.git
+
+2. Create your workspace and move to the `src` directory:
 
 .. code-block:: bash
 

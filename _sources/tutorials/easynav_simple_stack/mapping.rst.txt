@@ -18,14 +18,14 @@ Mapping with SLAM Toolbox and EasyNav
 Setup from scratch
 ^^^^^^^^^^^^^^^^^^
 
-1. Create your workspace and move to the `src` directory:
+1. Create your workspace if you haven't done yet, and move to the `src` directory:
 
 .. code-block:: bash
 
    mkdir -p easynav_ws/src
    cd easynav_ws/src
 
-2. Clone the required repositories for this example:
+2. Clone, at least, these required repositories for this tutorial:
 
 .. code-block:: bash
 
