@@ -5,7 +5,14 @@ Getting Started
 
 To get started with **EasyNav**, we will use a simple example: a Turtlebot2 robot navigating in a domestic environment.
 
-1. Install EasyNav core packages. Depending on the availability of binary packages for your distro, you have two options:
+1. Create your workspace and move to the `src` directory:
+
+.. code-block:: bash
+
+   mkdir -p easynav_ws/src
+   cd easynav_ws/src
+
+2. Install EasyNav core packages. Depending on the availability of binary packages for your distro, you have two options:
    
    1. From binaries:
    
@@ -20,14 +27,7 @@ To get started with **EasyNav**, we will use a simple example: a Turtlebot2 robo
       git clone -b ${ROS_DISTRO} https://github.com/fmrico/yaets.git  # Needed by EasyNavigation
       git clone -b ${ROS_DISTRO} https://github.com/EasyNavigation/EasyNavigation.git
 
-2. Create your workspace and move to the `src` directory:
-
-.. code-block:: bash
-
-   mkdir -p easynav_ws/src
-   cd easynav_ws/src
-
-2. Clone the required repositories for this example:
+3. Clone the required repositories for this example:
 
 .. code-block:: bash
 
@@ -45,7 +45,7 @@ Some of these repositories specify additional dependencies via `.repos` files. T
 
    vcs import . < easynav_playground_kobuki/thirdparty.repos
 
-1. Install dependencies and build the workspace:
+4. Install dependencies and build the workspace:
 
 .. code-block:: bash
 
@@ -55,7 +55,7 @@ Some of these repositories specify additional dependencies via `.repos` files. T
    source install/setup.bash 
 
 
-4. Launch the simulator
+5. Launch the simulator
 
 To start the simulation, run:
 
@@ -78,7 +78,7 @@ If you want to launch the simulator without its graphical interface (useful to s
 
 When used together with RViz2, visualizing the simulation is not strictly necessary.
 
-5. Launch EasyNav
+6. Launch EasyNav
 
 
 Keep the simulator running.
@@ -89,19 +89,19 @@ Open a new terminal to launch the EasyNav system. EasyNav is launched through a 
 
    ros2 run easynav_system system_main --ros-args --params-file ~/easynav_ws/src/easynav_indoor_testcase/robots_params/simple.params.yaml
 
-In another terminal, open RViz2:
+In another terminal, open RViz2. You can use the default configuration provided in `easynav_indoor_testcase`:
 
 .. code-block:: bash
 
-   ros2 run rviz2 rviz2 --ros-args -p use_sim_time:=true
+   ros2 run rviz2 rviz2 -d ~/easynav_ws/src/easynav_indoor_testcase/rviz/simple.rviz --ros-args -p use_sim_time:=true
 
 .. image:: ../images/kobuki_simple.png 
    :align: center
    :alt: RViz2 with EasyNav loaded
 
-In RViz2, add the visualizations shown in the figure above. Make sure to set the **QoS** of the map topic to **Transient Local** so the map is correctly displayed.
+**Note**: In RViz2, make sure to set the **QoS** of the map topic to **Transient Local** so the map is correctly displayed.
 
-Once RViz2 is properly configured, you can use the **"2D Goal Pose"** tool (located in the top toolbar) to send navigation goals to the robot. Click on a location in the map to make the robot navigate there autonomously.
+Once RViz2 is open and configured, you can use the **"2D Goal Pose"** tool (located in the top toolbar) to send navigation goals to the robot. Click on a location in the map to make the robot navigate there autonomously.
 
 .. image:: ../images/kobuki_simple_navigating.png
    :align: center
