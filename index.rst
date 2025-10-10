@@ -60,8 +60,9 @@ If you use this software in your work, please consider citing our next paper.
 .. toctree::
    :hidden:
 
+   build_install/index.rst
    getting_started/index.rst
-   design/index.rst
-   software/index.rst
-   tutorials/index.rst
+   plugins/index.rst
+   howtos/index.rst
+   developer_guide/index.rst
    about/index.rst
