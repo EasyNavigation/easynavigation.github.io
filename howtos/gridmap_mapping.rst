@@ -129,7 +129,7 @@ Example configuration:
 
 .. code-block:: yaml
 
-    pointcloud_maps_builder_node:
+    gridmap_maps_builder_node:
       ros__parameters:
         use_sim_time: true
         sensors: [map]
@@ -142,7 +142,7 @@ Example configuration:
 
 The builder publishes the resulting GridMap on:
 
-- **Topic:** ``/maps_builder_gridmap/gridmap``  
+- **Topic:** ``/map_builder_gridmap/gridmap``  
 - **Type:** ``grid_map_msgs/msg/GridMap``
 
 ---
@@ -158,7 +158,7 @@ The **Gridmap Maps Manager** can ingest the GridMap published by the builder via
 
    ros2 run easynav_system system_main \
      --ros-args --params-file ~/ros/ros2/easynav_ws/src/easynav_playground_summit/config/summit_building_params.yaml \
-     -r /maps_manager_node/gridmap/incoming_map:=/maps_builder_gridmap/gridmap
+     -r /maps_manager_node/gridmap/incoming_map:=/map_builder_gridmap/gridmap
 
 **Option B (standalone):** if available, run a dedicated manager executable with the same remap.  
 If your workspace does not include a standalone binary, use **Option A**.
