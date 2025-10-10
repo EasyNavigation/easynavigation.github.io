@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GridMap Mapping with LidarSLAM and EasyNav &mdash; EasyNavigation 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=86f27845" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+
+  
+    <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  
+        <script src="../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SeReST Controller Fine-Tuning" href="serest_controller.html" />
+    <link rel="prev" title="Deploying EasyNav on a Real iCreate3 Robot" href="costmap_navigating_with_icreate.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EasyNavigation
+              <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#supported-platforms">Supported platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-binaries-apt">Install from binaries (APT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#build-from-source">Build from source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#clone-sources">Clone sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#install-dependencies">Install dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#configure-and-build">Configure and build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#source-the-overlay">Source the overlay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#run-tests-optional">Run tests (optional)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#common-options">Common options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#uninstall-clean">Uninstall / clean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#simulation-setup">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">EasyNav Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#supported-ros-2-versions">Supported ROS 2 versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#planners">🧭 Planners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTos and Practical Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#overview">📘 Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#simple-stack">Simple Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_mapping.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#running-slam-toolbox">Running SLAM Toolbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#using-easynav-to-receive-and-save-the-map">Using EasyNav to Receive and Save the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#saving-and-reusing-the-map">Saving and Reusing the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#costmap-stack">Costmap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="costmap_mapping.html">Mapping with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#example-parameters">Example parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#running-and-visualizing">Running and visualizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#saving-maps">Saving maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#mapping-and-preparation">Mapping and Preparation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#hardware-setup">Hardware Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#ros-2-setup-on-the-raspberry-pi">ROS 2 Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#easynav-setup-on-the-raspberry-pi">EasyNav Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#mapping">Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#gridmap-stack">GridMap Stack</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#start-the-simulator">1. Start the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#controllers">Controllers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#recommended-tuning-order">Recommended Tuning Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#behaviors">Behaviors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="patrolling_behavior.html">Patrolling Behavior</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#waypoint-configuration">Waypoint Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#protocol-description">Protocol Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#using-goalmanagerclient">Using <cite>GoalManagerClient</cite></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">HowTos and Practical Guides</a></li>
+      <li class="breadcrumb-item active">GridMap Mapping with LidarSLAM and EasyNav</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridmap-mapping-with-lidarslam-and-easynav">
+<span id="gridmap-mapping"></span><h1>GridMap Mapping with LidarSLAM and EasyNav<a class="headerlink" href="#gridmap-mapping-with-lidarslam-and-easynav" title="Link to this heading"></a></h1>
+<p>This HowTo explains how to build a <strong>multi-layer GridMap</strong> from a <strong>LidarSLAM</strong> point cloud and save it
+to disk (YAML + one PGM per layer) so it can be loaded later by the <strong>Gridmap Maps Manager</strong> and the planner.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#setup" id="id1">Setup</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#start-the-simulator" id="id3">1. Start the Simulator</a></p></li>
+<li><p><a class="reference internal" href="#launch-lidarslam" id="id4">2. Launch LidarSLAM</a></p></li>
+<li><p><a class="reference internal" href="#build-the-map-with-teleoperation" id="id5">3. Build the Map with Teleoperation</a></p></li>
+<li><p><a class="reference internal" href="#run-the-gridmap-builder-pointcloud-gridmap" id="id6">4. Run the GridMap Builder (PointCloud → GridMap)</a></p></li>
+<li><p><a class="reference internal" href="#run-the-gridmap-maps-manager" id="id7">5. Run the Gridmap Maps Manager</a></p></li>
+<li><p><a class="reference internal" href="#save-the-gridmap-to-disk" id="id8">6. Save the GridMap to Disk</a></p></li>
+</ul>
+</nav>
+<section id="setup">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<p>Before starting, ensure that:</p>
+<ol class="arabic simple">
+<li><p>You have completed the installation described in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a>.</p></li>
+<li><p>You have a working workspace containing the following repositories:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">EasyNavigation</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_gridmap_stack</span></code> <em>(for GridMap representation and planner)</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_lidarslam_ros2</span></code> <em>(for SLAM)</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_playground_summit</span></code> <em>(for the Summit simulation world)</em></p></li>
+</ul>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">easynav_gridmap_stack</span></code> [repository](<a class="reference external" href="https://github.com/EasyNavigation/easynav_gridmap_stack.git">https://github.com/EasyNavigation/easynav_gridmap_stack.git</a>) <strong>is not included</strong> in the default EasyNav build or in
+<code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code>.
+You must clone it manually into your workspace as shown above before building.
+It provides the GridMap representation, its Maps Manager, and the corresponding planner.</p>
+</div>
+<ol class="arabic" start="3">
+<li><p>All packages build successfully and are sourced:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/ros/ros2/easynav_ws
+colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+<span class="nb">source</span><span class="w"> </span>install/setup.bash
+</pre></div>
+</div>
+</li>
+<li><p><strong>RViz2</strong> is installed for visualization.</p></li>
+<li><p>Simulation nodes use <code class="docutils literal notranslate"><span class="pre">use_sim_time:</span> <span class="pre">true</span></code>.</p></li>
+</ol>
+<p>—</p>
+</section>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<div align="center">
+  <iframe width="450" height="300" src="https://www.youtube.com/embed/mZR1CqNV5aU" frameborder="0" allowfullscreen></iframe>
+</div><p>The workflow consists of:</p>
+<ol class="arabic simple">
+<li><p>Launching the <strong>Summit playground</strong> simulation.</p></li>
+<li><p>Running <strong>LidarSLAM</strong> to build a 3D point cloud of the environment.</p></li>
+<li><p>Converting the resulting map point cloud into a <strong>GridMap</strong> using the <strong>GridMap Builder</strong>.</p></li>
+<li><p>Feeding the built GridMap to the <strong>Gridmap Maps Manager</strong>.</p></li>
+<li><p>Saving the map to disk for later use.</p></li>
+</ol>
+<p>—</p>
+</section>
+<section id="start-the-simulator">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">1. Start the Simulator</a><a class="headerlink" href="#start-the-simulator" title="Link to this heading"></a></h2>
+<p>Start the Summit world simulation in Gazebo with RViz configured automatically.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_summit<span class="w"> </span>playground_summit.launch.py
+</pre></div>
+</div>
+<p>Keep the RViz window open to visualize topics such as the LIDAR scan and the map.</p>
+<p>—</p>
+</section>
+<section id="launch-lidarslam">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">2. Launch LidarSLAM</a><a class="headerlink" href="#launch-lidarslam" title="Link to this heading"></a></h2>
+<p>Start the LidarSLAM pipeline (scan matcher + graph-based SLAM).
+If your package provides a consolidated launch file, you can start it directly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>lidarslam<span class="w"> </span>lidarslam.launch.py
+</pre></div>
+</div>
+<p>You can close any <em>extra</em> RViz instance this launch may open; we will use the one started in step (1).</p>
+<p>As the robot moves, LidarSLAM will publish a <strong>map point cloud</strong>:</p>
+<ul class="simple">
+<li><p><strong>Topic:</strong> <code class="docutils literal notranslate"><span class="pre">/map</span></code></p></li>
+<li><p><strong>Type:</strong> <code class="docutils literal notranslate"><span class="pre">sensor_msgs/msg/PointCloud2</span></code></p></li>
+<li><p><strong>Frame:</strong> <code class="docutils literal notranslate"><span class="pre">map</span></code></p></li>
+</ul>
+<p>In RViz, add a <em>PointCloud2</em> display for <code class="docutils literal notranslate"><span class="pre">/map</span></code> and increase the point size to improve visibility.</p>
+<p>—</p>
+</section>
+<section id="build-the-map-with-teleoperation">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">3. Build the Map with Teleoperation</a><a class="headerlink" href="#build-the-map-with-teleoperation" title="Link to this heading"></a></h2>
+<p>Drive the robot around the environment to accumulate the map:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>teleop_twist_keyboard
+</pre></div>
+</div>
+<p>Continue until the environment is sufficiently covered.</p>
+<p>—</p>
+</section>
+<section id="run-the-gridmap-builder-pointcloud-gridmap">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">4. Run the GridMap Builder (PointCloud → GridMap)</a><a class="headerlink" href="#run-the-gridmap-builder-pointcloud-gridmap" title="Link to this heading"></a></h2>
+<p>The <strong>GridMap Builder</strong> converts the accumulated <code class="docutils literal notranslate"><span class="pre">/map</span></code> point cloud into a multi-layer GridMap.
+The example parameters file listens to <code class="docutils literal notranslate"><span class="pre">/map</span></code> and downsamples the cloud before rasterization.</p>
+<p>Run the builder:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_gridmap_maps_manager<span class="w"> </span>gridmap_maps_builder_main<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>~/ros/ros2/easynav_ws/src/easynav_outdoor_testcase/robots_params/maps_builder.params.yaml
+</pre></div>
+</div>
+<p>Example configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">pointcloud_maps_builder_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">sensors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">map</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">downsample_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+<span class="w">    </span><span class="nt">perception_default_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+<span class="w">    </span><span class="nt">map</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_msgs/msg/PointCloud2</span>
+<span class="w">      </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">points</span>
+</pre></div>
+</div>
+<p>The builder publishes the resulting GridMap on:</p>
+<ul class="simple">
+<li><p><strong>Topic:</strong> <code class="docutils literal notranslate"><span class="pre">/maps_builder_gridmap/gridmap</span></code></p></li>
+<li><p><strong>Type:</strong> <code class="docutils literal notranslate"><span class="pre">grid_map_msgs/msg/GridMap</span></code></p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="run-the-gridmap-maps-manager">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">5. Run the Gridmap Maps Manager</a><a class="headerlink" href="#run-the-gridmap-maps-manager" title="Link to this heading"></a></h2>
+<p>The <strong>Gridmap Maps Manager</strong> can ingest the GridMap published by the builder via a remap of its <code class="docutils literal notranslate"><span class="pre">incoming_map</span></code> input.</p>
+<p><strong>Option A (recommended):</strong> start the full EasyNav system with a minimal parameter file where all plugins are <em>dummy</em> except the Gridmap Maps Manager:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_system<span class="w"> </span>system_main<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>~/ros/ros2/easynav_ws/src/easynav_playground_summit/config/summit_building_params.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>/maps_manager_node/gridmap/incoming_map:<span class="o">=</span>/maps_builder_gridmap/gridmap
+</pre></div>
+</div>
+<p><strong>Option B (standalone):</strong> if available, run a dedicated manager executable with the same remap.
+If your workspace does not include a standalone binary, use <strong>Option A</strong>.</p>
+<p>Example parameter file (<code class="docutils literal notranslate"><span class="pre">summit_building_params.yaml</span></code>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">controller_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">dummy</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">dummy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_controller/DummyController</span>
+
+<span class="nt">localizer_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">localizer_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">dummy</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">dummy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_localizer/DummyLocalizer</span>
+
+<span class="nt">maps_manager_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">map_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">gridmap</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">gridmap</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_gridmap_maps_manager/GridmapMapsManager</span>
+
+<span class="nt">planner_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">planner_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">dummy</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">dummy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_planner/DummyPlanner</span>
+
+<span class="nt">sensors_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">forget_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">    </span><span class="nt">sensors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">laser1</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">perception_default_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odom</span>
+<span class="w">    </span><span class="nt">laser1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/scan_raw</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_msgs/msg/LaserScan</span>
+<span class="w">      </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">points</span>
+
+<span class="nt">system_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">position_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+<span class="w">    </span><span class="nt">angle_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+</pre></div>
+</div>
+<p>This setup runs a lightweight EasyNav system in which the <strong>Gridmap Maps Manager</strong> receives the GridMap from the builder.</p>
+<p>—</p>
+</section>
+<section id="save-the-gridmap-to-disk">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">6. Save the GridMap to Disk</a><a class="headerlink" href="#save-the-gridmap-to-disk" title="Link to this heading"></a></h2>
+<p>Once the GridMap has been received, you can save it to disk by calling the Maps Manager service.
+This will create a <cite>.yaml</cite> file and <strong>one `.pgm` per layer</strong> (for example, <cite>_elevation.pgm</cite>, <cite>_traversability.pgm</cite>).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/maps_manager_node/gridmap/savemap<span class="w"> </span>std_srvs/srv/Trigger
+</pre></div>
+</div>
+<p>You can later reload this map in the <strong>Gridmap Maps Manager</strong> by setting the same <code class="docutils literal notranslate"><span class="pre">package</span></code> and <code class="docutils literal notranslate"><span class="pre">map_path_file</span></code> parameters in your configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>GridMap supports multi-layer data structures (elevation, traversability, etc.) and is ideal for 3D or semi-structured terrain.
+You can visualize individual layers in RViz using the <em>GridMap</em> plugin or by converting to an image topic.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

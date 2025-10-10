@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to use the NavState BlackBoard &mdash; EasyNavigation 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=86f27845" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+
+  
+    <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  
+        <script src="../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sensor Input and Perception Handling" href="perceptions.html" />
+    <link rel="prev" title="Core Design and Architecture" href="design.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EasyNavigation
+              <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#supported-platforms">Supported platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-binaries-apt">Install from binaries (APT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#build-from-source">Build from source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#clone-sources">Clone sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#install-dependencies">Install dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#configure-and-build">Configure and build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#source-the-overlay">Source the overlay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#run-tests-optional">Run tests (optional)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#common-options">Common options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#uninstall-clean">Uninstall / clean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#simulation-setup">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">EasyNav Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#supported-ros-2-versions">Supported ROS 2 versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#planners">🧭 Planners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howtos/index.html">HowTos and Practical Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#overview">📘 Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#simple-stack">Simple Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/simple_mapping.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#running-slam-toolbox">Running SLAM Toolbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#using-easynav-to-receive-and-save-the-map">Using EasyNav to Receive and Save the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#saving-and-reusing-the-map">Saving and Reusing the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#costmap-stack">Costmap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_mapping.html">Mapping with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#example-parameters">Example parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#running-and-visualizing">Running and visualizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#saving-maps">Saving maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#mapping-and-preparation">Mapping and Preparation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#hardware-setup">Hardware Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#ros-2-setup-on-the-raspberry-pi">ROS 2 Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#easynav-setup-on-the-raspberry-pi">EasyNav Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#mapping">Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#gridmap-stack">GridMap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#controllers">Controllers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#recommended-tuning-order">Recommended Tuning Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#behaviors">Behaviors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/patrolling_behavior.html">Patrolling Behavior</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#waypoint-configuration">Waypoint Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developers Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#real-time-execution-model">Real-Time Execution Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-api">Basic API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#advanced-features">Advanced Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="commanding.html#protocol-description">Protocol Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commanding.html#using-goalmanagerclient">Using <cite>GoalManagerClient</cite></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Developers Guide</a></li>
+      <li class="breadcrumb-item active">How to use the NavState BlackBoard</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-use-the-navstate-blackboard">
+<span id="blackboard"></span><h1>How to use the NavState BlackBoard<a class="headerlink" href="#how-to-use-the-navstate-blackboard" title="Link to this heading"></a></h1>
+<p>The <cite>NavState</cite> class is a central component in the EasyNav architecture. It implements a <strong>shared blackboard</strong>, which allows all modules (localizers, planners, controllers, etc.) to <strong>read and write shared data without using ROS 2 communication mechanisms</strong> internally. This design improves <strong>determinism</strong>, simplifies debugging, and avoids unnecessary overhead.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>All information needed or produced by EasyNav modules flows through the <cite>NavState</cite>. Examples include:</p>
+<ul class="simple">
+<li><p>the robot’s estimated pose (<cite>robot_pose</cite>),</p></li>
+<li><p>a list of navigation goals (<cite>goals</cite>),</p></li>
+<li><p>a path to follow (<cite>path</cite>),</p></li>
+<li><p>environment maps (e.g., <cite>map</cite>, <cite>map.dynamic</cite>, <cite>map.static</cite>),</p></li>
+<li><p>control commands (<cite>cmd_vel</cite>),</p></li>
+<li><p>perception data (<cite>points</cite>, <cite>image</cite>, etc.).</p></li>
+</ul>
+<p>The <cite>NavState</cite> provides a simple API to check for, retrieve, and update entries using keys.</p>
+</section>
+<section id="basic-api">
+<h2>Basic API<a class="headerlink" href="#basic-api" title="Link to this heading"></a></h2>
+<p>To <strong>check whether a value is available</strong>, use:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nav_state</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">&quot;robot_pose&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// do something</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To <strong>read a value</strong>, use the templated <cite>get</cite> method:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">odom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">nav_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Odometry</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;robot_pose&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To <strong>write a value</strong>, use:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nav_state</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;cmd_vel&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">computed_twist</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Values are stored under a string key and must be copyable. You can store standard ROS messages, custom types, or even nested structures. Keys can use dot notation (e.g., <cite>“map.static”</cite>, <cite>“map.dynamic”</cite>).</p>
+</section>
+<section id="examples-from-plugins">
+<h2>Examples from Plugins<a class="headerlink" href="#examples-from-plugins" title="Link to this heading"></a></h2>
+<p><strong>Planner Example</strong></p>
+<p>A planner typically requires the robot’s pose, a goal, and a map. It writes back a path:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">nav_state</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">&quot;robot_pose&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">nav_state</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">&quot;goals&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">nav_state</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">&quot;map&quot;</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">pose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">nav_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Odometry</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;robot_pose&quot;</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">goal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">nav_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Goals</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;goals&quot;</span><span class="p">).</span><span class="n">goals</span><span class="p">.</span><span class="n">front</span><span class="p">().</span><span class="n">pose</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">grid_map</span><span class="o">::</span><span class="n">GridMap</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;map&quot;</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compute_path</span><span class="p">(</span><span class="n">map</span><span class="p">,</span><span class="w"> </span><span class="n">pose</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">pose</span><span class="p">,</span><span class="w"> </span><span class="n">goal</span><span class="p">);</span>
+
+<span class="n">nav_state</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;path&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Controller Example</strong></p>
+<p>A controller reads the current pose and planned path, and outputs a velocity command:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">nav_state</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">&quot;path&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">nav_state</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">&quot;robot_pose&quot;</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">nav_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Path</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;path&quot;</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">pose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">nav_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Odometry</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;robot_pose&quot;</span><span class="p">).</span><span class="n">pose</span><span class="p">.</span><span class="n">pose</span><span class="p">;</span>
+
+<span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">TwistStamped</span><span class="w"> </span><span class="n">cmd_vel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compute_control</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">pose</span><span class="p">);</span>
+
+<span class="n">nav_state</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;cmd_vel&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cmd_vel</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Localization Example</strong></p>
+<p>A localizer typically updates the estimated pose:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nav_state</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;robot_pose&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latest_odom</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-features">
+<h2>Advanced Features<a class="headerlink" href="#advanced-features" title="Link to this heading"></a></h2>
+<p><strong>Namespacing</strong></p>
+<p>You can organize data hierarchically by using dots in keys:</p>
+<ul class="simple">
+<li><p><cite>“map.static”</cite> vs <cite>“map.dynamic”</cite></p></li>
+<li><p><cite>“perception.lidar”</cite> vs <cite>“perception.camera”</cite></p></li>
+</ul>
+<p><strong>Debugging</strong></p>
+<p>You can inspect the contents of the blackboard as a string:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">debug_string</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Custom Printers</strong></p>
+<p>You can register pretty-printers for your own types using:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">NavState</span><span class="o">::</span><span class="n">register_printer</span><span class="o">&lt;</span><span class="n">MyType</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">  </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">MyType</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+<span class="w">    </span><span class="n">out</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;MyType: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">value</span><span class="p">.</span><span class="n">to_string</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">out</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+<span class="w">  </span><span class="p">});</span>
+</pre></div>
+</div>
+<p>This improves the output of <cite>debug_string()</cite> for non-standard types.</p>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Always check <cite>has(key)</cite> before <cite>get&lt;T&gt;(key)</cite> to avoid exceptions.</p></li>
+<li><p>Use descriptive keys, preferably documented.</p></li>
+<li><p>When designing a plugin, clearly define which <cite>NavState</cite> keys it consumes and which ones it produces.</p></li>
+<li><p>Avoid storing large or non-copyable data unless necessary.</p></li>
+</ul>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>The <cite>NavState</cite> blackboard is a powerful and lightweight alternative to traditional ROS 2 message passing. It simplifies integration between modules and improves runtime performance by avoiding queues and callback latencies.</p>
+<p>It is the recommended mechanism for <strong>all internal data exchange</strong> in EasyNav.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

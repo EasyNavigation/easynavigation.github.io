@@ -49,120 +49,183 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started/index.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="design/index.html">Core Design and Architecture</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="design/index.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design/index.html#real-time-execution-model">Real-Time Execution Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_install/index.html">Build &amp; Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="build_install/index.html#supported-platforms">Supported platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_install/index.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_install/index.html#install-from-binaries-apt">Install from binaries (APT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_install/index.html#build-from-source">Build from source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="build_install/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build_install/index.html#clone-sources">Clone sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build_install/index.html#install-dependencies">Install dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build_install/index.html#configure-and-build">Configure and build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build_install/index.html#source-the-overlay">Source the overlay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build_install/index.html#run-tests-optional">Run tests (optional)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="software/index.html">EasyNav Software</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="software/index.html#c-api">C++ API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="software/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="software/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/commanding.html#conclusion">Conclusion</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="software/blackboard.html">How to use the NavState BlackBoard</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="software/blackboard.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/blackboard.html#basic-api">Basic API</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/blackboard.html#advanced-features">Advanced Features</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/blackboard.html#best-practices">Best Practices</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/blackboard.html#conclusion">Conclusion</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="software/perceptions.html">Sensor Input and Perception Handling</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="software/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/perceptions.html#operation-summary">Operation Summary</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/perceptions.html#fused-visualization">Fused Visualization</a></li>
-<li class="toctree-l4"><a class="reference internal" href="software/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_install/index.html#common-options">Common options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_install/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_install/index.html#uninstall-clean">Uninstall / clean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_install/index.html#next-steps">Next steps</a><ul class="simple">
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="software/index.html#repositories">Repositories</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="software/index.html#core">Core</a></li>
-<li class="toctree-l3"><a class="reference internal" href="software/index.html#plugins">Plugins</a></li>
-<li class="toctree-l3"><a class="reference internal" href="software/index.html#stacks">Stacks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="software/index.html#test-cases">Test Cases</a></li>
-<li class="toctree-l3"><a class="reference internal" href="software/index.html#playgrounds">Playgrounds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#simulation-setup">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/index.html#next-steps">Next steps</a><ul class="simple">
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">EasyNav Stack Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/easynav_plugins/index.html">EasyNav Plugins Tutorials</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_plugins/serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_plugins/serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_plugins/serest_controller.html#core-concepts">Core Concepts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_plugins/serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_plugins/serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_plugins/serest_controller.html#tuning-order-of-operations">Tuning Order of Operations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_plugins/serest_controller.html#faq">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/index.html">EasyNav Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html#supported-ros-2-versions">Supported ROS 2 versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html#planners">🧭 Planners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html#controllers">⚙️ Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.html#license">License</a><ul class="simple">
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/easynav_simple_stack/index.html">EasyNav Simple Stack Tutorials</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_simple_stack/index.html#the-simplemap-representation">The SimpleMap Representation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_simple_stack/index.html#howto">HowTo</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_simple_stack/mapping.html">Mapping with SLAM Toolbox and EasyNav</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_simple_stack/navigating.html">Navigating with SimpleStack and EasyNav</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howtos/index.html">HowTos and Practical Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="howtos/index.html#overview">📘 Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/index.html#simple-stack">Simple Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howtos/simple_mapping.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_mapping.html#running-slam-toolbox">Running SLAM Toolbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_mapping.html#using-easynav-to-receive-and-save-the-map">Using EasyNav to Receive and Save the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_mapping.html#saving-and-reusing-the-map">Saving and Reusing the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_mapping.html#notes">Notes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_simple_stack/index.html#stack-reference">Stack Reference</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_simple_stack/index.html#easynav-simple-maps-manager">easynav_simple_maps_manager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_simple_stack/index.html#easynav-simple-localizer">easynav_simple_localizer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_simple_stack/index.html#easynav-simple-planner">easynav_simple_planner</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_simple_stack/index.html#easynav-simple-controller">easynav_simple_controller</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_simple_stack/index.html#example-configuration">Example Configuration</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/easynav_costmap_stack/index.html">EasyNav Costmap Stack Tutorials</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_costmap_stack/index.html#the-simplemap-representation">The SimpleMap Representation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_costmap_stack/index.html#howto">HowTo</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_costmap_stack/mapping.html">Mapping with the Costmap Stack</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_costmap_stack/navigating.html">Mapping with SLAM Toolbox and EasyNav</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_costmap_stack/navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_costmap_stack/index.html#stack-reference">Stack Reference</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_costmap_stack/index.html#easynav-costmap-maps-manager">easynav_costmap_maps_manager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_costmap_stack/index.html#easynav-costmap-localizer">easynav_costmap_localizer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_costmap_stack/index.html#easynav-costmap-planner">easynav_costmap_planner</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_costmap_stack/index.html#example-configuration">Example Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howtos/simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/simple_navigating.html#notes">Notes</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/easynav_gridmap_stack/index.html">EasyNav Gridmap Stack Tutorials</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_gridmap_stack/index.html#the-gridmap-representation">The GridMap Representation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_gridmap_stack/index.html#howto">HowTo</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_gridmap_stack/mapping.html">Gridmap Mapping with LidarSLAM and EasyNav</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_gridmap_stack/navigating.html">Navigating with SimpleStack and EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/index.html#costmap-stack">Costmap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howtos/costmap_mapping.html">Mapping with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_mapping.html#example-parameters">Example parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_mapping.html#running-and-visualizing">Running and visualizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_mapping.html#saving-maps">Saving maps</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/easynav_gridmap_stack/index.html#stack-reference">Stack Reference</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_gridmap_stack/index.html#easynav-gridmap-maps-manager">easynav_gridmap_maps_manager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_gridmap_stack/index.html#easynav-gridmap-astar-planner">easynav_gridmap_astar_planner</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_gridmap_stack/index.html#localization-lidarslam-for-easynav">Localization (LidarSLAM for EasyNav)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_gridmap_stack/index.html#example-configuration">Example Configuration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tutorials/easynav_gridmap_stack/index.html#yaml-map-schema-gridmap">YAML Map Schema (GridMap)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howtos/costmap_navigating.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating.html#mapping-and-preparation">Mapping and Preparation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="howtos/costmap_navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating_with_icreate.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating_with_icreate.html#hardware-setup">Hardware Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating_with_icreate.html#ros-2-setup-on-the-raspberry-pi">ROS 2 Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating_with_icreate.html#easynav-setup-on-the-raspberry-pi">EasyNav Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating_with_icreate.html#mapping">Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating_with_icreate.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/costmap_navigating_with_icreate.html#notes">Notes</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/index.html#multi-robot-with-easynav">Multi-robot with EasyNav</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/index.html#launching-in-simulation">Launching in Simulation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/index.html#example-parameters">Example Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorials/index.html#tips-gotchas">Tips &amp; Gotchas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/index.html#gridmap-stack">GridMap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howtos/gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="howtos/gridmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/gridmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/index.html#controllers">Controllers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howtos/serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="howtos/serest_controller.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/serest_controller.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/serest_controller.html#recommended-tuning-order">Recommended Tuning Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/serest_controller.html#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="howtos/index.html#behaviors">Behaviors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="howtos/patrolling_behavior.html">Patrolling Behavior</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="howtos/patrolling_behavior.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/patrolling_behavior.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/patrolling_behavior.html#waypoint-configuration">Waypoint Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="howtos/patrolling_behavior.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/index.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/blackboard.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developer_guide/commanding.html#protocol-description">Protocol Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developer_guide/commanding.html#using-goalmanagerclient">Using <cite>GoalManagerClient</cite></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developer_guide/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide/index.html#further-reading">Further Reading</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="about/index.html">About and Contact</a><ul>
