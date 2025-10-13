@@ -57,11 +57,13 @@ GridMap Stack
 --------------
 
 - :doc:`gridmap_mapping`
+- :doc:`gridmap_navigating`
 
 .. toctree::
    :hidden:
 
    gridmap_mapping
+   gridmap_navigating
 
 Controllers
 ------------
