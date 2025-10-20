@@ -5,9 +5,7 @@
 Build & Install
 =================
 
-This page explains how to install and build the **EasyNavigation (EasyNav)** framework.
-If you are new here, start with :doc:`../getting_started/index` for a high‑level overview,
-then return to this guide to set up your development environment.
+This page explains how to install and build the **EasyNavigation (EasyNav)** framework and how to set up your development environment.
 
 .. contents:: On this page
    :local:
@@ -18,7 +16,8 @@ Supported platforms
 
 EasyNav targets modern Linux distributions and ROS 2 releases:
 
-- **Ubuntu 24.04 (Noble)** — ROS 2 *kilted* (primary CI target)
+- **Ubuntu 24.04 (Noble)** — ROS 2 *jazzy* (primary CI target)
+- **Ubuntu 24.04 (Noble)** — ROS 2 *kilted*
 - **Ubuntu 24.04 (Noble)** — ROS 2 *rolling*
 - Other platforms may work but are not actively tested.
 
@@ -30,7 +29,7 @@ Prerequisites
 -------------
 
 
-1. ROS 2 (kilted or rolling)
+1. ROS 2 (jazzy, kilted or rolling)
 
    Follow the official ROS 2 installation instructions for your platform.
    Ensure your ROS 2 environment is sourced before building EasyNav.
@@ -38,7 +37,7 @@ Prerequisites
    .. code-block:: bash
 
       # Example (adjust to your ROS 2 distro):
-      source /opt/ros/kilted/setup.bash
+      source /opt/ros/jazzy/setup.bash
 
 2. ROS dependencies
 
@@ -60,7 +59,7 @@ Binary packages will be provided via APT for Ubuntu + ROS 2 as they become avail
    .. code-block:: bash
 
       sudo apt update
-      sudo apt install ros-kilted-easynav
+      sudo apt install ros-jazzy-easynav
 
 Build from source
 -----------------
@@ -72,21 +71,24 @@ We recommend a standard ROS 2 workspace:
 
 .. code-block:: bash
 
-   mkdir -p ~/ros/ros2/easynav_ws/src
-   cd ~/ros/ros2/easynav_ws
+   mkdir -p ~/easynav_ws/src
+   cd ~/easynav_ws
 
 Clone sources
 ~~~~~~~~~~~~~
 
-You can retrieve EasyNav sources either by cloning the monorepo(s) you need:
+You can retrieve EasyNav sources by cloning the monorepo(s) you need:
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws/src
-   # Core/meta repositories (examples — adjust to your needs)
-   git clone https://github.com/EasyNavigation/EasyNavigation.git
-   git clone https://github.com/EasyNavigation/easynav_plugins.git
-   git clone https://github.com/EasyNavigation/NavMap.git
+   # Adjust workspace dir and branches to your needs
+   cd ~/easynav_ws/src
+   # Clone the main EasyNavigation repositories
+   git clone -b jazzy https://github.com/EasyNavigation/EasyNavigation.git
+   git clone -b jazzy https://github.com/EasyNavigation/NavMap.git
+   git clone -b jazzy https://github.com/EasyNavigation/easynav_plugins.git
+   # Clone yaets dependency
+   git clone -b jazzy-devel https://github.com/fmrico/yaets.git
 
 
 Install dependencies
@@ -96,7 +98,7 @@ From the workspace root, resolve all package dependencies with rosdep:
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws
+   cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -y -r
 
 Configure and build
@@ -106,7 +108,7 @@ Use colcon to build the workspace. You may enable symlink-install for faster ite
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws
+   cd ~/easynav_ws
    colcon build --symlink-install
 
 Source the overlay
@@ -114,27 +116,20 @@ Source the overlay
 
 .. code-block:: bash
 
-   # Source ROS 2 first (kilted / rolling)
-   source /opt/ros/kilted/setup.bash
+   # Source ROS 2 first (jazzy / kilted / rolling)
+   source /opt/ros/jazzy/setup.bash
    # Then source the workspace
-   source ~/ros/ros2/easynav_ws/install/setup.bash
+   source ~/easynav_ws/install/setup.bash
 
 Run tests (optional)
 ~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws
+   cd ~/easynav_ws
    colcon test --ctest-args -R easynav  # run EasyNav-related tests
    colcon test-result --verbose
 
-Common options
---------------
-
-- **Release build:** ``--cmake-args -DCMAKE_BUILD_TYPE=Release``
-- **Verbose build:** ``--event-handlers console_cohesion+``
-- **Single package:** ``--packages-select <pkg_name>``
-- **Parallel jobs:** ``--parallel-workers $(nproc)``
 
 Troubleshooting
 ---------------
@@ -151,8 +146,8 @@ Troubleshooting
 
   .. code-block:: bash
 
-     source /opt/ros/kilted/setup.bash
-     source ~/ros/ros2/easynav_ws/install/setup.bash
+     source /opt/ros/jazzy/setup.bash
+     source ~/easynav_ws/install/setup.bash
 
 - **ABI / compiler issues**
 
@@ -160,7 +155,7 @@ Troubleshooting
 
   .. code-block:: bash
 
-     cd ~/ros/ros2/easynav_ws
+     cd ~/easynav_ws
      rm -rf build install log
      colcon build --merge-install
 
@@ -171,7 +166,7 @@ Since this is a workspace overlay, you can remove it safely:
 
 .. code-block:: bash
 
-   rm -rf ~/ros/ros2/easynav_ws
+   rm -rf ~/easynav_ws
 
 Next steps
 ----------
