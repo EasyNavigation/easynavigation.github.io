@@ -24,6 +24,8 @@ The HowTos are grouped by category:
 - **Costmap navigation** – using 2D costmaps for mapping and planning.
 - **GridMap navigation** – elevation‑aware mapping and path planning.
 - **Controllers** – configuring and tuning controllers for different robots.
+- **Behaviors** – using extternally EasyNav from any application or behavior.
+- **General** - ways to do some something, more or less independ from the stack.
 
 Use these guides as templates or quick references while developing with EasyNav.
 
@@ -76,7 +78,7 @@ Controllers
    serest_controller
 
 Behaviors
-------------
+---------
 
 - :doc:`patrolling_behavior`
 
@@ -84,6 +86,17 @@ Behaviors
    :hidden:
 
    patrolling_behavior
+
+General
+-------
+
+- :doc:`costmap_multirobot`
+
+.. toctree::
+   :hidden:
+
+   costmap_multirobot
+
 
 .. note::
    Each HowTo is self‑contained and can be executed independently, provided that the EasyNav core and its dependencies are installed.
