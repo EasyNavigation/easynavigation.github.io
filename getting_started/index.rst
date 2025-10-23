@@ -25,50 +25,61 @@ We will run a ready-to-use simulation setup consisting of:
 Workspace layout
 ----------------
 
-Assuming you followed the :doc:`../build_install/index` instructions, your workspace should look like this:
+Assuming you followed the :doc:`../build_install/index` instructions and build from sources, your workspace should look like this:
 
 .. code-block:: text
 
-   ~/ros/ros2/easynav_ws/
+   ~/easynav_ws/
    ├── src/
-   │   ├── EasyNavigation/             # If installed from sources
+   │   ├── EasyNavigation/
    │   ├── easynav_plugins/
-   │   ├── easynav_playground_kobuki/
-   │   └── easynav_indoor_testcase/
+   │   ├── NavMap/
+   │   ├── yaets/
    ├── install/
    ├── build/
    └── log/
 
-If you are missing any of the required repositories, clone them manually:
+Additionally, this guide will make use of a simple indoor testcase and a Gazebo simulation environment.  
+Clone these repositories into your `src` folder and instell their dependencies:
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws/src
-   git clone https://github.com/EasyNavigation/easynav_plugins.git
+   cd ~/easynav_ws/src
    git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
    git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+   # Clone third-party dependencies using vcs tool
+   vcs import . < easynav_playground_kobuki/thirdparty.repos
+   # Install dependencies via rosdep
+   cd ~/easynav_ws
+   rosdep install --from-paths src --ignore-src -y -r
+
+Rebuild the workspace to include the new packages and source the environment:
+
+.. code-block:: bash
+
+   cd ~/easynav_ws
+   colcon build --symlink-install
+
+   # Source ROS 2 first (jazzy / kilted / rolling)
+   source /opt/ros/jazzy/setup.bash
+   # Then source the workspace
+   source ~/easynav_ws/install/setup.bash
+
 
 Repository overview
 -------------------
 
-- **easynav_plugins** — contains multiple plugins and stacks, including the *Simple Stack* used in this example.
-- **easynav_playground_kobuki** — Gazebo simulation for the Turtlebot2 (Kobuki).
-- **easynav_indoor_testcase** — provides maps, parameter files, and RViz configurations for indoor navigation.
+- **easynav_playground_kobuki** --> Gazebo simulation for the Turtlebot2 (Kobuki).
+- **easynav_indoor_testcase** --> provides maps, parameter files, and RViz configurations for indoor navigation.
 
 Simulation setup
 ----------------
 
-Once your workspace is built and sourced:
+Once your workspace is built and sourced, launch the Gazebo simulation:
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws
-   source install/setup.bash
-
-Launch the simulator:
-
-.. code-block:: bash
-
+   cd ~/easynav_ws
    ros2 launch easynav_playground_kobuki playground_kobuki.launch.py
 
 This starts a Gazebo Harmonic simulation of a Turtlebot2 robot in a domestic environment.
@@ -76,6 +87,7 @@ This starts a Gazebo Harmonic simulation of a Turtlebot2 robot in a domestic env
 .. image:: ../images/kobuki_sim.png
    :align: center
    :alt: Turtlebot2 simulation in Gazebo
+
 
 To save resources, you can disable the Gazebo graphical interface:
 
@@ -90,8 +102,9 @@ With the simulator running, open a **new terminal** and source your workspace ag
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws
-   source install/setup.bash
+   cd ~/easynav_ws
+   source /opt/ros/jazzy/setup.bash
+   source ~/easynav_ws/install/setup.bash
 
 Now start the EasyNav system using the predefined parameter file:
 
@@ -105,12 +118,12 @@ This command launches the EasyNav core using the *Simple Stack* configuration lo
 Visualizing in RViz2
 --------------------
 
-Open another terminal and start RViz2 with the provided configuration:
+Open another new terminal and start RViz2 with the provided configuration:
 
 .. code-block:: bash
-
+   # Note: First, source the environment as shown previously.
    ros2 run rviz2 rviz2 \
-      -d src/easynav_indoor_testcase/rviz/simple.rviz \
+      -d ~/easynav_ws/src/easynav_indoor_testcase/rviz/simple.rviz \
       --ros-args -p use_sim_time:=true
 
 .. image:: ../images/kobuki_simple.png 
@@ -149,7 +162,7 @@ You can launch it in a new terminal after starting the EasyNav system:
 
 .. code-block:: bash
 
-   ros2 run easynav_system tui_main
+   ros2 run easynav_system tui
 
 The TUI is divided into several panels:
 
@@ -166,7 +179,7 @@ This interface is especially useful for debugging or performance evaluation with
    :alt: EasyNav Terminal User Interface
    :width: 90%
 
-and press **q** to exit.
+Press **q** to exit the TUI.
 
 .. note::
 
@@ -188,7 +201,6 @@ You have successfully launched **EasyNav** with a simulated robot!
 
 Continue exploring:
 
-- :doc:`../build_install/index` — learn how to build, install, and configure EasyNav from source.  
 - :doc:`../howtos/index` — follow practical guides for mapping, navigation, and real robot deployment.  
 - :doc:`../developer_guide/index` — dive into the internal design and architecture of the EasyNav framework.
 
