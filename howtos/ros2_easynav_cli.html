@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ros2 easynav — EasyNav CLI Extensions &mdash; EasyNavigation 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=86f27845" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+
+  
+    <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  
+        <script src="../_static/jquery.js?v=8dae8fb0"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Multi-Robot Navigation with EasyNav" href="costmap_multirobot.html" />
+    <link rel="prev" title="Patrolling Behavior" href="patrolling_behavior.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EasyNavigation
+              <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#supported-platforms">Supported platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-binaries-apt">Install from binaries (APT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#build-from-source">Build from source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#clone-sources">Clone sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#install-dependencies">Install dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#configure-and-build">Configure and build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#source-the-overlay">Source the overlay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#run-tests-optional">Run tests (optional)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#common-options">Common options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#uninstall-clean">Uninstall / clean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#simulation-setup">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">EasyNav Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#supported-ros-2-versions">Supported ROS 2 versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#planners">🧭 Planners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTos and Practical Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#overview">📘 Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#simple-stack">Simple Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_mapping.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#running-slam-toolbox">Running SLAM Toolbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#using-easynav-to-receive-and-save-the-map">Using EasyNav to Receive and Save the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#saving-and-reusing-the-map">Saving and Reusing the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#costmap-stack">Costmap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="costmap_mapping.html">Mapping with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#example-parameters">Example parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#running-and-visualizing">Running and visualizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#saving-maps">Saving maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#mapping-and-preparation">Mapping and Preparation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#hardware-setup">Hardware Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#ros-2-setup-on-the-raspberry-pi">ROS 2 Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#easynav-setup-on-the-raspberry-pi">EasyNav Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#mapping">Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#gridmap-stack">GridMap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#controllers">Controllers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#recommended-tuning-order">Recommended Tuning Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#behaviors">Behaviors</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="patrolling_behavior.html">Patrolling Behavior</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#waypoint-configuration">Waypoint Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ros2 easynav — EasyNav CLI Extensions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#name">NAME</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">SYNOPSIS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">DESCRIPTION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#commands">COMMANDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#options-common">OPTIONS (Common)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exit-status">EXIT STATUS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">EXAMPLES</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">SEE ALSO</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#general">General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="costmap_multirobot.html">Multi-Robot Navigation with EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#topic-naming-and-tf-management-plugin-developers">1. Topic Naming and TF Management (Plugin developers)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#launching-in-simulation">2. Launching in Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#example-parameters">3. Example Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#tips-gotchas">Tips &amp; Gotchas</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#protocol-description">Protocol Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#using-goalmanagerclient">Using <cite>GoalManagerClient</cite></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">HowTos and Practical Guides</a></li>
+      <li class="breadcrumb-item active">ros2 easynav — EasyNav CLI Extensions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ros2-easynav-easynav-cli-extensions">
+<span id="ros2-easynav-cli"></span><h1>ros2 easynav — EasyNav CLI Extensions<a class="headerlink" href="#ros2-easynav-easynav-cli-extensions" title="Link to this heading"></a></h1>
+<section id="name">
+<h2>NAME<a class="headerlink" href="#name" title="Link to this heading"></a></h2>
+<p><strong>ros2 easynav</strong> — top-level command group providing EasyNav developer/operator utilities.</p>
+</section>
+<section id="synopsis">
+<h2>SYNOPSIS<a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</pre></div>
+</div>
+<p>Available commands:</p>
+<ul class="simple">
+<li><p><strong>plugins</strong>              List pluginlib plugins known to EasyNav.</p></li>
+<li><p><strong>nav-state</strong>            Print live NavState updates for a duration.</p></li>
+<li><p><strong>goal-info</strong>            Print live Goal Manager info for a duration.</p></li>
+<li><p><strong>navigation-control</strong>   Print live Navigation Control info for a duration.</p></li>
+<li><p><strong>twist</strong>                Print <cite>geometry_msgs/Twist</cite> and <cite>TwistStamped</cite> for a duration.</p></li>
+<li><p><strong>timetats</strong>             Print periodic time-stats (TUI-like refresh) for a duration.  (<em>command name as shipped</em>)</p></li>
+</ul>
+</section>
+<section id="description">
+<h2>DESCRIPTION<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p>The <strong>ros2 easynav</strong> command group bundles several diagnostic and discovery utilities for the
+EasyNav framework. Most “live” commands subscribe to EasyNav topics and refresh their output
+for a configurable time window (default: 5000 seconds).</p>
+<p>Run <code class="docutils literal notranslate"><span class="pre">-h</span></code> on the group or any subcommand for inline help:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>-h
+ros2<span class="w"> </span>easynav<span class="w"> </span>plugins<span class="w"> </span>-h
+ros2<span class="w"> </span>easynav<span class="w"> </span>nav-state<span class="w"> </span>-h
+<span class="c1"># ... etc.</span>
+</pre></div>
+</div>
+</section>
+<section id="commands">
+<h2>COMMANDS<a class="headerlink" href="#commands" title="Link to this heading"></a></h2>
+<section id="plugins">
+<h3>plugins<a class="headerlink" href="#plugins" title="Link to this heading"></a></h3>
+<p>List EasyNav <cite>pluginlib</cite> plugins grouped by category (maps managers, planners, controllers, localizers, and filters).</p>
+<p><strong>Usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>plugins<span class="w"> </span><span class="o">[</span>--mapsmanager<span class="o">]</span><span class="w"> </span><span class="o">[</span>--localizer<span class="o">]</span><span class="w"> </span><span class="o">[</span>--planner<span class="o">]</span><span class="w"> </span><span class="o">[</span>--controller<span class="o">]</span>
+<span class="w">                     </span><span class="o">[</span>--costmap-filters<span class="o">]</span><span class="w"> </span><span class="o">[</span>--navmap-filters<span class="o">]</span>
+<span class="w">                     </span><span class="o">[</span>--grep<span class="w"> </span>SUBSTR<span class="o">]</span><span class="w"> </span><span class="o">[</span>--show-lib<span class="o">]</span><span class="w"> </span><span class="o">[</span>--show-xml<span class="o">]</span>
+<span class="w">                     </span><span class="o">[</span>--json<span class="o">]</span><span class="w"> </span><span class="o">[</span>--pretty<span class="o">]</span><span class="w"> </span><span class="o">[</span>--debug<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--mapsmanager</span></code>        Only show mapsmanager plugins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--localizer</span></code>          Only show localizer plugins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--planner</span></code>            Only show planner plugins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--controller</span></code>         Only show controller plugins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--costmap-filters</span></code>    Only show Costmap2D filter plugins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--navmap-filters</span></code>     Only show NavMap filter plugins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--grep</span> <span class="pre">SUBSTR</span></code>        Filter by substring in plugin <em>name</em> or <em>type</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--show-lib</span></code>           Print the shared library path for each plugin (if available).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--show-xml</span></code>           Print the plugin XML descriptor path.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--json</span></code>               Output machine-readable JSON instead of text.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--pretty</span></code>             Pretty-print JSON (only applies with <code class="docutils literal notranslate"><span class="pre">--json</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--debug</span></code>              Print ament-index scanning details for troubleshooting.</p></li>
+</ul>
+<p><strong>Notes</strong></p>
+<p>This command scans <strong>all ament index roots</strong> across your overlays and system install.
+Output can be filtered by category and/or by substring match.</p>
+<p><strong>Examples</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># List everything, human-readable:</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>plugins
+
+<span class="c1"># Only planners, showing their library and XML descriptor:</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>plugins<span class="w"> </span>--planner<span class="w"> </span>--show-lib<span class="w"> </span>--show-xml
+
+<span class="c1"># JSON output filtered by &quot;serest&quot;:</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>plugins<span class="w"> </span>--grep<span class="w"> </span>serest<span class="w"> </span>--json<span class="w"> </span>--pretty
+</pre></div>
+</div>
+</section>
+<section id="nav-state">
+<h3>nav-state<a class="headerlink" href="#nav-state" title="Link to this heading"></a></h3>
+<p>Print live <strong>NavState</strong> updates (robot pose, velocities, goal status, etc.) for a given duration.</p>
+<p><strong>Usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>nav-state<span class="w"> </span><span class="o">[</span>--duration<span class="w"> </span>SECONDS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--duration</span> <span class="pre">SECONDS</span></code>   Seconds to run (default: <code class="docutils literal notranslate"><span class="pre">5000.0</span></code>)</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>nav-state<span class="w"> </span>--duration<span class="w"> </span><span class="m">30</span>
+</pre></div>
+</div>
+</section>
+<section id="goal-info">
+<h3>goal-info<a class="headerlink" href="#goal-info" title="Link to this heading"></a></h3>
+<p>Print live <strong>Goal Manager</strong> information (pending goals, active goal, completion/failure events) for a given duration.</p>
+<p><strong>Usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>goal-info<span class="w"> </span><span class="o">[</span>--duration<span class="w"> </span>SECONDS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--duration</span> <span class="pre">SECONDS</span></code>   Seconds to run (default: <code class="docutils literal notranslate"><span class="pre">5000.0</span></code>)</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>goal-info<span class="w"> </span>--duration<span class="w"> </span><span class="m">20</span>
+</pre></div>
+</div>
+</section>
+<section id="navigation-control">
+<h3>navigation-control<a class="headerlink" href="#navigation-control" title="Link to this heading"></a></h3>
+<p>Print live <strong>Navigation Control</strong> status (control loop metrics, setpoints, internal flags) for a given duration.</p>
+<p><strong>Usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>navigation-control<span class="w"> </span><span class="o">[</span>--duration<span class="w"> </span>SECONDS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--duration</span> <span class="pre">SECONDS</span></code>   Seconds to run (default: <code class="docutils literal notranslate"><span class="pre">5000.0</span></code>)</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>navigation-control<span class="w"> </span>--duration<span class="w"> </span><span class="m">60</span>
+</pre></div>
+</div>
+</section>
+<section id="twist">
+<h3>twist<a class="headerlink" href="#twist" title="Link to this heading"></a></h3>
+<p>Print live <strong>Twist</strong> and <strong>TwistStamped</strong> messages for a given duration.</p>
+<p><strong>Usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>twist<span class="w"> </span><span class="o">[</span>--duration<span class="w"> </span>SECONDS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--duration</span> <span class="pre">SECONDS</span></code>   Seconds to run (default: <code class="docutils literal notranslate"><span class="pre">5000.0</span></code>)</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>twist<span class="w"> </span>--duration<span class="w"> </span><span class="m">10</span>
+</pre></div>
+</div>
+</section>
+<section id="timetats">
+<h3>timetats<a class="headerlink" href="#timetats" title="Link to this heading"></a></h3>
+<p>Print live <strong>time-stats</strong> in a TUI-like loop for the given duration.
+(Uses screen refresh to render a table; the command name in the package is <strong>``timetats``</strong>, as shipped.)</p>
+<p><strong>Usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>timetats<span class="w"> </span><span class="o">[</span>--duration<span class="w"> </span>SECONDS<span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>Options</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--duration</span> <span class="pre">SECONDS</span></code>   Seconds to run (default: <code class="docutils literal notranslate"><span class="pre">5000.0</span></code>)</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>timetats<span class="w"> </span>--duration<span class="w"> </span><span class="m">15</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="options-common">
+<h2>OPTIONS (Common)<a class="headerlink" href="#options-common" title="Link to this heading"></a></h2>
+<p>Many live-print commands accept:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--duration</span> <span class="pre">SECONDS</span></code> — time window to keep printing; default is long (<code class="docutils literal notranslate"><span class="pre">5000.0</span></code>) for continuous sessions.</p></li>
+</ul>
+</section>
+<section id="exit-status">
+<h2>EXIT STATUS<a class="headerlink" href="#exit-status" title="Link to this heading"></a></h2>
+<p>Returns <strong>0</strong> on success. Non-zero on failures (e.g., transport errors, ROS graph unavailable).</p>
+</section>
+<section id="examples">
+<h2>EXAMPLES<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Quick inventory of installed EasyNav plugins</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>plugins
+
+<span class="c1"># Inspect planner plugins and search for &quot;astar&quot;</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>plugins<span class="w"> </span>--planner<span class="w"> </span>--grep<span class="w"> </span>astar
+
+<span class="c1"># Monitor NavState for 45 seconds</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>nav-state<span class="w"> </span>--duration<span class="w"> </span><span class="m">45</span>
+
+<span class="c1"># Watch goal manager events while sending goals from RViz</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>goal-info<span class="w"> </span>--duration<span class="w"> </span><span class="m">60</span>
+
+<span class="c1"># Observe control loop values</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>navigation-control<span class="w"> </span>--duration<span class="w"> </span><span class="m">30</span>
+
+<span class="c1"># Tail robot velocities</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>twist<span class="w"> </span>--duration<span class="w"> </span><span class="m">10</span>
+
+<span class="c1"># Render periodic time-stats with screen refresh</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>timetats<span class="w"> </span>--duration<span class="w"> </span><span class="m">20</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>SEE ALSO<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="index.html"><span class="doc">HowTos and Practical Guides</span></a></p></li>
+<li><p><a class="reference internal" href="../developer_guide/index.html"><span class="doc">Developers Guide</span></a></p></li>
+<li><p><a class="reference external" href="https://docs.ros.org">ROS 2 CLI</a> (ros2cli)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>
