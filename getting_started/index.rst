@@ -121,6 +121,7 @@ Visualizing in RViz2
 Open another new terminal and start RViz2 with the provided configuration:
 
 .. code-block:: bash
+
    # Note: First, source the environment as shown previously.
    ros2 run rviz2 rviz2 \
       -d ~/easynav_ws/src/easynav_indoor_testcase/rviz/simple.rviz \
