@@ -52,38 +52,26 @@ Processing Point Perceptions
 
 To work with fused or filtered 3D points, EasyNav provides the utility class **`PointPerceptionsOpsView`**.
 
-You typically retrieve the `PointPerceptions` from the `NavState`:
+You typically retrieve the `PointPerceptions` from the `NavState`. It is
+recommended to use ``const auto &`` to avoid unnecessary copies:
 
 .. code-block:: cpp
 
-   if (!nav_state.has("points")) return;
-   const auto perceptions = nav_state.get<PointPerceptions>("points");
+  if (!nav_state.has("points")) return;
+  const auto & perceptions = nav_state.get<PointPerceptions>("points");
 
-Then create an operations view:
-
-.. code-block:: cpp
-
-   PointPerceptionsOpsView view(perceptions);
-
-The view provides a fluent interface to manipulate the point cloud. There are two kinds of operations:
-
-- **Lightweight operations**: these return a reference (`PointPerceptionsOpsView &`) and operate on views without copying data.
-- **Heavyweight operations**: these return a `std::shared_ptr<PointPerceptionsOpsView>` and typically involve transformations or filtering that produce new point sets.
-
-Common operations include:
+Then create an operations view and apply chained operations:
 
 .. code-block:: cpp
 
-   auto downsampled = PointPerceptionsOpsView(perceptions)
-     .downsample(0.2);  // reduce density (heavy)
+   auto points = PointPerceptionsOpsView(perceptions)
+     .downsample(0.2)                             // reduce density
+     .fuse("base_link")                          // transform all points to base_link
+     .filter({-1.0, -1.0, 0.0}, {1.0, 1.0, 2.0})  // spatial crop
+     .as_points();                                // retrieve std::vector<Point3D>
 
-   auto fused = downsampled
-     ->fuse("base_link");  // transform all points to base_link (heavy)
-
-   auto filtered = fused
-     ->filter({-1.0, -1.0, 0.0}, {1.0, 1.0, 2.0});  // spatial crop (heavy)
-
-   auto points = filtered->as_points();  // retrieve std::vector<Point3D>
+The view provides a fluent interface to manipulate the point cloud. Each operation returns a new
+`PointPerceptionsOpsView` (or a lightweight wrapper) so that calls can be chained with `.`.
 
 Operation Summary
 -----------------
@@ -91,16 +79,162 @@ Operation Summary
 +--------------------+----------------------------+------------------------------------------+
 | Operation          | Return Type                | Description                              |
 +====================+============================+==========================================+
-| `filter(...)`      | `std::shared_ptr<...>`     | Filters points inside a bounding box     |
+| `filter(...)`      | `PointPerceptionsOpsView`  | Filters points inside a bounding box     |
 +--------------------+----------------------------+------------------------------------------+
-| `downsample(res)`  | `std::shared_ptr<...>`     | Voxel downsampling                       |
+| `downsample(res)`  | `PointPerceptionsOpsView`  | Voxel downsampling                       |
 +--------------------+----------------------------+------------------------------------------+
-| `fuse(frame)`      | `std::shared_ptr<...>`     | Transforms all perceptions to a frame    |
+| `fuse(frame)`      | `PointPerceptionsOpsView`  | Transforms all perceptions to a frame    |
 +--------------------+----------------------------+------------------------------------------+
-| `collapse()`       | `std::shared_ptr<...>`     | Merge similar points into one            |
+| `collapse()`       | `PointPerceptionsOpsView`  | Merge similar points into one            |
 +--------------------+----------------------------+------------------------------------------+
 | `as_points()`      | `std::vector<Point3D>`     | Exports data as raw 3D point list        |
 +--------------------+----------------------------+------------------------------------------+
+
+Lazy operations, frames and ``collapse``
+----------------------------------------
+
+Some operations in ``PointPerceptionsOpsView`` accept a ``lazy`` flag. This flag controls
+**when** the operation is applied and in **which frame** the bounds or collapse values
+are interpreted, and it is designed to significantly reduce execution time by delaying
+expensive work until the latest possible moment.
+
+``filter(min_bounds, max_bounds, lazy_post_fuse)``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Signature (simplified):
+
+.. code-block:: cpp
+
+   PointPerceptionsOpsView &
+   filter(const std::vector<double> & min_bounds,
+          const std::vector<double> & max_bounds,
+          bool lazy_post_fuse = true);
+
+Behavior
+~~~~~~~~
+
+- If you have called ``fuse("frame")`` before and ``lazy_post_fuse == true``:
+
+  - The filter is **not** applied immediately.
+  - The bounds are stored internally and applied **later**, inside ``as_points()``.
+  - The comparison is done **after** transforming points to the fused frame.
+  - The bounds are therefore interpreted in the **target frame** of ``fuse()``
+    (e.g. ``"map"``, ``"base_link"``).
+
+- In all other cases (no ``fuse()`` or ``lazy_post_fuse == false``):
+
+  - The filter is applied **immediately**, in the **current frame** of each perception.
+  - The indices of the kept points are updated at once.
+
+Recommended usage
+~~~~~~~~~~~~~~~~~
+
+- Use ``lazy_post_fuse = true`` when you fuse to a frame and define your bounding box
+  in that frame:
+
+  .. code-block:: cpp
+
+     auto points = PointPerceptionsOpsView(perceptions)
+       .fuse("map")
+       .filter({NAN, NAN, 0.1}, {NAN, NAN, NAN}, /*lazy_post_fuse=*/true)
+       .as_points();  // filter is applied in "map" frame
+
+- Use ``lazy_post_fuse = false`` when you do **not** fuse, or when you want to reduce
+  data early in the sensor frame:
+
+  .. code-block:: cpp
+
+     auto points = PointPerceptionsOpsView(perceptions)
+       .filter({0.0, NAN, NAN}, {5.0, NAN, NAN}, /*lazy_post_fuse=*/false)
+       .downsample(0.3)
+       .as_points();  // filter is applied in the sensor frame
+
+Pitfalls
+~~~~~~~~
+
+- Avoid chaining multiple ``fuse()`` calls with lazy filters between them:
+
+  .. code-block:: cpp
+
+     auto view = PointPerceptionsOpsView(perceptions)
+       .fuse("map")
+       .filter({-5, -5, 0.0}, {5, 5, 2.0}, true)   // intended in "map"
+       .fuse("base_link")
+       .filter({-1, -1, 0.0}, {1, 1, 1.0}, true);  // intended in "base_link"?
+
+  All lazy filters are finally evaluated in the **last fused frame** (here
+  ``"base_link"``), which probably does **not** match the original intention for
+  the first filter. In these cases, either use ``lazy_post_fuse = false`` where
+  you really want an immediate filter, or keep a single fused frame for all
+  lazy filters.
+
+``collapse(collapse_dims, lazy)``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Signature (simplified):
+
+.. code-block:: cpp
+
+   PointPerceptionsOpsView &
+   collapse(const std::vector<double> & collapse_dims,
+            bool lazy = true);
+
+Behavior
+~~~~~~~~
+
+- ``lazy == true``:
+
+  - The underlying point clouds are **not modified**.
+  - Collapse values (x, y, z) are stored and applied only when exporting points
+    (``as_points()`` or ``as_points(int)``).
+  - Works for both owning and non-owning views.
+
+- ``lazy == false``:
+
+  - Requires an **owning** view (created from a ``PointPerceptions &&`` or a
+    single ``PointPerception``).
+  - Directly overwrites the stored point clouds (x, y, z set to the collapse
+    values).
+  - If the view is non-owning, the operation is ignored and a warning is logged.
+
+Recommended usage
+~~~~~~~~~~~~~~~~~
+
+- Prefer ``lazy = true`` in most plugins:
+
+  .. code-block:: cpp
+
+     auto ground_2d = PointPerceptionsOpsView(perceptions)
+       .collapse({NAN, NAN, 0.0}, /*lazy=*/true)  // force z = 0.0 on export
+       .as_points();
+
+  This keeps the original 3D data intact and only flattens it in the exported
+  cloud.
+
+- Use ``lazy = false`` only when you **own** the underlying container and you
+  intentionally want to rewrite it for later reuse:
+
+  .. code-block:: cpp
+
+     PointPerceptions cloud = get_point_perceptions(raw_perceptions);
+     auto view = PointPerceptionsOpsView(std::move(cloud));
+
+     view.collapse({NAN, NAN, 0.0}, /*lazy=*/false);  // permanently flatten z
+     auto points = view.as_points();                  // data was already modified
+
+Pitfalls
+~~~~~~~~
+
+- Calling ``collapse(..., false)`` on a non-owning view does **nothing useful**:
+
+  .. code-block:: cpp
+
+     PointPerceptionsOpsView view(perceptions);          // non-owning
+     view.collapse({NAN, NAN, 0.0}, /*lazy=*/false);     // ignored, warning logged
+
+  In this case, you should either keep ``lazy = true`` (safe and effective on
+  export), or create an owning view if you really need to modify the original
+  data.
 
 Example: Updating a Map
 -----------------------
@@ -109,12 +243,12 @@ Many components use fused and filtered points to update occupancy or elevation m
 
 .. code-block:: cpp
 
-   const auto perceptions = nav_state.get<PointPerceptions>("points");
+  const auto & perceptions = nav_state.get<PointPerceptions>("points");
 
    auto fused = PointPerceptionsOpsView(perceptions)
-     .downsample(dynamic_map_.resolution())  // reduce point density
-     .fuse("map")                             // transform to map frame
-     ->filter({NAN, NAN, 0.1}, {NAN, NAN, NAN})  // ignore ground clutter
+     .downsample(dynamic_map_.resolution())       // reduce point density
+     .fuse("map")                                // transform to map frame
+     .filter({NAN, NAN, 0.1}, {NAN, NAN, NAN})    // ignore ground clutter
      .as_points();
 
    for (const auto & p : fused) {
@@ -135,11 +269,11 @@ If the `SensorsNode` has subscribers on its output topic, it will publish the fu
      auto fused = PointPerceptionsOpsView(perceptions)
        .fuse(perception_default_frame_);
 
-     auto fused_points = fused->as_points();
+     auto fused_points = fused.as_points();
      auto msg = points_to_rosmsg(fused_points);
 
      msg.header.frame_id = perception_default_frame_;
-     msg.header.stamp = fused->get_perceptions()[0]->stamp;
+     msg.header.stamp = fused.get_perceptions()[0]->stamp;
      percept_pub_->publish(msg);
    }
 
