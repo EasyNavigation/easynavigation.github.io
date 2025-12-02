@@ -30,11 +30,12 @@ To **check whether a value is available**, use:
      // do something
    }
 
-To **read a value**, use the templated `get` method:
+To **read a value**, use the templated `get` method. It is recommended to use
+``const auto &`` to avoid unnecessary copies:
 
 .. code-block:: cpp
 
-   const auto odom = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
+   const auto & odom = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
 
 To **write a value**, use:
 
@@ -55,9 +56,9 @@ A planner typically requires the robot’s pose, a goal, and a map. It writes ba
 
    if (!nav_state.has("robot_pose") || !nav_state.has("goals") || !nav_state.has("map")) return;
 
-   auto pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
-   auto goal = nav_state.get<nav_msgs::msg::Goals>("goals").goals.front().pose;
-   auto map = nav_state.get<grid_map::GridMap>("map");
+   const auto & pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
+   const auto & goal = nav_state.get<nav_msgs::msg::Goals>("goals").goals.front().pose;
+   const auto & map = nav_state.get<grid_map::GridMap>("map");
 
    auto path = compute_path(map, pose.pose.pose, goal);
 
@@ -71,8 +72,8 @@ A controller reads the current pose and planned path, and outputs a velocity com
 
    if (!nav_state.has("path") || !nav_state.has("robot_pose")) return;
 
-   const auto path = nav_state.get<nav_msgs::msg::Path>("path");
-   const auto pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose").pose.pose;
+   const auto & path = nav_state.get<nav_msgs::msg::Path>("path");
+   const auto & pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose").pose.pose;
 
    geometry_msgs::msg::TwistStamped cmd_vel = compute_control(path, pose);
 

@@ -148,6 +148,11 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#notes">Notes</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#gridmap-stack">GridMap Stack</a><ul>
@@ -271,6 +276,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#sensor-configuration">Sensor Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#processing-point-perceptions">Processing Point Perceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#filter-min-bounds-max-bounds-lazy-post-fuse"><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#collapse-collapse-dims-lazy"><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#example-updating-a-map">Example: Updating a Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fused-visualization">Fused Visualization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extending-to-other-modalities">Extending to Other Modalities</a></li>
@@ -369,33 +379,22 @@
 <section id="processing-point-perceptions">
 <h2>Processing Point Perceptions<a class="headerlink" href="#processing-point-perceptions" title="Link to this heading"></a></h2>
 <p>To work with fused or filtered 3D points, EasyNav provides the utility class <strong>`PointPerceptionsOpsView`</strong>.</p>
-<p>You typically retrieve the <cite>PointPerceptions</cite> from the <cite>NavState</cite>:</p>
+<p>You typically retrieve the <cite>PointPerceptions</cite> from the <cite>NavState</cite>. It is
+recommended to use <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">auto</span> <span class="pre">&amp;</span></code> to avoid unnecessary copies:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">nav_state</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">&quot;points&quot;</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">perceptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">PointPerceptions</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;points&quot;</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">perceptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">PointPerceptions</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;points&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Then create an operations view:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PointPerceptionsOpsView</span><span class="w"> </span><span class="nf">view</span><span class="p">(</span><span class="n">perceptions</span><span class="p">);</span>
+<p>Then create an operations view and apply chained operations:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">downsample</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span><span class="w">                             </span><span class="c1">// reduce density</span>
+<span class="w">  </span><span class="p">.</span><span class="n">fuse</span><span class="p">(</span><span class="s">&quot;base_link&quot;</span><span class="p">)</span><span class="w">                          </span><span class="c1">// transform all points to base_link</span>
+<span class="w">  </span><span class="p">.</span><span class="n">filter</span><span class="p">({</span><span class="mf">-1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">})</span><span class="w">  </span><span class="c1">// spatial crop</span>
+<span class="w">  </span><span class="p">.</span><span class="n">as_points</span><span class="p">();</span><span class="w">                                </span><span class="c1">// retrieve std::vector&lt;Point3D&gt;</span>
 </pre></div>
 </div>
-<p>The view provides a fluent interface to manipulate the point cloud. There are two kinds of operations:</p>
-<ul class="simple">
-<li><p><strong>Lightweight operations</strong>: these return a reference (<cite>PointPerceptionsOpsView &amp;</cite>) and operate on views without copying data.</p></li>
-<li><p><strong>Heavyweight operations</strong>: these return a <cite>std::shared_ptr&lt;PointPerceptionsOpsView&gt;</cite> and typically involve transformations or filtering that produce new point sets.</p></li>
-</ul>
-<p>Common operations include:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">downsampled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
-<span class="w">  </span><span class="p">.</span><span class="n">downsample</span><span class="p">(</span><span class="mf">0.2</span><span class="p">);</span><span class="w">  </span><span class="c1">// reduce density (heavy)</span>
-
-<span class="k">auto</span><span class="w"> </span><span class="n">fused</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">downsampled</span>
-<span class="w">  </span><span class="o">-&gt;</span><span class="n">fuse</span><span class="p">(</span><span class="s">&quot;base_link&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// transform all points to base_link (heavy)</span>
-
-<span class="k">auto</span><span class="w"> </span><span class="n">filtered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fused</span>
-<span class="w">  </span><span class="o">-&gt;</span><span class="n">filter</span><span class="p">({</span><span class="mf">-1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">-1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">});</span><span class="w">  </span><span class="c1">// spatial crop (heavy)</span>
-
-<span class="k">auto</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filtered</span><span class="o">-&gt;</span><span class="n">as_points</span><span class="p">();</span><span class="w">  </span><span class="c1">// retrieve std::vector&lt;Point3D&gt;</span>
-</pre></div>
-</div>
+<p>The view provides a fluent interface to manipulate the point cloud. Each operation returns a new
+<cite>PointPerceptionsOpsView</cite> (or a lightweight wrapper) so that calls can be chained with <cite>.</cite>.</p>
 </section>
 <section id="operation-summary">
 <h2>Operation Summary<a class="headerlink" href="#operation-summary" title="Link to this heading"></a></h2>
@@ -408,19 +407,19 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><cite>filter(…)</cite></p></td>
-<td><p><cite>std::shared_ptr&lt;…&gt;</cite></p></td>
+<td><p><cite>PointPerceptionsOpsView</cite></p></td>
 <td><p>Filters points inside a bounding box</p></td>
 </tr>
 <tr class="row-odd"><td><p><cite>downsample(res)</cite></p></td>
-<td><p><cite>std::shared_ptr&lt;…&gt;</cite></p></td>
+<td><p><cite>PointPerceptionsOpsView</cite></p></td>
 <td><p>Voxel downsampling</p></td>
 </tr>
 <tr class="row-even"><td><p><cite>fuse(frame)</cite></p></td>
-<td><p><cite>std::shared_ptr&lt;…&gt;</cite></p></td>
+<td><p><cite>PointPerceptionsOpsView</cite></p></td>
 <td><p>Transforms all perceptions to a frame</p></td>
 </tr>
 <tr class="row-odd"><td><p><cite>collapse()</cite></p></td>
-<td><p><cite>std::shared_ptr&lt;…&gt;</cite></p></td>
+<td><p><cite>PointPerceptionsOpsView</cite></p></td>
 <td><p>Merge similar points into one</p></td>
 </tr>
 <tr class="row-even"><td><p><cite>as_points()</cite></p></td>
@@ -430,23 +429,171 @@
 </tbody>
 </table>
 </section>
+<section id="lazy-operations-frames-and-collapse">
+<h2>Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code><a class="headerlink" href="#lazy-operations-frames-and-collapse" title="Link to this heading"></a></h2>
+<p>Some operations in <code class="docutils literal notranslate"><span class="pre">PointPerceptionsOpsView</span></code> accept a <code class="docutils literal notranslate"><span class="pre">lazy</span></code> flag. This flag controls
+<strong>when</strong> the operation is applied and in <strong>which frame</strong> the bounds or collapse values
+are interpreted, and it is designed to significantly reduce execution time by delaying
+expensive work until the latest possible moment.</p>
+<section id="filter-min-bounds-max-bounds-lazy-post-fuse">
+<h3><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code><a class="headerlink" href="#filter-min-bounds-max-bounds-lazy-post-fuse" title="Link to this heading"></a></h3>
+<p>Signature (simplified):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PointPerceptionsOpsView</span><span class="w"> </span><span class="o">&amp;</span>
+<span class="nf">filter</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">min_bounds</span><span class="p">,</span>
+<span class="w">       </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">max_bounds</span><span class="p">,</span>
+<span class="w">       </span><span class="kt">bool</span><span class="w"> </span><span class="n">lazy_post_fuse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<section id="behavior">
+<h4>Behavior<a class="headerlink" href="#behavior" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>If you have called <code class="docutils literal notranslate"><span class="pre">fuse(&quot;frame&quot;)</span></code> before and <code class="docutils literal notranslate"><span class="pre">lazy_post_fuse</span> <span class="pre">==</span> <span class="pre">true</span></code>:</p>
+<ul>
+<li><p>The filter is <strong>not</strong> applied immediately.</p></li>
+<li><p>The bounds are stored internally and applied <strong>later</strong>, inside <code class="docutils literal notranslate"><span class="pre">as_points()</span></code>.</p></li>
+<li><p>The comparison is done <strong>after</strong> transforming points to the fused frame.</p></li>
+<li><p>The bounds are therefore interpreted in the <strong>target frame</strong> of <code class="docutils literal notranslate"><span class="pre">fuse()</span></code>
+(e.g. <code class="docutils literal notranslate"><span class="pre">&quot;map&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;base_link&quot;</span></code>).</p></li>
+</ul>
+</li>
+<li><p>In all other cases (no <code class="docutils literal notranslate"><span class="pre">fuse()</span></code> or <code class="docutils literal notranslate"><span class="pre">lazy_post_fuse</span> <span class="pre">==</span> <span class="pre">false</span></code>):</p>
+<ul>
+<li><p>The filter is applied <strong>immediately</strong>, in the <strong>current frame</strong> of each perception.</p></li>
+<li><p>The indices of the kept points are updated at once.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="recommended-usage">
+<h4>Recommended usage<a class="headerlink" href="#recommended-usage" title="Link to this heading"></a></h4>
+<ul>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">lazy_post_fuse</span> <span class="pre">=</span> <span class="pre">true</span></code> when you fuse to a frame and define your bounding box
+in that frame:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">fuse</span><span class="p">(</span><span class="s">&quot;map&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">filter</span><span class="p">({</span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">},</span><span class="w"> </span><span class="cm">/*lazy_post_fuse=*/</span><span class="nb">true</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">as_points</span><span class="p">();</span><span class="w">  </span><span class="c1">// filter is applied in &quot;map&quot; frame</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">lazy_post_fuse</span> <span class="pre">=</span> <span class="pre">false</span></code> when you do <strong>not</strong> fuse, or when you want to reduce
+data early in the sensor frame:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">filter</span><span class="p">({</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mf">5.0</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">},</span><span class="w"> </span><span class="cm">/*lazy_post_fuse=*/</span><span class="nb">false</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">downsample</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">as_points</span><span class="p">();</span><span class="w">  </span><span class="c1">// filter is applied in the sensor frame</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="pitfalls">
+<h4>Pitfalls<a class="headerlink" href="#pitfalls" title="Link to this heading"></a></h4>
+<ul>
+<li><p>Avoid chaining multiple <code class="docutils literal notranslate"><span class="pre">fuse()</span></code> calls with lazy filters between them:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">view</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">fuse</span><span class="p">(</span><span class="s">&quot;map&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">filter</span><span class="p">({</span><span class="mi">-5</span><span class="p">,</span><span class="w"> </span><span class="mi">-5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">},</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span><span class="w">   </span><span class="c1">// intended in &quot;map&quot;</span>
+<span class="w">  </span><span class="p">.</span><span class="n">fuse</span><span class="p">(</span><span class="s">&quot;base_link&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">filter</span><span class="p">({</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">},</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span><span class="w">  </span><span class="c1">// intended in &quot;base_link&quot;?</span>
+</pre></div>
+</div>
+<p>All lazy filters are finally evaluated in the <strong>last fused frame</strong> (here
+<code class="docutils literal notranslate"><span class="pre">&quot;base_link&quot;</span></code>), which probably does <strong>not</strong> match the original intention for
+the first filter. In these cases, either use <code class="docutils literal notranslate"><span class="pre">lazy_post_fuse</span> <span class="pre">=</span> <span class="pre">false</span></code> where
+you really want an immediate filter, or keep a single fused frame for all
+lazy filters.</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="collapse-collapse-dims-lazy">
+<h3><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code><a class="headerlink" href="#collapse-collapse-dims-lazy" title="Link to this heading"></a></h3>
+<p>Signature (simplified):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PointPerceptionsOpsView</span><span class="w"> </span><span class="o">&amp;</span>
+<span class="nf">collapse</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">collapse_dims</span><span class="p">,</span>
+<span class="w">         </span><span class="kt">bool</span><span class="w"> </span><span class="n">lazy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<section id="id1">
+<h4>Behavior<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lazy</span> <span class="pre">==</span> <span class="pre">true</span></code>:</p>
+<ul>
+<li><p>The underlying point clouds are <strong>not modified</strong>.</p></li>
+<li><p>Collapse values (x, y, z) are stored and applied only when exporting points
+(<code class="docutils literal notranslate"><span class="pre">as_points()</span></code> or <code class="docutils literal notranslate"><span class="pre">as_points(int)</span></code>).</p></li>
+<li><p>Works for both owning and non-owning views.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lazy</span> <span class="pre">==</span> <span class="pre">false</span></code>:</p>
+<ul>
+<li><p>Requires an <strong>owning</strong> view (created from a <code class="docutils literal notranslate"><span class="pre">PointPerceptions</span> <span class="pre">&amp;&amp;</span></code> or a
+single <code class="docutils literal notranslate"><span class="pre">PointPerception</span></code>).</p></li>
+<li><p>Directly overwrites the stored point clouds (x, y, z set to the collapse
+values).</p></li>
+<li><p>If the view is non-owning, the operation is ignored and a warning is logged.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id2">
+<h4>Recommended usage<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ul>
+<li><p>Prefer <code class="docutils literal notranslate"><span class="pre">lazy</span> <span class="pre">=</span> <span class="pre">true</span></code> in most plugins:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">ground_2d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="n">collapse</span><span class="p">({</span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">},</span><span class="w"> </span><span class="cm">/*lazy=*/</span><span class="nb">true</span><span class="p">)</span><span class="w">  </span><span class="c1">// force z = 0.0 on export</span>
+<span class="w">  </span><span class="p">.</span><span class="n">as_points</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>This keeps the original 3D data intact and only flattens it in the exported
+cloud.</p>
+</li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">lazy</span> <span class="pre">=</span> <span class="pre">false</span></code> only when you <strong>own</strong> the underlying container and you
+intentionally want to rewrite it for later reuse:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PointPerceptions</span><span class="w"> </span><span class="n">cloud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_point_perceptions</span><span class="p">(</span><span class="n">raw_perceptions</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">view</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">cloud</span><span class="p">));</span>
+
+<span class="n">view</span><span class="p">.</span><span class="n">collapse</span><span class="p">({</span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">},</span><span class="w"> </span><span class="cm">/*lazy=*/</span><span class="nb">false</span><span class="p">);</span><span class="w">  </span><span class="c1">// permanently flatten z</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">view</span><span class="p">.</span><span class="n">as_points</span><span class="p">();</span><span class="w">                  </span><span class="c1">// data was already modified</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="id3">
+<h4>Pitfalls<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<ul>
+<li><p>Calling <code class="docutils literal notranslate"><span class="pre">collapse(...,</span> <span class="pre">false)</span></code> on a non-owning view does <strong>nothing useful</strong>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PointPerceptionsOpsView</span><span class="w"> </span><span class="nf">view</span><span class="p">(</span><span class="n">perceptions</span><span class="p">);</span><span class="w">          </span><span class="c1">// non-owning</span>
+<span class="n">view</span><span class="p">.</span><span class="n">collapse</span><span class="p">({</span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">},</span><span class="w"> </span><span class="cm">/*lazy=*/</span><span class="nb">false</span><span class="p">);</span><span class="w">     </span><span class="c1">// ignored, warning logged</span>
+</pre></div>
+</div>
+<p>In this case, you should either keep <code class="docutils literal notranslate"><span class="pre">lazy</span> <span class="pre">=</span> <span class="pre">true</span></code> (safe and effective on
+export), or create an owning view if you really need to modify the original
+data.</p>
+</li>
+</ul>
+</section>
+</section>
+</section>
 <section id="example-updating-a-map">
 <h2>Example: Updating a Map<a class="headerlink" href="#example-updating-a-map" title="Link to this heading"></a></h2>
 <p>Many components use fused and filtered points to update occupancy or elevation maps:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">perceptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">PointPerceptions</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;points&quot;</span><span class="p">);</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">perceptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">PointPerceptions</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;points&quot;</span><span class="p">);</span>
 
-<span class="k">auto</span><span class="w"> </span><span class="n">fused</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
-<span class="w">  </span><span class="p">.</span><span class="n">downsample</span><span class="p">(</span><span class="n">dynamic_map_</span><span class="p">.</span><span class="n">resolution</span><span class="p">())</span><span class="w">  </span><span class="c1">// reduce point density</span>
-<span class="w">  </span><span class="p">.</span><span class="n">fuse</span><span class="p">(</span><span class="s">&quot;map&quot;</span><span class="p">)</span><span class="w">                             </span><span class="c1">// transform to map frame</span>
-<span class="w">  </span><span class="o">-&gt;</span><span class="n">filter</span><span class="p">({</span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">})</span><span class="w">  </span><span class="c1">// ignore ground clutter</span>
-<span class="w">  </span><span class="p">.</span><span class="n">as_points</span><span class="p">();</span>
+<span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">fused</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="n">downsample</span><span class="p">(</span><span class="n">dynamic_map_</span><span class="p">.</span><span class="n">resolution</span><span class="p">())</span><span class="w">       </span><span class="c1">// reduce point density</span>
+<span class="w">   </span><span class="p">.</span><span class="n">fuse</span><span class="p">(</span><span class="s">&quot;map&quot;</span><span class="p">)</span><span class="w">                                </span><span class="c1">// transform to map frame</span>
+<span class="w">   </span><span class="p">.</span><span class="n">filter</span><span class="p">({</span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">,</span><span class="w"> </span><span class="n">NAN</span><span class="p">})</span><span class="w">    </span><span class="c1">// ignore ground clutter</span>
+<span class="w">   </span><span class="p">.</span><span class="n">as_points</span><span class="p">();</span>
 
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">fused</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dynamic_map_</span><span class="p">.</span><span class="n">check_bounds_metric</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">cx</span><span class="p">,</span><span class="w"> </span><span class="n">cy</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dynamic_map_</span><span class="p">.</span><span class="n">metric_to_cell</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
-<span class="w">    </span><span class="n">dynamic_map_</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span><span class="w"> </span><span class="n">cy</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
+<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">fused</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dynamic_map_</span><span class="p">.</span><span class="n">check_bounds_metric</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">cx</span><span class="p">,</span><span class="w"> </span><span class="n">cy</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dynamic_map_</span><span class="p">.</span><span class="n">metric_to_cell</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="w">     </span><span class="n">dynamic_map_</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span><span class="w"> </span><span class="n">cy</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w"> </span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -457,11 +604,11 @@
 <span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">fused</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
 <span class="w">    </span><span class="p">.</span><span class="n">fuse</span><span class="p">(</span><span class="n">perception_default_frame_</span><span class="p">);</span>
 
-<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">fused_points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fused</span><span class="o">-&gt;</span><span class="n">as_points</span><span class="p">();</span>
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">fused_points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fused</span><span class="p">.</span><span class="n">as_points</span><span class="p">();</span>
 <span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">points_to_rosmsg</span><span class="p">(</span><span class="n">fused_points</span><span class="p">);</span>
 
 <span class="w">  </span><span class="n">msg</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">perception_default_frame_</span><span class="p">;</span>
-<span class="w">  </span><span class="n">msg</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fused</span><span class="o">-&gt;</span><span class="n">get_perceptions</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">stamp</span><span class="p">;</span>
+<span class="w">  </span><span class="n">msg</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fused</span><span class="p">.</span><span class="n">get_perceptions</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">stamp</span><span class="p">;</span>
 <span class="w">  </span><span class="n">percept_pub_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
