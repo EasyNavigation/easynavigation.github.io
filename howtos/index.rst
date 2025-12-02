@@ -47,6 +47,7 @@ Costmap Stack
 - :doc:`costmap_mapping`
 - :doc:`costmap_navigating`
 - :doc:`costmap_navigating_with_icreate`
+- :doc:`routes_costmap_manager`
 
 .. toctree::
    :hidden:
@@ -54,6 +55,7 @@ Costmap Stack
    costmap_mapping
    costmap_navigating
    costmap_navigating_with_icreate
+   routes_costmap_manager
 
 GridMap Stack
 --------------
