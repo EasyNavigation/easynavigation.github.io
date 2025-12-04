@@ -142,7 +142,7 @@ Each instance uses the same parameter file but with its own namespace and TF rem
    ros2 run easynav_system system_main \
      --ros-args \
      --params-file ~/ros/ros2/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap_multirobot.params.yaml \
-     -r __ns:=r1 \
+     -r __ns:=/r1 \
      -r /tf:=tf -r /tf_static:=tf_static
 
 **Terminal 2 (robot r2):**
@@ -152,7 +152,7 @@ Each instance uses the same parameter file but with its own namespace and TF rem
    ros2 run easynav_system system_main \
      --ros-args \
      --params-file ~/ros/ros2/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap_multirobot.params.yaml \
-     -r __ns:=r2 \
+     -r __ns:=/r2 \
      -r /tf:=tf -r /tf_static:=tf_static
 
 ---
