@@ -114,12 +114,14 @@ General
 
 - :doc:`costmap_multirobot`
 - :doc:`ros2_easynav_cli`
+- :doc:`docker_crossdistro`
 
 .. toctree::
    :hidden:
 
    costmap_multirobot
    ros2_easynav_cli
+   docker_crossdistro
 
 
 .. note::

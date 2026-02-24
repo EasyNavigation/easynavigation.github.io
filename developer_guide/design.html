@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Core Design and Architecture &mdash; EasyNavigation 1.0.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=86f27845" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-        <script src="../_static/jquery.js?v=8dae8fb0"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=8d563738"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -148,6 +152,11 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#notes">Notes</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#gridmap-stack">GridMap Stack</a><ul>
@@ -248,6 +257,14 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#see-also">SEE ALSO</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/docker_crossdistro.html">Docker Setup with Zenoh Bridge (Cross-Distro)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-1-building-the-docker-image-rolling">Step 1: Building the Docker Image (Rolling)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-2-preparing-the-robot-host">Step 2: Preparing the Robot (Host)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-3-running-the-container">Step 3: Running the Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -271,6 +288,11 @@
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#sensor-configuration">Sensor Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#filter-min-bounds-max-bounds-lazy-post-fuse"><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#collapse-collapse-dims-lazy"><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#fused-visualization">Fused Visualization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
@@ -328,7 +350,7 @@
            <div itemprop="articleBody">
              
   <section id="core-design-and-architecture">
-<span id="design"></span><h1>Core Design and Architecture<a class="headerlink" href="#core-design-and-architecture" title="Link to this heading"></a></h1>
+<span id="design"></span><h1>Core Design and Architecture<a class="headerlink" href="#core-design-and-architecture" title="Permalink to this heading"></a></h1>
 <p><strong>EasyNav</strong> is designed with three core principles in mind: modularity, real-time performance, and extensibility. Its architecture separates concerns into well-defined components, making it both easy to adapt and efficient to execute.</p>
 <img alt="EasyNav architecture diagram" class="align-center" src="../_images/easynav_simple_design_v2.png" />
 <p>The figure above illustrates the general architecture of EasyNav.</p>
@@ -476,7 +498,7 @@
 </div>
 <p>This configuration is especially useful for testing system integration, message flow, and user interfaces without requiring sensor data or a simulated robot. You can later replace dummy plugins with functional ones as needed.</p>
 <section id="navstate-the-shared-blackboard">
-<h2>NavState: The Shared Blackboard<a class="headerlink" href="#navstate-the-shared-blackboard" title="Link to this heading"></a></h2>
+<h2>NavState: The Shared Blackboard<a class="headerlink" href="#navstate-the-shared-blackboard" title="Permalink to this heading"></a></h2>
 <p>A key architectural component of EasyNav is the <strong>NavState</strong>, a shared <em>blackboard</em> that holds all the internal state information required by the navigation system.</p>
 <p>Each module in EasyNav—such as the Localizer, Planner, or Controller—reads its inputs from the NavState and writes its outputs back to it. This central structure replaces the need for internal ROS 2 communications between modules.</p>
 <p>The motivation behind using a shared blackboard is to:</p>
@@ -498,7 +520,7 @@
 <p>Future versions of EasyNav may include graphical or CLI-based tools to explore and trace the NavState over time.</p>
 </section>
 <section id="real-time-execution-model">
-<h2>Real-Time Execution Model<a class="headerlink" href="#real-time-execution-model" title="Link to this heading"></a></h2>
+<h2>Real-Time Execution Model<a class="headerlink" href="#real-time-execution-model" title="Permalink to this heading"></a></h2>
 <p>Another key feature of EasyNav is its emphasis on <strong>real-time performance</strong>. The navigation system is designed to react with strict timing constraints, minimizing latency from perception to action.</p>
 <p>To achieve this, EasyNav separates execution into two distinct control loops:</p>
 <ul class="simple">
@@ -533,7 +555,7 @@ This loop handles operations where occasional execution delays are tolerable. Ta
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Various.</p>
+    <p>&#169; Copyright 2026, Various.</p>
   </div>
 
    

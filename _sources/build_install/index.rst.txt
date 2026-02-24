@@ -88,7 +88,7 @@ You can retrieve EasyNav sources by cloning the monorepo(s) you need:
    git clone -b jazzy https://github.com/EasyNavigation/NavMap.git
    git clone -b jazzy https://github.com/EasyNavigation/easynav_plugins.git
    # Clone yaets dependency
-   git clone -b jazzy-devel https://github.com/fmrico/yaets.git
+   git clone -b jazzy https://github.com/fmrico/yaets.git
 
 
 Install dependencies

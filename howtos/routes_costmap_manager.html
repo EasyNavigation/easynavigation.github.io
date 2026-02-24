@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Using the Routes Maps Manager with Costmaps &mdash; EasyNavigation 1.0.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=86f27845" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-        <script src="../_static/jquery.js?v=8dae8fb0"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=8d563738"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -253,6 +257,14 @@
 <li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#see-also">SEE ALSO</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="docker_crossdistro.html">Docker Setup with Zenoh Bridge (Cross-Distro)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-1-building-the-docker-image-rolling">Step 1: Building the Docker Image (Rolling)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-2-preparing-the-robot-host">Step 2: Preparing the Robot (Host)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-3-running-the-container">Step 3: Running the Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -338,7 +350,7 @@
            <div itemprop="articleBody">
              
   <section id="using-the-routes-maps-manager-with-costmaps">
-<span id="howto-routes-costmap-manager"></span><h1>Using the Routes Maps Manager with Costmaps<a class="headerlink" href="#using-the-routes-maps-manager-with-costmaps" title="Link to this heading"></a></h1>
+<span id="howto-routes-costmap-manager"></span><h1>Using the Routes Maps Manager with Costmaps<a class="headerlink" href="#using-the-routes-maps-manager-with-costmaps" title="Permalink to this heading"></a></h1>
 <p>This how-to describes how to create and use navigation routes with
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">easynav_routes_maps_manager</span></code> and how to constrain a 2D costmap
 around those routes using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">easynav_routes_maps_manager/RoutesCostmapFilter</span></code>
@@ -356,14 +368,14 @@ working costmap-based scenario (e.g., the indoor testcase). Only the
 parts specific to routes are shown here.</p>
 </div>
 <section id="creating-routes">
-<h2>1) Creating routes<a class="headerlink" href="#creating-routes" title="Link to this heading"></a></h2>
+<h2>1) Creating routes<a class="headerlink" href="#creating-routes" title="Permalink to this heading"></a></h2>
 <p>In this first step we will run only the maps manager node with a minimal
 configuration: a costmap maps manager providing the 2D map, and a routes
 maps manager with the routes costmap filter enabled. All other components
 (controller, planner, localizer, etc.) can be left out or run with dummy
 configurations, since we only care about editing and saving the routes.</p>
 <section id="example-parameters-file">
-<h3>Example parameters file<a class="headerlink" href="#example-parameters-file" title="Link to this heading"></a></h3>
+<h3>Example parameters file<a class="headerlink" href="#example-parameters-file" title="Permalink to this heading"></a></h3>
 <p>Below is an example of a minimal parameters file focused on costmap and
 routes only:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">maps_manager_node</span><span class="p">:</span>
@@ -409,7 +421,7 @@ this case the routes manager starts with a single default segment from
 </ul>
 </section>
 <section id="running-the-maps-manager">
-<h3>Running the maps manager<a class="headerlink" href="#running-the-maps-manager" title="Link to this heading"></a></h3>
+<h3>Running the maps manager<a class="headerlink" href="#running-the-maps-manager" title="Permalink to this heading"></a></h3>
 <p>With the parameters file in place, start the maps manager node (for
 example from a launch file or directly with <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">run</span></code>), and open
 RViz22.</p>
@@ -421,16 +433,16 @@ default route.</p></li>
 </ul>
 </section>
 <section id="editing-routes-with-interactive-markers">
-<h3>Editing routes with interactive markers<a class="headerlink" href="#editing-routes-with-interactive-markers" title="Link to this heading"></a></h3>
+<h3>Editing routes with interactive markers<a class="headerlink" href="#editing-routes-with-interactive-markers" title="Permalink to this heading"></a></h3>
 <p>The following sequence illustrates how to edit and extend routes using
 the interactive markers published by the routes maps manager.</p>
 <section id="step-0-initial-default-segment">
-<h4>Step 0 – initial default segment<a class="headerlink" href="#step-0-initial-default-segment" title="Link to this heading"></a></h4>
+<h4>Step 0 – initial default segment<a class="headerlink" href="#step-0-initial-default-segment" title="Permalink to this heading"></a></h4>
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/routes_costmap_howto_step_0.png"><img alt="../_images/routes_costmap_howto_step_0.png" src="../_images/routes_costmap_howto_step_0.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-text">RViz2 just after starting the maps manager with no routes file:
-a single default segment from <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code> to <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">0)</span></code> is shown.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Figure 1 </span><span class="caption-text">RViz2 just after starting the maps manager with no routes file:
+a single default segment from <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code> to <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">0)</span></code> is shown.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>When the routes maps manager starts without a configured routes file, it
@@ -438,11 +450,11 @@ creates a single default segment in the map frame. In RViz2 you should
 see this straight segment (line + arrow) over the costmap.</p>
 </section>
 <section id="step-1-enabling-the-edit-markers">
-<h4>Step 1 – enabling the edit markers<a class="headerlink" href="#step-1-enabling-the-edit-markers" title="Link to this heading"></a></h4>
+<h4>Step 1 – enabling the edit markers<a class="headerlink" href="#step-1-enabling-the-edit-markers" title="Permalink to this heading"></a></h4>
 <figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../_images/routes_costmap_howto_step_1.png"><img alt="../_images/routes_costmap_howto_step_1.png" src="../_images/routes_costmap_howto_step_1.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-text">Clicking the green box enables the interactive markers for that segment.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Figure 2 </span><span class="caption-text">Clicking the green box enables the interactive markers for that segment.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>The routes manager publishes interactive markers for editing the start
@@ -460,11 +472,11 @@ segment endpoints:</p>
 </ul>
 </section>
 <section id="step-2-moving-the-segment-endpoint">
-<h4>Step 2 – moving the segment endpoint<a class="headerlink" href="#step-2-moving-the-segment-endpoint" title="Link to this heading"></a></h4>
+<h4>Step 2 – moving the segment endpoint<a class="headerlink" href="#step-2-moving-the-segment-endpoint" title="Permalink to this heading"></a></h4>
 <figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="../_images/routes_costmap_howto_step_2.png"><img alt="../_images/routes_costmap_howto_step_2.png" src="../_images/routes_costmap_howto_step_2.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-text">Using the red arrow handle to move the end of the segment.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Figure 3 </span><span class="caption-text">Using the red arrow handle to move the end of the segment.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>Use the <strong>red arrow</strong> of the interactive marker to drag the end of the
@@ -473,12 +485,12 @@ with a corridor or path on the costmap. The costmap corridor updated by
 the RoutesCostmapFilter will move accordingly.</p>
 </section>
 <section id="step-3-changing-orientation-and-adding-a-new-segment">
-<h4>Step 3 – changing orientation and adding a new segment<a class="headerlink" href="#step-3-changing-orientation-and-adding-a-new-segment" title="Link to this heading"></a></h4>
+<h4>Step 3 – changing orientation and adding a new segment<a class="headerlink" href="#step-3-changing-orientation-and-adding-a-new-segment" title="Permalink to this heading"></a></h4>
 <figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../_images/routes_costmap_howto_step_3.png"><img alt="../_images/routes_costmap_howto_step_3.png" src="../_images/routes_costmap_howto_step_3.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-text">After rotating the endpoint and clicking the orange sphere, a new
-segment is created.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Figure 4 </span><span class="caption-text">After rotating the endpoint and clicking the orange sphere, a new
+segment is created.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>Rotate the endpoint so that its arrow points towards where you want the
@@ -492,12 +504,12 @@ starting at the edited endpoint and following its orientation.</p></li>
 <p>This lets you build a multi-segment route step by step.</p>
 </section>
 <section id="step-4-switching-which-segment-is-being-edited">
-<h4>Step 4 – switching which segment is being edited<a class="headerlink" href="#step-4-switching-which-segment-is-being-edited" title="Link to this heading"></a></h4>
+<h4>Step 4 – switching which segment is being edited<a class="headerlink" href="#step-4-switching-which-segment-is-being-edited" title="Permalink to this heading"></a></h4>
 <figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../_images/routes_costmap_howto_step_4.png"><img alt="../_images/routes_costmap_howto_step_4.png" src="../_images/routes_costmap_howto_step_4.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-text">Toggling edit mode off for the first segment and on for the newly
-created one.</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-number">Figure 5 </span><span class="caption-text">Toggling edit mode off for the first segment and on for the newly
+created one.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>Once you have created multiple segments, you can choose which one is
@@ -514,7 +526,7 @@ segment, which acts as a “delete segment” button.</p>
 </section>
 </section>
 <section id="saving-routes-to-a-yaml-file">
-<h3>Saving routes to a YAML file<a class="headerlink" href="#saving-routes-to-a-yaml-file" title="Link to this heading"></a></h3>
+<h3>Saving routes to a YAML file<a class="headerlink" href="#saving-routes-to-a-yaml-file" title="Permalink to this heading"></a></h3>
 <p>Once you are satisfied with your route layout, you can persist it to a
 YAML file using the <code class="docutils literal notranslate"><span class="pre">save_routes</span></code> service provided by the routes maps
 manager.</p>
@@ -532,7 +544,7 @@ generated file by setting the appropriate <code class="docutils literal notransl
 </section>
 </section>
 <section id="using-the-routes-for-navigation">
-<h2>2) Using the routes for navigation<a class="headerlink" href="#using-the-routes-for-navigation" title="Link to this heading"></a></h2>
+<h2>2) Using the routes for navigation<a class="headerlink" href="#using-the-routes-for-navigation" title="Permalink to this heading"></a></h2>
 <div align="center">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/AZBFWf8-pQg" frameborder="0" allowfullscreen></iframe>
 </div><p>In this second step we integrate the routes maps manager and the
@@ -541,7 +553,7 @@ planner, controller, sensors, and system nodes. The goal is for the
 costmap to be filtered so that global and local plans stay close to the
 saved routes.</p>
 <section id="example-navigation-parameters-file">
-<h3>Example navigation parameters file<a class="headerlink" href="#example-navigation-parameters-file" title="Link to this heading"></a></h3>
+<h3>Example navigation parameters file<a class="headerlink" href="#example-navigation-parameters-file" title="Permalink to this heading"></a></h3>
 <p>The following example shows a complete configuration using routes with a
 costmap-based localizer and planner, and the SerEst controller:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
@@ -663,7 +675,7 @@ costmap-based localizer and planner, and the SerEst controller:</p>
 </div>
 </section>
 <section id="how-the-routes-affect-navigation">
-<h3>How the routes affect navigation<a class="headerlink" href="#how-the-routes-affect-navigation" title="Link to this heading"></a></h3>
+<h3>How the routes affect navigation<a class="headerlink" href="#how-the-routes-affect-navigation" title="Permalink to this heading"></a></h3>
 <p>With this configuration:</p>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">RoutesMapsManager</span></code> loads the previously saved routes from
@@ -698,7 +710,7 @@ pattern.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Various.</p>
+    <p>&#169; Copyright 2026, Various.</p>
   </div>
 
    

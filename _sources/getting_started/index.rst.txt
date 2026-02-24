@@ -163,7 +163,7 @@ You can launch it in a new terminal after starting the EasyNav system:
 
 .. code-block:: bash
 
-   ros2 run easynav_system tui
+   ros2 run easynav_tools tui
 
 The TUI is divided into several panels:
 

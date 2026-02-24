@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sending Navigation Commands to EasyNav &mdash; EasyNavigation 1.0.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=86f27845" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-        <script src="../_static/jquery.js?v=8dae8fb0"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=8d563738"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -148,6 +152,11 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#notes">Notes</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#gridmap-stack">GridMap Stack</a><ul>
@@ -248,6 +257,14 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#see-also">SEE ALSO</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/docker_crossdistro.html">Docker Setup with Zenoh Bridge (Cross-Distro)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-1-building-the-docker-image-rolling">Step 1: Building the Docker Image (Rolling)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-2-preparing-the-robot-host">Step 2: Preparing the Robot (Host)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-3-running-the-container">Step 3: Running the Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -271,6 +288,11 @@
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#sensor-configuration">Sensor Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#filter-min-bounds-max-bounds-lazy-post-fuse"><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#collapse-collapse-dims-lazy"><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#fused-visualization">Fused Visualization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
@@ -328,11 +350,11 @@
            <div itemprop="articleBody">
              
   <section id="sending-navigation-commands-to-easynav">
-<span id="commanding"></span><h1>Sending Navigation Commands to EasyNav<a class="headerlink" href="#sending-navigation-commands-to-easynav" title="Link to this heading"></a></h1>
+<span id="commanding"></span><h1>Sending Navigation Commands to EasyNav<a class="headerlink" href="#sending-navigation-commands-to-easynav" title="Permalink to this heading"></a></h1>
 <p>EasyNav is designed to be easy to control from user applications or higher-level decision-making modules.
 Instead of relying on ROS 2 Actions, which can be complex and hard to integrate across systems, EasyNav follows a simpler and more transparent communication model using topics and message protocols.</p>
 <section id="primary-method-easynav-control-topic">
-<h2>Primary Method: <cite>/easynav_control</cite> Topic<a class="headerlink" href="#primary-method-easynav-control-topic" title="Link to this heading"></a></h2>
+<h2>Primary Method: <cite>/easynav_control</cite> Topic<a class="headerlink" href="#primary-method-easynav-control-topic" title="Permalink to this heading"></a></h2>
 <p>The main interface to control navigation is the topic <cite>/easynav_control</cite>, which uses the message type <cite>easynav_interfaces/msg/NavigationControl</cite>.
 This message encapsulates both commands and feedback for the navigation process.</p>
 <p>Here is the full definition of the message:</p>
@@ -361,7 +383,7 @@ This message encapsulates both commands and feedback for the navigation process.
 </pre></div>
 </div>
 <section id="protocol-description">
-<h3>Protocol Description<a class="headerlink" href="#protocol-description" title="Link to this heading"></a></h3>
+<h3>Protocol Description<a class="headerlink" href="#protocol-description" title="Permalink to this heading"></a></h3>
 <p>The communication protocol over <cite>/easynav_control</cite> is designed around a type-based message system. Each message indicates a specific type of interaction or feedback:</p>
 <ul class="simple">
 <li><p><strong>REQUEST (0)</strong>: A new navigation goal is requested. The <cite>goals</cite> field must be filled.</p></li>
@@ -393,7 +415,7 @@ This message encapsulates both commands and feedback for the navigation process.
 <p>The system will then respond with messages of type ACCEPT, FEEDBACK, FINISHED, etc., according to the internal state.</p>
 </section>
 <section id="using-goalmanagerclient">
-<h3>Using <cite>GoalManagerClient</cite><a class="headerlink" href="#using-goalmanagerclient" title="Link to this heading"></a></h3>
+<h3>Using <cite>GoalManagerClient</cite><a class="headerlink" href="#using-goalmanagerclient" title="Permalink to this heading"></a></h3>
 <p>Instead of manually implementing the communication protocol, developers are encouraged to use the <cite>GoalManagerClient</cite> class. It abstracts the handling of the <cite>/easynav_control</cite> topic and maintains the internal state machine automatically.</p>
 <ul class="simple">
 <li><p><cite>send_goal(PoseStamped goal)</cite> issues a goal with proper message formatting.</p></li>
@@ -404,14 +426,14 @@ This message encapsulates both commands and feedback for the navigation process.
 </section>
 </section>
 <section id="secondary-method-goal-pose-topic">
-<h2>Secondary Method: <cite>/goal_pose</cite> Topic<a class="headerlink" href="#secondary-method-goal-pose-topic" title="Link to this heading"></a></h2>
+<h2>Secondary Method: <cite>/goal_pose</cite> Topic<a class="headerlink" href="#secondary-method-goal-pose-topic" title="Permalink to this heading"></a></h2>
 <p>For simplicity, EasyNav also listens to the topic <cite>/goal_pose</cite> of type <cite>geometry_msgs/msg/PoseStamped</cite>.
 Publishing a pose here is equivalent to publishing a <cite>REQUEST</cite> command on <cite>/easynav_control</cite>.</p>
 <p>This interface is ideal for manual tools (such as RViz2 “2D Goal Pose”) or simple applications where feedback tracking is not required.
 However, users may still subscribe to <cite>/easynav_control</cite> to monitor navigation status and transitions.</p>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>For complete command and feedback control, use the <cite>/easynav_control</cite> topic with the <cite>GoalManagerClient</cite>.</p></li>
 <li><p>For basic use cases, publishing to <cite>/goal_pose</cite> is sufficient.</p></li>
@@ -428,7 +450,7 @@ However, users may still subscribe to <cite>/easynav_control</cite> to monitor n
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Various.</p>
+    <p>&#169; Copyright 2026, Various.</p>
   </div>
 
    
