@@ -199,14 +199,13 @@ Saving and Reusing the Map
 
       ros2 service call /maps_manager_node/simple/savemap std_srvs/srv/Trigger
 
-   By default, the map is stored under `/tmp/default.yaml` and `/tmp/default.pgm`.
+   By default, the map is stored under `/tmp/default.map`.
 
 2. **Rename and move the map for later use**
 
    .. code-block:: bash
 
-      mv /tmp/default.yaml ~/easynav_ws/src/easynav_indoor_testcase/maps/house.yaml
-      mv /tmp/default.pgm  ~/easynav_ws/src/easynav_indoor_testcase/maps/house.pgm
+      mv /tmp/default.map ~/easynav_ws/src/easynav_indoor_testcase/maps/house.map
 
 3. **Update your navigation parameters**
 
@@ -222,7 +221,7 @@ Saving and Reusing the Map
             freq: 10.0
             plugin: easynav_simple_maps_manager/SimpleMapsManager
             package: easynav_indoor_testcase
-            map_path_file: maps/house.yaml
+            map_path_file: maps/house.map
 
 You can now reuse this map for any *Simple Stack* navigation tutorial (see :doc:`simple_navigating`).
 
@@ -231,7 +230,6 @@ You can now reuse this map for any *Simple Stack* navigation tutorial (see :doc:
 Notes
 -----
 
-- The saved format (YAML + PGM) is fully compatible with MoveBase, Nav2, and other ROS 2 mapping systems.  
 - To perform navigation with graded cost values instead of binary occupancy, use the *Costmap Stack*
   (:doc:`costmap_mapping`).  
 - You can visualize both SLAM and EasyNav map topics in RViz2 to confirm synchronization.

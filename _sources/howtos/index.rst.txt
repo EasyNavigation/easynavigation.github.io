@@ -25,6 +25,7 @@ The HowTos are grouped by category:
 - **NavMap navigation** – surface-based mapping and 3D navigation.
 - **Controllers** – configuring and tuning controllers for different robots.
 - **Behaviors** – using EasyNav externally from any application or behavior.
+- **Localizers** – configuring and using localization methods such as GPS.
 - **General** – ways to do something independent of a specific stack.
 
 Use these guides as templates or quick references while developing with EasyNav.
@@ -99,6 +100,22 @@ Controllers
 
    serest_controller
 
+
+Localizers
+----------
+
+- :doc:`gps_localization`
+
+.. toctree::
+   :hidden:
+
+   gps_localization
+
+
+.. note::
+   Each HowTo is self-contained and can be executed independently,
+   provided that the EasyNav core and its dependencies are installed.
+
 Behaviors
 ---------
 
@@ -122,8 +139,3 @@ General
    costmap_multirobot
    ros2_easynav_cli
    docker_crossdistro
-
-
-.. note::
-   Each HowTo is self-contained and can be executed independently,
-   provided that the EasyNav core and its dependencies are installed.

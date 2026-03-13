@@ -207,9 +207,8 @@ If ``routes.package`` and ``routes.map_path_file`` are configured, the
 routes are written back to that YAML file following the format described
 in the ``easynav_routes_maps_manager`` README (see the
 `easynav_routes_maps_manager` package for details). If they are not
-configured (as in the minimal example above), you can later load the
-generated file by setting the appropriate ``package`` and
-``map_path_file``.
+configured (as in the minimal example above), it is saved in 
+``/tmp/routes.yaml``.
 
 
 2) Using the routes for navigation

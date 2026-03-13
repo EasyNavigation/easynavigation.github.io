@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPS Localization Configuration &mdash; EasyNavigation 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Patrolling Behavior" href="patrolling_behavior.html" />
+    <link rel="prev" title="SeReST Controller Fine-Tuning" href="serest_controller.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EasyNavigation
+              <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#supported-platforms">Supported platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-binaries-apt">Install from binaries (APT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#build-from-source">Build from source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#clone-sources">Clone sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#install-dependencies">Install dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#configure-and-build">Configure and build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#source-the-overlay">Source the overlay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#run-tests-optional">Run tests (optional)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#uninstall-clean">Uninstall / clean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#simulation-setup">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">EasyNav Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#supported-ros-2-versions">Supported ROS 2 versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#planners">🧭 Planners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTos and Practical Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#overview">📘 Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#simple-stack">Simple Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_mapping.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#running-slam-toolbox">Running SLAM Toolbox</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#using-easynav-to-receive-and-save-the-map">Using EasyNav to Receive and Save the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#saving-and-reusing-the-map">Saving and Reusing the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#costmap-stack">Costmap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="costmap_mapping.html">Mapping with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#example-parameters">Example parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#running-and-visualizing">Running and visualizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#saving-maps">Saving maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#mapping-and-preparation">Mapping and Preparation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#hardware-setup">Hardware Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#ros-2-setup-on-the-raspberry-pi">ROS 2 Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#easynav-setup-on-the-raspberry-pi">EasyNav Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#mapping">Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#gridmap-stack">GridMap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#bonxai-stack">Bonxai Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#navmap-stack">NavMap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#controllers">Controllers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#recommended-tuning-order">Recommended Tuning Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#localizers">Localizers</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">GPS Localization Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quick-start-defaults">Quick Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detailed-parameter-guidance">Detailed Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detailed-parameter-explanations">Detailed Parameter Explanations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommended-setup-order">Recommended Setup Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#satellite-map-visualization-in-rviz-optional">Satellite Map Visualization in RViz (Optional)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#behaviors">Behaviors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="patrolling_behavior.html">Patrolling Behavior</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#waypoint-configuration">Waypoint Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#general">General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="costmap_multirobot.html">Multi-Robot Navigation with EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#topic-naming-and-tf-management-plugin-developers">1. Topic Naming and TF Management (Plugin developers)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#launching-in-simulation">2. Launching in Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#example-parameters">3. Example Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#tips-gotchas">Tips &amp; Gotchas</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ros2_easynav_cli.html">ros2 easynav — EasyNav CLI Extensions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#name">NAME</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#synopsis">SYNOPSIS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#description">DESCRIPTION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#commands">COMMANDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#options-common">OPTIONS (Common)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#exit-status">EXIT STATUS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#examples">EXAMPLES</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#see-also">SEE ALSO</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docker_crossdistro.html">Docker Setup with Zenoh Bridge (Cross-Distro)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-1-building-the-docker-image-rolling">Step 1: Building the Docker Image (Rolling)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-2-preparing-the-robot-host">Step 2: Preparing the Robot (Host)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-3-running-the-container">Step 3: Running the Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/perceptions.html#filter-min-bounds-max-bounds-lazy-post-fuse"><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/perceptions.html#collapse-collapse-dims-lazy"><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#protocol-description">Protocol Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#using-goalmanagerclient">Using <cite>GoalManagerClient</cite></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">HowTos and Practical Guides</a></li>
+      <li class="breadcrumb-item active">GPS Localization Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gps-localization-configuration">
+<span id="gps-localization"></span><h1>GPS Localization Configuration<a class="headerlink" href="#gps-localization-configuration" title="Permalink to this heading"></a></h1>
+<p>This guide explains how to configure the easynav_fusion_localizer plugin for GPS localization.
+Easynav is a real time navigation framework for ROS 2 developed by our university research team, designed to generalize navigation across any environment, including 3D surfaces.
+It includes recommended defaults, coordinate frame setups, and practical advice for successful localization.
+Once configured, you will be able to send the robot to a waypoint using RViz or perform complex tasks like patrolling using the Easynav behaviours package.</p>
+<div align="center">
+  <iframe width="450" height="300" src="https://www.youtube.com/embed/Dqld9yCVcTY" frameborder="0" allowfullscreen></iframe>
+</div><nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#quick-start-defaults" id="id2">Quick Start Defaults</a></p></li>
+<li><p><a class="reference internal" href="#core-concepts" id="id3">Core Concepts</a></p></li>
+<li><p><a class="reference internal" href="#detailed-parameter-guidance" id="id4">Detailed Parameter Guidance</a></p>
+<ul>
+<li><p><a class="reference internal" href="#global-filter-configuration" id="id5">Global Filter Configuration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#detailed-parameter-explanations" id="id6">Detailed Parameter Explanations</a></p>
+<ul>
+<li><p><a class="reference internal" href="#sensor-topics-sensor" id="id7">Sensor Topics: [sensor]</a></p></li>
+<li><p><a class="reference internal" href="#sensor-configuration-sensor-config" id="id8">Sensor Configuration: [sensor]_config</a></p></li>
+<li><p><a class="reference internal" href="#queue-size-sensor-queue-size" id="id9">Queue Size: [sensor]_queue_size</a></p></li>
+<li><p><a class="reference internal" href="#differential-mode-sensor-differential" id="id10">Differential Mode: [sensor]_differential</a></p></li>
+<li><p><a class="reference internal" href="#relative-mode-sensor-relative" id="id11">Relative Mode: [sensor]_relative</a></p></li>
+<li><p><a class="reference internal" href="#gravitational-acceleration" id="id12">Gravitational Acceleration</a></p></li>
+<li><p><a class="reference internal" href="#initial-state" id="id13">Initial State</a></p></li>
+<li><p><a class="reference internal" href="#general-system-parameters" id="id14">General System Parameters</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#recommended-setup-order" id="id15">Recommended Setup Order</a></p></li>
+<li><p><a class="reference internal" href="#satellite-map-visualization-in-rviz-optional" id="id16">Satellite Map Visualization in RViz (Optional)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#installation" id="id17">Installation</a></p></li>
+<li><p><a class="reference internal" href="#map-server-setup" id="id18">Map Server Setup</a></p></li>
+<li><p><a class="reference internal" href="#rviz-configuration" id="id19">RViz Configuration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#troubleshooting-by-symptom" id="id20">Troubleshooting by Symptom</a></p>
+<ul>
+<li><p><a class="reference internal" href="#filter-does-not-work-or-destabilizes" id="id21">Filter does not work or destabilizes</a></p></li>
+<li><p><a class="reference internal" href="#simulator-or-bag-playback-timing-issues" id="id22">Simulator or bag playback timing issues</a></p></li>
+<li><p><a class="reference internal" href="#filter-destabilizes-when-the-robot-is-stopped" id="id23">Filter destabilizes when the robot is stopped</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="overview">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>The easynav_fusion_localizer plugin provides a robust way to fuse GPS and odometry data.
+It is heavily based on the standard robot_localization package, so the general configuration approach and most of the available parameters are fully described in its official documentation at <a class="reference external" href="https://docs.ros.org/en/noetic/api/robot_localization/html/state_estimation_nodes.html">https://docs.ros.org/en/noetic/api/robot_localization/html/state_estimation_nodes.html</a></p>
+<p>Before configuring the localizer, ensure you have created a png image and a yaml configuration file for your costmap or chosen representation.
+This is necessary for the planner to work correctly.
+If you have not created these files yet, you can use the provided empty file, which represents a map with no nonnavigable zones.</p>
+</section>
+<section id="quick-start-defaults">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Quick Start Defaults</a><a class="headerlink" href="#quick-start-defaults" title="Permalink to this heading"></a></h2>
+<p>Start with these default parameters extracted from the example_params_summit_dual_gazebo.yaml file.
+This example uses the costmap planner and the serest controller, but you can adjust them to fit your specific robot.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">localizer_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">localizer_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Ukf</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">dummy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">rt_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_localizer/DummyLocalizer</span>
+<span class="w">      </span><span class="nt">cycle_time_nort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
+<span class="w">      </span><span class="nt">cycle_time_rt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
+<span class="w">    </span><span class="nt">Ukf</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">rt_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50.0</span>
+<span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">      </span><span class="nt">reseed_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_fusion_localizer/FusionLocalizer</span>
+<span class="w">      </span><span class="nt">latitude_origin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40.284796759605115</span>
+<span class="w">      </span><span class="nt">longitude_origin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-3.8214099132625017</span>
+<span class="w">      </span><span class="nt">altitude_origin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">669.9730248888955</span>
+
+<span class="w">      </span><span class="nt">local_filter</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">two_d_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">publish_tf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">        </span><span class="nt">map_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+<span class="w">        </span><span class="nt">odom_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odom</span>
+<span class="w">        </span><span class="nt">base_link_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">base_link</span>
+<span class="w">        </span><span class="nt">world_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odom</span>
+<span class="w">        </span><span class="nt">dynamic_process_noise_covariance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">        </span><span class="nt">odom0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/robotnik_base_control/odom</span>
+<span class="w">        </span><span class="nt">odom0_config</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">[</span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">odom0_differential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">        </span><span class="nt">process_noise_covariance</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.05</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.05</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.06</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.03</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.03</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.06</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.025</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.025</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.04</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.02</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.015</span><span class="p p-Indicator">]</span>
+
+<span class="w">      </span><span class="nt">global_filter</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">two_d_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">publish_tf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">debug_out_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/ukf_global_debug.txt</span>
+<span class="w">        </span><span class="nt">transform_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+<span class="w">        </span><span class="nt">smooth_lagged_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">dynamic_process_noise_covariance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">        </span><span class="nt">map_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+<span class="w">        </span><span class="nt">odom_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odom</span>
+<span class="w">        </span><span class="nt">base_link_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">base_link</span>
+<span class="w">        </span><span class="nt">world_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+
+<span class="w">        </span><span class="nt">gps0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/gps/fix</span>
+<span class="w">        </span><span class="nt">gps0_config</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">[</span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">gps0_differential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">        </span><span class="nt">odom0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/robotnik_base_control/odom</span>
+<span class="w">        </span><span class="nt">odom0_config</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">[</span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">odom0_differential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">        </span><span class="nt">imu0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/imu/data</span>
+<span class="w">        </span><span class="nt">imu0_config</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">[</span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">imu0_differential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">        </span><span class="nt">imu0_remove_gravitational_acceleration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">        </span><span class="nt">process_noise_covariance</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.05</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.05</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.06</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.03</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.03</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.06</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.025</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.025</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.04</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.02</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                                  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.015</span><span class="p p-Indicator">]</span>
+
+<span class="w">        </span><span class="nt">initial_estimate_covariance</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">          </span><span class="nv">5.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">5.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1e-3</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">1e-3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1e-3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">0.5</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.5</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">1e-3</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="nv">1e-3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1e-3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.1</span><span class="p p-Indicator">,</span>
+<span class="w">          </span><span class="nv">0.1</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.1</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.1</span>
+<span class="w">        </span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</section>
+<section id="core-concepts">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Core Concepts</a><a class="headerlink" href="#core-concepts" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Coordinate Frames: The standard ROS convention is map to odom to base_link. Typically the robot itself publishes the transformation from odom to base_link, while the localization algorithm publishes the transformation from map to odom.</p></li>
+<li><p>Filters: The plugin provides two separate filters, local and global.</p></li>
+<li><p>GPS Transformation: Unlike the standard robot_localization package, this plugin directly accepts navsatfix GPS messages. These messages are internally transformed into local UTM coordinates based on an origin point of <span class="math notranslate nohighlight">\((0, 0)\)</span>.</p></li>
+</ul>
+</section>
+<section id="detailed-parameter-guidance">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Detailed Parameter Guidance</a><a class="headerlink" href="#detailed-parameter-guidance" title="Permalink to this heading"></a></h2>
+<section id="global-filter-configuration">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Global Filter Configuration</a><a class="headerlink" href="#global-filter-configuration" title="Permalink to this heading"></a></h3>
+<p>The global filter requires an absolute localization source. This can be a GPS sensor providing navsatfix messages or another source providing odometry messages.</p>
+<ul class="simple">
+<li><p>Origin Coordinates: You must define the latitude_origin, longitude_origin, and altitude_origin parameters.</p></li>
+<li><p>Variables Configuration: It is crucial that your global localization source has the <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> variables set to true. If you are operating in 3D, <span class="math notranslate nohighlight">\(z\)</span> must also be true.</p></li>
+<li><p>Differential Parameter: The differential parameter for the global source must be set to false.</p></li>
+</ul>
+<p>For the orientation, you have two different options depending on your hardware.</p>
+<ul class="simple">
+<li><p>Reliable absolute orientation source: Set <span class="math notranslate nohighlight">\(yaw\)</span> to true. If working in 3D, also set <span class="math notranslate nohighlight">\(roll\)</span> and <span class="math notranslate nohighlight">\(pitch\)</span> to true. The differential parameter must be set to false.</p></li>
+<li><p>Unreliable orientation source: Set <span class="math notranslate nohighlight">\(v\_yaw\)</span> to true or set the differential parameter to true. To prevent the filter from destabilizing when the robot is stopped, it is highly recommended to set the dynamic_process_noise_covariance parameter to true.</p></li>
+</ul>
+</section>
+</section>
+<section id="detailed-parameter-explanations">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Detailed Parameter Explanations</a><a class="headerlink" href="#detailed-parameter-explanations" title="Permalink to this heading"></a></h2>
+<p>Although the easynav_fusion_localizer is based on the standard robot_localization package, the core parameters are explained below for clarity and quick reference.</p>
+<section id="sensor-topics-sensor">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Sensor Topics: [sensor]</a><a class="headerlink" href="#sensor-topics-sensor" title="Permalink to this heading"></a></h3>
+<p>For each sensor, users need to define this parameter based on the message type. For example, if we define one source of Imu messages and two sources of Odometry messages, the configuration in your YAML file would look like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example defining one IMU and two Odometry sources</span>
+<span class="nt">imu0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robot/imu/data</span>
+<span class="nt">odom0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wheel_encoder/odometry</span>
+<span class="nt">odom1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visual_odometry/odometry</span>
+</pre></div>
+</div>
+<p>The index for each parameter name is 0-based (e.g., odom0, odom1, etc.) and must be defined sequentially. Do not use pose0 and pose2 if you have not defined pose1. The values for each parameter are the exact topic names for those sensors.</p>
+</section>
+<section id="sensor-configuration-sensor-config">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Sensor Configuration: [sensor]_config</a><a class="headerlink" href="#sensor-configuration-sensor-config" title="Permalink to this heading"></a></h3>
+<p>For each of the sensor messages defined above, users must specify which variables of those messages should be fused into the final state estimate. An example odometry configuration looks like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fusing X, Y, yaw, X velocity, and yaw velocity</span>
+<span class="nt">odom0_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">               </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">               </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">               </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">               </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The order of the boolean values is <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(Z\)</span>, <span class="math notranslate nohighlight">\(roll\)</span>, <span class="math notranslate nohighlight">\(pitch\)</span>, <span class="math notranslate nohighlight">\(yaw\)</span>, <span class="math notranslate nohighlight">\(\dot{X}\)</span>, <span class="math notranslate nohighlight">\(\dot{Y}\)</span>, <span class="math notranslate nohighlight">\(\dot{Z}\)</span>, <span class="math notranslate nohighlight">\(\dot{roll}\)</span>, <span class="math notranslate nohighlight">\(\dot{pitch}\)</span>, <span class="math notranslate nohighlight">\(\dot{yaw}\)</span>, <span class="math notranslate nohighlight">\(\ddot{X}\)</span>, <span class="math notranslate nohighlight">\(\ddot{Y}\)</span>, <span class="math notranslate nohighlight">\(\ddot{Z}\)</span>.</p>
+<p><em>Note:</em> The specification is done in the frame_id of the sensor, not in the world_frame or base_link_frame.</p>
+</section>
+<section id="queue-size-sensor-queue-size">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Queue Size: [sensor]_queue_size</a><a class="headerlink" href="#queue-size-sensor-queue-size" title="Permalink to this heading"></a></h3>
+<p>Users can use these parameters to adjust the callback queue sizes for each sensor (e.g., odomN_queue_size, imuN_queue_size). This is highly useful if your filter frequency parameter value is much lower than your sensor’s frequency, as it allows the algorithm to incorporate all measurements that arrived in between update cycles.</p>
+</section>
+<section id="differential-mode-sensor-differential">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Differential Mode: [sensor]_differential</a><a class="headerlink" href="#differential-mode-sensor-differential" title="Permalink to this heading"></a></h3>
+<p>For each of the sensor messages containing pose information, users can specify whether the pose variables should be integrated differentially.</p>
+<p>If a given value is set to true, then for a measurement at time <span class="math notranslate nohighlight">\(t\)</span> from the sensor in question, the filter first subtracts the measurement at time <span class="math notranslate nohighlight">\(t-1\)</span>, and converts the resulting value to a velocity. This setting is especially useful if your robot has two sources of absolute pose information (e.g., yaw measurements from odometry and an IMU). If the variances on the input sources are not configured correctly, these measurements may get out of sync and cause oscillations. Integrating one or both differentially avoids this scenario.</p>
+<p>Users should take care when using this parameter for orientation data, as the conversion to velocity means that the covariance for orientation state variables will grow without bound, unless another source of absolute orientation data is being fused.</p>
+<p><em>Note:</em> If you are fusing GPS information via navsat_transform_node or utm_transform_node, you should make sure that the differential setting is false. If you simply want all of your pose variables to start at <span class="math notranslate nohighlight">\(0\)</span>, please use the relative parameter instead.</p>
+</section>
+<section id="relative-mode-sensor-relative">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Relative Mode: [sensor]_relative</a><a class="headerlink" href="#relative-mode-sensor-relative" title="Permalink to this heading"></a></h3>
+<p>If this parameter is set to true, any measurements from this sensor will be fused relative to the first measurement received from that sensor. This is useful if you want your state estimate to always start at <span class="math notranslate nohighlight">\((0,0,0)\)</span> with <span class="math notranslate nohighlight">\(roll\)</span>, <span class="math notranslate nohighlight">\(pitch\)</span>, and <span class="math notranslate nohighlight">\(yaw\)</span> values of <span class="math notranslate nohighlight">\((0,0,0)\)</span>. It is similar to the differential parameter, but instead of removing the measurement at time <span class="math notranslate nohighlight">\(t-1\)</span>, it always removes the measurement at time <span class="math notranslate nohighlight">\(0\)</span>, and the measurement is not converted to a velocity.</p>
+</section>
+<section id="gravitational-acceleration">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Gravitational Acceleration</a><a class="headerlink" href="#gravitational-acceleration" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>imuN_remove_gravitational_acceleration:</strong> If fusing accelerometer data from IMUs, this parameter determines whether or not acceleration due to gravity is removed from the acceleration measurement before fusing it. This assumes that the IMU providing the acceleration data is also producing an absolute orientation, which is strictly required to correctly remove gravitational acceleration.</p></li>
+<li><p><strong>gravitational_acceleration:</strong> If the previous parameter is set to true, this defines the acceleration in <span class="math notranslate nohighlight">\(Z\)</span> due to gravity that will be removed from the IMU’s linear acceleration data. The default value is 9.80665 m/s².</p></li>
+</ul>
+</section>
+<section id="initial-state">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Initial State</a><a class="headerlink" href="#initial-state" title="Permalink to this heading"></a></h3>
+<p>Starts the filter with the specified state. The state is given as a 15-D vector of doubles, following the same variable order as the sensor configurations. For example, to start your robot at a position of <span class="math notranslate nohighlight">\((5.0, 4.0, 3.0)\)</span>, a <span class="math notranslate nohighlight">\(yaw\)</span> of 1.57, and a linear velocity of <span class="math notranslate nohighlight">\((0.1, 0.2, 0.3)\)</span>, you would use:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial state configuration vector</span>
+<span class="nt">initial_state</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">5.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">4.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">3.0</span><span class="p p-Indicator">,</span>
+<span class="w">                </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">1.57</span><span class="p p-Indicator">,</span>
+<span class="w">                </span><span class="nv">0.1</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.2</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.3</span><span class="p p-Indicator">,</span>
+<span class="w">                </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span>
+<span class="w">                </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</section>
+<section id="general-system-parameters">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">General System Parameters</a><a class="headerlink" href="#general-system-parameters" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>publish_tf:</strong> If true, the state estimation node will publish the transform from the frame specified by the world_frame parameter to the frame specified by the base_link_frame parameter. Defaults to true.</p></li>
+<li><p><strong>publish_acceleration:</strong> If true, the state estimation node will publish the linear acceleration state. Defaults to false.</p></li>
+<li><p><strong>permit_corrected_publication:</strong> When the state estimation nodes publish the state at time <span class="math notranslate nohighlight">\(t\)</span>, but then receive a measurement with a timestamp <span class="math notranslate nohighlight">\(&lt; t\)</span>, they re-publish the corrected state with the same time stamp as the previous publication. Setting this parameter to false disables that behavior. Defaults to false.</p></li>
+<li><p><strong>print_diagnostics:</strong> If true, the state estimation node will publish diagnostic messages to the /diagnostics topic. This is useful for debugging your configuration and sensor data.</p></li>
+<li><p><strong>two_d_mode:</strong> If your robot is operating in a planar environment and you are comfortable with ignoring the subtle variations in the ground reported by an IMU, set this to true. It will fuse <span class="math notranslate nohighlight">\(0\)</span> values for all 3D variables (<span class="math notranslate nohighlight">\(Z\)</span>, <span class="math notranslate nohighlight">\(roll\)</span>, <span class="math notranslate nohighlight">\(pitch\)</span>, and their respective velocities and accelerations). This keeps the covariances for those values from exploding while ensuring that your robot’s state estimate remains affixed to the X-Y plane.</p></li>
+</ul>
+</section>
+</section>
+<section id="recommended-setup-order">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Recommended Setup Order</a><a class="headerlink" href="#recommended-setup-order" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Verify prerequisites: Ensure you have a valid map image and configuration file.</p></li>
+<li><p>Check coordinate frames: Determine if your robot publishes the odom to base_link transformation to decide whether to use only the global filter or both.</p></li>
+<li><p>Set GPS origin: Accurately configure your starting latitude, longitude, and altitude.</p></li>
+<li><p>Configure each sensor you want to use in the filter</p></li>
+</ol>
+</section>
+<section id="satellite-map-visualization-in-rviz-optional">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Satellite Map Visualization in RViz (Optional)</a><a class="headerlink" href="#satellite-map-visualization-in-rviz-optional" title="Permalink to this heading"></a></h2>
+<p>Visualizing the satellite map directly in RViz provides an excellent way to verify that your GPS localization is working correctly within the Easynav framework.</p>
+<section id="installation">
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">Installation</a><a class="headerlink" href="#installation" title="Permalink to this heading"></a></h3>
+<p>First, you need to install the satellite plugin for RViz. Since Easynav operates on ROS 2, make sure to install the package corresponding to your distribution. For this example, we will use the Jazzy release.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-jazzy-rviz-satellite
+</pre></div>
+</div>
+</section>
+<section id="map-server-setup">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Map Server Setup</a><a class="headerlink" href="#map-server-setup" title="Permalink to this heading"></a></h3>
+<p>Next, launch a Docker container that will act as a local map server using MapProxy. This server will provide the satellite map tiles directly to your RViz session.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>-d<span class="w"> </span>-t<span class="w"> </span>-v<span class="w"> </span>~/mapproxy:/mapproxy<span class="w"> </span>danielsnider/mapproxy
+</pre></div>
+</div>
+</section>
+<section id="rviz-configuration">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">RViz Configuration</a><a class="headerlink" href="#rviz-configuration" title="Permalink to this heading"></a></h3>
+<p>Once the plugin is installed and the map server is actively running, open your RViz interface and add the AerialMap display type. Configure the properties exactly as follows to see the map:</p>
+<ul class="simple">
+<li><p>Topic: Set this field to /gps/filtered</p></li>
+<li><p>Object URI: Enter <a class="reference external" href="http://localhost:8080/wmts/gm_layer/gm_grid">http://localhost:8080/wmts/gm_layer/gm_grid</a>/{z}/{x}/{y}.png</p></li>
+<li><p>Zoom: A value of 19 is highly recommended for optimal clarity.</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting-by-symptom">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">Troubleshooting by Symptom</a><a class="headerlink" href="#troubleshooting-by-symptom" title="Permalink to this heading"></a></h2>
+<section id="filter-does-not-work-or-destabilizes">
+<h3><a class="toc-backref" href="#id21" role="doc-backlink">Filter does not work or destabilizes</a><a class="headerlink" href="#filter-does-not-work-or-destabilizes" title="Permalink to this heading"></a></h3>
+<p>Verify that all the frames appearing in the headers of the filtered messages have a valid transformation to the robot base frame.</p>
+<p>Ensure that you have at least one source of absolut localization.</p>
+</section>
+<section id="simulator-or-bag-playback-timing-issues">
+<h3><a class="toc-backref" href="#id22" role="doc-backlink">Simulator or bag playback timing issues</a><a class="headerlink" href="#simulator-or-bag-playback-timing-issues" title="Permalink to this heading"></a></h3>
+<p>Ensure that the use_sim_time parameter is set to false when running on a real robot and to true when running in a simulator. When playing a recorded bag, you must also set use_sim_time to true and pass the clock argument to the playback command.</p>
+</section>
+<section id="filter-destabilizes-when-the-robot-is-stopped">
+<h3><a class="toc-backref" href="#id23" role="doc-backlink">Filter destabilizes when the robot is stopped</a><a class="headerlink" href="#filter-destabilizes-when-the-robot-is-stopped" title="Permalink to this heading"></a></h3>
+<p>If you are using an unreliable orientation source, make sure the dynamic_process_noise_covariance parameter is set to true to avoid unpredictable behavior when stationary.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>
