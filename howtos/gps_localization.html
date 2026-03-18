@@ -230,6 +230,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#quick-start-defaults">Quick Start Defaults</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#core-concepts">Core Concepts</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#detailed-parameter-guidance">Detailed Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simulation-demo">Simulation Demo</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#detailed-parameter-explanations">Detailed Parameter Explanations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#recommended-setup-order">Recommended Setup Order</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#satellite-map-visualization-in-rviz-optional">Satellite Map Visualization in RViz (Optional)</a></li>
@@ -383,31 +384,32 @@ Once configured, you will be able to send the robot to a waypoint using RViz or 
 <li><p><a class="reference internal" href="#global-filter-configuration" id="id5">Global Filter Configuration</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#detailed-parameter-explanations" id="id6">Detailed Parameter Explanations</a></p>
+<li><p><a class="reference internal" href="#simulation-demo" id="id6">Simulation Demo</a></p></li>
+<li><p><a class="reference internal" href="#detailed-parameter-explanations" id="id7">Detailed Parameter Explanations</a></p>
 <ul>
-<li><p><a class="reference internal" href="#sensor-topics-sensor" id="id7">Sensor Topics: [sensor]</a></p></li>
-<li><p><a class="reference internal" href="#sensor-configuration-sensor-config" id="id8">Sensor Configuration: [sensor]_config</a></p></li>
-<li><p><a class="reference internal" href="#queue-size-sensor-queue-size" id="id9">Queue Size: [sensor]_queue_size</a></p></li>
-<li><p><a class="reference internal" href="#differential-mode-sensor-differential" id="id10">Differential Mode: [sensor]_differential</a></p></li>
-<li><p><a class="reference internal" href="#relative-mode-sensor-relative" id="id11">Relative Mode: [sensor]_relative</a></p></li>
-<li><p><a class="reference internal" href="#gravitational-acceleration" id="id12">Gravitational Acceleration</a></p></li>
-<li><p><a class="reference internal" href="#initial-state" id="id13">Initial State</a></p></li>
-<li><p><a class="reference internal" href="#general-system-parameters" id="id14">General System Parameters</a></p></li>
+<li><p><a class="reference internal" href="#sensor-topics-sensor" id="id8">Sensor Topics: [sensor]</a></p></li>
+<li><p><a class="reference internal" href="#sensor-configuration-sensor-config" id="id9">Sensor Configuration: [sensor]_config</a></p></li>
+<li><p><a class="reference internal" href="#queue-size-sensor-queue-size" id="id10">Queue Size: [sensor]_queue_size</a></p></li>
+<li><p><a class="reference internal" href="#differential-mode-sensor-differential" id="id11">Differential Mode: [sensor]_differential</a></p></li>
+<li><p><a class="reference internal" href="#relative-mode-sensor-relative" id="id12">Relative Mode: [sensor]_relative</a></p></li>
+<li><p><a class="reference internal" href="#gravitational-acceleration" id="id13">Gravitational Acceleration</a></p></li>
+<li><p><a class="reference internal" href="#initial-state" id="id14">Initial State</a></p></li>
+<li><p><a class="reference internal" href="#general-system-parameters" id="id15">General System Parameters</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#recommended-setup-order" id="id15">Recommended Setup Order</a></p></li>
-<li><p><a class="reference internal" href="#satellite-map-visualization-in-rviz-optional" id="id16">Satellite Map Visualization in RViz (Optional)</a></p>
+<li><p><a class="reference internal" href="#recommended-setup-order" id="id16">Recommended Setup Order</a></p></li>
+<li><p><a class="reference internal" href="#satellite-map-visualization-in-rviz-optional" id="id17">Satellite Map Visualization in RViz (Optional)</a></p>
 <ul>
-<li><p><a class="reference internal" href="#installation" id="id17">Installation</a></p></li>
-<li><p><a class="reference internal" href="#map-server-setup" id="id18">Map Server Setup</a></p></li>
-<li><p><a class="reference internal" href="#rviz-configuration" id="id19">RViz Configuration</a></p></li>
+<li><p><a class="reference internal" href="#installation" id="id18">Installation</a></p></li>
+<li><p><a class="reference internal" href="#map-server-setup" id="id19">Map Server Setup</a></p></li>
+<li><p><a class="reference internal" href="#rviz-configuration" id="id20">RViz Configuration</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#troubleshooting-by-symptom" id="id20">Troubleshooting by Symptom</a></p>
+<li><p><a class="reference internal" href="#troubleshooting-by-symptom" id="id21">Troubleshooting by Symptom</a></p>
 <ul>
-<li><p><a class="reference internal" href="#filter-does-not-work-or-destabilizes" id="id21">Filter does not work or destabilizes</a></p></li>
-<li><p><a class="reference internal" href="#simulator-or-bag-playback-timing-issues" id="id22">Simulator or bag playback timing issues</a></p></li>
-<li><p><a class="reference internal" href="#filter-destabilizes-when-the-robot-is-stopped" id="id23">Filter destabilizes when the robot is stopped</a></p></li>
+<li><p><a class="reference internal" href="#filter-does-not-work-or-destabilizes" id="id22">Filter does not work or destabilizes</a></p></li>
+<li><p><a class="reference internal" href="#simulator-or-bag-playback-timing-issues" id="id23">Simulator or bag playback timing issues</a></p></li>
+<li><p><a class="reference internal" href="#filter-destabilizes-when-the-robot-is-stopped" id="id24">Filter destabilizes when the robot is stopped</a></p></li>
 </ul>
 </li>
 </ul>
@@ -567,11 +569,37 @@ This example uses the costmap planner and the serest controller, but you can adj
 </ul>
 </section>
 </section>
+<section id="simulation-demo">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Simulation Demo</a><a class="headerlink" href="#simulation-demo" title="Permalink to this heading"></a></h2>
+<p>In order to test the GPS localization plugin in gazebo simulator, you have to clone the following package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_playground_summit.git
+</pre></div>
+</div>
+<p>Then, follow the installation instructions in the package documentation.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;easynav-workspace&gt;/src/
+vcs<span class="w"> </span>import<span class="w"> </span>.<span class="w"> </span>&lt;<span class="w"> </span>easynav_playground_summit/thirdparty.repos
+<span class="nb">cd</span><span class="w"> </span>..
+rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
+colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+</pre></div>
+</div>
+<p>Then, you can use the following launch file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_summit<span class="w"> </span>playground_summit.launch.py
+</pre></div>
+</div>
+<p>And run easynav loading the parameters from the fusion_localizer package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_system<span class="w"> </span>system_main<span class="w"> </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>easynav_plugins/localizers/easynav_fusion_localizer/config/example_params_summit_dual_gazebo.yaml
+</pre></div>
+</div>
+<p>After that, you can open rviz2 and check the output:</p>
+<div align="center">
+  <iframe width="450" height="300" src="https://www.youtube.com/embed/grEapN47KW8" frameborder="0" allowfullscreen></iframe>
+</div></section>
 <section id="detailed-parameter-explanations">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Detailed Parameter Explanations</a><a class="headerlink" href="#detailed-parameter-explanations" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Detailed Parameter Explanations</a><a class="headerlink" href="#detailed-parameter-explanations" title="Permalink to this heading"></a></h2>
 <p>Although the easynav_fusion_localizer is based on the standard robot_localization package, the core parameters are explained below for clarity and quick reference.</p>
 <section id="sensor-topics-sensor">
-<h3><a class="toc-backref" href="#id7" role="doc-backlink">Sensor Topics: [sensor]</a><a class="headerlink" href="#sensor-topics-sensor" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Sensor Topics: [sensor]</a><a class="headerlink" href="#sensor-topics-sensor" title="Permalink to this heading"></a></h3>
 <p>For each sensor, users need to define this parameter based on the message type. For example, if we define one source of Imu messages and two sources of Odometry messages, the configuration in your YAML file would look like this:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example defining one IMU and two Odometry sources</span>
 <span class="nt">imu0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">robot/imu/data</span>
@@ -582,7 +610,7 @@ This example uses the costmap planner and the serest controller, but you can adj
 <p>The index for each parameter name is 0-based (e.g., odom0, odom1, etc.) and must be defined sequentially. Do not use pose0 and pose2 if you have not defined pose1. The values for each parameter are the exact topic names for those sensors.</p>
 </section>
 <section id="sensor-configuration-sensor-config">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">Sensor Configuration: [sensor]_config</a><a class="headerlink" href="#sensor-configuration-sensor-config" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Sensor Configuration: [sensor]_config</a><a class="headerlink" href="#sensor-configuration-sensor-config" title="Permalink to this heading"></a></h3>
 <p>For each of the sensor messages defined above, users must specify which variables of those messages should be fused into the final state estimate. An example odometry configuration looks like this:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fusing X, Y, yaw, X velocity, and yaw velocity</span>
 <span class="nt">odom0_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span>
@@ -596,29 +624,29 @@ This example uses the costmap planner and the serest controller, but you can adj
 <p><em>Note:</em> The specification is done in the frame_id of the sensor, not in the world_frame or base_link_frame.</p>
 </section>
 <section id="queue-size-sensor-queue-size">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">Queue Size: [sensor]_queue_size</a><a class="headerlink" href="#queue-size-sensor-queue-size" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Queue Size: [sensor]_queue_size</a><a class="headerlink" href="#queue-size-sensor-queue-size" title="Permalink to this heading"></a></h3>
 <p>Users can use these parameters to adjust the callback queue sizes for each sensor (e.g., odomN_queue_size, imuN_queue_size). This is highly useful if your filter frequency parameter value is much lower than your sensor’s frequency, as it allows the algorithm to incorporate all measurements that arrived in between update cycles.</p>
 </section>
 <section id="differential-mode-sensor-differential">
-<h3><a class="toc-backref" href="#id10" role="doc-backlink">Differential Mode: [sensor]_differential</a><a class="headerlink" href="#differential-mode-sensor-differential" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Differential Mode: [sensor]_differential</a><a class="headerlink" href="#differential-mode-sensor-differential" title="Permalink to this heading"></a></h3>
 <p>For each of the sensor messages containing pose information, users can specify whether the pose variables should be integrated differentially.</p>
 <p>If a given value is set to true, then for a measurement at time <span class="math notranslate nohighlight">\(t\)</span> from the sensor in question, the filter first subtracts the measurement at time <span class="math notranslate nohighlight">\(t-1\)</span>, and converts the resulting value to a velocity. This setting is especially useful if your robot has two sources of absolute pose information (e.g., yaw measurements from odometry and an IMU). If the variances on the input sources are not configured correctly, these measurements may get out of sync and cause oscillations. Integrating one or both differentially avoids this scenario.</p>
 <p>Users should take care when using this parameter for orientation data, as the conversion to velocity means that the covariance for orientation state variables will grow without bound, unless another source of absolute orientation data is being fused.</p>
 <p><em>Note:</em> If you are fusing GPS information via navsat_transform_node or utm_transform_node, you should make sure that the differential setting is false. If you simply want all of your pose variables to start at <span class="math notranslate nohighlight">\(0\)</span>, please use the relative parameter instead.</p>
 </section>
 <section id="relative-mode-sensor-relative">
-<h3><a class="toc-backref" href="#id11" role="doc-backlink">Relative Mode: [sensor]_relative</a><a class="headerlink" href="#relative-mode-sensor-relative" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Relative Mode: [sensor]_relative</a><a class="headerlink" href="#relative-mode-sensor-relative" title="Permalink to this heading"></a></h3>
 <p>If this parameter is set to true, any measurements from this sensor will be fused relative to the first measurement received from that sensor. This is useful if you want your state estimate to always start at <span class="math notranslate nohighlight">\((0,0,0)\)</span> with <span class="math notranslate nohighlight">\(roll\)</span>, <span class="math notranslate nohighlight">\(pitch\)</span>, and <span class="math notranslate nohighlight">\(yaw\)</span> values of <span class="math notranslate nohighlight">\((0,0,0)\)</span>. It is similar to the differential parameter, but instead of removing the measurement at time <span class="math notranslate nohighlight">\(t-1\)</span>, it always removes the measurement at time <span class="math notranslate nohighlight">\(0\)</span>, and the measurement is not converted to a velocity.</p>
 </section>
 <section id="gravitational-acceleration">
-<h3><a class="toc-backref" href="#id12" role="doc-backlink">Gravitational Acceleration</a><a class="headerlink" href="#gravitational-acceleration" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Gravitational Acceleration</a><a class="headerlink" href="#gravitational-acceleration" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>imuN_remove_gravitational_acceleration:</strong> If fusing accelerometer data from IMUs, this parameter determines whether or not acceleration due to gravity is removed from the acceleration measurement before fusing it. This assumes that the IMU providing the acceleration data is also producing an absolute orientation, which is strictly required to correctly remove gravitational acceleration.</p></li>
 <li><p><strong>gravitational_acceleration:</strong> If the previous parameter is set to true, this defines the acceleration in <span class="math notranslate nohighlight">\(Z\)</span> due to gravity that will be removed from the IMU’s linear acceleration data. The default value is 9.80665 m/s².</p></li>
 </ul>
 </section>
 <section id="initial-state">
-<h3><a class="toc-backref" href="#id13" role="doc-backlink">Initial State</a><a class="headerlink" href="#initial-state" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Initial State</a><a class="headerlink" href="#initial-state" title="Permalink to this heading"></a></h3>
 <p>Starts the filter with the specified state. The state is given as a 15-D vector of doubles, following the same variable order as the sensor configurations. For example, to start your robot at a position of <span class="math notranslate nohighlight">\((5.0, 4.0, 3.0)\)</span>, a <span class="math notranslate nohighlight">\(yaw\)</span> of 1.57, and a linear velocity of <span class="math notranslate nohighlight">\((0.1, 0.2, 0.3)\)</span>, you would use:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial state configuration vector</span>
 <span class="nt">initial_state</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">5.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">4.0</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">3.0</span><span class="p p-Indicator">,</span>
@@ -630,7 +658,7 @@ This example uses the costmap planner and the serest controller, but you can adj
 </div>
 </section>
 <section id="general-system-parameters">
-<h3><a class="toc-backref" href="#id14" role="doc-backlink">General System Parameters</a><a class="headerlink" href="#general-system-parameters" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">General System Parameters</a><a class="headerlink" href="#general-system-parameters" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>publish_tf:</strong> If true, the state estimation node will publish the transform from the frame specified by the world_frame parameter to the frame specified by the base_link_frame parameter. Defaults to true.</p></li>
 <li><p><strong>publish_acceleration:</strong> If true, the state estimation node will publish the linear acceleration state. Defaults to false.</p></li>
@@ -641,7 +669,7 @@ This example uses the costmap planner and the serest controller, but you can adj
 </section>
 </section>
 <section id="recommended-setup-order">
-<h2><a class="toc-backref" href="#id15" role="doc-backlink">Recommended Setup Order</a><a class="headerlink" href="#recommended-setup-order" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Recommended Setup Order</a><a class="headerlink" href="#recommended-setup-order" title="Permalink to this heading"></a></h2>
 <ol class="arabic simple">
 <li><p>Verify prerequisites: Ensure you have a valid map image and configuration file.</p></li>
 <li><p>Check coordinate frames: Determine if your robot publishes the odom to base_link transformation to decide whether to use only the global filter or both.</p></li>
@@ -650,24 +678,24 @@ This example uses the costmap planner and the serest controller, but you can adj
 </ol>
 </section>
 <section id="satellite-map-visualization-in-rviz-optional">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink">Satellite Map Visualization in RViz (Optional)</a><a class="headerlink" href="#satellite-map-visualization-in-rviz-optional" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">Satellite Map Visualization in RViz (Optional)</a><a class="headerlink" href="#satellite-map-visualization-in-rviz-optional" title="Permalink to this heading"></a></h2>
 <p>Visualizing the satellite map directly in RViz provides an excellent way to verify that your GPS localization is working correctly within the Easynav framework.</p>
 <section id="installation">
-<h3><a class="toc-backref" href="#id17" role="doc-backlink">Installation</a><a class="headerlink" href="#installation" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Installation</a><a class="headerlink" href="#installation" title="Permalink to this heading"></a></h3>
 <p>First, you need to install the satellite plugin for RViz. Since Easynav operates on ROS 2, make sure to install the package corresponding to your distribution. For this example, we will use the Jazzy release.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-jazzy-rviz-satellite
 </pre></div>
 </div>
 </section>
 <section id="map-server-setup">
-<h3><a class="toc-backref" href="#id18" role="doc-backlink">Map Server Setup</a><a class="headerlink" href="#map-server-setup" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Map Server Setup</a><a class="headerlink" href="#map-server-setup" title="Permalink to this heading"></a></h3>
 <p>Next, launch a Docker container that will act as a local map server using MapProxy. This server will provide the satellite map tiles directly to your RViz session.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>-d<span class="w"> </span>-t<span class="w"> </span>-v<span class="w"> </span>~/mapproxy:/mapproxy<span class="w"> </span>danielsnider/mapproxy
 </pre></div>
 </div>
 </section>
 <section id="rviz-configuration">
-<h3><a class="toc-backref" href="#id19" role="doc-backlink">RViz Configuration</a><a class="headerlink" href="#rviz-configuration" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id20" role="doc-backlink">RViz Configuration</a><a class="headerlink" href="#rviz-configuration" title="Permalink to this heading"></a></h3>
 <p>Once the plugin is installed and the map server is actively running, open your RViz interface and add the AerialMap display type. Configure the properties exactly as follows to see the map:</p>
 <ul class="simple">
 <li><p>Topic: Set this field to /gps/filtered</p></li>
@@ -677,18 +705,18 @@ This example uses the costmap planner and the serest controller, but you can adj
 </section>
 </section>
 <section id="troubleshooting-by-symptom">
-<h2><a class="toc-backref" href="#id20" role="doc-backlink">Troubleshooting by Symptom</a><a class="headerlink" href="#troubleshooting-by-symptom" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id21" role="doc-backlink">Troubleshooting by Symptom</a><a class="headerlink" href="#troubleshooting-by-symptom" title="Permalink to this heading"></a></h2>
 <section id="filter-does-not-work-or-destabilizes">
-<h3><a class="toc-backref" href="#id21" role="doc-backlink">Filter does not work or destabilizes</a><a class="headerlink" href="#filter-does-not-work-or-destabilizes" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id22" role="doc-backlink">Filter does not work or destabilizes</a><a class="headerlink" href="#filter-does-not-work-or-destabilizes" title="Permalink to this heading"></a></h3>
 <p>Verify that all the frames appearing in the headers of the filtered messages have a valid transformation to the robot base frame.</p>
 <p>Ensure that you have at least one source of absolut localization.</p>
 </section>
 <section id="simulator-or-bag-playback-timing-issues">
-<h3><a class="toc-backref" href="#id22" role="doc-backlink">Simulator or bag playback timing issues</a><a class="headerlink" href="#simulator-or-bag-playback-timing-issues" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id23" role="doc-backlink">Simulator or bag playback timing issues</a><a class="headerlink" href="#simulator-or-bag-playback-timing-issues" title="Permalink to this heading"></a></h3>
 <p>Ensure that the use_sim_time parameter is set to false when running on a real robot and to true when running in a simulator. When playing a recorded bag, you must also set use_sim_time to true and pass the clock argument to the playback command.</p>
 </section>
 <section id="filter-destabilizes-when-the-robot-is-stopped">
-<h3><a class="toc-backref" href="#id23" role="doc-backlink">Filter destabilizes when the robot is stopped</a><a class="headerlink" href="#filter-destabilizes-when-the-robot-is-stopped" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id24" role="doc-backlink">Filter destabilizes when the robot is stopped</a><a class="headerlink" href="#filter-destabilizes-when-the-robot-is-stopped" title="Permalink to this heading"></a></h3>
 <p>If you are using an unreliable orientation source, make sure the dynamic_process_noise_covariance parameter is set to true to avoid unpredictable behavior when stationary.</p>
 </section>
 </section>

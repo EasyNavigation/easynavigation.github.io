@@ -182,6 +182,50 @@ For the orientation, you have two different options depending on your hardware.
 * Reliable absolute orientation source: Set :math:`yaw` to true. If working in 3D, also set :math:`roll` and :math:`pitch` to true. The differential parameter must be set to false.
 * Unreliable orientation source: Set :math:`v\_yaw` to true or set the differential parameter to true. To prevent the filter from destabilizing when the robot is stopped, it is highly recommended to set the dynamic_process_noise_covariance parameter to true.
 
+
+
+Simulation Demo
+===============
+
+In order to test the GPS localization plugin in gazebo simulator, you have to clone the following package:
+
+.. code-block:: bash
+
+    git clone https://github.com/EasyNavigation/easynav_playground_summit.git
+
+Then, follow the installation instructions in the package documentation.
+
+.. code-block:: bash
+
+    cd <easynav-workspace>/src/
+    vcs import . < easynav_playground_summit/thirdparty.repos
+    cd ..
+    rosdep install --from-paths src --ignore-src -r -y
+    colcon build --symlink-install 
+
+
+Then, you can use the following launch file:
+
+.. code-block:: bash
+
+    ros2 launch easynav_playground_summit playground_summit.launch.py
+
+And run easynav loading the parameters from the fusion_localizer package:
+
+.. code-block:: bash
+
+    ros2 run easynav_system system_main --ros-args --params-file easynav_plugins/localizers/easynav_fusion_localizer/config/example_params_summit_dual_gazebo.yaml
+
+
+After that, you can open rviz2 and check the output:
+
+.. raw:: html
+
+    <div align="center">
+      <iframe width="450" height="300" src="https://www.youtube.com/embed/grEapN47KW8" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+
 Detailed Parameter Explanations
 ===============================
 
