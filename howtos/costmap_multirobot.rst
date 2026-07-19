@@ -122,11 +122,12 @@ The multi-robot launch file spawns two Kobuki robots within the same Gazebo worl
 
 .. code-block:: bash
 
-   ros2 launch easynav_playground_kobuki playground_multirobot_kobuki.launch.py do_tf_remapping:=true gui:=false
+   ros2 launch easynav_playground_kobuki playgorund_multirobot_kobuki.launch.py do_tf_remapping:=true gui:=false
 
 .. note::
 
-   If your launch file uses a different name, adjust the command accordingly.
+   Note the filename is ``playgorund_multirobot_kobuki.launch.py`` (not a typo in this
+   guide — it matches the actual, slightly misspelled file name shipped in the package).
 
 ---
 
@@ -165,11 +166,11 @@ Open one RViz window per robot namespace to visualize each navigation stack inde
 
    ros2 launch easynav_playground_kobuki rviz_namespaced.launch.py \
      namespace:=r1 use_sim_time:=true \
-     rviz_config_file:=~/ros/ros2/easynav_ws/src/easynav_playground_kobuki/rviz/nav2_namespaced_view.rviz
+     rviz_config:=~/ros/ros2/easynav_ws/src/easynav_playground_kobuki/rviz/nav2_namespaced_view.rviz
 
    ros2 launch easynav_playground_kobuki rviz_namespaced.launch.py \
      namespace:=r2 use_sim_time:=true \
-     rviz_config_file:=~/ros/ros2/easynav_ws/src/easynav_playground_kobuki/rviz/nav2_namespaced_view.rviz
+     rviz_config:=~/ros/ros2/easynav_ws/src/easynav_playground_kobuki/rviz/nav2_namespaced_view.rviz
 
 You can now send **2D Goal Poses** independently in each RViz instance.
 
@@ -226,10 +227,11 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
          map_path_file: maps/home2.yaml
          filters: [obstacles, inflation]
          obstacles:
-           plugin: easynav_costmap_maps_manager/ObstacleFilter
+           plugin: easynav_costmap_maps_manager/CostmapMapsManager/ObstaclesFilter
          inflation:
-           plugin: easynav_costmap_maps_manager/InflationFilter
+           plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
            inflation_radius: 1.3
+           inscribed_radius: 0.25
            cost_scaling_factor: 3.0
 
    r1/planner_node:
@@ -246,15 +248,9 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
        use_sim_time: true
        forget_time: 0.5
        sensors: [laser1]
-       perception_default_frame: odom
        laser1:
          topic: scan_raw
          type: sensor_msgs/msg/LaserScan
-         group: points
-       camera1:
-         topic: rgbd_camera/points
-         type: sensor_msgs/msg/PointCloud2
-         group: points
 
    r1/system_node:
      ros__parameters:
@@ -309,10 +305,11 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
          map_path_file: maps/home2.yaml
          filters: [obstacles, inflation]
          obstacles:
-           plugin: easynav_costmap_maps_manager/ObstacleFilter
+           plugin: easynav_costmap_maps_manager/CostmapMapsManager/ObstaclesFilter
          inflation:
-           plugin: easynav_costmap_maps_manager/InflationFilter
+           plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
            inflation_radius: 1.3
+           inscribed_radius: 0.25
            cost_scaling_factor: 3.0
 
    r2/planner_node:
@@ -329,15 +326,9 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
        use_sim_time: true
        forget_time: 0.5
        sensors: [laser1]
-       perception_default_frame: odom
        laser1:
          topic: scan_raw
          type: sensor_msgs/msg/LaserScan
-         group: points
-       camera1:
-         topic: rgbd_camera/points
-         type: sensor_msgs/msg/PointCloud2
-         group: points
 
    r2/system_node:
      ros__parameters:

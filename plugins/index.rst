@@ -17,14 +17,22 @@ Each plugin resides in its own ROS 2 package and is registered through ``pluginl
 Supported ROS 2 versions
 ------------------------
 
-- **ROS 2 kilted** (Ubuntu 24.04, recommended)  
+- **ROS 2 jazzy** (Ubuntu 24.04)
+- **ROS 2 kilted** (Ubuntu 24.04, recommended)
 - **ROS 2 rolling**
+- **ROS 2 humble** (Ubuntu 22.04)
 
+.. image:: https://img.shields.io/badge/ROS%202-jazzy-blue
+   :alt: ROS 2 jazzy
+   :target: #
 .. image:: https://img.shields.io/badge/ROS%202-kilted-blue
    :alt: ROS 2 kilted
    :target: #
 .. image:: https://img.shields.io/badge/ROS%202-rolling-blue
    :alt: ROS 2 rolling
+   :target: #
+.. image:: https://img.shields.io/badge/ROS%202-humble-blue
+   :alt: ROS 2 humble
    :target: #
 
 .. image:: https://github.com/EasyNavigation/easynav_plugins/actions/workflows/rolling.yaml/badge.svg
@@ -67,17 +75,21 @@ Path-planning plugins implementing A*, costmap-based, and NavMap-based methods.
 
 Motion controllers for trajectory tracking and reactive behaviors.
 
-+----------------------------------------+---------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Package**                            | **Description**                                  | **Documentation**                                                                                                                                     |
-+========================================+===================================================+======================================================================================================================================================+
-| ``easynav_vff_controller``             | Vector Field Force (VFF) reactive controller.     | `easynav_vff_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_vff_controller/README.md>`_       |
-+----------------------------------------+---------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``easynav_mppi_controller``            | Model Predictive Path Integral (MPPI) controller. | `easynav_mppi_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_mppi_controller/README.md>`_     |
-+----------------------------------------+---------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``easynav_simple_controller``          | Simple proportional controller for testing.       | `easynav_simple_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_simple_controller/README.md>`_ |
-+----------------------------------------+---------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``easynav_serest_controller``          | SeReST (Safe Reactive Steering) controller.       | `easynav_serest_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_serest_controller/README.md>`_ |
-+----------------------------------------+---------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------+
++-------------------------------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Package**                         | **Description**                                                                   | **Documentation**                                                                                                                                                |
++=====================================+===================================================================================+==================================================================================================================================================================+
+| ``easynav_vff_controller``          | Vector Field Force (VFF) reactive controller.                                     | `easynav_vff_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_vff_controller/README.md>`_                   |
++-------------------------------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_mppi_controller``         | Model Predictive Path Integral (MPPI) controller.                                 | `easynav_mppi_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_mppi_controller/README.md>`_                 |
++-------------------------------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_simple_controller``       | Simple proportional controller for testing.                                       | `easynav_simple_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_simple_controller/README.md>`_             |
++-------------------------------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_serest_controller``       | SeReST (Safe Reactive Steering) controller.                                       | `easynav_serest_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_serest_controller/README.md>`_             |
++-------------------------------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_mpc_controller``          | Model Predictive Controller (MPC) for trajectory tracking.                        | `easynav_mpc_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_mpc_controller/README.md>`_                   |
++-------------------------------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_regulated_pp_controller`` | Regulated Pure Pursuit controller, with optional Dynamic Window (DWPP) extension. | `easynav_regulated_pp_controller README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_regulated_pp_controller/README.md>`_ |
++-------------------------------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 ---
 
@@ -109,24 +121,26 @@ Map-management plugins that provide, update, and store different environment rep
 
 Localization plugins based on different map types and sensors.
 
-+----------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Package**                            | **Description**                                           | **Documentation**                                                                                                                                   |
-+========================================+===========================================================+=====================================================================================================================================================+
-| ``easynav_gps_localizer``              | GPS-based localizer for outdoor navigation.               | `easynav_gps_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_gps_localizer/README.md>`_         |
-+----------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``easynav_simple_localizer``           | Basic localizer for ``SimpleMap``-based setups.           | `easynav_simple_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_simple_localizer/README.md>`_   |
-+----------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``easynav_navmap_localizer``           | AMCL-like localizer operating on NavMap meshes.           | `easynav_navmap_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_navmap_localizer/README.md>`_   |
-+----------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``easynav_costmap_localizer``          | AMCL-like localizer using ``Costmap2D``.                  | `easynav_costmap_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_costmap_localizer/README.md>`_ |
-+----------------------------------------+-----------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
++-------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Package**                   | **Description**                                             | **Documentation**                                                                                                                                   |
++===============================+=============================================================+=====================================================================================================================================================+
+| ``easynav_gps_localizer``     | GPS-based localizer for outdoor navigation.                 | `easynav_gps_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_gps_localizer/README.md>`_         |
++-------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_simple_localizer``  | Basic localizer for ``SimpleMap``-based setups.             | `easynav_simple_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_simple_localizer/README.md>`_   |
++-------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_navmap_localizer``  | AMCL-like localizer operating on NavMap meshes.             | `easynav_navmap_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_navmap_localizer/README.md>`_   |
++-------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_costmap_localizer`` | AMCL-like localizer using ``Costmap2D``.                    | `easynav_costmap_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_costmap_localizer/README.md>`_ |
++-------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_fusion_localizer``  | Multi-sensor fusion localizer (e.g., GPS + odometry + map). | `easynav_fusion_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_fusion_localizer/README.md>`_   |
++-------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 
 ---
 
 License
 -------
 
-All packages in this repository are released under **GPL-3.0-only**, unless stated otherwise in their respective package directories.
+All packages in this repository are released under **Apache-2.0**, unless stated otherwise in their respective package directories.
 
 .. toctree::
    :hidden:

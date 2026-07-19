@@ -142,7 +142,6 @@ Example configuration:
       ros__parameters:
         use_sim_time: true
         forget_time: 0.5
-        perception_default_frame: odom
 
     system_node:
       ros__parameters:
@@ -156,37 +155,45 @@ Example configuration:
 4. NavMap Build Parameters
 --------------------------
 
-The **NavMapMapsManager** allows tuning of mesh generation parameters
-via YAML configuration. You may add the following optional fields
-under the ``navmap`` plugin section.
+Internally, when the **NavMapMapsManager** builds a mesh from an incoming ``PointCloud2``
+(``incoming_pc2_map``), it calls ``navmap_ros::from_pointcloud2()`` with a
+``navmap_ros::BuildParams`` structure that controls mesh reconstruction quality:
 
-**Available parameters**
+**Available parameters (current defaults, not yet exposed as ROS parameters)**
 
-+----------------------+----------------------------------------------------------+
-| **Parameter**        | **Description**                                          |
-+======================+==========================================================+
-| ``resolution``       | In-plane sampling resolution (m) for voxelization.       |
-+----------------------+----------------------------------------------------------+
-| ``max_edge_len``     | Maximum triangle edge length (m).                        |
-+----------------------+----------------------------------------------------------+
-| ``max_dz``           | Maximum allowed vertical jump (m) between vertices.      |
-+----------------------+----------------------------------------------------------+
-| ``max_slope_deg``    | Maximum slope (degrees) relative to the vertical axis.   |
-+----------------------+----------------------------------------------------------+
-| ``neighbor_radius``  | Neighborhood radius (m) for triangle connectivity.       |
-+----------------------+----------------------------------------------------------+
-| ``k_neighbors``      | Alternative to radius: number of nearest neighbors.      |
-+----------------------+----------------------------------------------------------+
-| ``min_area``         | Minimum triangle area (m²) to reject degenerate faces.   |
-+----------------------+----------------------------------------------------------+
-| ``use_radius``       | Use radius-based vs. k-NN connectivity. (bool)           |
-+----------------------+----------------------------------------------------------+
-| ``min_angle_deg``    | Minimum interior angle (degrees) to avoid slivers.       |
-+----------------------+----------------------------------------------------------+
-| ``max_surfaces``     | Keep only the N largest connected surfaces (0 = all).    |
-+----------------------+----------------------------------------------------------+
++----------------------+----------------------------------------------------------+---------+
+| **Parameter**        | **Description**                                          | Default |
++======================+==========================================================+=========+
+| ``resolution``       | In-plane sampling resolution (m) for voxelization.       | 1.0     |
++----------------------+----------------------------------------------------------+---------+
+| ``max_edge_len``     | Maximum triangle edge length (m).                        | 2.0     |
++----------------------+----------------------------------------------------------+---------+
+| ``max_dz``           | Maximum allowed vertical jump (m) between vertices.      | 0.25    |
++----------------------+----------------------------------------------------------+---------+
+| ``max_slope_deg``    | Maximum slope (degrees) relative to the vertical axis.   | 30.0    |
++----------------------+----------------------------------------------------------+---------+
+| ``neighbor_radius``  | Neighborhood radius (m) for triangle connectivity.       | 2.0     |
++----------------------+----------------------------------------------------------+---------+
+| ``k_neighbors``      | Alternative to radius: number of nearest neighbors.      | 20      |
++----------------------+----------------------------------------------------------+---------+
+| ``min_area``         | Minimum triangle area (m²) to reject degenerate faces.   | 1e-6    |
++----------------------+----------------------------------------------------------+---------+
+| ``use_radius``       | Use radius-based vs. k-NN connectivity. (bool)           | true    |
++----------------------+----------------------------------------------------------+---------+
+| ``min_angle_deg``    | Minimum interior angle (degrees) to avoid slivers.       | 20.0    |
++----------------------+----------------------------------------------------------+---------+
+| ``max_surfaces``     | Keep only the N largest connected surfaces (0 = all).    | 0       |
++----------------------+----------------------------------------------------------+---------+
 
-These parameters allow fine control of NavMap mesh reconstruction quality.
+.. note::
+
+   These fields are defined by ``navmap_ros::BuildParams`` (see ``navmap_ros/conversions.hpp`` in
+   the `NavMap <https://github.com/EasyNavigation/NavMap>`_ repository), but as of this writing the
+   ``NavMapMapsManager`` constructs this structure with its default values when handling
+   ``incoming_pc2_map`` — it does **not** currently read them from the ``navmap`` plugin's YAML
+   configuration. If you need different mesh-reconstruction quality, you must change these defaults
+   in code (or check whether a newer release of ``easynav_navmap_maps_manager`` has since exposed
+   them as ROS parameters).
 
 ---
 
@@ -236,8 +243,9 @@ their respective map manager services.
 
    ros2 service call /maps_manager_node/navmap/savemap std_srvs/srv/Trigger
 
-This saves the NavMap to ``/tmp/map.navmap``.  
-Rename and move it to your desired location (e.g. inside ``maps/``).
+The ``NavMapMapsManager`` always writes to the hardcoded path ``/tmp/map.navmap``
+(this is unconditional in the current implementation, regardless of any ``navmap_path_file``
+you configured). Rename and move it to your desired location (e.g. inside ``maps/``).
 
 **Save Bonxai Map**
 
@@ -245,7 +253,17 @@ Rename and move it to your desired location (e.g. inside ``maps/``).
 
    ros2 service call /maps_manager_node/bonxai/savemap std_srvs/srv/Trigger
 
-This saves the Bonxai point cloud to ``/tmp/bonxai_map.pcd``.
+Unlike the NavMap manager, ``BonxaiMapsManager`` saves back to whatever path it used to *load*
+the map: if ``package``/``bonxai_path_file`` are left unset, it saves to ``/tmp/bonxai_map.pcd``;
+otherwise it overwrites the ``package``/``bonxai_path_file`` location.
+
+.. warning::
+
+   The example configuration above sets ``bonxai_path_file: maps/excavation_urjc.pcd``, so calling
+   ``savemap`` here will **overwrite** ``easynav_indoor_testcase/maps/excavation_urjc.pcd`` (the
+   original source map) rather than writing to ``/tmp/bonxai_map.pcd``. If you want to keep the
+   original file intact, back it up first, or temporarily clear ``package``/``bonxai_path_file``
+   before calling ``savemap``.
 
 ---
 
@@ -261,11 +279,12 @@ You have:
 - ✅ Saved both maps to disk for future use
 
 These maps can now be used in EasyNav navigation stacks (e.g. with
-the **Costmap**, **GridMap**, or **NavMap** planners).
+the **Costmap** or **NavMap** planners).
 
 ---
 
 **Next steps:**
 
 - :doc:`../developer_guide/design`
-- :doc:`../howtos/gridmap_mapping`
+- :doc:`../howtos/simple_navigating`
+- :doc:`../howtos/costmap_navigating`

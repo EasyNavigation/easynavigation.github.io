@@ -23,9 +23,10 @@ Overview
 This tutorial assumes you already have a map created with SLAM Toolbox or another mapping method.  
 If you have not yet generated a map, follow :doc:`simple_mapping` first.
 
-Once you have your map, save the ``.yaml`` and image file (``.pgm``/``.png``) in any package within your workspace,  
-such as ``easynav_indoor_testcase/maps``.  
-You will later reference it using the parameters ``package`` and ``map_path_file``.  
+Once you have your map, save the resulting ``.map`` file (the Simple Maps Manager's own text format,
+produced by its ``savemap`` service) in any package within your workspace,
+such as ``easynav_indoor_testcase/maps``.
+You will later reference it using the parameters ``package`` and ``map_path_file``.
 (Alternatively, you can use an absolute path with ``map_path_file`` alone.)
 
 ---
@@ -100,7 +101,7 @@ Below is a minimal working configuration for navigation with the *Simple Stack*.
           freq: 10.0
           plugin: easynav_simple_maps_manager/SimpleMapsManager
           package: easynav_indoor_testcase
-          map_path_file: maps/home.yaml
+          map_path_file: maps/home.map
 
     planner_node:
       ros__parameters:
@@ -116,11 +117,9 @@ Below is a minimal working configuration for navigation with the *Simple Stack*.
         use_sim_time: true
         forget_time: 0.5
         sensors: [laser1]
-        perception_default_frame: odom
         laser1:
           topic: scan_raw
           type: sensor_msgs/msg/LaserScan
-          group: points
 
     system_node:
       ros__parameters:

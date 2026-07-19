@@ -336,7 +336,6 @@ costmap-based localizer and planner, and the SerEst controller:
        use_sim_time: true
        forget_time: 0.5
        sensors: [laser1]
-       perception_default_frame: odom
        laser1:
          topic: scan_raw
          type: sensor_msgs/msg/LaserScan

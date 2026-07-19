@@ -115,6 +115,7 @@ General
 - :doc:`costmap_multirobot`
 - :doc:`ros2_easynav_cli`
 - :doc:`docker_crossdistro`
+- :doc:`custom_perception_plugin`
 
 .. toctree::
    :hidden:
@@ -122,6 +123,7 @@ General
    costmap_multirobot
    ros2_easynav_cli
    docker_crossdistro
+   custom_perception_plugin
 
 
 .. note::

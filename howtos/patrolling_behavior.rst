@@ -20,9 +20,24 @@ Overview
       <iframe width="450" height="300" src="https://www.youtube.com/embed/yN80Dqan5rE" frameborder="0" allowfullscreen></iframe>
     </div>
 
-The **Patrolling Behavior** shows how to send navigation commands programmatically,  
-monitor their completion, and reset the navigation state to repeat missions.  
-Both **C++** and **Python** versions are available in the `easynav_behaviors` repository.
+The **Patrolling Behavior** shows how to send navigation commands programmatically,
+monitor their completion, and reset the navigation state to repeat missions, using the
+``GoalManagerClient`` interface exposed by ``easynav_system``.
+
+.. warning::
+
+   There is currently **no ready-made "patrolling behavior" package** (``easynav_behaviors``,
+   ``easynav_patrolling_behavior``, ``easynav_patrolling_behavior_py``) shipped in this workspace.
+   What *does* exist and is real is the client-side goal API:
+
+   - C++: ``GoalManagerClient`` in ``easynav_system``
+     (``easynav_system/include/easynav_system/GoalManagerClient.hpp``).
+   - Python: ``GoalManagerClient`` / ``ClientState`` in the ``easynav_goalmanager_py`` module,
+     part of the ``easynav_support_py`` package.
+
+   This page describes how to use that real API to build a patrolling node yourself. Treat the
+   code below as a pattern to implement in your own package, not as an existing executable you can
+   ``ros2 run``.
 
 ---
 
@@ -31,13 +46,14 @@ Setup
 
 Before starting, make sure you have completed the installation instructions in :doc:`../build_install/index`.
 
-Then clone the following repositories into your workspace:
+Make sure ``easynav_indoor_testcase`` (for the simulation/config used below) and the core
+``EasyNavigation`` packages (which provide ``easynav_system`` and ``easynav_support_py``) are
+present in your workspace:
 
 .. code-block:: bash
 
    cd ~/ros/ros2/easynav_ws/src
    git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
-   git clone https://github.com/EasyNavigation/easynav_behaviors.git
 
 Build and source the workspace:
 
@@ -53,8 +69,9 @@ Build and source the workspace:
 Waypoint Configuration
 ----------------------
 
-Waypoints are defined in a YAML file under the ``config`` directory of the behavior package.  
-Each waypoint specifies its position (``x``, ``y``) and orientation (``yaw`` in radians).
+A common pattern is to define waypoints in a YAML file under the ``config`` directory of your own
+patrolling package. Each waypoint specifies its position (``x``, ``y``) and orientation
+(``yaw`` in radians).
 
 Example (``config/patrol_points.yaml``):
 
@@ -96,32 +113,34 @@ Before starting the patrol, launch the Costmap-based navigation stack.
 
 ---
 
-Running the Patrolling Behavior
--------------------------------
+Building the Patrolling Behavior
+---------------------------------
 
-You can run the patrolling behavior in **C++** or **Python**. Both implementations use the same configuration.
+As noted above, there is no bundled ``patrolling_main`` executable or launch file in the current
+codebase. Instead, you write a small ROS 2 node (C++ or Python) in your own package that:
 
-### 🧩 C++ Version
+1. Loads the waypoints YAML shown above.
+2. Wraps a ``GoalManagerClient`` around your node.
+3. Converts each waypoint into a ``geometry_msgs/msg/PoseStamped`` and sends them all as a
+   ``nav_msgs/msg/Goals`` via ``send_goals()``.
+4. Polls ``get_state()`` until the sequence finishes, then ``reset()``\ s and repeats.
+
+You would then run your own node/launch file, e.g.:
 
 .. code-block:: bash
 
-   ros2 run easynav_patrolling_behavior patrolling_main \
-     --ros-args --params-file ~/ros/ros2/easynav_ws/src/easynav_behaviors/config/patrol_points.yaml
+   ros2 run my_patrol_pkg patrolling_main --ros-args --params-file config/patrol_points.yaml
 
-### 🐍 Python Version
-
-.. code-block:: bash
-
-   ros2 launch easynav_patrolling_behavior_py patrolling.launch.py
-
-Both versions will read the YAML file, create navigation goals for each waypoint, and start cyclic navigation.
+or, in Python, build on the ``GoalManagerClient``/``ClientState`` classes importable from
+``easynav_goalmanager_py`` (part of ``easynav_support_py``).
 
 ---
 
 Code Explanation (C++ Version)
 ------------------------------
 
-Below is an overview of the core logic of the **C++ implementation** in `easynav_patrolling_behavior`.
+Below is an overview of the core logic you would write against the real
+``easynav_system::GoalManagerClient`` API (``easynav_system/include/easynav_system/GoalManagerClient.hpp``).
 
 ### 1. Creating the GoalManagerClient
 
@@ -168,8 +187,9 @@ The navigation state can be checked at any time using:
 
    auto nav_state = gm_client_->get_state();
 
-The returned value indicates the current status of navigation.  
-A typical `switch` block may look like this:
+The returned value indicates the current status of navigation. The real ``GoalManagerClient::State``
+enum (see ``GoalManagerClient.hpp``) has more granularity than a simple idle/running/success/failed
+set — it tracks the request/accept handshake explicitly:
 
 .. code-block:: cpp
 
@@ -179,20 +199,31 @@ A typical `switch` block may look like this:
        // No active navigation
        break;
 
-     case GoalManagerClient::State::RUNNING:
-       // Currently navigating toward a goal
+     case GoalManagerClient::State::SENT_GOAL:
+     case GoalManagerClient::State::SENT_PREEMPT:
+       // Goal(s) sent, waiting for the system to accept/reject them
        break;
 
-     case GoalManagerClient::State::SUCCESS:
-       // The goal was reached successfully
+     case GoalManagerClient::State::ACCEPTED_AND_NAVIGATING:
+       // Currently navigating toward the goal(s)
        break;
 
-     case GoalManagerClient::State::FAILED:
-       // The navigation failed or was aborted
+     case GoalManagerClient::State::NAVIGATION_FINISHED:
+       // The goal sequence was reached successfully
+       break;
+
+     case GoalManagerClient::State::NAVIGATION_REJECTED:
+     case GoalManagerClient::State::NAVIGATION_FAILED:
+     case GoalManagerClient::State::NAVIGATION_CANCELLED:
+     case GoalManagerClient::State::ERROR:
+       // The navigation failed, was rejected, was cancelled, or errored out
        break;
    }
 
 This allows the behavior to detect when all waypoints are completed, or when to retry a goal if it fails.
+``reset()`` may only be called from one of the terminal states (``NAVIGATION_FINISHED``,
+``NAVIGATION_REJECTED``, ``NAVIGATION_FAILED``, ``NAVIGATION_CANCELLED``, ``ERROR``); calling it from
+``IDLE``/``SENT_GOAL``/``SENT_PREEMPT``/``ACCEPTED_AND_NAVIGATING`` is logged as an error and ignored.
 
 ---
 
@@ -211,9 +242,11 @@ This ensures the next sequence starts from a clean state.
 Notes
 -----
 
-- The **patrolling behavior** is a simple example of commanding navigation goals programmatically.  
+- The **patrolling behavior** is a simple example of commanding navigation goals programmatically.
   It can be extended to perform inspection, delivery, or monitoring tasks.
-- Both the C++ and Python implementations use the same `GoalManager` interface, so they behave identically.
+- The C++ (``easynav_system::GoalManagerClient``) and Python (``easynav_goalmanager_py``) client
+  APIs mirror the same request/accept/feedback/result protocol, so behavior nodes written against
+  either one follow the same state machine.
 - The YAML file defines the patrol route; it can be edited live or generated from recorded positions.
 - Ensure that all waypoints are reachable within the current map and costmap configuration.
 

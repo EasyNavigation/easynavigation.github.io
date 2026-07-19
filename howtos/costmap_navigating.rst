@@ -1,12 +1,13 @@
 .. _costmap_navigating:
 
-=====================================
-Mapping with SLAM Toolbox and EasyNav
-=====================================
+=================================
+Navigating with the Costmap Stack
+=================================
 
-This HowTo shows how to perform **mapping and navigation** with **SLAM Toolbox** and **EasyNavigation (EasyNav)**.  
-It assumes that the environment has already been mapped and that you will now configure and run EasyNav to navigate
-using the generated map.
+This HowTo shows how to perform **navigation** with the **Costmap Stack** in **EasyNavigation (EasyNav)**,
+using a map produced with **SLAM Toolbox**.
+It assumes that the environment has already been mapped (see :doc:`costmap_mapping`) and that you will now
+configure and run EasyNav to navigate using the generated map.
 
 .. contents:: On this page
    :local:
@@ -57,17 +58,26 @@ Creating a Parameter File
 
 In this example, we will use:
 
-- The **SeReST controller** for motion control.  
-- The **AMCL localizer** for probabilistic localization.  
-- The **Simple Maps Manager** to load the map representation.
+- The **SeReST controller** for motion control.
+- The **AMCL localizer** for probabilistic localization, running over the Costmap.
+- The **Costmap Maps Manager** to load the graded map produced by SLAM Toolbox (YAML + image pair).
 
 Below is a minimal configuration that allows a simulated robot to navigate in a mapped environment.
+This matches the shipped reference file
+``easynav_indoor_testcase/robots_params/costmap.serest.params.yaml``.
 
 .. code-block:: yaml
 
     controller_node:
       ros__parameters:
         use_sim_time: true
+        colision_checker:
+          active: true
+          debug_markers: true
+          downsample_leaf_size: 0.05
+          robot_radius: 0.30
+          brake_acc: 1.0
+          safety_margin: 0.05
         controller_types: [serest]
         serest:
           rt_freq: 30.0
@@ -81,10 +91,10 @@ Below is a minimal configuration that allows a simulated robot to navigate in a 
           k_y: 1.5
           goal_pos_tol: 0.1
           goal_yaw_tol_deg: 6.0
-          slow_radius: 0.80
-          slow_min_speed: 0.02
-          final_align_k: 2.5
-          final_align_wmax: 0.8
+          slow_radius: 0.60
+          slow_min_speed: 0.03
+          final_align_k: 2.0
+          final_align_wmax: 0.6
           corner_guard_enable: true
           corner_gain_ey: 1.8
           corner_gain_eth: 0.7
@@ -97,19 +107,19 @@ Below is a minimal configuration that allows a simulated robot to navigate in a 
     localizer_node:
       ros__parameters:
         use_sim_time: true
-        localizer_types: [simple]
-        simple:
+        localizer_types: [costmap]
+        costmap:
           rt_freq: 50.0
           freq: 5.0
           reseed_freq: 1.0
-          plugin: easynav_simple_localizer/AMCLLocalizer
+          plugin: easynav_costmap_localizer/AMCLLocalizer
           num_particles: 100
           noise_translation: 0.05
           noise_rotation: 0.1
           noise_translation_to_rotation: 0.1
           initial_pose:
             x: 0.0
-            y: 0.0
+            y: 0.1
             yaw: 0.0
             std_dev_xy: 0.1
             std_dev_yaw: 0.01
@@ -117,12 +127,20 @@ Below is a minimal configuration that allows a simulated robot to navigate in a 
     maps_manager_node:
       ros__parameters:
         use_sim_time: true
-        map_types: [simple]
-        simple:
+        map_types: [costmap]
+        costmap:
           freq: 10.0
-          plugin: easynav_simple_maps_manager/SimpleMapsManager
+          plugin: easynav_costmap_maps_manager/CostmapMapsManager
           package: easynav_indoor_testcase
-          map_path_file: maps/home.yaml
+          map_path_file: maps/home2.yaml
+          filters: [obstacles, inflation]
+          obstacles:
+            plugin: easynav_costmap_maps_manager/CostmapMapsManager/ObstaclesFilter
+          inflation:
+            plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
+            inflation_radius: 1.3
+            inscribed_radius: 0.25
+            cost_scaling_factor: 3.0
 
     planner_node:
       ros__parameters:
@@ -130,23 +148,23 @@ Below is a minimal configuration that allows a simulated robot to navigate in a 
         planner_types: [simple]
         simple:
           freq: 0.5
-          plugin: easynav_simple_planner/SimplePlanner
-          robot_radius: 0.25
+          plugin: easynav_costmap_planner/CostmapPlanner
+          cost_factor: 10.0
+          continuous_replan: true
 
     sensors_node:
       ros__parameters:
         use_sim_time: true
         forget_time: 0.5
         sensors: [laser1]
-        perception_default_frame: odom
         laser1:
           topic: scan_raw
           type: sensor_msgs/msg/LaserScan
-          group: points
 
     system_node:
       ros__parameters:
         use_sim_time: true
+        use_real_time: true
         position_tolerance: 0.3
         angle_tolerance: 0.15
 
@@ -173,7 +191,7 @@ Running the Simulation
    .. code-block:: bash
 
       ros2 run easynav_system system_main \
-         --ros-args --params-file ~/ros/ros2/easynav_ws/src/easynav_indoor_testcase/robots_params/simple.serest_params.yaml
+         --ros-args --params-file ~/ros/ros2/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap.serest.params.yaml
 
    *(You can also create a dedicated launcher file for convenience.)*
 
@@ -185,8 +203,9 @@ Running the Simulation
 Notes
 -----
 
-- Ensure that the ``map_path_file`` path and package name correspond to your actual map.  
-- The *Simple Stack* is suitable for 2D navigation with binary occupancy grids;  
-  for graded cost-based navigation, consider switching to the *Costmap Stack* (:doc:`costmap_mapping`).  
+- Ensure that the ``map_path_file`` path and package name correspond to your actual map (the YAML + image pair
+  produced by SLAM Toolbox / ``map_saver``, not the *Simple Stack*'s single-file ``.map`` format).
+- Tune ``inflation_radius`` and ``cost_scaling_factor`` under the ``inflation`` filter to control how far the
+  robot stays from obstacles.
 - If navigation oscillates or stalls, verify that the controller gains (``k_theta``, ``k_y``) and speed limits
-  are consistent with your robot’s maximum velocities.
+  are consistent with your robot's maximum velocities.

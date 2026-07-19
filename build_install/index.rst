@@ -16,9 +16,10 @@ Supported platforms
 
 EasyNav targets modern Linux distributions and ROS 2 releases:
 
-- **Ubuntu 24.04 (Noble)** — ROS 2 *jazzy* (primary CI target)
+- **Ubuntu 26.04 (Noble)** — ROS 2 *rolling* (primary CI target)
 - **Ubuntu 24.04 (Noble)** — ROS 2 *kilted*
-- **Ubuntu 24.04 (Noble)** — ROS 2 *rolling*
+- **Ubuntu 24.04 (Noble)** — ROS 2 *jazzy*
+- **Ubuntu 22.04 (Jammy)** — ROS 2 *humble*
 - Other platforms may work but are not actively tested.
 
 .. note::
@@ -37,7 +38,7 @@ Prerequisites
    .. code-block:: bash
 
       # Example (adjust to your ROS 2 distro):
-      source /opt/ros/jazzy/setup.bash
+      source /opt/ros/kilted/setup.bash
 
 2. ROS dependencies
 
@@ -59,7 +60,7 @@ Binary packages will be provided via APT for Ubuntu + ROS 2 as they become avail
    .. code-block:: bash
 
       sudo apt update
-      sudo apt install ros-jazzy-easynav
+      sudo apt install ros-kilted-easynav
 
 Build from source
 -----------------
@@ -84,11 +85,11 @@ You can retrieve EasyNav sources by cloning the monorepo(s) you need:
    # Adjust workspace dir and branches to your needs
    cd ~/easynav_ws/src
    # Clone the main EasyNavigation repositories
-   git clone -b jazzy https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b jazzy https://github.com/EasyNavigation/NavMap.git
-   git clone -b jazzy https://github.com/EasyNavigation/easynav_plugins.git
+   git clone -b kilted https://github.com/EasyNavigation/EasyNavigation.git
+   git clone -b kilted https://github.com/EasyNavigation/NavMap.git
+   git clone -b kilted https://github.com/EasyNavigation/easynav_plugins.git
    # Clone yaets dependency
-   git clone -b jazzy https://github.com/fmrico/yaets.git
+   git clone -b kilted https://github.com/fmrico/yaets.git
 
 
 Install dependencies
@@ -117,7 +118,7 @@ Source the overlay
 .. code-block:: bash
 
    # Source ROS 2 first (jazzy / kilted / rolling)
-   source /opt/ros/jazzy/setup.bash
+   source /opt/ros/kilted/setup.bash
    # Then source the workspace
    source ~/easynav_ws/install/setup.bash
 
@@ -146,7 +147,7 @@ Troubleshooting
 
   .. code-block:: bash
 
-     source /opt/ros/jazzy/setup.bash
+     source /opt/ros/kilted/setup.bash
      source ~/easynav_ws/install/setup.bash
 
 - **ABI / compiler issues**
