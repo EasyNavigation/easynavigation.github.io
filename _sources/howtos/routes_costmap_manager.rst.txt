@@ -207,8 +207,9 @@ If ``routes.package`` and ``routes.map_path_file`` are configured, the
 routes are written back to that YAML file following the format described
 in the ``easynav_routes_maps_manager`` README (see the
 `easynav_routes_maps_manager` package for details). If they are not
-configured (as in the minimal example above), it is saved in 
-``/tmp/routes.yaml``.
+configured (as in the minimal example above), you can later load the
+generated file by setting the appropriate ``package`` and
+``map_path_file``.
 
 
 2) Using the routes for navigation
@@ -335,7 +336,6 @@ costmap-based localizer and planner, and the SerEst controller:
        use_sim_time: true
        forget_time: 0.5
        sensors: [laser1]
-       perception_default_frame: odom
        laser1:
          topic: scan_raw
          type: sensor_msgs/msg/LaserScan

@@ -27,7 +27,7 @@ We will set up a system composed of three main parts:
 ---
 
 Step 1: Building the Docker Image (Rolling)
----------------------------------
+--------------------------------------------
 
 First you must create the `Docker <https://docs.docker.com/engine/install/ubuntu/>`_ image containing the EasyNav stack and the Zenoh bridge. 
 
@@ -154,10 +154,13 @@ Now we launch the EasyNav container on the robot (or on a computer connected to 
 
 Inside the container you can now start the navigation system. The entrypoint script automatically starts the Zenoh bridge in the background.
 
+``system_main`` (package ``easynav_system``) is a plain node executable, not a launch file, so
+it is started with ``ros2 run`` and a parameters file rather than ``ros2 launch``:
+
 .. code-block:: bash
 
     # Inside the container
-    ros2 launch easynav_system system_main ...
+    ros2 run easynav_system system_main --ros-args --params-file /path/to/your_params.yaml
 
 .. tip::
     If you exited the container and want to restart it later use the following commands:

@@ -83,7 +83,7 @@ Instead of manually implementing the communication protocol, developers are enco
 
 - `send_goal(PoseStamped goal)` issues a goal with proper message formatting.
 - `cancel()` sends a CANCEL message.
-- `get_state()` returns the current state (e.g., `State::NAVIGATING`, `State::NAVIGATION_FINISHED`, etc.).
+- `get_state()` returns the current state (e.g., `State::ACCEPTED_AND_NAVIGATING`, `State::NAVIGATION_FINISHED`, etc.).
 - After receiving a terminal state (`FINISHED`, `FAILED`, `CANCELLED`, `REJECTED`, or `ERROR`), you **must** call `reset()` to clear the state before issuing a new command.
 
 Secondary Method: `/goal_pose` Topic

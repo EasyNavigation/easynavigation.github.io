@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Core Design and Architecture" href="design.html" />
-    <link rel="prev" title="GPS Localization" href="../howtos/gps_localization.html" />
+    <link rel="prev" title="Writing a Custom Perception Plugin" href="../howtos/custom_perception_plugin.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
 
@@ -58,11 +58,32 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#supported-platforms">Supported platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#installation-methods">Installation methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-binaries-apt">Install from binaries (APT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-binaries-apt">Install from binaries (APT)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#jazzy">Jazzy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#kilted">Kilted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#lyrical">Lyrical</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#installing-plugins-apt">Installing plugins (APT)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-via-pixi">Install via Pixi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#rolling">Rolling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#id1">Lyrical</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#id2">Kilted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#id3">Jazzy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#installing-plugins-pixi">Installing plugins (Pixi)</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#build-from-source">Build from source</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#workspace-layout">Workspace layout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#clone-sources">Clone sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#clone-sources">Clone sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/index.html#id5">Rolling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/index.html#id6">Lyrical</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/index.html#id7">Kilted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/index.html#id8">Jazzy</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#install-dependencies">Install dependencies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#configure-and-build">Configure and build</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#source-the-overlay">Source the overlay</a></li>
@@ -78,7 +99,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#build-and-source-the-workspace">Build and source the workspace</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#repository-overview">Repository overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#simulation-setup">Simulation setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
@@ -101,6 +125,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../simulations_real_robots/index.html">Simulations and Real Robots</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../howtos/index.html">HowTos and Practical Guides</a><ul>
@@ -134,7 +161,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#saving-maps">Saving maps</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating.html">Navigating with the Costmap Stack</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#mapping-and-preparation">Mapping and Preparation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
@@ -160,22 +187,21 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#gridmap-stack">GridMap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_mapping.html">Outdoor Mapping from a Point Cloud: NavMap and Bonxai Maps</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-slam-to-produce-a-point-cloud-map">2. Run SLAM to Produce a Point-Cloud Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#drive-the-robot-to-build-the-map">3. Drive the Robot to Build the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#launch-easynav-with-the-navmap-bonxai-maps-manager">4. Launch EasyNav with the NavMap/Bonxai Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#save-the-map-to-disk">5. Save the Map to Disk</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_navigating.html">3D/Uneven-Terrain Navigation with EasyNav: the NavMap Stack</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-easynav-with-the-navmap-stack">2. Launch EasyNav with the NavMap Stack</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#notes">Notes</a></li>
 </ul>
@@ -231,6 +257,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#code-explanation-python-version">Code Explanation (Python Version)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#notes">Notes</a></li>
 </ul>
 </li>
@@ -265,16 +292,24 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/custom_perception_plugin.html">Writing a Custom Perception Plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#when-do-you-need-a-custom-perception-plugin">When do you need a custom perception plugin?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#the-perceptionhandler-interface">The <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#walking-through-altimuperceptionhandler">Walking through <code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#registering-the-plugin">Registering the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#using-the-plugin">Using the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#writing-a-plugin-for-a-genuinely-new-message-type">Writing a plugin for a genuinely new message type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#notes">Notes</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#localizers">Localizers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/gps_localization.html">GPS Localization</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developers Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#real-time-execution-model">Real-Time Execution Model</a></li>
 </ul>
@@ -290,6 +325,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="perceptions.html">Sensor Input and Perception Handling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#grouping-sensors-group-is-optional-and-changes-visibility">Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#operation-summary">Operation Summary</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
@@ -299,6 +335,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#other-perception-types">Other Perception Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
 </ul>
 </li>
@@ -368,6 +405,7 @@ Its architecture relies on clear interfaces, shared data structures, and composa
 <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html#real-time-execution-model">Real-Time Execution Model</a></li>
 </ul>
@@ -383,11 +421,13 @@ Its architecture relies on clear interfaces, shared data structures, and composa
 </li>
 <li class="toctree-l1"><a class="reference internal" href="perceptions.html">Sensor Input and Perception Handling</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptions.html#grouping-sensors-group-is-optional-and-changes-visibility">Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility</a></li>
 <li class="toctree-l2"><a class="reference internal" href="perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="perceptions.html#operation-summary">Operation Summary</a></li>
 <li class="toctree-l2"><a class="reference internal" href="perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perceptions.html#other-perception-types">Other Perception Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
 </ul>
 </li>

@@ -6,16 +6,21 @@ Sensor Input and Perception Handling
 
 In EasyNav, **all sensor input flows through a single component**: the ``SensorsNode``. This node is responsible for:
 
-- subscribing to sensor topics defined in the parameter file,
-- converting sensor data into unified internal formats (e.g., point clouds, images),
-- organizing and storing perceptions into groups (e.g., `"points"`, `"image"`),
-- publishing a fused view (optional),
-- writing the current valid perceptions into the `NavState` under their corresponding group key.
+- subscribing to sensor topics defined in the parameter file, loading a ``PerceptionHandler`` plugin
+  for each one (auto-detected from the message type, or explicit via ``plugin:``),
+- converting sensor data into unified internal formats (point clouds, images, IMU/GNSS/odometry
+  readings, 3D detections),
+- writing the current data for each sensor into the ``NavState`` under its own key, and, only if
+  explicitly configured, registering that key as a member of a named group,
+- publishing a fused point-cloud view on ``sensors_node/perceptions`` (only while there are
+  subscribers on that topic).
 
 Sensor Configuration
 --------------------
 
-Sensors are defined via ROS 2 parameters under the `sensors_node` configuration. For example:
+Sensors are defined via ROS 2 parameters under the `sensors_node` configuration. For example
+(matching the shipped reference file
+``easynav_indoor_testcase/robots_params/costmap.serest.params.yaml``):
 
 .. code-block:: yaml
 
@@ -23,42 +28,102 @@ Sensors are defined via ROS 2 parameters under the `sensors_node` configuration.
      ros__parameters:
        use_sim_time: true
        forget_time: 0.5
-       sensors: [laser1, camera1]
-       perception_default_frame: odom
+       sensors: [laser1]
        laser1:
-         topic: /scan_raw
+         topic: scan_raw
          type: sensor_msgs/msg/LaserScan
-         group: points
-       camera1:
-         topic: /rgbd_camera/points
-         type: sensor_msgs/msg/PointCloud2
-         group: points
 
-All distance sensors (e.g., `LaserScan`, `PointCloud2`) must be grouped under the `"points"` group. These are converted internally into **`PointPerception`** instances and aggregated into a single structure called **`PointPerceptions`**, which is written into the `NavState` under the key `"points"`.
+Each entry under ``sensors:`` only needs a ``topic`` and a ``type``. ``plugin`` is **optional**:
+``SensorsNode`` auto-detects the right ``PerceptionHandler`` from the message type using a
+built-in table, so you only need ``plugin:`` for a custom/non-standard handler (see
+:doc:`../howtos/custom_perception_plugin` for a full worked example). The built-in
+mapping is:
 
-If image data is included:
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - ROS 2 message type
+     - Auto-selected handler / perception type
+   * - ``sensor_msgs/msg/LaserScan``
+     - ``PointPerceptionHandler`` / ``PointPerception``
+   * - ``sensor_msgs/msg/PointCloud2``
+     - ``PointPerceptionHandler`` / ``PointPerception``
+   * - ``sensor_msgs/msg/Image``
+     - ``ImagePerceptionHandler`` / ``ImagePerception``
+   * - ``sensor_msgs/msg/Imu``
+     - ``IMUPerceptionHandler`` / ``IMUPerception``
+   * - ``sensor_msgs/msg/NavSatFix``
+     - ``GNSSPerceptionHandler`` / ``GNSSPerception``
+   * - ``nav_msgs/msg/Odometry``
+     - ``OdometryPerceptionHandler`` / ``OdometryPerception``
+   * - ``vision_msgs/msg/Detection3DArray``
+     - ``DetectionsPerceptionHandler`` / ``DetectionsPerception``
+
+Each perception type declares a conventional ``default_group_`` name (``"points"``, ``"image"``,
+``"imu"``, ``"gnss"``, ``"odom"``, ``"detections"`` respectively), but ``SensorsNode`` does
+**not** apply it automatically — a sensor is only added to a group if you set ``group:``
+explicitly for it.
+
+Grouping sensors: ``group:`` is optional and changes visibility
+-----------------------------------------------------------------
+
+By default (no ``group:`` set), a sensor's perception is written to the ``NavState`` under its
+own key only. This is what almost every built-in controller, localizer and maps manager expects:
+they retrieve point-based perceptions with ``nav_state.get_no_group<PointPerception>()`` (see
+below), which returns every perception of that type that does **not** belong to any group.
+
+Setting ``group: <name>`` on a sensor does two things:
+
+- it still writes the perception under its own key, **and**
+- it additionally registers that key as a member of the ``<name>`` group.
+
+Because ``get_no_group<T>()`` explicitly excludes any key that belongs to a group, grouping a
+sensor **removes** it from that default pool — it becomes visible only to code that explicitly
+calls ``nav_state.get_group<T>("<name>")`` for that exact group name. This is used, for example,
+by ``easynav_fusion_localizer`` to separate its GNSS sensor(s) into a dedicated ``"gnss"`` group:
 
 .. code-block:: yaml
 
-   image1:
-     topic: /rgbd_camera/image_raw
-     type: sensor_msgs/msg/Image
-     group: image
+   sensors_node:
+     ros__parameters:
+       sensors: [imu, gps, laser1]
+       imu:
+         topic: /imu/data
+         type: sensor_msgs/msg/Imu
+       gps:
+         topic: /gps/fix
+         type: sensor_msgs/msg/NavSatFix
+         group: gnss
+       laser1:
+         topic: /front_laser/points
+         type: sensor_msgs/msg/PointCloud2
 
-Then the group `"image"` will appear in the `NavState`, using the `ImagePerception` type.
+.. warning::
+   Only set ``group:`` on a sensor if the consumer plugin you are using actually looks for that
+   named group (via ``get_group<T>("name")``). Most stock EasyNav plugins (AMCL-style localizers,
+   the SeReST/MPC/MPPI/RPP/VFF controllers, the Costmap/NavMap obstacle filters) read point
+   perceptions with ``get_no_group<PointPerception>()``, so grouping a point sensor under
+   ``"points"`` for no reason would make it invisible to all of them.
 
 Processing Point Perceptions
 ----------------------------
 
 To work with fused or filtered 3D points, EasyNav provides the utility class **`PointPerceptionsOpsView`**.
 
-You typically retrieve the `PointPerceptions` from the `NavState`. It is
-recommended to use ``const auto &`` to avoid unnecessary copies:
+Almost every built-in plugin retrieves point perceptions with ``get_no_group``, since sensors are
+ungrouped by default (see above). It is recommended to use ``const auto &`` to avoid unnecessary
+copies:
 
 .. code-block:: cpp
 
-  if (!nav_state.has("points")) return;
-  const auto & perceptions = nav_state.get<PointPerceptions>("points");
+  const auto & perceptions = nav_state.get_no_group<PointPerception>();
+
+``nav_state.get_by_type<PointPerception>()`` retrieves every `PointPerception` stored in the
+`NavState`, regardless of grouping (this is what ``SensorsNode`` itself uses to build the fused
+visualization topic, see below). ``nav_state.get_group<PointPerception>("points")`` retrieves only
+the sensors that were explicitly placed in the ``"points"`` group with ``group: points`` — use it
+only if your own configuration actually groups sensors that way.
 
 Then create an operations view and apply chained operations:
 
@@ -68,7 +133,7 @@ Then create an operations view and apply chained operations:
      .downsample(0.2)                             // reduce density
      .fuse("base_link")                          // transform all points to base_link
      .filter({-1.0, -1.0, 0.0}, {1.0, 1.0, 2.0})  // spatial crop
-     .as_points();                                // retrieve std::vector<Point3D>
+     .as_points();                                // retrieve pcl::PointCloud<pcl::PointXYZ>
 
 The view provides a fluent interface to manipulate the point cloud. Each operation returns a new
 `PointPerceptionsOpsView` (or a lightweight wrapper) so that calls can be chained with `.`.
@@ -76,19 +141,28 @@ The view provides a fluent interface to manipulate the point cloud. Each operati
 Operation Summary
 -----------------
 
-+--------------------+----------------------------+------------------------------------------+
-| Operation          | Return Type                | Description                              |
-+====================+============================+==========================================+
-| `filter(...)`      | `PointPerceptionsOpsView`  | Filters points inside a bounding box     |
-+--------------------+----------------------------+------------------------------------------+
-| `downsample(res)`  | `PointPerceptionsOpsView`  | Voxel downsampling                       |
-+--------------------+----------------------------+------------------------------------------+
-| `fuse(frame)`      | `PointPerceptionsOpsView`  | Transforms all perceptions to a frame    |
-+--------------------+----------------------------+------------------------------------------+
-| `collapse()`       | `PointPerceptionsOpsView`  | Merge similar points into one            |
-+--------------------+----------------------------+------------------------------------------+
-| `as_points()`      | `std::vector<Point3D>`     | Exports data as raw 3D point list        |
-+--------------------+----------------------------+------------------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 25 55
+
+   * - Operation
+     - Return Type
+     - Description
+   * - ``filter(...)``
+     - ``PointPerceptionsOpsView &``
+     - Filters points inside a bounding box
+   * - ``downsample(res)``
+     - ``PointPerceptionsOpsView &``
+     - Voxel-grid downsampling
+   * - ``fuse(frame)``
+     - ``PointPerceptionsOpsView &``
+     - Transforms all perceptions to a frame
+   * - ``collapse(dims)``
+     - ``PointPerceptionsOpsView &``
+     - Flattens/projects selected dimensions to fixed values (e.g. force z = 0)
+   * - ``as_points()``
+     - ``pcl::PointCloud<pcl::PointXYZ>``
+     - Exports data as a concatenated point cloud
 
 Lazy operations, frames and ``collapse``
 ----------------------------------------
@@ -99,7 +173,7 @@ are interpreted, and it is designed to significantly reduce execution time by de
 expensive work until the latest possible moment.
 
 ``filter(min_bounds, max_bounds, lazy_post_fuse)``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Signature (simplified):
 
@@ -239,22 +313,24 @@ Pitfalls
 Example: Updating a Map
 -----------------------
 
-Many components use fused and filtered points to update occupancy or elevation maps:
+Many components use fused and filtered points to update occupancy maps. For example, the
+`ObstacleFilter` used by ``easynav_costmap_maps_manager`` does the following:
 
 .. code-block:: cpp
 
-  const auto & perceptions = nav_state.get<PointPerceptions>("points");
+   const auto & perceptions = nav_state.get_no_group<PointPerception>();
 
-   auto fused = PointPerceptionsOpsView(perceptions)
-     .downsample(dynamic_map_.resolution())       // reduce point density
-     .fuse("map")                                // transform to map frame
-     .filter({NAN, NAN, 0.1}, {NAN, NAN, NAN})    // ignore ground clutter
-     .as_points();
+   auto view = PointPerceptionsOpsView(perceptions);
+   view.downsample(dynamic_map.getResolution())      // reduce point density
+     .fuse(tf_info.map_frame, stamp, false)          // transform to map frame
+     .filter({NAN, NAN, 0.1}, {NAN, NAN, NAN});      // ignore ground clutter
+
+   const auto & fused = view.as_points();
 
    for (const auto & p : fused) {
-     if (dynamic_map_.check_bounds_metric(p.x, p.y)) {
-       auto [cx, cy] = dynamic_map_.metric_to_cell(p.x, p.y);
-       dynamic_map_.at(cx, cy) = 1;
+     unsigned int cx, cy;
+     if (dynamic_map.worldToMap(p.x, p.y, cx, cy)) {
+       dynamic_map.setCost(cx, cy, LETHAL_OBSTACLE);
      }
    }
 
@@ -265,27 +341,74 @@ If the `SensorsNode` has subscribers on its output topic, it will publish the fu
 
 .. code-block:: cpp
 
-   if (percept_pub_->get_subscription_count() > 0) {
-     auto fused = PointPerceptionsOpsView(perceptions)
-       .fuse(perception_default_frame_);
+   const auto & points_perceptions = nav_state->get_by_type<PointPerception>();
 
-     auto fused_points = fused.as_points();
+   if (percept_pub_->get_subscription_count() > 0 && !points_perceptions.empty()) {
+     PointPerceptionsOpsView fused_view(std::move(points_perceptions));
+
+     const auto & tf_info = RTTFBuffer::getInstance()->get_tf_info();
+     const std::string & robot_footprint_frame = tf_info.robot_footprint_frame;
+
+     fused_view.fuse(robot_footprint_frame);
+     auto fused_points = fused_view.as_points();
+     if (fused_points.empty()) {return;}
+
      auto msg = points_to_rosmsg(fused_points);
-
-     msg.header.frame_id = perception_default_frame_;
-     msg.header.stamp = fused.get_perceptions()[0]->stamp;
+     msg.header.frame_id = robot_footprint_frame;
+     const auto & percs = fused_view.get_perceptions();
+     msg.header.stamp = (!percs.empty() && percs[0]) ? percs[0]->stamp : now();
      percept_pub_->publish(msg);
    }
 
+The target frame is the robot's footprint frame (``base_footprint`` by default), configured
+via the ``robot_footprint_frame`` parameter on the ``system_node`` (see :ref:`design`), not a
+per-sensor parameter.
+
+Other Perception Types
+----------------------
+
+Beyond ``PointPerception`` and ``ImagePerception``, EasyNav ships four more built-in perception
+types, each with its own ``PerceptionHandler`` and message type:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 40 20
+
+   * - Perception class
+     - ROS 2 message type
+     - Conventional group
+   * - ``IMUPerception``
+     - ``sensor_msgs/msg/Imu``
+     - ``"imu"``
+   * - ``GNSSPerception``
+     - ``sensor_msgs/msg/NavSatFix``
+     - ``"gnss"``
+   * - ``OdometryPerception``
+     - ``nav_msgs/msg/Odometry``
+     - ``"odom"``
+   * - ``DetectionsPerception``
+     - ``vision_msgs/msg/Detection3DArray``
+     - ``"detections"``
+
+All six perception types share the same base:
+
+- inherit from `PerceptionBase`, which provides `stamp`, `frame_id`, `valid`, and `new_data`,
+- are ungrouped by default, and only become part of a named group when their sensor entry sets
+  ``group:`` (see above),
+- are loaded and updated automatically by ``SensorsNode`` once declared under ``sensors:``.
+
 Extending to Other Modalities
------------------------------
+------------------------------
 
-In addition to `"points"` and `"image"`, developers can add new groups and corresponding `PerceptionBase`-derived classes. All perceptions:
+To support a ROS 2 message type not covered by the built-in table, implement a new
+`PerceptionBase`-derived class and a corresponding `PerceptionHandler` (following the same pattern
+as ``PointPerceptionHandler``/``ImagePerceptionHandler``), register it as a pluginlib plugin, and
+either reference it explicitly with ``plugin: <your_plugin_name>`` on the sensor entry, or extend
+the auto-detection table if you are contributing it back to ``easynav_sensors``.
 
-- inherit from `PerceptionBase`,
-- have a `stamp`, `frame_id`, and `valid` flag,
-- are grouped by semantic label (e.g., `"points"`),
-- are automatically managed by the `SensorsNode`.
+See :doc:`../howtos/custom_perception_plugin` for a full walkthrough of writing, registering, and
+using a custom ``PerceptionHandler`` plugin, based on the real ``easynav_alt_imu_sensor`` example
+package.
 
 ---
 

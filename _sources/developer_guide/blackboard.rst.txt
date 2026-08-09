@@ -13,7 +13,7 @@ All information needed or produced by EasyNav modules flows through the `NavStat
 - the robot's estimated pose (`robot_pose`),
 - a list of navigation goals (`goals`),
 - a path to follow (`path`),
-- environment maps (e.g., `map`, `map.dynamic`, `map.static`),
+- environment maps (e.g., `map`, `map.base`, `map.navmap`),
 - control commands (`cmd_vel`),
 - perception data (`points`, `image`, etc.).
 
@@ -43,7 +43,7 @@ To **write a value**, use:
 
    nav_state.set("cmd_vel", computed_twist);
 
-Values are stored under a string key and must be copyable. You can store standard ROS messages, custom types, or even nested structures. Keys can use dot notation (e.g., `"map.static"`, `"map.dynamic"`).
+Values are stored under a string key and must be copyable. You can store standard ROS messages, custom types, or even nested structures. Keys can use dot notation (e.g., `"map.base"`, `"map.navmap"`).
 
 Examples from Plugins
 ---------------------
@@ -58,7 +58,7 @@ A planner typically requires the robot’s pose, a goal, and a map. It writes ba
 
    const auto & pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose");
    const auto & goal = nav_state.get<nav_msgs::msg::Goals>("goals").goals.front().pose;
-   const auto & map = nav_state.get<grid_map::GridMap>("map");
+   const auto & map = nav_state.get<easynav::Costmap2D>("map");
 
    auto path = compute_path(map, pose.pose.pose, goal);
 
@@ -94,8 +94,10 @@ Advanced Features
 
 You can organize data hierarchically by using dots in keys:
 
-- `"map.static"` vs `"map.dynamic"`
-- `"perception.lidar"` vs `"perception.camera"`
+- `"map.base"` (raw map before filtering) vs plugin-specific keys such as `"map.navmap"` or `"map.bonxai"`,
+- individual sensor keys (e.g., `"laser1"`, `"camera1"`), each written under its own key by default;
+  a sensor is only added to a named group (e.g. `"points"`, `"gnss"`) when its `sensors_node`
+  entry explicitly sets `group:` (see :ref:`perceptions`).
 
 **Debugging**
 

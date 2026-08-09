@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Getting Started &mdash; EasyNavigation 1.0.0 documentation</title>
+  <title>Simulations and Real Robots &mdash; EasyNavigation 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -24,8 +24,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="EasyNav Plugins" href="../plugins/index.html" />
-    <link rel="prev" title="Build &amp; Install" href="../build_install/index.html" />
+    <link rel="next" title="HowTos and Practical Guides" href="../howtos/index.html" />
+    <link rel="prev" title="EasyNav Plugins" href="../plugins/index.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
 
@@ -97,20 +97,20 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#workspace-layout">Workspace layout</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#build-and-source-the-workspace">Build and source the workspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#build-and-source-the-workspace">Build and source the workspace</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#repository-overview">Repository overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#simulation-setup">Simulation setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#launching-easynav">Launching EasyNav</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#visualizing-in-rviz2">Visualizing in RViz2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#sending-navigation-goals">Sending navigation goals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next steps</a><ul class="simple">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#simulation-setup">Simulation setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#next-steps">Next steps</a><ul class="simple">
 </ul>
 </li>
 </ul>
@@ -127,7 +127,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../simulations_real_robots/index.html">Simulations and Real Robots</a><ul class="simple">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simulations and Real Robots</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../howtos/index.html">HowTos and Practical Guides</a><ul>
@@ -380,7 +380,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Getting Started</li>
+      <li class="breadcrumb-item active">Simulations and Real Robots</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -389,208 +389,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="getting-started">
-<span id="id1"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
-<p>This section guides you through your <strong>first run of EasyNavigation (EasyNav)</strong> using a simulated Turtlebot2 robot in a domestic environment.</p>
-<p>If you have not yet installed EasyNav, please complete the steps in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a>.</p>
-<nav class="contents local" id="on-this-page">
-<p class="topic-title">On this page</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
-<li><p><a class="reference internal" href="#workspace-layout" id="id3">Workspace layout</a></p>
-<ul>
-<li><p><a class="reference internal" href="#build-and-source-the-workspace" id="id4">Build and source the workspace</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#repository-overview" id="id5">Repository overview</a></p></li>
-<li><p><a class="reference internal" href="#simulation-setup" id="id6">Simulation setup</a></p></li>
-<li><p><a class="reference internal" href="#launching-easynav" id="id7">Launching EasyNav</a></p></li>
-<li><p><a class="reference internal" href="#visualizing-in-rviz2" id="id8">Visualizing in RViz2</a></p></li>
-<li><p><a class="reference internal" href="#sending-navigation-goals" id="id9">Sending navigation goals</a></p></li>
-<li><p><a class="reference internal" href="#visualizing-internal-process-with-the-tui" id="id10">Visualizing internal process with the TUI</a></p></li>
-<li><p><a class="reference internal" href="#troubleshooting" id="id11">Troubleshooting</a></p></li>
-<li><p><a class="reference internal" href="#next-steps" id="id12">Next steps</a></p></li>
-</ul>
-</nav>
-<section id="overview">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
-<p>We will run a ready-to-use simulation setup consisting of:</p>
-<ul class="simple">
-<li><p><strong>Robot:</strong> Turtlebot2 (Kobuki)</p></li>
-<li><p><strong>Environment:</strong> indoor domestic map</p></li>
-<li><p><strong>Stack:</strong> <em>Simple Stack</em> included within <cite>easynav_plugins</cite></p></li>
-<li><p><strong>Simulator:</strong> Gazebo Harmonic with RViz2 visualization</p></li>
-</ul>
-</section>
-<section id="workspace-layout">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Workspace layout</a><a class="headerlink" href="#workspace-layout" title="Permalink to this heading"></a></h2>
-<p>This guide builds two extra packages on top of your EasyNav installation:
-<code class="docutils literal notranslate"><span class="pre">easynav_playground_kobuki</span></code> (the Gazebo simulation) and <code class="docutils literal notranslate"><span class="pre">easynav_indoor_testcase</span></code>
-(maps, parameter files and RViz configurations). These are example/demo content and
-are only distributed as source, so you need a small colcon workspace at
-<code class="docutils literal notranslate"><span class="pre">~/easynav_ws</span></code> regardless of which method you used to install EasyNav’s core
-packages in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a>:</p>
-<ul>
-<li><p>Installed via <a class="reference internal" href="../build_install/index.html#install-apt"><span class="std std-ref">Install from binaries (APT)</span></a>: create the workspace now.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/easynav_ws/src
-</pre></div>
-</div>
-</li>
-<li><p>Installed via <a class="reference internal" href="../build_install/index.html#install-pixi"><span class="std std-ref">Install via Pixi</span></a>: reuse the workspace where you saved your
-<code class="docutils literal notranslate"><span class="pre">pixi.toml</span></code> (<code class="docutils literal notranslate"><span class="pre">~/easynav_ws</span></code>), and add the build tools needed to compile source
-packages inside the Pixi environment.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws
-pixi<span class="w"> </span>add<span class="w"> </span>colcon-common-extensions<span class="w"> </span>compilers<span class="w"> </span>cmake<span class="w"> </span>make<span class="w"> </span>ninja<span class="w"> </span>pkg-config<span class="w"> </span>rosdep
-mkdir<span class="w"> </span>-p<span class="w"> </span>src
-</pre></div>
-</div>
-</li>
-<li><p>Installed via <a class="reference internal" href="../build_install/index.html#build-from-source"><span class="std std-ref">Build from source</span></a>: you already have this workspace, with
-<code class="docutils literal notranslate"><span class="pre">EasyNavigation</span></code>, <code class="docutils literal notranslate"><span class="pre">NavMap</span></code>, <code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code> and <code class="docutils literal notranslate"><span class="pre">yaets</span></code> cloned under
-<code class="docutils literal notranslate"><span class="pre">src/</span></code>.</p></li>
-</ul>
-<p>Clone the demo repositories into <code class="docutils literal notranslate"><span class="pre">~/easynav_ws/src</span></code> and install their dependencies:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws/src
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_playground_kobuki.git
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_indoor_testcase.git
-<span class="c1"># Clone third-party dependencies using vcs tool</span>
-vcs<span class="w"> </span>import<span class="w"> </span>.<span class="w"> </span>&lt;<span class="w"> </span>easynav_playground_kobuki/thirdparty.repos
-<span class="c1"># Install dependencies via rosdep</span>
-<span class="nb">cd</span><span class="w"> </span>~/easynav_ws
-rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-y<span class="w"> </span>-r
-</pre></div>
-</div>
-<section id="build-and-source-the-workspace">
-<span id="gs-source-workspace"></span><h3><a class="toc-backref" href="#id4" role="doc-backlink">Build and source the workspace</a><a class="headerlink" href="#build-and-source-the-workspace" title="Permalink to this heading"></a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws
-colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
-</pre></div>
-</div>
-<p>Then source the environment, depending on how you installed EasyNav:</p>
-<ul>
-<li><p><strong>APT</strong> or <strong>build from source</strong>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>/opt/ros/&lt;distro&gt;/setup.bash
-<span class="nb">source</span><span class="w"> </span>~/easynav_ws/install/setup.bash
-</pre></div>
-</div>
-</li>
-<li><p><strong>Pixi</strong> (run inside <code class="docutils literal notranslate"><span class="pre">pixi</span> <span class="pre">shell</span></code>, or prefix commands with <code class="docutils literal notranslate"><span class="pre">pixi</span> <span class="pre">run</span></code>):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>~/easynav_ws/install/setup.bash
-</pre></div>
-</div>
-</li>
-</ul>
-<p>You will need to repeat this sourcing step in every new terminal you open for the
-rest of this guide.</p>
-</section>
-</section>
-<section id="repository-overview">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Repository overview</a><a class="headerlink" href="#repository-overview" title="Permalink to this heading"></a></h2>
-<ul class="simple">
-<li><p><strong>easynav_playground_kobuki</strong> –&gt; Gazebo simulation for the Turtlebot2 (Kobuki).</p></li>
-<li><p><strong>easynav_indoor_testcase</strong> –&gt; provides maps, parameter files, and RViz configurations for indoor navigation.</p></li>
-</ul>
-</section>
-<section id="simulation-setup">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Simulation setup</a><a class="headerlink" href="#simulation-setup" title="Permalink to this heading"></a></h2>
-<p>Once your workspace is built and sourced, launch the Gazebo simulation:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws
-ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>playground_kobuki.launch.py
-</pre></div>
-</div>
-<p>This starts a Gazebo Harmonic simulation of a Turtlebot2 robot in a domestic environment.</p>
-<img alt="Turtlebot2 simulation in Gazebo" class="align-center" src="../_images/kobuki_sim.png" />
-<p>To save resources, you can disable the Gazebo graphical interface:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>playground_kobuki.launch.py<span class="w"> </span>gui:<span class="o">=</span><span class="nb">false</span>
-</pre></div>
-</div>
-</section>
-<section id="launching-easynav">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Launching EasyNav</a><a class="headerlink" href="#launching-easynav" title="Permalink to this heading"></a></h2>
-<p>With the simulator running, open a <strong>new terminal</strong> and source your workspace again
-as described in <a class="reference internal" href="#gs-source-workspace"><span class="std std-ref">Build and source the workspace</span></a>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws
-</pre></div>
-</div>
-<p>Now start the EasyNav system using the predefined parameter file:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_system<span class="w"> </span>system_main<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>src/easynav_indoor_testcase/robots_params/simple.params.yaml
-</pre></div>
-</div>
-<p>This command launches the EasyNav core using the <em>Simple Stack</em> configuration located in <cite>easynav_plugins</cite>.</p>
-</section>
-<section id="visualizing-in-rviz2">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink">Visualizing in RViz2</a><a class="headerlink" href="#visualizing-in-rviz2" title="Permalink to this heading"></a></h2>
-<p>Open another new terminal and start RViz2 with the provided configuration:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note: First, source the environment as shown previously.</span>
-ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>-d<span class="w"> </span>~/easynav_ws/src/easynav_indoor_testcase/rviz/simple.rviz<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--ros-args<span class="w"> </span>-p<span class="w"> </span>use_sim_time:<span class="o">=</span><span class="nb">true</span>
-</pre></div>
-</div>
-<img alt="RViz2 with EasyNav loaded" class="align-center" src="../_images/kobuki_simple.png" />
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In RViz2, ensure the <strong>QoS</strong> of the <code class="docutils literal notranslate"><span class="pre">/map</span></code> topic is set to <strong>Transient Local</strong>
-so that the map is properly displayed when EasyNav publishes it.</p>
-</div>
-</section>
-<section id="sending-navigation-goals">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink">Sending navigation goals</a><a class="headerlink" href="#sending-navigation-goals" title="Permalink to this heading"></a></h2>
-<p>Once RViz2 is open, use the <strong>“2D Goal Pose”</strong> tool (in the top toolbar)
-to send a navigation goal. Click on a point in the map, and the robot will start navigating.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The Simple stack contains very basic algorithms, like A* and PID-based controller. It is expected that
-navigation won’t be optimal.</p>
-</div>
-<img alt="Turtlebot2 navigating using EasyNav" class="align-center" src="../_images/kobuki_simple_navigating.png" />
-</section>
-<section id="visualizing-internal-process-with-the-tui">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink">Visualizing internal process with the TUI</a><a class="headerlink" href="#visualizing-internal-process-with-the-tui" title="Permalink to this heading"></a></h2>
-<p>In addition to RViz2, <strong>EasyNav</strong> provides a <strong>Terminal User Interface (TUI)</strong> that allows you to monitor
-the internal state of the navigation system in real time.
-It is a text-based dashboard that displays key diagnostic information and performance metrics directly in the terminal.</p>
-<p>You can launch it in a new terminal after starting the EasyNav system:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_tools<span class="w"> </span>tui
-</pre></div>
-</div>
-<p>The TUI is divided into several panels:</p>
-<ul class="simple">
-<li><p><strong>Navigation Control:</strong> shows the current navigation mode (e.g., FEEDBACK, ACTIVE), current robot pose, progress toward the goal, and remaining distance.</p></li>
-<li><p><strong>Goal Info:</strong> displays details of the active navigation goal, angular and positional tolerances, and goal list.</p></li>
-<li><p><strong>Twist:</strong> real-time linear and angular velocity commands issued by the controller.</p></li>
-<li><p><strong>NavState:</strong> shows internal blackboard data structures such as <cite>robot_pose</cite>, <cite>cmd_vel</cite>, active <cite>map</cite>, and <cite>navigation_state</cite>.</p></li>
-<li><p><strong>Time stats:</strong> performance profiling of each system component (localizer, planner, controller, maps manager, etc.) including average execution time and update frequency.</p></li>
-</ul>
-<p>This interface is especially useful for debugging or performance evaluation without relying on graphical tools.</p>
-<a class="reference internal image-reference" href="../_images/easynav_simple_tui.png"><img alt="EasyNav Terminal User Interface" class="align-center" src="../_images/easynav_simple_tui.png" style="width: 90%;" /></a>
-<p>Press <strong>q</strong> to exit the TUI.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The TUI is optimized for dark terminals and supports color highlighting for active modules and
-real-time performance indicators.</p>
-</div>
-</section>
-<section id="troubleshooting">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Permalink to this heading"></a></h2>
-<ul class="simple">
-<li><p><strong>Robot does not move:</strong> ensure that both Gazebo and EasyNav terminals are running and synchronized with the same simulation time (<cite>use_sim_time:=true</cite>).</p></li>
-<li><p><strong>Map not visible in RViz2:</strong> check the QoS setting and verify the <cite>/map</cite> topic is being published.</p></li>
-<li><p><strong>Build errors:</strong> revisit <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a> and ensure dependencies were correctly installed via <cite>rosdep</cite>.</p></li>
-</ul>
-</section>
-<section id="next-steps">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink">Next steps</a><a class="headerlink" href="#next-steps" title="Permalink to this heading"></a></h2>
-<p>You have successfully launched <strong>EasyNav</strong> with a simulated robot!</p>
-<p>Continue exploring:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="../howtos/index.html"><span class="doc">HowTos and Practical Guides</span></a> — follow practical guides for mapping, navigation, and real robot deployment.</p></li>
-<li><p><a class="reference internal" href="../developer_guide/index.html"><span class="doc">Developers Guide</span></a> — dive into the internal design and architecture of the EasyNav framework.</p></li>
-</ul>
+  <section id="simulations-and-real-robots">
+<span id="id1"></span><h1>Simulations and Real Robots<a class="headerlink" href="#simulations-and-real-robots" title="Permalink to this heading"></a></h1>
+<p>Coming soon</p>
 <div class="toctree-wrapper compound">
 </div>
-</section>
 </section>
 
 

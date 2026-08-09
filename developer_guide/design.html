@@ -58,11 +58,32 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#supported-platforms">Supported platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#installation-methods">Installation methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-binaries-apt">Install from binaries (APT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-binaries-apt">Install from binaries (APT)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#jazzy">Jazzy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#kilted">Kilted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#lyrical">Lyrical</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#installing-plugins-apt">Installing plugins (APT)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-via-pixi">Install via Pixi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#rolling">Rolling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#id1">Lyrical</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#id2">Kilted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#id3">Jazzy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#installing-plugins-pixi">Installing plugins (Pixi)</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#build-from-source">Build from source</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#workspace-layout">Workspace layout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#clone-sources">Clone sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#clone-sources">Clone sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/index.html#id5">Rolling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/index.html#id6">Lyrical</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/index.html#id7">Kilted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/index.html#id8">Jazzy</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#install-dependencies">Install dependencies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#configure-and-build">Configure and build</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#source-the-overlay">Source the overlay</a></li>
@@ -78,7 +99,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#build-and-source-the-workspace">Build and source the workspace</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#repository-overview">Repository overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#simulation-setup">Simulation setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
@@ -101,6 +125,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../simulations_real_robots/index.html">Simulations and Real Robots</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../howtos/index.html">HowTos and Practical Guides</a><ul>
@@ -134,7 +161,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#saving-maps">Saving maps</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating.html">Navigating with the Costmap Stack</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#mapping-and-preparation">Mapping and Preparation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
@@ -160,22 +187,21 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#gridmap-stack">GridMap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_mapping.html">Outdoor Mapping from a Point Cloud: NavMap and Bonxai Maps</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-slam-to-produce-a-point-cloud-map">2. Run SLAM to Produce a Point-Cloud Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#drive-the-robot-to-build-the-map">3. Drive the Robot to Build the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#launch-easynav-with-the-navmap-bonxai-maps-manager">4. Launch EasyNav with the NavMap/Bonxai Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#save-the-map-to-disk">5. Save the Map to Disk</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_navigating.html">3D/Uneven-Terrain Navigation with EasyNav: the NavMap Stack</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-easynav-with-the-navmap-stack">2. Launch EasyNav with the NavMap Stack</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#notes">Notes</a></li>
 </ul>
@@ -231,6 +257,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#code-explanation-python-version">Code Explanation (Python Version)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#notes">Notes</a></li>
 </ul>
 </li>
@@ -265,16 +292,24 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/custom_perception_plugin.html">Writing a Custom Perception Plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#when-do-you-need-a-custom-perception-plugin">When do you need a custom perception plugin?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#the-perceptionhandler-interface">The <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#walking-through-altimuperceptionhandler">Walking through <code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#registering-the-plugin">Registering the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#using-the-plugin">Using the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#writing-a-plugin-for-a-genuinely-new-message-type">Writing a plugin for a genuinely new message type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#notes">Notes</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#localizers">Localizers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/gps_localization.html">GPS Localization</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Developers Guide</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#real-time-execution-model">Real-Time Execution Model</a></li>
 </ul>
@@ -290,6 +325,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="perceptions.html">Sensor Input and Perception Handling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#grouping-sensors-group-is-optional-and-changes-visibility">Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#operation-summary">Operation Summary</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
@@ -299,6 +335,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#other-perception-types">Other Perception Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
 </ul>
 </li>
@@ -360,8 +397,8 @@
 <p>The figure above illustrates the general architecture of EasyNav.</p>
 <p>EasyNav runs within a single process that hosts a ROS 2 <strong>Lifecycle Node</strong> called <code class="docutils literal notranslate"><span class="pre">SystemNode</span></code>, which coordinates the entire navigation system. Through composition, <code class="docutils literal notranslate"><span class="pre">SystemNode</span></code> includes several other ROS 2 Lifecycle Nodes, each responsible for a specific function in the navigation pipeline:</p>
 <ul class="simple">
-<li><p><strong>Sensors Node</strong>: This node collects and preprocesses all sensory input used by the navigation system. It supports multiple types of sensors, grouped by modality (e.g., laser scans, point clouds).</p></li>
-<li><p><strong>MapsManager Node</strong>: Responsible for how the environment is represented. It supports multiple plugins that define the actual data structure for the map: costmaps, gridmaps, octomaps, pointclouds, and more. The plugin selection is configurable depending on the application or use case.</p></li>
+<li><p><strong>Sensors Node</strong>: This node collects and preprocesses all sensory input used by the navigation system, across six built-in perception types (point clouds/laser scans, images, IMU, GNSS, odometry, and 3D detections). Sensors are ungrouped by default; they are only placed into a named group when explicitly configured to do so (see <a class="reference internal" href="perceptions.html#perceptions"><span class="std std-ref">Sensor Input and Perception Handling</span></a>).</p></li>
+<li><p><strong>MapsManager Node</strong>: Responsible for how the environment is represented. It supports multiple plugins that define the actual data structure for the map: costmaps, NavMap triangulated meshes, Bonxai probabilistic voxel maps, octomaps, and simpler binary maps, among others. The plugin selection is configurable depending on the application or use case.</p></li>
 <li><p><strong>Localizer Node</strong>: Estimates the robot’s position within the map. It uses a localization plugin that must be compatible with the type of environment representation used by the MapsManager.</p></li>
 <li><p><strong>Planner Node</strong>: Computes a path from the robot’s current position to its goal (as managed by the GoalManager). The selected plugin determines the planning algorithm used.</p></li>
 <li><p><strong>Controller Node</strong>: Generates velocity commands to follow the planned path. Its functionality is encapsulated in a plugin, which outputs either <code class="docutils literal notranslate"><span class="pre">Twist</span></code> or <code class="docutils literal notranslate"><span class="pre">TwistStamped</span></code> messages depending on configuration.</p></li>
@@ -428,11 +465,9 @@
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">forget_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
 <span class="w">    </span><span class="nt">sensors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">laser1</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">perception_default_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odom</span>
 <span class="w">    </span><span class="nt">laser1</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/scan_raw</span>
 <span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_msgs/msg/LaserScan</span>
-<span class="w">      </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">points</span>
 
 <span class="nt">system_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -453,7 +488,6 @@
 <span class="w">    </span><span class="nt">dummy</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">rt_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0</span>
 <span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_controller/DummyController</span>
-<span class="w">      </span><span class="nt">cycle_time_nort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
 <span class="w">      </span><span class="nt">cycle_time_rt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
 
 <span class="nt">localizer_node</span><span class="p">:</span>
@@ -476,7 +510,6 @@
 <span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
 <span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_maps_manager/DummyMapsManager</span>
 <span class="w">      </span><span class="nt">cycle_time_nort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
-<span class="w">      </span><span class="nt">cycle_time_rt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
 
 <span class="nt">planner_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -486,7 +519,6 @@
 <span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
 <span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_planner/DummyPlanner</span>
 <span class="w">      </span><span class="nt">cycle_time_nort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
-<span class="w">      </span><span class="nt">cycle_time_rt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
 
 <span class="nt">sensors_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -501,6 +533,73 @@
 </pre></div>
 </div>
 <p>This configuration is especially useful for testing system integration, message flow, and user interfaces without requiring sensor data or a simulated robot. You can later replace dummy plugins with functional ones as needed.</p>
+<section id="coordinate-frames-tf">
+<h2>Coordinate Frames (TF)<a class="headerlink" href="#coordinate-frames-tf" title="Permalink to this heading"></a></h2>
+<p>EasyNav follows <a class="reference external" href="http://www.ros.org/reps/rep-0105.html">REP-105</a> for its frame-naming
+convention, and centralizes all frame configuration in a single place: <code class="docutils literal notranslate"><span class="pre">system_node</span></code>. Rather
+than each node or plugin declaring its own frame parameters (an early version of EasyNav had, for
+example, a <code class="docutils literal notranslate"><span class="pre">perception_default_frame</span></code> parameter local to <code class="docutils literal notranslate"><span class="pre">sensors_node</span></code>), <code class="docutils literal notranslate"><span class="pre">SystemNode</span></code>
+declares six frame parameters once, assembles them into a single <code class="docutils literal notranslate"><span class="pre">TFInfo</span></code> struct, and pushes it
+into <code class="docutils literal notranslate"><span class="pre">RTTFBuffer</span></code> — a process-wide singleton that is <em>both</em> the shared <code class="docutils literal notranslate"><span class="pre">tf2_ros::Buffer</span></code> used
+for real-time TF lookups <em>and</em> the single source of truth for frame names across EasyNav.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 20.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter (on <code class="docutils literal notranslate"><span class="pre">system_node</span></code>)</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tf_prefix</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> (empty)</p></td>
+<td><p>Optional prefix prepended to every frame below; used to give each robot its own TF tree in
+multi-robot setups (see <a class="reference internal" href="../howtos/costmap_multirobot.html"><span class="doc">Multi-Robot Navigation with EasyNav</span></a>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">map_frame</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;map&quot;</span></code></p></td>
+<td><p>Global map frame.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">odom_frame</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;odom&quot;</span></code></p></td>
+<td><p>Odometry frame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">robot_frame</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;base_link&quot;</span></code></p></td>
+<td><p>Robot base frame.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">robot_footprint_frame</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;base_footprint&quot;</span></code></p></td>
+<td><p>Robot footprint frame (e.g. used by <code class="docutils literal notranslate"><span class="pre">SensorsNode</span></code> as the target frame for the fused
+perception cloud, see <a class="reference internal" href="perceptions.html#perceptions"><span class="std std-ref">Sensor Input and Perception Handling</span></a>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">world_frame</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;earth&quot;</span></code></p></td>
+<td><p>Global/earth-fixed frame used by global estimators (e.g. GNSS-based fusion in
+<code class="docutils literal notranslate"><span class="pre">easynav_fusion_localizer</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+<p>On <code class="docutils literal notranslate"><span class="pre">on_configure()</span></code>, <code class="docutils literal notranslate"><span class="pre">SystemNode</span></code> reads these six parameters into a <code class="docutils literal notranslate"><span class="pre">TFInfo</span></code> and calls
+<code class="docutils literal notranslate"><span class="pre">RTTFBuffer::getInstance()-&gt;set_tf_info(tf_info)</span></code>. If <code class="docutils literal notranslate"><span class="pre">tf_prefix</span></code> is non-empty, this call
+automatically prepends <code class="docutils literal notranslate"><span class="pre">&quot;&lt;tf_prefix&gt;/&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">map_frame</span></code>, <code class="docutils literal notranslate"><span class="pre">odom_frame</span></code>, <code class="docutils literal notranslate"><span class="pre">robot_frame</span></code>,
+<code class="docutils literal notranslate"><span class="pre">robot_footprint_frame</span></code> and <code class="docutils literal notranslate"><span class="pre">world_frame</span></code> — this is how a multi-robot setup gets a fully
+namespaced TF tree per robot (<code class="docutils literal notranslate"><span class="pre">r1/base_link</span></code>, <code class="docutils literal notranslate"><span class="pre">r1/odom</span></code>, …) from a single <code class="docutils literal notranslate"><span class="pre">tf_prefix:</span> <span class="pre">r1</span></code>
+parameter, without spelling out every frame name per robot.</p>
+<p>Any node or plugin that needs a frame name reads it from the shared singleton instead of
+hardcoding a literal such as <code class="docutils literal notranslate"><span class="pre">&quot;map&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;base_link&quot;</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">tf_info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">easynav</span><span class="o">::</span><span class="n">RTTFBuffer</span><span class="o">::</span><span class="n">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">get_tf_info</span><span class="p">();</span>
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">map_frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tf_info</span><span class="p">.</span><span class="n">map_frame</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>This is why plugins (obstacle filters, localizers, the fused-perception publisher in
+<code class="docutils literal notranslate"><span class="pre">SensorsNode</span></code>, …) always resolve frames through <code class="docutils literal notranslate"><span class="pre">RTTFBuffer::getInstance()-&gt;get_tf_info()</span></code>
+rather than through a per-node parameter.</p>
+</section>
 <section id="navstate-the-shared-blackboard">
 <h2>NavState: The Shared Blackboard<a class="headerlink" href="#navstate-the-shared-blackboard" title="Permalink to this heading"></a></h2>
 <p>A key architectural component of EasyNav is the <strong>NavState</strong>, a shared <em>blackboard</em> that holds all the internal state information required by the navigation system.</p>

@@ -58,11 +58,32 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Build &amp; Install</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#supported-platforms">Supported platforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-methods">Installation methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#install-from-binaries-apt">Install from binaries (APT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-from-binaries-apt">Install from binaries (APT)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#jazzy">Jazzy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kilted">Kilted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lyrical">Lyrical</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-plugins-apt">Installing plugins (APT)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#install-via-pixi">Install via Pixi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rolling">Rolling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Lyrical</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Kilted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Jazzy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-plugins-pixi">Installing plugins (Pixi)</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#build-from-source">Build from source</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#workspace-layout">Workspace layout</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#clone-sources">Clone sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clone-sources">Clone sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Rolling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Lyrical</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Kilted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">Jazzy</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#install-dependencies">Install dependencies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configure-and-build">Configure and build</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#source-the-overlay">Source the overlay</a></li>
@@ -78,7 +99,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#workspace-layout">Workspace layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#build-and-source-the-workspace">Build and source the workspace</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#repository-overview">Repository overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#simulation-setup">Simulation setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
@@ -101,6 +125,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../simulations_real_robots/index.html">Simulations and Real Robots</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../howtos/index.html">HowTos and Practical Guides</a><ul>
@@ -134,7 +161,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#saving-maps">Saving maps</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating.html">Navigating with the Costmap Stack</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#mapping-and-preparation">Mapping and Preparation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
@@ -160,22 +187,21 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#gridmap-stack">GridMap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_mapping.html">Outdoor Mapping from a Point Cloud: NavMap and Bonxai Maps</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-slam-to-produce-a-point-cloud-map">2. Run SLAM to Produce a Point-Cloud Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#drive-the-robot-to-build-the-map">3. Drive the Robot to Build the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#launch-easynav-with-the-navmap-bonxai-maps-manager">4. Launch EasyNav with the NavMap/Bonxai Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#save-the-map-to-disk">5. Save the Map to Disk</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_navigating.html">3D/Uneven-Terrain Navigation with EasyNav: the NavMap Stack</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-easynav-with-the-navmap-stack">2. Launch EasyNav with the NavMap Stack</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#notes">Notes</a></li>
 </ul>
@@ -231,6 +257,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#code-explanation-python-version">Code Explanation (Python Version)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#notes">Notes</a></li>
 </ul>
 </li>
@@ -265,16 +292,24 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/custom_perception_plugin.html">Writing a Custom Perception Plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#when-do-you-need-a-custom-perception-plugin">When do you need a custom perception plugin?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#the-perceptionhandler-interface">The <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#walking-through-altimuperceptionhandler">Walking through <code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#registering-the-plugin">Registering the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#using-the-plugin">Using the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#writing-a-plugin-for-a-genuinely-new-message-type">Writing a plugin for a genuinely new message type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#notes">Notes</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#localizers">Localizers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/gps_localization.html">GPS Localization</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a></li>
 </ul>
@@ -290,6 +325,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_guide/perceptions.html">Sensor Input and Perception Handling</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#grouping-sensors-group-is-optional-and-changes-visibility">Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#operation-summary">Operation Summary</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
@@ -299,6 +335,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#other-perception-types">Other Perception Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
 </ul>
 </li>
@@ -358,47 +395,80 @@
 <nav class="contents local" id="on-this-page">
 <p class="topic-title">On this page</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#supported-platforms" id="id1">Supported platforms</a></p></li>
-<li><p><a class="reference internal" href="#prerequisites" id="id2">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#install-from-binaries-apt" id="id3">Install from binaries (APT)</a></p></li>
-<li><p><a class="reference internal" href="#build-from-source" id="id4">Build from source</a></p>
+<li><p><a class="reference internal" href="#supported-platforms" id="id9">Supported platforms</a></p></li>
+<li><p><a class="reference internal" href="#installation-methods" id="id10">Installation methods</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites" id="id11">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#install-from-binaries-apt" id="id12">Install from binaries (APT)</a></p>
 <ul>
-<li><p><a class="reference internal" href="#workspace-layout" id="id5">Workspace layout</a></p></li>
-<li><p><a class="reference internal" href="#clone-sources" id="id6">Clone sources</a></p></li>
-<li><p><a class="reference internal" href="#install-dependencies" id="id7">Install dependencies</a></p></li>
-<li><p><a class="reference internal" href="#configure-and-build" id="id8">Configure and build</a></p></li>
-<li><p><a class="reference internal" href="#source-the-overlay" id="id9">Source the overlay</a></p></li>
-<li><p><a class="reference internal" href="#run-tests-optional" id="id10">Run tests (optional)</a></p></li>
+<li><p><a class="reference internal" href="#jazzy" id="id13">Jazzy</a></p></li>
+<li><p><a class="reference internal" href="#kilted" id="id14">Kilted</a></p></li>
+<li><p><a class="reference internal" href="#lyrical" id="id15">Lyrical</a></p></li>
+<li><p><a class="reference internal" href="#installing-plugins-apt" id="id16">Installing plugins (APT)</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#troubleshooting" id="id11">Troubleshooting</a></p></li>
-<li><p><a class="reference internal" href="#uninstall-clean" id="id12">Uninstall / clean</a></p></li>
-<li><p><a class="reference internal" href="#next-steps" id="id13">Next steps</a></p></li>
+<li><p><a class="reference internal" href="#install-via-pixi" id="id17">Install via Pixi</a></p>
+<ul>
+<li><p><a class="reference internal" href="#rolling" id="id18">Rolling</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id19">Lyrical</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id20">Kilted</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id21">Jazzy</a></p></li>
+<li><p><a class="reference internal" href="#installing-plugins-pixi" id="id22">Installing plugins (Pixi)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#build-from-source" id="id23">Build from source</a></p>
+<ul>
+<li><p><a class="reference internal" href="#workspace-layout" id="id24">Workspace layout</a></p></li>
+<li><p><a class="reference internal" href="#clone-sources" id="id25">Clone sources</a></p></li>
+<li><p><a class="reference internal" href="#install-dependencies" id="id26">Install dependencies</a></p></li>
+<li><p><a class="reference internal" href="#configure-and-build" id="id27">Configure and build</a></p></li>
+<li><p><a class="reference internal" href="#source-the-overlay" id="id28">Source the overlay</a></p></li>
+<li><p><a class="reference internal" href="#run-tests-optional" id="id29">Run tests (optional)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#troubleshooting" id="id30">Troubleshooting</a></p></li>
+<li><p><a class="reference internal" href="#uninstall-clean" id="id31">Uninstall / clean</a></p></li>
+<li><p><a class="reference internal" href="#next-steps" id="id32">Next steps</a></p></li>
 </ul>
 </nav>
 <section id="supported-platforms">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Supported platforms</a><a class="headerlink" href="#supported-platforms" title="Permalink to this heading"></a></h2>
-<p>EasyNav targets modern Linux distributions and ROS 2 releases:</p>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Supported platforms</a><a class="headerlink" href="#supported-platforms" title="Permalink to this heading"></a></h2>
+<p>EasyNav targets modern Linux distributions and the following ROS 2 releases:</p>
 <ul class="simple">
-<li><p><strong>Ubuntu 24.04 (Noble)</strong> — ROS 2 <em>jazzy</em> (primary CI target)</p></li>
-<li><p><strong>Ubuntu 24.04 (Noble)</strong> — ROS 2 <em>kilted</em></p></li>
-<li><p><strong>Ubuntu 24.04 (Noble)</strong> — ROS 2 <em>rolling</em></p></li>
-<li><p>Other platforms may work but are not actively tested.</p></li>
+<li><p><strong>rolling</strong> — tracks the latest supported Ubuntu release</p></li>
+<li><p><strong>lyrical</strong> — Ubuntu 26.04 (Resolute)</p></li>
+<li><p><strong>kilted</strong> — Ubuntu 24.04 (Noble)</p></li>
+<li><p><strong>jazzy</strong> — Ubuntu 24.04 (Noble)</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you are using a different distribution or ROS 2 release, contributions to extend
-the support matrix are very welcome.</p>
+<p>If you are using a different ROS 2 release, contributions to extend the support
+matrix are very welcome.</p>
 </div>
 </section>
+<section id="installation-methods">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Installation methods</a><a class="headerlink" href="#installation-methods" title="Permalink to this heading"></a></h2>
+<p>EasyNav can be installed in three ways:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#install-apt"><span class="std std-ref">Install from binaries (APT)</span></a> — precompiled Debian packages. Available for <strong>jazzy</strong>,
+<strong>kilted</strong> and <strong>lyrical</strong> (not <strong>rolling</strong>).</p></li>
+<li><p><a class="reference internal" href="#install-pixi"><span class="std std-ref">Install via Pixi</span></a> — precompiled Pixi/conda packages, self-contained (bundles
+its own ROS 2). Available for <strong>rolling</strong>, <strong>jazzy</strong>, <strong>kilted</strong> and <strong>lyrical</strong>.</p></li>
+<li><p><a class="reference internal" href="#build-from-source"><span class="std std-ref">Build from source</span></a> — clone and build with colcon. Available for all four
+supported distros.</p></li>
+</ul>
+</section>
 <section id="prerequisites">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Prerequisites</a><a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Prerequisites</a><a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
+<p>The prerequisites below apply to the <strong>APT</strong> and <strong>build from source</strong> methods. If you
+install via <strong>Pixi</strong>, everything (including ROS 2 itself) is provided by the Pixi
+environment and no system-wide ROS 2 installation is required — you can skip ahead to
+<a class="reference internal" href="#install-pixi"><span class="std std-ref">Install via Pixi</span></a>.</p>
 <ol class="arabic">
-<li><p>ROS 2 (jazzy, kilted or rolling)</p>
+<li><p>ROS 2 (jazzy, kilted, lyrical or rolling)</p>
 <p>Follow the official ROS 2 installation instructions for your platform.
 Ensure your ROS 2 environment is sourced before building EasyNav.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example (adjust to your ROS 2 distro):</span>
-<span class="nb">source</span><span class="w"> </span>/opt/ros/jazzy/setup.bash
+<span class="nb">source</span><span class="w"> </span>/opt/ros/kilted/setup.bash
 </pre></div>
 </div>
 </li>
@@ -411,21 +481,187 @@ rosdep<span class="w"> </span>update
 </ol>
 </section>
 <section id="install-from-binaries-apt">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Install from binaries (APT)</a><a class="headerlink" href="#install-from-binaries-apt" title="Permalink to this heading"></a></h2>
-<p>Binary packages will be provided via APT for Ubuntu + ROS 2 as they become available.</p>
-<div class="hint admonition">
-<p class="admonition-title">Coming soon</p>
-<p>Prebuilt Debian packages are planned. Once published, you will be able to run:</p>
+<span id="install-apt"></span><h2><a class="toc-backref" href="#id12" role="doc-backlink">Install from binaries (APT)</a><a class="headerlink" href="#install-from-binaries-apt" title="Permalink to this heading"></a></h2>
+<p>EasyNav is released as binary Debian packages through the ROS 2 buildfarm for
+<strong>jazzy</strong>, <strong>kilted</strong> and <strong>lyrical</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Rolling</strong> does not have APT/binary packages, since ROS 2 Rolling is not released
+through the Debian buildfarm. Use <a class="reference internal" href="#install-pixi"><span class="std std-ref">Install via Pixi</span></a> or
+<a class="reference internal" href="#build-from-source"><span class="std std-ref">Build from source</span></a> instead.</p>
+</div>
+<section id="jazzy">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Jazzy</a><a class="headerlink" href="#jazzy" title="Permalink to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-jazzy-easynav
 </pre></div>
 </div>
+</section>
+<section id="kilted">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Kilted</a><a class="headerlink" href="#kilted" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-kilted-easynav
+</pre></div>
 </div>
 </section>
+<section id="lyrical">
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Lyrical</a><a class="headerlink" href="#lyrical" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-lyrical-easynav
+</pre></div>
+</div>
+</section>
+<section id="installing-plugins-apt">
+<h3><a class="toc-backref" href="#id16" role="doc-backlink">Installing plugins (APT)</a><a class="headerlink" href="#installing-plugins-apt" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">ros-&lt;distro&gt;-easynav</span></code> only installs the <strong>core</strong> EasyNav framework (<code class="docutils literal notranslate"><span class="pre">easynav_system</span></code>,
+<code class="docutils literal notranslate"><span class="pre">easynav_sensors</span></code>, …). Controllers, localizers, planners and maps managers are
+shipped as separate packages — see the full catalogue at <a class="reference internal" href="../plugins/index.html"><span class="doc">EasyNav Plugins</span></a> — and
+you need to install the ones your configuration actually uses.</p>
+<p>For example, the <code class="docutils literal notranslate"><span class="pre">costmap</span></code> + <code class="docutils literal notranslate"><span class="pre">rpp</span></code> example configuration
+(<code class="docutils literal notranslate"><span class="pre">easynav_indoor_testcase/robots_params/costmap.rpp.params.yaml</span></code>) needs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-localizer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-planner<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-regulated-pp-controller
+</pre></div>
+</div>
+<p>And the <code class="docutils literal notranslate"><span class="pre">simple</span></code> + <code class="docutils literal notranslate"><span class="pre">serest</span></code> example configuration
+(<code class="docutils literal notranslate"><span class="pre">easynav_indoor_testcase/robots_params/simple.serest_params.yaml</span></code>) needs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-localizer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-planner<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-serest-controller
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Plugin package availability via APT currently varies per distro: as of this
+writing, <code class="docutils literal notranslate"><span class="pre">easynav-costmap-localizer</span></code>, <code class="docutils literal notranslate"><span class="pre">easynav-regulated-pp-controller</span></code> and
+<code class="docutils literal notranslate"><span class="pre">easynav-simple-localizer</span></code> are only published for <strong>lyrical</strong>. If a plugin
+package is missing for your distro, use <a class="reference internal" href="#install-pixi"><span class="std std-ref">Install via Pixi</span></a> (which has broader
+plugin coverage) or <a class="reference internal" href="#build-from-source"><span class="std std-ref">Build from source</span></a>.</p>
+</div>
+</section>
+</section>
+<section id="install-via-pixi">
+<span id="install-pixi"></span><h2><a class="toc-backref" href="#id17" role="doc-backlink">Install via Pixi</a><a class="headerlink" href="#install-via-pixi" title="Permalink to this heading"></a></h2>
+<p>EasyNav publishes prebuilt <a class="reference external" href="https://pixi.sh">Pixi</a>/conda packages on
+<a class="reference external" href="https://prefix.dev">prefix.dev</a>. A Pixi environment is fully self-contained: it
+ships its own ROS 2 distribution, so you do <strong>not</strong> need a system ROS 2 install.</p>
+<p>For each ROS 2 distro, download the corresponding <code class="docutils literal notranslate"><span class="pre">pixi.toml</span></code> below and save it as
+<code class="docutils literal notranslate"><span class="pre">~/easynav_ws/pixi.toml</span></code> — the same workspace directory used throughout this guide
+and in <a class="reference internal" href="../getting_started/index.html"><span class="doc">Getting Started</span></a>. Then run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws
+pixi<span class="w"> </span>install
+pixi<span class="w"> </span>shell
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pixi</span> <span class="pre">shell</span></code> opens a shell with ROS 2 and EasyNav ready to use (e.g. <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">launch</span>
+<span class="pre">easynav</span> <span class="pre">...</span></code>). You can also prefix any command with <code class="docutils literal notranslate"><span class="pre">pixi</span> <span class="pre">run</span></code> instead of entering
+the shell.</p>
+<section id="rolling">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Rolling</a><a class="headerlink" href="#rolling" title="Permalink to this heading"></a></h3>
+<p><a class="reference download internal" download="" href="../_downloads/c7a489173fc7363abed548f391337115/pixi.toml"><code class="xref download docutils literal notranslate"><span class="pre">pixi.toml</span></code></a></p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[workspace]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;easynav-rolling&quot;</span>
+<span class="n">channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/fmrico/irl-rolling&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/robostack-rolling&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/conda-forge&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">platforms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;linux-64&quot;</span><span class="p">]</span>
+
+<span class="k">[dependencies]</span>
+<span class="n">ros-rolling-easynav</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;*&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Lyrical</a><a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p><a class="reference download internal" download="" href="../_downloads/14c75d5b04c39128431713b57192f63a/pixi.toml"><code class="xref download docutils literal notranslate"><span class="pre">pixi.toml</span></code></a></p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[workspace]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;easynav-lyrical&quot;</span>
+<span class="n">channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/fmrico/irl-lyrical&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/robostack-lyrical&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/conda-forge&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">platforms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;linux-64&quot;</span><span class="p">]</span>
+
+<span class="k">[dependencies]</span>
+<span class="n">ros-lyrical-easynav</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;*&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><a class="toc-backref" href="#id20" role="doc-backlink">Kilted</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p><a class="reference download internal" download="" href="../_downloads/033809136f9b17a0dcc5cd7918388023/pixi.toml"><code class="xref download docutils literal notranslate"><span class="pre">pixi.toml</span></code></a></p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[workspace]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;easynav-kilted&quot;</span>
+<span class="n">channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/irl-kilted&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/robostack-kilted&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/conda-forge&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">platforms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;linux-64&quot;</span><span class="p">]</span>
+
+<span class="k">[dependencies]</span>
+<span class="n">ros-kilted-easynav</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;*&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3><a class="toc-backref" href="#id21" role="doc-backlink">Jazzy</a><a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p><a class="reference download internal" download="" href="../_downloads/262e3fc9e2e5c037fa9b013ccb1d25e9/pixi.toml"><code class="xref download docutils literal notranslate"><span class="pre">pixi.toml</span></code></a></p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[workspace]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;easynav-jazzy&quot;</span>
+<span class="n">channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/irl-jazzy&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/robostack-jazzy&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;https://prefix.dev/conda-forge&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">platforms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;linux-64&quot;</span><span class="p">]</span>
+
+<span class="k">[dependencies]</span>
+<span class="n">ros-jazzy-easynav</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;*&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="installing-plugins-pixi">
+<h3><a class="toc-backref" href="#id22" role="doc-backlink">Installing plugins (Pixi)</a><a class="headerlink" href="#installing-plugins-pixi" title="Permalink to this heading"></a></h3>
+<p>Just like the APT metapackage, <code class="docutils literal notranslate"><span class="pre">ros-&lt;distro&gt;-easynav</span></code> in the <code class="docutils literal notranslate"><span class="pre">pixi.toml</span></code> files
+above only pulls in the <strong>core</strong> framework. Controllers, localizers, planners and
+maps managers live in separate packages — browse the full catalogue at
+<a class="reference internal" href="../plugins/index.html"><span class="doc">EasyNav Plugins</span></a> — and must be added on top with <code class="docutils literal notranslate"><span class="pre">pixi</span> <span class="pre">add</span></code>.</p>
+<p>For example, to run the <code class="docutils literal notranslate"><span class="pre">costmap</span></code> + <code class="docutils literal notranslate"><span class="pre">rpp</span></code> example configuration
+(<code class="docutils literal notranslate"><span class="pre">easynav_indoor_testcase/robots_params/costmap.rpp.params.yaml</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-localizer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-planner<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-regulated-pp-controller
+</pre></div>
+</div>
+<p>And for the <code class="docutils literal notranslate"><span class="pre">simple</span></code> + <code class="docutils literal notranslate"><span class="pre">serest</span></code> example configuration
+(<code class="docutils literal notranslate"><span class="pre">easynav_indoor_testcase/robots_params/simple.serest_params.yaml</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-localizer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-planner<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-serest-controller
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;distro&gt;</span></code> with your target distro (<code class="docutils literal notranslate"><span class="pre">rolling</span></code>, <code class="docutils literal notranslate"><span class="pre">jazzy</span></code>, <code class="docutils literal notranslate"><span class="pre">kilted</span></code> or
+<code class="docutils literal notranslate"><span class="pre">lyrical</span></code>). Unlike APT, these plugin packages are available on the Pixi channels
+for all four distros.</p>
+</section>
+</section>
 <section id="build-from-source">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Build from source</a><a class="headerlink" href="#build-from-source" title="Permalink to this heading"></a></h2>
+<span id="id4"></span><h2><a class="toc-backref" href="#id23" role="doc-backlink">Build from source</a><a class="headerlink" href="#build-from-source" title="Permalink to this heading"></a></h2>
 <section id="workspace-layout">
-<h3><a class="toc-backref" href="#id5" role="doc-backlink">Workspace layout</a><a class="headerlink" href="#workspace-layout" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id24" role="doc-backlink">Workspace layout</a><a class="headerlink" href="#workspace-layout" title="Permalink to this heading"></a></h3>
 <p>We recommend a standard ROS 2 workspace:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/easynav_ws/src
 <span class="nb">cd</span><span class="w"> </span>~/easynav_ws
@@ -433,21 +669,59 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </div>
 </section>
 <section id="clone-sources">
-<h3><a class="toc-backref" href="#id6" role="doc-backlink">Clone sources</a><a class="headerlink" href="#clone-sources" title="Permalink to this heading"></a></h3>
-<p>You can retrieve EasyNav sources by cloning the monorepo(s) you need:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Adjust workspace dir and branches to your needs</span>
-<span class="nb">cd</span><span class="w"> </span>~/easynav_ws/src
-<span class="c1"># Clone the main EasyNavigation repositories</span>
+<h3><a class="toc-backref" href="#id25" role="doc-backlink">Clone sources</a><a class="headerlink" href="#clone-sources" title="Permalink to this heading"></a></h3>
+<p>You can retrieve EasyNav sources by cloning the monorepo(s) you need. Each repository
+has one branch per supported ROS 2 distro — pick the block matching your target distro.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unlike the APT and Pixi methods, cloning <code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code> already brings in
+<strong>all</strong> official plugins (see <a class="reference internal" href="../plugins/index.html"><span class="doc">EasyNav Plugins</span></a>) — <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">build</span></code> will
+build every controller, localizer, planner and maps manager, so no extra
+installation step is needed here.</p>
+</div>
+<section id="id5">
+<h4>Rolling<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws/src
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/EasyNavigation/EasyNavigation.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/EasyNavigation/NavMap.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/EasyNavigation/easynav_plugins.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/fmrico/yaets.git
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h4>Lyrical<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws/src
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>lyrical<span class="w"> </span>https://github.com/EasyNavigation/EasyNavigation.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>lyrical<span class="w"> </span>https://github.com/EasyNavigation/NavMap.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>lyrical<span class="w"> </span>https://github.com/EasyNavigation/easynav_plugins.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>lyrical<span class="w"> </span>https://github.com/fmrico/yaets.git
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h4>Kilted<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws/src
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>kilted<span class="w"> </span>https://github.com/EasyNavigation/EasyNavigation.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>kilted<span class="w"> </span>https://github.com/EasyNavigation/NavMap.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>kilted<span class="w"> </span>https://github.com/EasyNavigation/easynav_plugins.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>kilted<span class="w"> </span>https://github.com/fmrico/yaets.git
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h4>Jazzy<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws/src
 git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>jazzy<span class="w"> </span>https://github.com/EasyNavigation/EasyNavigation.git
 git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>jazzy<span class="w"> </span>https://github.com/EasyNavigation/NavMap.git
 git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>jazzy<span class="w"> </span>https://github.com/EasyNavigation/easynav_plugins.git
-<span class="c1"># Clone yaets dependency</span>
 git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>jazzy<span class="w"> </span>https://github.com/fmrico/yaets.git
 </pre></div>
 </div>
 </section>
+</section>
 <section id="install-dependencies">
-<h3><a class="toc-backref" href="#id7" role="doc-backlink">Install dependencies</a><a class="headerlink" href="#install-dependencies" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id26" role="doc-backlink">Install dependencies</a><a class="headerlink" href="#install-dependencies" title="Permalink to this heading"></a></h3>
 <p>From the workspace root, resolve all package dependencies with rosdep:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws
 rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-y<span class="w"> </span>-r
@@ -455,7 +729,7 @@ rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span c
 </div>
 </section>
 <section id="configure-and-build">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">Configure and build</a><a class="headerlink" href="#configure-and-build" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id27" role="doc-backlink">Configure and build</a><a class="headerlink" href="#configure-and-build" title="Permalink to this heading"></a></h3>
 <p>Use colcon to build the workspace. You may enable symlink-install for faster iteration.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
@@ -463,16 +737,16 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 </div>
 </section>
 <section id="source-the-overlay">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">Source the overlay</a><a class="headerlink" href="#source-the-overlay" title="Permalink to this heading"></a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source ROS 2 first (jazzy / kilted / rolling)</span>
-<span class="nb">source</span><span class="w"> </span>/opt/ros/jazzy/setup.bash
+<h3><a class="toc-backref" href="#id28" role="doc-backlink">Source the overlay</a><a class="headerlink" href="#source-the-overlay" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source ROS 2 first (jazzy / kilted / lyrical / rolling)</span>
+<span class="nb">source</span><span class="w"> </span>/opt/ros/&lt;distro&gt;/setup.bash
 <span class="c1"># Then source the workspace</span>
 <span class="nb">source</span><span class="w"> </span>~/easynav_ws/install/setup.bash
 </pre></div>
 </div>
 </section>
 <section id="run-tests-optional">
-<h3><a class="toc-backref" href="#id10" role="doc-backlink">Run tests (optional)</a><a class="headerlink" href="#run-tests-optional" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id29" role="doc-backlink">Run tests (optional)</a><a class="headerlink" href="#run-tests-optional" title="Permalink to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws
 colcon<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--ctest-args<span class="w"> </span>-R<span class="w"> </span>easynav<span class="w">  </span><span class="c1"># run EasyNav-related tests</span>
 colcon<span class="w"> </span>test-result<span class="w"> </span>--verbose
@@ -481,7 +755,7 @@ colcon<span class="w"> </span>test-result<span class="w"> </span>--verbose
 </section>
 </section>
 <section id="troubleshooting">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id30" role="doc-backlink">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Permalink to this heading"></a></h2>
 <ul>
 <li><p><strong>Missing rosdep keys</strong></p>
 <p>Run <code class="docutils literal notranslate"><span class="pre">rosdep</span> <span class="pre">check</span> <span class="pre">--from-paths</span> <span class="pre">src</span> <span class="pre">--ignore-src</span></code> to diagnose. If a dependency
@@ -490,7 +764,7 @@ is truly missing on your platform, consider opening an issue with details.</p>
 <li><p><strong>CMake not finding ROS packages</strong></p>
 <p>Ensure you have sourced the correct ROS 2 distro and your workspace install
 before building or running executables.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>/opt/ros/jazzy/setup.bash
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>/opt/ros/&lt;distro&gt;/setup.bash
 <span class="nb">source</span><span class="w"> </span>~/easynav_ws/install/setup.bash
 </pre></div>
 </div>
@@ -506,14 +780,14 @@ colcon<span class="w"> </span>build<span class="w"> </span>--merge-install
 </ul>
 </section>
 <section id="uninstall-clean">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink">Uninstall / clean</a><a class="headerlink" href="#uninstall-clean" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id31" role="doc-backlink">Uninstall / clean</a><a class="headerlink" href="#uninstall-clean" title="Permalink to this heading"></a></h2>
 <p>Since this is a workspace overlay, you can remove it safely:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm<span class="w"> </span>-rf<span class="w"> </span>~/easynav_ws
 </pre></div>
 </div>
 </section>
 <section id="next-steps">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink">Next steps</a><a class="headerlink" href="#next-steps" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id32" role="doc-backlink">Next steps</a><a class="headerlink" href="#next-steps" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="../getting_started/index.html"><span class="doc">Getting Started</span></a> — quick start with simulation and first launch</p></li>
 <li><p><a class="reference internal" href="../howtos/index.html"><span class="doc">HowTos and Practical Guides</span></a> — step-by-step guides for mapping, navigation, and deployment</p></li>

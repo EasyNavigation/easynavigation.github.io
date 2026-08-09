@@ -4,7 +4,7 @@
 SeReST Controller Fine-Tuning
 =============================
 
-This guide explains how to **tune the SeReST (Safe Reparameterized Time) controller**
+This guide explains how to **tune the SeReST (Smooth Error-Responsive Speed and Turning) controller**
 to track discrete paths (e.g., A* polylines) precisely, slow down smoothly near goals,
 and behave safely around dynamic obstacles.
 
@@ -58,12 +58,14 @@ Start with these default parameters (adjust namespace as needed):
         ell:                  0.3
 
         # safety governor
+        a_acc:                0.8
         a_brake:              1.2
         a_lat_max:            1.5
-        d0_margin:            0.20
+        d0_margin:            0.30
         tau_latency:          0.10
-        d_hard:               0.15
+        d_hard:               0.20
         t_emerg:              0.25
+        dist_search_radius:   2.0
 
         # local heading smoothing
         blend_base:           0.6
@@ -75,8 +77,8 @@ Start with these default parameters (adjust namespace as needed):
         k_s_share_max:        0.5
 
         # goal behavior
-        goal_pos_tol:         0.07
-        goal_yaw_tol_deg:     6.0
+        goal_pos_tol:         0.05
+        goal_yaw_tol_deg:     5.0
         slow_radius:          0.60
         slow_min_speed:       0.03
         final_align_k:        2.0
@@ -145,11 +147,16 @@ Progress Robustness
 Safety Governor
 ^^^^^^^^^^^^^^^
 
-- **``a_brake`` (1.0–2.0)** – Deceleration limit for safe stopping.  
-- **``a_lat_max`` (1.2–2.5)** – Max lateral acceleration for curvature limits.  
-- **``d0_margin`` (0.15–0.30)** – Safety margin; ↑ for larger robots or noisy sensors.  
-- **``tau_latency`` (0.08–0.15 s)** – Compensates sensor/control delay.  
-- **``d_hard`` / ``t_emerg``** – Emergency stop thresholds; ↑/↓ to adjust conservatism.
+- **``a_acc`` (0.6–1.2; default 0.8)** – Comfortable forward acceleration used by the speed
+  profile; ↓ for gentler starts, ↑ if the robot ramps up too slowly.
+- **``a_brake`` (1.0–2.0; default 1.2)** – Deceleration limit for safe stopping.
+- **``a_lat_max`` (1.2–2.5)** – Max lateral acceleration for curvature limits.
+- **``d0_margin`` (0.15–0.30; default 0.30)** – Safety margin; ↑ for larger robots or noisy sensors.
+- **``tau_latency`` (0.08–0.15 s)** – Compensates sensor/control delay.
+- **``d_hard`` (default 0.20) / ``t_emerg``** – Emergency stop thresholds; ↑/↓ to adjust conservatism.
+- **``dist_search_radius`` (default 2.0 m)** – Radius around the robot used to estimate the
+  closest-obstacle distance from perception points when ``closest_obstacle_distance`` is not
+  already published in NavState.
 
 Local Heading Smoothing
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -223,8 +230,11 @@ Only do this if sensing latency is well-characterized.
 
 Obstacle distance seems too pessimistic
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Lower ``lethal_cost_threshold`` (if available) or reduce ``dist_search_radius``.  
-Consider publishing measured ``closest_obstacle_distance`` in NavState.
+Reduce ``dist_search_radius`` so far-away points stop dragging down the closest-obstacle
+estimate, or reduce ``d0_margin`` if it is overly conservative.
+Consider publishing a measured ``closest_obstacle_distance`` in NavState directly (the
+controller prefers that value and only falls back to scanning ``points`` within
+``dist_search_radius`` when it is absent).
 
 ---
 
