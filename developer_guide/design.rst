@@ -13,9 +13,9 @@ The figure above illustrates the general architecture of EasyNav.
 
 EasyNav runs within a single process that hosts a ROS 2 **Lifecycle Node** called ``SystemNode``, which coordinates the entire navigation system. Through composition, ``SystemNode`` includes several other ROS 2 Lifecycle Nodes, each responsible for a specific function in the navigation pipeline:
 
-- **Sensors Node**: This node collects and preprocesses all sensory input used by the navigation system. It supports multiple types of sensors, grouped by modality (e.g., laser scans, point clouds).
-  
-- **MapsManager Node**: Responsible for how the environment is represented. It supports multiple plugins that define the actual data structure for the map: costmaps, gridmaps, octomaps, pointclouds, and more. The plugin selection is configurable depending on the application or use case.
+- **Sensors Node**: This node collects and preprocesses all sensory input used by the navigation system, across six built-in perception types (point clouds/laser scans, images, IMU, GNSS, odometry, and 3D detections). Sensors are ungrouped by default; they are only placed into a named group when explicitly configured to do so (see :ref:`perceptions`).
+
+- **MapsManager Node**: Responsible for how the environment is represented. It supports multiple plugins that define the actual data structure for the map: costmaps, NavMap triangulated meshes, Bonxai probabilistic voxel maps, octomaps, and simpler binary maps, among others. The plugin selection is configurable depending on the application or use case.
 
 - **Localizer Node**: Estimates the robot's position within the map. It uses a localization plugin that must be compatible with the type of environment representation used by the MapsManager.
 
@@ -98,11 +98,9 @@ These plugin combinations are defined in the single EasyNav configuration file, 
        use_sim_time: true
        forget_time: 0.5
        sensors: [laser1]
-       perception_default_frame: odom
        laser1:
          topic: /scan_raw
          type: sensor_msgs/msg/LaserScan
-         group: points
 
    system_node:
      ros__parameters:
@@ -128,9 +126,8 @@ Below is an example configuration using dummy plugins for all components, effect
        use_sim_time: true
        controller_types: [dummy]
        dummy:
-         rt_freq: 30.0 
+         rt_freq: 30.0
          plugin: easynav_controller/DummyController
-         cycle_time_nort: 0.01
          cycle_time_rt: 0.001
 
    localizer_node:
@@ -150,10 +147,9 @@ Below is an example configuration using dummy plugins for all components, effect
        use_sim_time: true
        map_types: [dummy]
        dummy:
-         freq: 10.0 
+         freq: 10.0
          plugin: easynav_maps_manager/DummyMapsManager
          cycle_time_nort: 0.1
-         cycle_time_rt: 0.001
 
    planner_node:
      ros__parameters:
@@ -163,7 +159,6 @@ Below is an example configuration using dummy plugins for all components, effect
          freq: 1.0
          plugin: easynav_planner/DummyPlanner
          cycle_time_nort: 0.2
-         cycle_time_rt: 0.001
 
    sensors_node:
      ros__parameters:
@@ -178,6 +173,65 @@ Below is an example configuration using dummy plugins for all components, effect
 
 This configuration is especially useful for testing system integration, message flow, and user interfaces without requiring sensor data or a simulated robot. You can later replace dummy plugins with functional ones as needed.
 
+
+Coordinate Frames (TF)
+======================
+
+EasyNav follows `REP-105 <http://www.ros.org/reps/rep-0105.html>`_ for its frame-naming
+convention, and centralizes all frame configuration in a single place: ``system_node``. Rather
+than each node or plugin declaring its own frame parameters (an early version of EasyNav had, for
+example, a ``perception_default_frame`` parameter local to ``sensors_node``), ``SystemNode``
+declares six frame parameters once, assembles them into a single ``TFInfo`` struct, and pushes it
+into ``RTTFBuffer`` — a process-wide singleton that is *both* the shared ``tf2_ros::Buffer`` used
+for real-time TF lookups *and* the single source of truth for frame names across EasyNav.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 20 55
+
+   * - Parameter (on ``system_node``)
+     - Default
+     - Meaning
+   * - ``tf_prefix``
+     - ``""`` (empty)
+     - Optional prefix prepended to every frame below; used to give each robot its own TF tree in
+       multi-robot setups (see :doc:`../howtos/costmap_multirobot`).
+   * - ``map_frame``
+     - ``"map"``
+     - Global map frame.
+   * - ``odom_frame``
+     - ``"odom"``
+     - Odometry frame.
+   * - ``robot_frame``
+     - ``"base_link"``
+     - Robot base frame.
+   * - ``robot_footprint_frame``
+     - ``"base_footprint"``
+     - Robot footprint frame (e.g. used by ``SensorsNode`` as the target frame for the fused
+       perception cloud, see :ref:`perceptions`).
+   * - ``world_frame``
+     - ``"earth"``
+     - Global/earth-fixed frame used by global estimators (e.g. GNSS-based fusion in
+       ``easynav_fusion_localizer``).
+
+On ``on_configure()``, ``SystemNode`` reads these six parameters into a ``TFInfo`` and calls
+``RTTFBuffer::getInstance()->set_tf_info(tf_info)``. If ``tf_prefix`` is non-empty, this call
+automatically prepends ``"<tf_prefix>/"`` to ``map_frame``, ``odom_frame``, ``robot_frame``,
+``robot_footprint_frame`` and ``world_frame`` — this is how a multi-robot setup gets a fully
+namespaced TF tree per robot (``r1/base_link``, ``r1/odom``, ...) from a single ``tf_prefix: r1``
+parameter, without spelling out every frame name per robot.
+
+Any node or plugin that needs a frame name reads it from the shared singleton instead of
+hardcoding a literal such as ``"map"`` or ``"base_link"``:
+
+.. code-block:: cpp
+
+   const auto & tf_info = easynav::RTTFBuffer::getInstance()->get_tf_info();
+   const std::string & map_frame = tf_info.map_frame;
+
+This is why plugins (obstacle filters, localizers, the fused-perception publisher in
+``SensorsNode``, ...) always resolve frames through ``RTTFBuffer::getInstance()->get_tf_info()``
+rather than through a per-node parameter.
 
 NavState: The Shared Blackboard
 ===============================

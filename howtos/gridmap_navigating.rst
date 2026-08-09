@@ -1,11 +1,38 @@
 .. _gridmap_outdoor_navigation:
 
-=========================================
-Outdoor Navigation with GridMaps (Summit)
-=========================================
+===========================================================
+3D/Uneven-Terrain Navigation with EasyNav: the NavMap Stack
+===========================================================
 
-This HowTo demonstrates how to run **EasyNav** outdoors using **GridMap** representation and the **Summit robot**.  
-It uses the *GridMap Maps Manager* for environment representation and the *LidarSLAM Localizer plugin* for real-time localization.
+.. warning::
+
+   **This page originally described navigating with a "GridMap" stack** on the Summit robot,
+   using an ``easynav_gridmap_stack`` maps manager/planner (``GridmapMapsManager``,
+   ``GridMapAStarPlanner``) together with an ``easynav_lidarslam_ros2``/``LidarSlamLocalizer``
+   integration and an ``easynav_outdoor_testcase`` configuration package.
+
+   None of these exist in the current codebase:
+
+   - There is no "gridmap"/``grid_map`` concept anywhere in ``EasyNavigation``,
+     ``easynav_plugins``, or the playground packages (verified by grepping the whole workspace).
+   - There is no ``easynav_lidarslam_ros2`` or ``easynav_outdoor_testcase`` package in this
+     workspace.
+   - ``easynav_playground_summit`` only launches the Summit Gazebo simulation
+     (``playground_summit.launch.py`` includes ``summit_simulator``'s ``robot_gazebo.launch.py``);
+     it ships no EasyNav parameter file or localizer/planner configuration for outdoor navigation.
+
+   The closest currently-supported stack for navigating over a 3D/non-flat surface representation
+   is the **NavMap** stack: a triangulated mesh maps manager (``easynav_navmap_maps_manager``) with
+   a mesh-aware A\* planner (``easynav_navmap_planner``) and a matching localizer
+   (``easynav_navmap_localizer``). There is currently **no shipped, tested NavMap configuration for
+   the Summit outdoor robot** in this workspace — the example below uses the real, working NavMap
+   configuration that *is* shipped, for the indoor Kobuki playground
+   (``easynav_indoor_testcase/robots_params/navmap.kobuki.params.yaml``), so every plugin id,
+   parameter and topic below can be verified against real source. Adapt it to your own
+   robot/environment if you want to use NavMap outdoors.
+
+   If you just need standard 2D navigation today, see :doc:`costmap_navigating` (indoor,
+   Kobuki-based, fully verified) instead.
 
 .. contents:: On this page
    :local:
@@ -22,26 +49,28 @@ Overview
 
 In this tutorial, you will:
 
-1. Launch the **Summit** outdoor simulator.
-2. Start the **EasyNav** system configured for GridMap-based navigation.
+1. Launch a simulator.
+2. Start **EasyNav** configured for **NavMap**-based navigation (mesh maps manager +
+   mesh-aware A\* planner + AMCL-style localizer over the mesh).
 3. Use **RViz2** to send navigation goals interactively.
 
-This example combines the **GridMap** framework (for multi-layer terrain representation) and **LidarSLAM** (for localization from point clouds).  
-It showcases how EasyNav seamlessly integrates mapping, localization, planning, and control in outdoor environments.
+Unlike a plain 2D costmap, NavMap represents the environment as a triangulated 3D surface with
+per-cell cost layers (``obstacles``, ``inflated_obstacles``), which is the current mechanism for
+representing non-flat terrain in EasyNav.
 
 ---
 
 Setup
 -----
 
-1. You have completed the installation described in :doc:`../build_install/index`.  
+1. You have completed the installation described in :doc:`../build_install/index`.
 2. You have a working workspace containing the following repositories:
 
    - ``EasyNavigation``
-   - ``easynav_plugins``
-   - ``easynav_gridmap_stack`` *(for GridMap representation and planner)*
-   - ``easynav_lidarslam_ros2`` *(for SLAM)*
-   - ``easynav_playground_summit`` *(for the Summit simulation world)*
+   - ``easynav_plugins`` (provides ``easynav_navmap_maps_manager``, ``easynav_navmap_planner``,
+     ``easynav_navmap_localizer``, ``easynav_serest_controller``)
+   - ``easynav_indoor_testcase`` *(for the example configuration and maps used below)*
+   - ``easynav_playground_kobuki`` *(for the simulated robot used below)*
 
 If something is missing, clone the required repositories:
 
@@ -49,16 +78,8 @@ If something is missing, clone the required repositories:
 
    cd ~/ros/ros2/easynav_ws/src
    git clone https://github.com/EasyNavigation/easynav_plugins.git
-   git clone https://github.com/EasyNavigation/easynav_playground_summit.git
-   git clone https://github.com/EasyNavigation/easynav_outdoor_testcase.git
-   git clone -b rolling https://github.com/EasyNavigation/easynav_lidarslam_ros2.git
-   git clone -b rolling_ament_fixed https://github.com/fmrico/grid_map.git
-
-.. warning::
-
-   The official `grid_map` repository still uses ``ament_target_dependencies()``,  
-   which is deprecated in recent ROS 2 distributions.  
-   Use the patched fork above (branch ``rolling_ament_fixed``) to ensure successful builds.
+   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
+   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
 
 Then build and source your workspace:
 
@@ -74,177 +95,177 @@ Then build and source your workspace:
 1. Launch the Simulator
 -----------------------
 
-Start the **Summit** world simulation.  
-This environment includes outdoor terrain suitable for GridMap-based navigation.
+Start the **Kobuki** playground simulation.
 
 .. code-block:: bash
 
-   ros2 launch easynav_playground_summit playground_summit.launch.py
-
-Keep the RViz window open to visualize sensor topics and the simulated environment.
+   ros2 launch easynav_playground_kobuki playground_kobuki.launch.py gui:=false
 
 ---
 
-2. Launch EasyNav with GridMap and LidarSLAM
---------------------------------------------
+2. Launch EasyNav with the NavMap Stack
+-----------------------------------------
 
-Next, launch **EasyNav** with the following parameter file configuration.
-
-Save the following YAML file as  
-``~/ros/ros2/easynav_ws/src/easynav_outdoor_testcase/robots_params/gridmap.lidarslam.params.yaml``
+This is the real, shipped configuration
+(``easynav_indoor_testcase/robots_params/navmap.kobuki.params.yaml``): the **SeReST controller**
+for trajectory tracking, an **AMCL-style localizer running over the NavMap mesh**
+(``easynav_navmap_localizer/AMCLLocalizer``), the **NavMap Maps Manager** (built here from a ROS
+YAML occupancy map via ``occmap_path_file``, with obstacle/inflation filters), and the **NavMap
+A\* planner** (``easynav_navmap_planner/AStarPlanner``):
 
 .. code-block:: yaml
 
     controller_node:
       ros__parameters:
         use_sim_time: true
-        controller_types: [simple]
-        simple:
-          rt_freq: 30.0 
-          plugin: easynav_simple_controller/SimpleController
-          max_linear_speed: 1.0
-          max_angular_speed: 1.0
-          look_ahead_dist: 0.2
-          k_rot: 0.5
+        controller_types: [serest]
+        serest:
+          rt_freq: 30.0
+          plugin: easynav_serest_controller/SerestController
+          allow_reverse: true
+          max_linear_speed: 0.8
+          max_angular_speed: 1.2
+          v_progress_min: 0.08
+          k_s_share_max: 0.5
+          k_theta: 2.5
+          k_y: 1.5
+          goal_pos_tol: 0.1
+          goal_yaw_tol_deg: 6.0
+          slow_radius: 0.60
+          slow_min_speed: 0.03
+          final_align_k: 2.0
+          final_align_wmax: 0.6
+          corner_guard_enable: true
+          corner_gain_ey: 1.8
+          corner_gain_eth: 0.7
+          corner_gain_kappa: 0.4
+          corner_min_alpha: 0.35
+          corner_boost_omega: 1.0
+          a_lat_soft: 0.9
+          apex_ey_des: 0.05
 
     localizer_node:
       ros__parameters:
         use_sim_time: true
-        localizer_types: [lidarslam]
-        lidarslam:
-          plugin: easynav_lidarslam_localizer/LidarSlamLocalizer
-          input_cloud: /front_laser/points
-          imu: /imu/data
+        localizer_types: [navmap]
+        navmap:
+          rt_freq: 50.0
+          freq: 5.0
+          reseed_freq: 1.0
+          plugin: easynav_navmap_localizer/AMCLLocalizer
+          num_particles: 100
+          noise_translation: 0.05
+          noise_rotation: 0.1
+          noise_translation_to_rotation: 0.1
+          initial_pose:
+            x: 0.0
+            y: 0.1
+            yaw: 0.0
+            std_dev_xy: 0.1
+            std_dev_yaw: 0.01
 
     maps_manager_node:
       ros__parameters:
         use_sim_time: true
-        map_types: [gridmap]
-        gridmap:
-          freq: 10.0 
-          plugin: easynav_gridmap_maps_manager/GridmapMapsManager
-          package: easynav_outdoor_testcase
-          map_path_file: maps/pool.yaml
+        map_types: [navmap]
+        navmap:
+          freq: 10.0
+          plugin: easynav_navmap_maps_manager/NavMapMapsManager
+          package: easynav_indoor_testcase
+          occmap_path_file: maps/home2.yaml
+          filters: [obstacles, inflation]
+          obstacles:
+            plugin: easynav_navmap_maps_manager/NavMapMapsManager/ObstaclesFilter
+          inflation:
+            plugin: easynav_navmap_maps_manager/NavMapMapsManager/InflationFilter
+            inflation_radius: 1.3
+            cost_scaling_factor: 3.0
 
     planner_node:
       ros__parameters:
         use_sim_time: true
-        planner_types: [astar]
-        astar:
-          plugin: easynav_gridmap_astar_planner/GridMapAStarPlanner
-          max_allowed_slope_deg: 20.0
+        planner_types: [simple]
+        simple:
+          freq: 0.5
+          plugin: easynav_navmap_planner/AStarPlanner
+          cost_factor: 10.0
+          continuous_replan: true
 
     sensors_node:
       ros__parameters:
         use_sim_time: true
         forget_time: 0.5
         sensors: [laser1]
-        perception_default_frame: odom
         laser1:
-          topic: /front_laser_sensor/points
-          type: sensor_msgs/msg/PointCloud2
-          group: points
+          topic: scan_raw
+          type: sensor_msgs/msg/LaserScan
 
     system_node:
       ros__parameters:
         use_sim_time: true
-        position_tolerance: 0.1
-        angle_tolerance: 0.05
-
-    # LidarSLAM parameters (used internally by the localizer plugin)
-    scan_matcher:
-      ros__parameters:
-        use_sim_time: True
-        global_frame_id: "map"
-        robot_frame_id: "base_link"
-        odom_frame_id: "odom"
-        registration_method: "NDT"
-        ndt_resolution: 2.0
-        ndt_num_threads: 2
-        gicp_corr_dist_threshold: 5.0
-        trans_for_mapupdate: 1.5
-        vg_size_for_input: 0.5
-        vg_size_for_map: 0.2
-        use_min_max_filter: true
-        scan_min_range: 1.0
-        scan_max_range: 200.0
-        scan_period: 0.2
-        map_publish_period: 15.0
-        num_targeted_cloud: 20
-        set_initial_pose: true
-        initial_pose_x: 0.0
-        initial_pose_y: 0.0
-        initial_pose_z: 0.0
-        initial_pose_qx: 0.0
-        initial_pose_qy: 0.0
-        initial_pose_qz: 0.0
-        initial_pose_qw: 1.0
-        use_imu: false
-        use_odom: false
-        debug_flag: false
-
-    graph_based_slam:
-      ros__parameters:
-        use_sim_time: True
-        registration_method: "NDT"
-        ndt_resolution: 1.0
-        ndt_num_threads: 2
-        voxel_leaf_size: 0.2
-        loop_detection_period: 3000
-        threshold_loop_closure_score: 0.7
-        distance_loop_closure: 100.0
-        range_of_searching_loop_closure: 20.0
-        search_submap_num: 2
-        num_adjacent_pose_cnstraints: 5
-        use_save_map_in_loop: true
-        debug_flag: true
+        use_real_time: false
+        position_tolerance: 0.3
+        angle_tolerance: 0.15
 
 .. note::
 
-   The **LidarSLAM parameters** (``scan_matcher`` and ``graph_based_slam``) are defined **after** the main EasyNav nodes.  
-   These settings are used internally by the ``easynav_lidarslam_localizer/LidarSlamLocalizer`` plugin, which encapsulates
-   `lidarslam_ros2` for seamless integration into the EasyNav localization framework.
+   The NavMap A\* planner (``easynav_navmap_planner/AStarPlanner``) only exposes ``cost_factor``
+   and ``continuous_replan`` as runtime parameters; it evaluates edge cost using distance combined
+   with the ``inflated_obstacles`` layer (falling back to ``obstacles``) of the NavMap — there is no
+   ``max_allowed_slope_deg``-style parameter on this planner. Slope/height gating instead happens
+   when a NavMap mesh is *built* from a point cloud, via the internal (currently hard-coded)
+   ``max_slope_deg``/``max_dz`` fields of ``navmap_ros::BuildParams`` — see
+   :doc:`bonxai_navmap_from_rosbag`.
 
-Then, launch EasyNav with:
+Launch EasyNav with:
 
 .. code-block:: bash
 
    ros2 run easynav_system system_main \
-     --ros-args --params-file ~/ros/ros2/easynav_ws/src/easynav_outdoor_testcase/robots_params/gridmap.lidarslam.params.yaml
+     --ros-args --params-file ~/ros/ros2/easynav_ws/src/easynav_indoor_testcase/robots_params/navmap.kobuki.params.yaml
 
-You should now see console logs from the GridMap Maps Manager, the planner, and the LidarSLAM localizer starting up.
+You should see console logs from the NavMap Maps Manager, the planner, and the AMCL-style
+localizer starting up.
 
 ---
 
 3. Commanding Navigation Goals
 ------------------------------
 
-Once EasyNav is running, open **RViz2** (if not already open) and add the **2D Goal Pose** tool.
+Open **RViz2** and add the **2D Goal Pose** tool.
 
 .. code-block:: bash
 
    ros2 run rviz2 rviz2 --ros-args -p use_sim_time:=true
 
-Click anywhere in the map to send navigation goals to the system.  
-The robot will compute paths using the **GridMap A\* Planner** and execute them via the **Simple Controller**.
+Click anywhere in the map to send navigation goals to the system. The robot will compute paths
+using the **NavMap A\* Planner** and execute them via the **SeReST Controller**.
 
 You can observe in RViz:
 
-- The **GridMap layers** published by the Maps Manager.  
-- The **path** generated by the A\* planner.  
-- The **robot trajectory** updated in real time as the LidarSLAM localizer refines the pose.
+- The **NavMap** mesh and its cost layers published by the Maps Manager
+  (``/maps_manager_node/navmap/map``, type ``navmap_ros_interfaces/msg/NavMap``).
+- The **path** generated by the A\* planner.
+- The **robot trajectory** updated in real time as the localizer refines the pose.
 
 ---
 
 Notes
 -----
 
-- This tutorial uses the **LidarSLAM Localizer plugin**, which wraps `lidarslam_ros2` internally for tighter integration with EasyNav.
-- GridMap enables **multi-layer outdoor representation**, supporting elevation, traversability, and slope data.
-- The **A\*** planner respects elevation limits using the parameter ``max_allowed_slope_deg``.
-- You can edit the YAML file under ``maps/pool.yaml`` to try different outdoor maps or terrains.
+- This tutorial uses the real, shipped NavMap + Kobuki configuration to demonstrate the mesh-based
+  stack end-to-end. There is currently no equivalent turnkey configuration for the Summit outdoor
+  robot in this workspace — if you want to reproduce this outdoors, you will need to build your own
+  NavMap (see :doc:`gridmap_mapping` / :doc:`bonxai_navmap_from_rosbag`) and adapt the parameter
+  file above (sensors, frames, package/map paths) to your robot.
+- NavMap enables per-layer cost data (``obstacles``, ``inflated_obstacles``) on top of a
+  triangulated 3D surface, which is the current mechanism for representing non-flat/outdoor
+  terrain — there is no multi-layer ``grid_map``-style elevation/traversability representation in
+  the current codebase.
+- For standard flat-ground 2D navigation, prefer the **Costmap Stack** (:doc:`costmap_navigating`),
+  which is simpler and fully supported.
 
 ---
 
-With this setup, your Summit robot navigates outdoor environments using real-time LidarSLAM localization and GridMap-based path planning.  
-It provides a complete example of **EasyNav’s 3D-aware navigation stack** in simulation.
+With this setup, your robot navigates using NavMap mesh-based path planning — the current
+EasyNav mechanism for representing and planning over non-flat surfaces.

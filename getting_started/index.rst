@@ -25,22 +25,34 @@ We will run a ready-to-use simulation setup consisting of:
 Workspace layout
 ----------------
 
-Assuming you followed the :doc:`../build_install/index` instructions and build from sources, your workspace should look like this:
+This guide builds two extra packages on top of your EasyNav installation:
+``easynav_playground_kobuki`` (the Gazebo simulation) and ``easynav_indoor_testcase``
+(maps, parameter files and RViz configurations). These are example/demo content and
+are only distributed as source, so you need a small colcon workspace at
+``~/easynav_ws`` regardless of which method you used to install EasyNav's core
+packages in :doc:`../build_install/index`:
 
-.. code-block:: text
+- Installed via :ref:`install_apt`: create the workspace now.
 
-   ~/easynav_ws/
-   ├── src/
-   │   ├── EasyNavigation/
-   │   ├── easynav_plugins/
-   │   ├── NavMap/
-   │   ├── yaets/
-   ├── install/
-   ├── build/
-   └── log/
+  .. code-block:: bash
 
-Additionally, this guide will make use of a simple indoor testcase and a Gazebo simulation environment.  
-Clone these repositories into your `src` folder and instell their dependencies:
+     mkdir -p ~/easynav_ws/src
+
+- Installed via :ref:`install_pixi`: reuse the workspace where you saved your
+  ``pixi.toml`` (``~/easynav_ws``), and add the build tools needed to compile source
+  packages inside the Pixi environment.
+
+  .. code-block:: bash
+
+     cd ~/easynav_ws
+     pixi add colcon-common-extensions compilers cmake make ninja pkg-config rosdep
+     mkdir -p src
+
+- Installed via :ref:`build_from_source`: you already have this workspace, with
+  ``EasyNavigation``, ``NavMap``, ``easynav_plugins`` and ``yaets`` cloned under
+  ``src/``.
+
+Clone the demo repositories into ``~/easynav_ws/src`` and install their dependencies:
 
 .. code-block:: bash
 
@@ -53,17 +65,33 @@ Clone these repositories into your `src` folder and instell their dependencies:
    cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -y -r
 
-Rebuild the workspace to include the new packages and source the environment:
+.. _gs_source_workspace:
+
+Build and source the workspace
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
    cd ~/easynav_ws
    colcon build --symlink-install
 
-   # Source ROS 2 first (jazzy / kilted / rolling)
-   source /opt/ros/jazzy/setup.bash
-   # Then source the workspace
-   source ~/easynav_ws/install/setup.bash
+Then source the environment, depending on how you installed EasyNav:
+
+- **APT** or **build from source**:
+
+  .. code-block:: bash
+
+     source /opt/ros/<distro>/setup.bash
+     source ~/easynav_ws/install/setup.bash
+
+- **Pixi** (run inside ``pixi shell``, or prefix commands with ``pixi run``):
+
+  .. code-block:: bash
+
+     source ~/easynav_ws/install/setup.bash
+
+You will need to repeat this sourcing step in every new terminal you open for the
+rest of this guide.
 
 
 Repository overview
@@ -98,13 +126,12 @@ To save resources, you can disable the Gazebo graphical interface:
 Launching EasyNav
 -----------------
 
-With the simulator running, open a **new terminal** and source your workspace again:
+With the simulator running, open a **new terminal** and source your workspace again
+as described in :ref:`gs_source_workspace`:
 
 .. code-block:: bash
 
    cd ~/easynav_ws
-   source /opt/ros/jazzy/setup.bash
-   source ~/easynav_ws/install/setup.bash
 
 Now start the EasyNav system using the predefined parameter file:
 

@@ -1,0 +1,11 @@
+[workspace]
+name = "easynav-kilted"
+channels = [
+  "https://prefix.dev/irl-kilted",
+  "https://prefix.dev/robostack-kilted",
+  "https://prefix.dev/conda-forge",
+]
+platforms = ["linux-64"]
+
+[dependencies]
+ros-kilted-easynav = "*"

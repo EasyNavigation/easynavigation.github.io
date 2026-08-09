@@ -2,3 +2,4 @@ breathe==4.35.0
 sphinx_rtd_theme==2.0.0
 sphinx==5.3.0
 sphinxcontrib-plantuml
+standard-imghdr; python_version >= "3.13"

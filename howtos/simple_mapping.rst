@@ -27,8 +27,8 @@ The workflow consists of:
 
 1. Running the simulator.  
 2. Starting **SLAM Toolbox** to build the map.  
-3. Using **EasyNav** to receive and save the map through the Simple Maps Manager.  
-4. Saving the generated YAML + image files for later use.
+3. Using **EasyNav** to receive and save the map through the Simple Maps Manager.
+4. Saving the generated map file for later use.
 
 ---
 
@@ -199,14 +199,14 @@ Saving and Reusing the Map
 
       ros2 service call /maps_manager_node/simple/savemap std_srvs/srv/Trigger
 
-   By default, the map is stored under `/tmp/default.yaml` and `/tmp/default.pgm`.
+   By default (when no ``package``/``map_path_file`` is configured), the map is stored as a single
+   text file under ``/tmp/default.map``.
 
 2. **Rename and move the map for later use**
 
    .. code-block:: bash
 
-      mv /tmp/default.yaml ~/easynav_ws/src/easynav_indoor_testcase/maps/house.yaml
-      mv /tmp/default.pgm  ~/easynav_ws/src/easynav_indoor_testcase/maps/house.pgm
+      mv /tmp/default.map ~/easynav_ws/src/easynav_indoor_testcase/maps/house.map
 
 3. **Update your navigation parameters**
 
@@ -222,7 +222,7 @@ Saving and Reusing the Map
             freq: 10.0
             plugin: easynav_simple_maps_manager/SimpleMapsManager
             package: easynav_indoor_testcase
-            map_path_file: maps/house.yaml
+            map_path_file: maps/house.map
 
 You can now reuse this map for any *Simple Stack* navigation tutorial (see :doc:`simple_navigating`).
 
@@ -231,7 +231,11 @@ You can now reuse this map for any *Simple Stack* navigation tutorial (see :doc:
 Notes
 -----
 
-- The saved format (YAML + PGM) is fully compatible with MoveBase, Nav2, and other ROS 2 mapping systems.  
+- The **Simple Maps Manager** saves and loads maps using its own lightweight text format
+  (a single ``.map`` file: width, height, resolution and origin on the first line, followed by the
+  binary occupancy data) — it is **not** the YAML + PGM format used by MoveBase/Nav2.
+  If you need a Nav2/MoveBase-compatible YAML + PGM map, use the *Costmap Stack* instead
+  (:doc:`costmap_mapping`), whose Maps Manager reads/writes that format directly.
 - To perform navigation with graded cost values instead of binary occupancy, use the *Costmap Stack*
-  (:doc:`costmap_mapping`).  
+  (:doc:`costmap_mapping`).
 - You can visualize both SLAM and EasyNav map topics in RViz2 to confirm synchronization.

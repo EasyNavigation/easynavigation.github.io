@@ -23,9 +23,8 @@ Before starting, ensure that:
 3. The following repositories are cloned inside your ``src/`` folder:
 
    - ``EasyNavigation``
-   - ``easynav_plugins``
+   - ``easynav_plugins`` *(includes the costmap-based maps manager, localizer, planner and controllers)*
    - ``easynav_indoor_testcase`` *(for maps and configuration examples)*
-   - ``easynav_costmap_stack`` *(for the costmap-based stack)*
    - ``sllidar_ros2`` *(LIDAR driver)*
 
 4. Your robot and laptop can communicate over the same Wi-Fi network.
@@ -126,7 +125,6 @@ EasyNav Setup on the Raspberry Pi
    .. code-block:: bash
 
       git clone https://github.com/EasyNavigation/easynav_plugins.git
-      git clone https://github.com/EasyNavigation/easynav_costmap_stack.git
       git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
       git clone --recursive https://github.com/EasyNavigation/EasyNavigation.git
       git clone https://github.com/Slamtec/sllidar_ros2.git
@@ -254,9 +252,9 @@ Start EasyNav on the Raspberry Pi:
 Notes
 -----
 
-- In the **maps manager**, filter plugin types must match the full class names:  
-  ``easynav_costmap_maps_manager/ObstacleFilter`` and  
-  ``easynav_costmap_maps_manager/InflationFilter``.
-- The **Costmap Planner** supports parameters such as  
-  ``cost_factor``, ``cost_axial``, ``cost_diagonal``, ``inflation_penalty`` and ``continuous_replan``.  
+- In the **maps manager**, filter plugin types must match the full class names:
+  ``easynav_costmap_maps_manager/CostmapMapsManager/ObstaclesFilter`` and
+  ``easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter``.
+- The **Costmap Planner** supports parameters such as
+  ``cost_factor``, ``inflation_penalty``, ``heuristic_scale`` and ``continuous_replan``.
   Adjust these values to fine-tune planning behavior for your environment.

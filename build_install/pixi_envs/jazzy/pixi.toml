@@ -1,0 +1,11 @@
+[workspace]
+name = "easynav-jazzy"
+channels = [
+  "https://prefix.dev/irl-jazzy",
+  "https://prefix.dev/robostack-jazzy",
+  "https://prefix.dev/conda-forge",
+]
+platforms = ["linux-64"]
+
+[dependencies]
+ros-jazzy-easynav = "*"
