@@ -45,7 +45,7 @@ clean:
 
 publish:
 	rm -rf $(PUBLISHDIR)
-	git clone --reference . git@github.com:EasyNavigation/EasyNavigation.github.io.git $(PUBLISHDIR)
+	git clone --reference . https://github.com/EasyNavigation/EasyNavigation.github.io.git $(PUBLISHDIR)
 	cd $(PUBLISHDIR) && \
 	git checkout gh-pages && \
 	rm -fr $(PUBLISHDIR)/*
@@ -61,5 +61,5 @@ publish:
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile doxy
+%: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
