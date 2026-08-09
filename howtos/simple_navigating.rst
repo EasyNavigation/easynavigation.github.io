@@ -20,8 +20,50 @@ Overview
       <iframe width="450" height="300" src="https://www.youtube.com/embed/p4aqNA0JNhA" frameborder="0" allowfullscreen></iframe>
     </div>
 
-This tutorial assumes you already have a map created with SLAM Toolbox or another mapping method.  
+This tutorial assumes you already have a map created with SLAM Toolbox or another mapping method.
 If you have not yet generated a map, follow :doc:`simple_mapping` first.
+
+Setup
+-----
+
+Complete the installation steps in :doc:`../build_install/index` first (any of APT,
+Pixi or source). This tutorial's example configuration uses the **SeReST
+Controller**, **Simple Localizer**, **Simple Maps Manager** and **Simple Planner**
+plugins, which the core ``easynav`` package does not include:
+
+- **APT**:
+
+  .. code-block:: bash
+
+     sudo apt install \
+       ros-<distro>-easynav-serest-controller \
+       ros-<distro>-easynav-simple-localizer \
+       ros-<distro>-easynav-simple-maps-manager \
+       ros-<distro>-easynav-simple-planner
+
+- **Pixi**:
+
+  .. code-block:: bash
+
+     pixi add \
+       ros-<distro>-easynav-serest-controller \
+       ros-<distro>-easynav-simple-localizer \
+       ros-<distro>-easynav-simple-maps-manager \
+       ros-<distro>-easynav-simple-planner
+
+- **Source**: already built if you cloned ``easynav_plugins`` as described in
+  :ref:`build_from_source`.
+
+You will also need the simulator and example config, which are only distributed as
+source — clone them into ``~/easynav_ws/src`` regardless of install method:
+
+.. code-block:: bash
+
+   cd ~/easynav_ws/src
+   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
+   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+
+Build and source the workspace as described in :ref:`gs_source_workspace`.
 
 Once you have your map, save the resulting ``.map`` file (the Simple Maps Manager's own text format,
 produced by its ``savemap`` service) in any package within your workspace,

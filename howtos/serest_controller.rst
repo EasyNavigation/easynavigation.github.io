@@ -11,6 +11,13 @@ and behave safely around dynamic obstacles.
 It includes grouped parameters, recommended defaults, and practical
 “if you see X, change Y” advice.
 
+The **SeReST Controller** (``easynav_serest_controller``) is a plugin, not part of
+the core ``easynav`` package — install it with
+``sudo apt install ros-<distro>-easynav-serest-controller`` (APT),
+``pixi add ros-<distro>-easynav-serest-controller`` (Pixi), or by cloning
+``easynav_plugins`` as described in :ref:`build_from_source`. See
+:doc:`../build_install/index` if you have not installed EasyNav yet.
+
 .. contents:: On this page
    :local:
    :depth: 2

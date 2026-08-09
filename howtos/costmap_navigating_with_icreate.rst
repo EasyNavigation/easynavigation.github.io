@@ -5,9 +5,16 @@ Deploying EasyNav on a Real iCreate3 Robot
 ==========================================
 
 This HowTo explains how to deploy the **Costmap Stack** of EasyNavigation (EasyNav) on a real **iRobot iCreate3** robot,
-using a Raspberry Pi 4 as on-board computer and ROS 2 Kilted.  
+using a Raspberry Pi 4 as on-board computer and ROS 2 Kilted.
 It is based on the same workflow as the *Simple Stack* tutorials but adapted for **real hardware** with a graded
 **Costmap2D** environment representation.
+
+.. note::
+   This guide is written for **ROS 2 Kilted** on Ubuntu 24.04 (the Raspberry Pi's OS) and
+   builds EasyNav **from source** (see :ref:`build_from_source`). Kilted also has APT and
+   Pixi packages (see :doc:`../build_install/index`) if you would rather not build from
+   source. For a different distro, replace every ``kilted`` below with your target
+   (``rolling``, ``jazzy`` or ``lyrical``) and use the matching git branch.
 
 .. contents:: On this page
    :local:
@@ -101,7 +108,6 @@ https://docs.ros.org/en/kilted/Installation/Ubuntu-Install-Debs.html
    .. code-block:: bash
 
       sudo apt install -y openssh-server \
-          ros-kilted-rplidar-ros \
           ros-kilted-depthai ros-kilted-depthai-ros ros-kilted-depthai-ros-driver ros-kilted-depthai-bridge \
           ros-kilted-slam-toolbox \
           ros-kilted-rmw-zenoh-cpp ros-kilted-zenoh-cpp-vendor \
@@ -124,9 +130,9 @@ EasyNav Setup on the Raspberry Pi
 
    .. code-block:: bash
 
-      git clone https://github.com/EasyNavigation/easynav_plugins.git
+      git clone -b kilted https://github.com/EasyNavigation/easynav_plugins.git
       git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
-      git clone --recursive https://github.com/EasyNavigation/EasyNavigation.git
+      git clone -b kilted --recursive https://github.com/EasyNavigation/EasyNavigation.git
       git clone https://github.com/Slamtec/sllidar_ros2.git
 
 3. **Install dependencies:**

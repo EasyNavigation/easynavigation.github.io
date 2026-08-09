@@ -15,6 +15,38 @@ or ``map`` frame.
 
 ---
 
+Setup
+-----
+
+Complete the installation steps in :doc:`../build_install/index` first (any of APT,
+Pixi or source). This tutorial uses the **Bonxai Maps Manager** and **NavMap Maps
+Manager** plugins, which the core ``easynav`` package does not include:
+
+- **APT**:
+
+  .. code-block:: bash
+
+     sudo apt install \
+       ros-<distro>-easynav-bonxai-maps-manager \
+       ros-<distro>-easynav-navmap-maps-manager
+
+- **Pixi**:
+
+  .. code-block:: bash
+
+     pixi add \
+       ros-<distro>-easynav-bonxai-maps-manager \
+       ros-<distro>-easynav-navmap-maps-manager
+
+- **Source**: already built if you followed :ref:`build_from_source` (which also
+  clones ``NavMap``, needed by the NavMap Maps Manager).
+
+Then source your workspace as described in :ref:`gs_source_workspace`. You will
+also need a recorded ROS bag containing a ``PointCloud2`` map (this workspace does
+not ship one — use your own or one produced by :doc:`gridmap_mapping`).
+
+---
+
 Overview
 --------
 

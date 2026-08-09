@@ -36,17 +36,37 @@ and planner.
 Setup
 ------
 
-Before starting, ensure that:
+Complete the installation steps in :doc:`../build_install/index` first (any of APT,
+Pixi or source). The core ``easynav`` package does not include plugins, so also
+install the **NavMap Maps Manager** and/or **Bonxai Maps Manager**, depending on
+which representation you want to build:
 
-1. You have completed the installation described in :doc:`../build_install/index`.
-2. You have a working workspace containing the following repositories:
+- **APT**:
 
-   - ``EasyNavigation`` (provides ``easynav_system``, ``easynav_sensors``, etc.)
-   - ``easynav_plugins`` (provides ``easynav_navmap_maps_manager`` and ``easynav_bonxai_maps_manager``)
-   - ``NavMap`` (the core NavMap library and ROS message/conversion utilities)
-   - ``easynav_playground_summit`` *(for the Summit simulation world, if you want an outdoor scene)*
-   - A SLAM package of your choice able to publish a map as a ``sensor_msgs/msg/PointCloud2``
-     (this workspace does not currently bundle a specific outdoor LiDAR-SLAM integration).
+  .. code-block:: bash
+
+     sudo apt install ros-<distro>-easynav-navmap-maps-manager  # NavMap
+     sudo apt install ros-<distro>-easynav-bonxai-maps-manager  # Bonxai
+
+- **Pixi**:
+
+  .. code-block:: bash
+
+     pixi add ros-<distro>-easynav-navmap-maps-manager  # NavMap
+     pixi add ros-<distro>-easynav-bonxai-maps-manager  # Bonxai
+
+- **Source**: already built if you followed :ref:`build_from_source` (that step
+  clones ``NavMap`` alongside ``EasyNavigation``/``easynav_plugins``, which is what
+  provides the NavMap core library and ROS conversion utilities).
+
+You will also need, cloned into ``~/easynav_ws/src`` (source-only, not on APT/Pixi):
+
+- ``easynav_playground_summit`` — provides the Summit simulator used in
+  :ref:`Step 1 <gridmap_mapping_step1>` below; **required** unless you already have
+  a robot or recorded data providing a live point-cloud feed.
+- A SLAM package of your choice able to publish a map as a
+  ``sensor_msgs/msg/PointCloud2`` (this workspace does not currently bundle a
+  specific outdoor LiDAR-SLAM integration).
 
 .. warning::
 
@@ -55,13 +75,7 @@ Before starting, ensure that:
    ``easynav_lidarslam_ros2``, those packages are not part of the current EasyNav plugin
    ecosystem — use NavMap/Bonxai instead, as described below.
 
-3. All packages build successfully and are sourced:
-
-   .. code-block:: bash
-
-      cd ~/ros/ros2/easynav_ws
-      colcon build --symlink-install
-      source install/setup.bash
+Then source your workspace as described in :ref:`gs_source_workspace`.
 
 4. **RViz2** is installed for visualization.
 5. Simulation nodes use ``use_sim_time: true``.
@@ -86,6 +100,8 @@ The workflow consists of:
 4. Saving the resulting map to disk for later use.
 
 ---
+
+.. _gridmap_mapping_step1:
 
 1. Start the Simulator
 ----------------------
