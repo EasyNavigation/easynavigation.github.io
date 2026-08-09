@@ -1,0 +1,11 @@
+[workspace]
+name = "easynav-rolling"
+channels = [
+  "https://prefix.dev/fmrico/irl-rolling",
+  "https://prefix.dev/robostack-rolling",
+  "https://prefix.dev/conda-forge",
+]
+platforms = ["linux-64"]
+
+[dependencies]
+ros-rolling-easynav = "*"
