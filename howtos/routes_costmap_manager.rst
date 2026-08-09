@@ -20,6 +20,39 @@ The process is split in two main steps:
    working costmap-based scenario (e.g., the indoor testcase). Only the
    parts specific to routes are shown here.
 
+Setup
+-----
+
+Complete the installation steps in :doc:`../build_install/index` first (any of APT,
+Pixi or source). The examples below use the **Costmap Maps Manager**, **Routes Maps
+Manager**, **SeReST Controller**, **Costmap Localizer** and **Costmap Planner**
+plugins, which the core ``easynav`` package does not include:
+
+- **APT**:
+
+  .. code-block:: bash
+
+     sudo apt install \
+       ros-<distro>-easynav-costmap-maps-manager \
+       ros-<distro>-easynav-routes-maps-manager \
+       ros-<distro>-easynav-serest-controller \
+       ros-<distro>-easynav-costmap-localizer \
+       ros-<distro>-easynav-costmap-planner
+
+- **Pixi**:
+
+  .. code-block:: bash
+
+     pixi add \
+       ros-<distro>-easynav-costmap-maps-manager \
+       ros-<distro>-easynav-routes-maps-manager \
+       ros-<distro>-easynav-serest-controller \
+       ros-<distro>-easynav-costmap-localizer \
+       ros-<distro>-easynav-costmap-planner
+
+- **Source**: already built if you cloned ``easynav_plugins`` as described in
+  :ref:`build_from_source`.
+
 
 1) Creating routes
 ------------------

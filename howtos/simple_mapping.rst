@@ -35,21 +35,30 @@ The workflow consists of:
 Setup
 -----
 
-Before starting, ensure you have completed :doc:`../build_install/index` and cloned the following repositories
-in your workspace:
+Complete the installation steps in :doc:`../build_install/index` first (any of APT,
+Pixi or source). This tutorial uses the **Simple Maps Manager** plugin, which the
+core ``easynav`` package does not include:
 
-- ``EasyNavigation``  
-- ``easynav_plugins``  
-- ``easynav_playground_kobuki`` *(for simulation)*  
-- ``easynav_indoor_testcase`` *(for configuration and maps)*  
+- **APT**: ``sudo apt install ros-<distro>-easynav-simple-maps-manager``
+- **Pixi**: ``pixi add ros-<distro>-easynav-simple-maps-manager``
+- **Source**: already built if you cloned ``easynav_plugins`` as described in
+  :ref:`build_from_source`.
 
-All packages should build correctly with:
+You will also need the simulator and example config, which are only distributed as
+source — clone them into ``~/easynav_ws/src`` regardless of install method:
+
+.. code-block:: bash
+
+   cd ~/easynav_ws/src
+   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
+   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+
+Build and source the workspace as described in :ref:`gs_source_workspace`:
 
 .. code-block:: bash
 
    cd ~/easynav_ws
    colcon build --symlink-install
-   source install/setup.bash
 
 ---
 

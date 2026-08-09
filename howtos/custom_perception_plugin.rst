@@ -34,26 +34,36 @@ every received sample.
 Setup
 -----
 
-Before starting, ensure that:
+Writing and compiling a new plugin requires the EasyNav headers, so this guide builds
+everything **from source** — regardless of whether you normally use APT or Pixi for
+day-to-day EasyNav use, see :ref:`build_from_source`. Replace ``<distro>`` below with
+your target ROS 2 distro (``rolling``, ``jazzy``, ``kilted`` or ``lyrical``):
 
-1. You have completed the installation steps in :doc:`../build_install/index`.
-2. You have cloned the following repositories in your workspace:
+.. code-block:: bash
 
-   .. code-block:: bash
+   mkdir -p ~/easynav_ws/src && cd ~/easynav_ws/src
+   git clone -b <distro> https://github.com/EasyNavigation/EasyNavigation.git
+   git clone -b <distro> https://github.com/EasyNavigation/easynav_plugins.git
+   git clone https://github.com/EasyNavigation/easynav_alt_imu_sensor.git
+   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
 
-      cd ~/ros/ros2/easynav_ws/src
-      git clone https://github.com/EasyNavigation/EasyNavigation.git
-      git clone https://github.com/EasyNavigation/easynav_plugins.git
-      git clone https://github.com/EasyNavigation/easynav_alt_imu_sensor.git
-      git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+Then build and source the workspace:
 
-3. Your workspace builds and is sourced:
+.. code-block:: bash
 
-   .. code-block:: bash
+   cd ~/easynav_ws
+   rosdep install --from-paths src --ignore-src -y -r
+   colcon build --symlink-install
+   source /opt/ros/<distro>/setup.bash
+   source install/setup.bash
 
-      cd ~/ros/ros2/easynav_ws
-      colcon build --symlink-install
-      source install/setup.bash
+The example configuration used later in this guide also exercises the **MPC
+Controller**, **NavMap Localizer**, **Bonxai Maps Manager**, **NavMap Maps Manager**
+and **NavMap Planner** plugins — all already built above since ``easynav_plugins``
+was cloned in full. (If you only need those plugins, without developing a new one,
+you can instead install them via APT/Pixi — see :doc:`../build_install/index` — but
+``easynav_alt_imu_sensor`` itself, being the subject of this tutorial, is only
+distributed as source.)
 
 ---
 
@@ -213,7 +223,7 @@ Build the plugin package:
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws
+   cd ~/easynav_ws
    colcon build --packages-select easynav_alt_imu_sensor
    source install/setup.bash
 

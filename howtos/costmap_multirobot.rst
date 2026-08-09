@@ -28,21 +28,49 @@ This tutorial explains how to set up multiple robots safely without topic or TF 
 Setup
 -----
 
-Before starting, make sure you have followed the installation instructions in :doc:`../build_install/index`.  
-Then ensure that your workspace includes at least:
+Before starting, complete the installation steps in :doc:`../build_install/index`
+(any of APT, Pixi or source). This tutorial's example configuration uses the
+**Simple Controller**, **Costmap Localizer**, **Costmap Maps Manager** and
+**Costmap Planner** plugins, which the core ``easynav`` package does not include:
 
-- ``EasyNavigation``  
-- ``easynav_plugins``  
-- ``easynav_playground_kobuki``  
-- ``easynav_indoor_testcase``  
+- **APT**:
 
-and that everything builds correctly:
+  .. code-block:: bash
+
+     sudo apt install \
+       ros-<distro>-easynav-simple-controller \
+       ros-<distro>-easynav-costmap-localizer \
+       ros-<distro>-easynav-costmap-maps-manager \
+       ros-<distro>-easynav-costmap-planner
+
+- **Pixi**:
+
+  .. code-block:: bash
+
+     pixi add \
+       ros-<distro>-easynav-simple-controller \
+       ros-<distro>-easynav-costmap-localizer \
+       ros-<distro>-easynav-costmap-maps-manager \
+       ros-<distro>-easynav-costmap-planner
+
+- **Source**: already built if you cloned ``easynav_plugins`` as described in
+  :ref:`build_from_source`.
+
+You will also need the demo/simulation repositories, which are only distributed
+as source — clone them into ``~/easynav_ws/src`` regardless of install method:
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws
+   cd ~/easynav_ws/src
+   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
+   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+
+Then build and source the workspace as described in :ref:`gs_source_workspace`:
+
+.. code-block:: bash
+
+   cd ~/easynav_ws
    colcon build --symlink-install
-   source install/setup.bash
 
 ---
 
@@ -142,7 +170,7 @@ Each instance uses the same parameter file but with its own namespace and TF rem
 
    ros2 run easynav_system system_main \
      --ros-args \
-     --params-file ~/ros/ros2/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap_multirobot.params.yaml \
+     --params-file ~/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap_multirobot.params.yaml \
      -r __ns:=r1 \
      -r /tf:=tf -r /tf_static:=tf_static
 
@@ -152,7 +180,7 @@ Each instance uses the same parameter file but with its own namespace and TF rem
 
    ros2 run easynav_system system_main \
      --ros-args \
-     --params-file ~/ros/ros2/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap_multirobot.params.yaml \
+     --params-file ~/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap_multirobot.params.yaml \
      -r __ns:=r2 \
      -r /tf:=tf -r /tf_static:=tf_static
 
@@ -166,11 +194,11 @@ Open one RViz window per robot namespace to visualize each navigation stack inde
 
    ros2 launch easynav_playground_kobuki rviz_namespaced.launch.py \
      namespace:=r1 use_sim_time:=true \
-     rviz_config:=~/ros/ros2/easynav_ws/src/easynav_playground_kobuki/rviz/nav2_namespaced_view.rviz
+     rviz_config:=~/easynav_ws/src/easynav_playground_kobuki/rviz/nav2_namespaced_view.rviz
 
    ros2 launch easynav_playground_kobuki rviz_namespaced.launch.py \
      namespace:=r2 use_sim_time:=true \
-     rviz_config:=~/ros/ros2/easynav_ws/src/easynav_playground_kobuki/rviz/nav2_namespaced_view.rviz
+     rviz_config:=~/easynav_ws/src/easynav_playground_kobuki/rviz/nav2_namespaced_view.rviz
 
 You can now send **2D Goal Poses** independently in each RViz instance.
 
