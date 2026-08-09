@@ -25,6 +25,18 @@ EasyNav targets modern Linux distributions and the following ROS 2 releases:
    If you are using a different ROS 2 release, contributions to extend the support
    matrix are very welcome.
 
+Installation methods
+---------------------
+
+EasyNav can be installed in three ways:
+
+- :ref:`install_apt` — precompiled Debian packages. Available for **jazzy**,
+  **kilted** and **lyrical** (not **rolling**).
+- :ref:`install_pixi` — precompiled Pixi/conda packages, self-contained (bundles
+  its own ROS 2). Available for **rolling**, **jazzy**, **kilted** and **lyrical**.
+- :ref:`build_from_source` — clone and build with colcon. Available for all four
+  supported distros.
+
 Prerequisites
 -------------
 
@@ -49,6 +61,8 @@ environment and no system-wide ROS 2 installation is required — you can skip a
 
       sudo rosdep init
       rosdep update
+
+.. _install_apt:
 
 Install from binaries (APT)
 ----------------------------
@@ -131,11 +145,13 @@ EasyNav publishes prebuilt `Pixi <https://pixi.sh>`_/conda packages on
 `prefix.dev <https://prefix.dev>`_. A Pixi environment is fully self-contained: it
 ships its own ROS 2 distribution, so you do **not** need a system ROS 2 install.
 
-For each ROS 2 distro, download the corresponding ``pixi.toml`` below, put it in an
-empty directory, and run:
+For each ROS 2 distro, download the corresponding ``pixi.toml`` below and save it as
+``~/easynav_ws/pixi.toml`` — the same workspace directory used throughout this guide
+and in :doc:`../getting_started/index`. Then run:
 
 .. code-block:: bash
 
+   cd ~/easynav_ws
    pixi install
    pixi shell
 
