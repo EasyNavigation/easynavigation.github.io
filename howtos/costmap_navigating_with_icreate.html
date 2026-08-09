@@ -145,6 +145,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#notes">Notes</a></li>
@@ -180,6 +181,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
 </ul>
@@ -208,22 +210,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#bonxai-stack">Bonxai Stack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#bonxai-navmap-stack">Bonxai / NavMap Stack</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#navmap-stack">NavMap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
@@ -396,6 +385,14 @@
 using a Raspberry Pi 4 as on-board computer and ROS 2 Kilted.
 It is based on the same workflow as the <em>Simple Stack</em> tutorials but adapted for <strong>real hardware</strong> with a graded
 <strong>Costmap2D</strong> environment representation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This guide is written for <strong>ROS 2 Kilted</strong> on Ubuntu 24.04 (the Raspberry Pi’s OS) and
+builds EasyNav <strong>from source</strong> (see <a class="reference internal" href="../build_install/index.html#build-from-source"><span class="std std-ref">Build from source</span></a>). Kilted also has APT and
+Pixi packages (see <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a>) if you would rather not build from
+source. For a different distro, replace every <code class="docutils literal notranslate"><span class="pre">kilted</span></code> below with your target
+(<code class="docutils literal notranslate"><span class="pre">rolling</span></code>, <code class="docutils literal notranslate"><span class="pre">jazzy</span></code> or <code class="docutils literal notranslate"><span class="pre">lyrical</span></code>) and use the matching git branch.</p>
+</div>
 <nav class="contents local" id="on-this-page">
 <p class="topic-title">On this page</p>
 <ul class="simple">
@@ -480,7 +477,6 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </li>
 <li><p>Install additional packages:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>openssh-server<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>ros-kilted-rplidar-ros<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>ros-kilted-depthai<span class="w"> </span>ros-kilted-depthai-ros<span class="w"> </span>ros-kilted-depthai-ros-driver<span class="w"> </span>ros-kilted-depthai-bridge<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>ros-kilted-slam-toolbox<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>ros-kilted-rmw-zenoh-cpp<span class="w"> </span>ros-kilted-zenoh-cpp-vendor<span class="w"> </span><span class="se">\</span>
@@ -502,9 +498,9 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </div>
 </li>
 <li><p><strong>Clone the required repositories:</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_plugins.git
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>kilted<span class="w"> </span>https://github.com/EasyNavigation/easynav_plugins.git
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_indoor_testcase.git
-git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/EasyNavigation/EasyNavigation.git
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>kilted<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/EasyNavigation/EasyNavigation.git
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Slamtec/sllidar_ros2.git
 </pre></div>
 </div>

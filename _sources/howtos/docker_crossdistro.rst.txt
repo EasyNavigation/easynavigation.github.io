@@ -24,6 +24,15 @@ We will set up a system composed of three main parts:
 .. note::
     Ensure that all machines (Robot, Docker Container, and PC) use the same **Zenoh** version to avoid protocol mismatches. The provided Dockerfile uses version **1.7.2**.
 
+.. note::
+    This example builds EasyNav **from source** inside the image using ROS 2 Rolling,
+    but the same pattern works for **jazzy**, **kilted** or **lyrical** — just change
+    the base image tag and the ``-b rolling`` branch in the ``git clone`` commands to
+    match. For jazzy/kilted/lyrical you can also skip the source build entirely and
+    replace the whole "clone + rosdep + colcon build" block with a single
+    ``apt-get install ros-<distro>-easynav`` (plus any plugin packages you need — see
+    :doc:`../build_install/index`), which makes for a much smaller image.
+
 ---
 
 Step 1: Building the Docker Image (Rolling)

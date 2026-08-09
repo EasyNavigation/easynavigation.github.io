@@ -17,24 +17,25 @@ If you have not set up EasyNav yet, please complete the steps in :doc:`../build_
 Setup
 ------
 
-Before running this tutorial, make sure that:
+Complete the installation steps in :doc:`../build_install/index` first (any of
+APT, Pixi or source). The core ``easynav`` package does not include plugins, so
+also make sure the **Costmap Maps Manager** is installed in your ``~/easynav_ws``:
 
-1. You have a working **EasyNav workspace** (for example `~/ros/ros2/easynav_ws`) built and sourced.
-2. Ensure that the following repositories are present inside your ``src/`` folder:
+- **APT**: ``sudo apt install ros-<distro>-easynav-costmap-maps-manager``
+- **Pixi**: ``pixi add ros-<distro>-easynav-costmap-maps-manager``
+- **Source**: already built if you cloned ``easynav_plugins`` as described in
+  :ref:`build_from_source`.
 
-   - ``EasyNavigation``
-   - ``easynav_plugins``
-   - ``easynav_playground_kobuki`` *(optional, for simulation)*
-   - ``easynav_indoor_testcase`` *(optional, for maps and configuration examples)*
+You can run this tutorial either in simulation (e.g., Gazebo) or using a static map
+file/robot of your own. If you want to follow along in simulation (the easiest way
+to actually run this tutorial), also clone into ``~/easynav_ws/src``:
 
-3. Your workspace is sourced:
+- ``easynav_playground_kobuki`` — provides the simulator; **required** unless you
+  already have a robot or a static map to work from.
+- ``easynav_indoor_testcase`` *(optional)* — only used here as an example of a
+  package layout for storing maps; not required if you use your own package.
 
-   .. code-block:: bash
-
-      cd ~/ros/ros2/easynav_ws
-      source install/setup.bash
-
-You can run this tutorial either in simulation (e.g., Gazebo) or using a static map file.
+Then source your workspace as described in :ref:`gs_source_workspace`.
 
 Overview
 --------

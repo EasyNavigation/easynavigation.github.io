@@ -16,22 +16,44 @@ configure and run EasyNav to navigate using the generated map.
 Setup
 ------
 
-Before starting, ensure that:
+Before starting, complete the installation steps in :doc:`../build_install/index`
+(any of APT, Pixi or source). This tutorial's example configuration uses the
+**SeReST Controller**, **Costmap Localizer**, **Costmap Maps Manager** and
+**Costmap Planner** plugins, which the core ``easynav`` package does not include:
 
-1. You have completed the installation steps in :doc:`../build_install/index`.  
-2. You have cloned and built the following repositories in your workspace:
+- **APT**:
 
-   - ``EasyNavigation``
-   - ``easynav_plugins``
-   - ``easynav_playground_kobuki`` *(for simulation)*
-   - ``easynav_indoor_testcase`` *(for maps and parameter examples)*
+  .. code-block:: bash
 
-3. Your workspace is sourced:
+     sudo apt install \
+       ros-<distro>-easynav-serest-controller \
+       ros-<distro>-easynav-costmap-localizer \
+       ros-<distro>-easynav-costmap-maps-manager \
+       ros-<distro>-easynav-costmap-planner
 
-   .. code-block:: bash
+- **Pixi**:
 
-      cd ~/ros/ros2/easynav_ws
-      source install/setup.bash
+  .. code-block:: bash
+
+     pixi add \
+       ros-<distro>-easynav-serest-controller \
+       ros-<distro>-easynav-costmap-localizer \
+       ros-<distro>-easynav-costmap-maps-manager \
+       ros-<distro>-easynav-costmap-planner
+
+- **Source**: already built if you cloned ``easynav_plugins`` as described in
+  :ref:`build_from_source`.
+
+You will also need the demo/simulation repositories, which are only distributed
+as source — clone them into ``~/easynav_ws/src`` regardless of install method:
+
+.. code-block:: bash
+
+   cd ~/easynav_ws/src
+   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
+   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+
+Then build and source the workspace as described in :ref:`gs_source_workspace`.
 
 ---
 
@@ -191,7 +213,7 @@ Running the Simulation
    .. code-block:: bash
 
       ros2 run easynav_system system_main \
-         --ros-args --params-file ~/ros/ros2/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap.serest.params.yaml
+         --ros-args --params-file ~/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap.serest.params.yaml
 
    *(You can also create a dedicated launcher file for convenience.)*
 

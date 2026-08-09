@@ -145,6 +145,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#notes">Notes</a></li>
@@ -180,6 +181,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
 </ul>
@@ -208,22 +210,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#bonxai-stack">Bonxai Stack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#bonxai-navmap-stack">Bonxai / NavMap Stack</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#navmap-stack">NavMap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
@@ -397,6 +386,12 @@ to track discrete paths (e.g., A* polylines) precisely, slow down smoothly near 
 and behave safely around dynamic obstacles.</p>
 <p>It includes grouped parameters, recommended defaults, and practical
 “if you see X, change Y” advice.</p>
+<p>The <strong>SeReST Controller</strong> (<code class="docutils literal notranslate"><span class="pre">easynav_serest_controller</span></code>) is a plugin, not part of
+the core <code class="docutils literal notranslate"><span class="pre">easynav</span></code> package — install it with
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">ros-&lt;distro&gt;-easynav-serest-controller</span></code> (APT),
+<code class="docutils literal notranslate"><span class="pre">pixi</span> <span class="pre">add</span> <span class="pre">ros-&lt;distro&gt;-easynav-serest-controller</span></code> (Pixi), or by cloning
+<code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code> as described in <a class="reference internal" href="../build_install/index.html#build-from-source"><span class="std std-ref">Build from source</span></a>. See
+<a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a> if you have not installed EasyNav yet.</p>
 <nav class="contents local" id="on-this-page">
 <p class="topic-title">On this page</p>
 <ul class="simple">

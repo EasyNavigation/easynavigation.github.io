@@ -69,18 +69,8 @@ GridMap Stack
    gridmap_mapping
    gridmap_navigating
 
-Bonxai Stack
-------------
-
-- :doc:`bonxai_navmap_from_rosbag`
-
-.. toctree::
-   :hidden:
-
-   bonxai_navmap_from_rosbag
-
-NavMap Stack
-------------
+Bonxai / NavMap Stack
+---------------------
 
 - :doc:`bonxai_navmap_from_rosbag`
 

@@ -145,6 +145,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../howtos/simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#notes">Notes</a></li>
@@ -180,6 +181,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../howtos/routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
 </ul>
@@ -208,22 +210,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#bonxai-stack">Bonxai Stack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#bonxai-navmap-stack">Bonxai / NavMap Stack</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#navmap-stack">NavMap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
@@ -409,15 +398,17 @@ These plugins extend the navigation core with planners, controllers, map manager
 <section id="supported-ros-2-versions">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Supported ROS 2 versions</a><a class="headerlink" href="#supported-ros-2-versions" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p><strong>ROS 2 jazzy</strong> (Ubuntu 24.04)</p></li>
-<li><p><strong>ROS 2 kilted</strong> (Ubuntu 24.04, recommended)</p></li>
 <li><p><strong>ROS 2 rolling</strong></p></li>
-<li><p><strong>ROS 2 humble</strong> (Ubuntu 22.04)</p></li>
+<li><p><strong>ROS 2 lyrical</strong></p></li>
+<li><p><strong>ROS 2 kilted</strong> (recommended)</p></li>
+<li><p><strong>ROS 2 jazzy</strong></p></li>
 </ul>
-<a class="reference external image-reference" href="#"><img alt="ROS 2 jazzy" src="https://img.shields.io/badge/ROS%202-jazzy-blue" /></a>
-<a class="reference external image-reference" href="#"><img alt="ROS 2 kilted" src="https://img.shields.io/badge/ROS%202-kilted-blue" /></a>
+<p>See <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a> for the full install matrix (APT, Pixi, or source)
+per distro.</p>
 <a class="reference external image-reference" href="#"><img alt="ROS 2 rolling" src="https://img.shields.io/badge/ROS%202-rolling-blue" /></a>
-<a class="reference external image-reference" href="#"><img alt="ROS 2 humble" src="https://img.shields.io/badge/ROS%202-humble-blue" /></a>
+<a class="reference external image-reference" href="#"><img alt="ROS 2 lyrical" src="https://img.shields.io/badge/ROS%202-lyrical-blue" /></a>
+<a class="reference external image-reference" href="#"><img alt="ROS 2 kilted" src="https://img.shields.io/badge/ROS%202-kilted-blue" /></a>
+<a class="reference external image-reference" href="#"><img alt="ROS 2 jazzy" src="https://img.shields.io/badge/ROS%202-jazzy-blue" /></a>
 <a class="reference external image-reference" href="https://github.com/EasyNavigation/easynav_plugins/actions/workflows/rolling.yaml"><img alt="rolling CI status" src="https://github.com/EasyNavigation/easynav_plugins/actions/workflows/rolling.yaml/badge.svg" /></a>
 </section>
 <section id="repository-overview">

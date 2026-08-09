@@ -145,6 +145,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#creating-a-parameter-file">Creating a Parameter File</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#notes">Notes</a></li>
@@ -180,6 +181,7 @@
 </ul>
 </li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#creating-routes">1) Creating routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
 </ul>
@@ -208,22 +210,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#bonxai-stack">Bonxai Stack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#bonxai-navmap-stack">Bonxai / NavMap Stack</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#navmap-stack">NavMap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
@@ -408,6 +397,37 @@ costmap is filtered to keep the robot close to the defined routes.</p></li>
 working costmap-based scenario (e.g., the indoor testcase). Only the
 parts specific to routes are shown here.</p>
 </div>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>Complete the installation steps in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a> first (any of APT,
+Pixi or source). The examples below use the <strong>Costmap Maps Manager</strong>, <strong>Routes Maps
+Manager</strong>, <strong>SeReST Controller</strong>, <strong>Costmap Localizer</strong> and <strong>Costmap Planner</strong>
+plugins, which the core <code class="docutils literal notranslate"><span class="pre">easynav</span></code> package does not include:</p>
+<ul>
+<li><p><strong>APT</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-routes-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-serest-controller<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-localizer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-planner
+</pre></div>
+</div>
+</li>
+<li><p><strong>Pixi</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-routes-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-serest-controller<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-localizer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-costmap-planner
+</pre></div>
+</div>
+</li>
+<li><p><strong>Source</strong>: already built if you cloned <code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code> as described in
+<a class="reference internal" href="../build_install/index.html#build-from-source"><span class="std std-ref">Build from source</span></a>.</p></li>
+</ul>
+</section>
 <section id="creating-routes">
 <h2>1) Creating routes<a class="headerlink" href="#creating-routes" title="Permalink to this heading"></a></h2>
 <p>In this first step we will run only the maps manager node with a minimal

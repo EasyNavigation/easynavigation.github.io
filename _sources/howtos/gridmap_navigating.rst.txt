@@ -63,32 +63,50 @@ representing non-flat terrain in EasyNav.
 Setup
 -----
 
-1. You have completed the installation described in :doc:`../build_install/index`.
-2. You have a working workspace containing the following repositories:
+Complete the installation steps in :doc:`../build_install/index` first (any of APT,
+Pixi or source). This tutorial's example configuration uses the **NavMap Maps
+Manager**, **NavMap Planner**, **NavMap Localizer** and **SeReST Controller**
+plugins, which the core ``easynav`` package does not include:
 
-   - ``EasyNavigation``
-   - ``easynav_plugins`` (provides ``easynav_navmap_maps_manager``, ``easynav_navmap_planner``,
-     ``easynav_navmap_localizer``, ``easynav_serest_controller``)
-   - ``easynav_indoor_testcase`` *(for the example configuration and maps used below)*
-   - ``easynav_playground_kobuki`` *(for the simulated robot used below)*
+- **APT**:
 
-If something is missing, clone the required repositories:
+  .. code-block:: bash
+
+     sudo apt install \
+       ros-<distro>-easynav-navmap-maps-manager \
+       ros-<distro>-easynav-navmap-planner \
+       ros-<distro>-easynav-navmap-localizer \
+       ros-<distro>-easynav-serest-controller
+
+- **Pixi**:
+
+  .. code-block:: bash
+
+     pixi add \
+       ros-<distro>-easynav-navmap-maps-manager \
+       ros-<distro>-easynav-navmap-planner \
+       ros-<distro>-easynav-navmap-localizer \
+       ros-<distro>-easynav-serest-controller
+
+- **Source**: already built if you followed :ref:`build_from_source` (which also
+  clones ``NavMap``, needed by the NavMap plugins).
+
+You will also need the demo/simulation repositories, which are only distributed
+as source — clone them into ``~/easynav_ws/src`` regardless of install method:
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws/src
-   git clone https://github.com/EasyNavigation/easynav_plugins.git
+   cd ~/easynav_ws/src
    git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
    git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
 
-Then build and source your workspace:
+Then build and source your workspace as described in :ref:`gs_source_workspace`:
 
 .. code-block:: bash
 
-   cd ~/ros/ros2/easynav_ws
+   cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -r -y
    colcon build --symlink-install
-   source install/setup.bash
 
 ---
 
@@ -222,7 +240,7 @@ Launch EasyNav with:
 .. code-block:: bash
 
    ros2 run easynav_system system_main \
-     --ros-args --params-file ~/ros/ros2/easynav_ws/src/easynav_indoor_testcase/robots_params/navmap.kobuki.params.yaml
+     --ros-args --params-file ~/easynav_ws/src/easynav_indoor_testcase/robots_params/navmap.kobuki.params.yaml
 
 You should see console logs from the NavMap Maps Manager, the planner, and the AMCL-style
 localizer starting up.

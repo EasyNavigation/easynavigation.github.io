@@ -145,6 +145,7 @@
 </li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Navigating with SimpleStack and EasyNav</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#creating-a-parameter-file">Creating a Parameter File</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#running-the-simulation">Running the Simulation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#notes">Notes</a></li>
@@ -180,6 +181,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
 </ul>
@@ -208,22 +210,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#bonxai-stack">Bonxai Stack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#bonxai-navmap-stack">Bonxai / NavMap Stack</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#navmap-stack">NavMap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
@@ -398,9 +387,10 @@ The Simple Stack operates on a <strong>binary occupancy map</strong>, ideal for 
 <p class="topic-title">On this page</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
-<li><p><a class="reference internal" href="#creating-a-parameter-file" id="id2">Creating a Parameter File</a></p></li>
-<li><p><a class="reference internal" href="#running-the-simulation" id="id3">Running the Simulation</a></p></li>
-<li><p><a class="reference internal" href="#notes" id="id4">Notes</a></p></li>
+<li><p><a class="reference internal" href="#setup" id="id2">Setup</a></p></li>
+<li><p><a class="reference internal" href="#creating-a-parameter-file" id="id3">Creating a Parameter File</a></p></li>
+<li><p><a class="reference internal" href="#running-the-simulation" id="id4">Running the Simulation</a></p></li>
+<li><p><a class="reference internal" href="#notes" id="id5">Notes</a></p></li>
 </ul>
 </nav>
 <section id="overview">
@@ -409,6 +399,43 @@ The Simple Stack operates on a <strong>binary occupancy map</strong>, ideal for 
   <iframe width="450" height="300" src="https://www.youtube.com/embed/p4aqNA0JNhA" frameborder="0" allowfullscreen></iframe>
 </div><p>This tutorial assumes you already have a map created with SLAM Toolbox or another mapping method.
 If you have not yet generated a map, follow <a class="reference internal" href="simple_mapping.html"><span class="doc">Mapping with SLAM Toolbox and EasyNav</span></a> first.</p>
+</section>
+<section id="setup">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>Complete the installation steps in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a> first (any of APT,
+Pixi or source). This tutorial’s example configuration uses the <strong>SeReST
+Controller</strong>, <strong>Simple Localizer</strong>, <strong>Simple Maps Manager</strong> and <strong>Simple Planner</strong>
+plugins, which the core <code class="docutils literal notranslate"><span class="pre">easynav</span></code> package does not include:</p>
+<ul>
+<li><p><strong>APT</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-serest-controller<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-localizer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-planner
+</pre></div>
+</div>
+</li>
+<li><p><strong>Pixi</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-serest-controller<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-localizer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-simple-planner
+</pre></div>
+</div>
+</li>
+<li><p><strong>Source</strong>: already built if you cloned <code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code> as described in
+<a class="reference internal" href="../build_install/index.html#build-from-source"><span class="std std-ref">Build from source</span></a>.</p></li>
+</ul>
+<p>You will also need the simulator and example config, which are only distributed as
+source — clone them into <code class="docutils literal notranslate"><span class="pre">~/easynav_ws/src</span></code> regardless of install method:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws/src
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_playground_kobuki.git
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_indoor_testcase.git
+</pre></div>
+</div>
+<p>Build and source the workspace as described in <a class="reference internal" href="../getting_started/index.html#gs-source-workspace"><span class="std std-ref">Build and source the workspace</span></a>.</p>
 <p>Once you have your map, save the resulting <code class="docutils literal notranslate"><span class="pre">.map</span></code> file (the Simple Maps Manager’s own text format,
 produced by its <code class="docutils literal notranslate"><span class="pre">savemap</span></code> service) in any package within your workspace,
 such as <code class="docutils literal notranslate"><span class="pre">easynav_indoor_testcase/maps</span></code>.
@@ -417,7 +444,7 @@ You will later reference it using the parameters <code class="docutils literal n
 <p>—</p>
 </section>
 <section id="creating-a-parameter-file">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Creating a Parameter File</a><a class="headerlink" href="#creating-a-parameter-file" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Creating a Parameter File</a><a class="headerlink" href="#creating-a-parameter-file" title="Permalink to this heading"></a></h2>
 <p>In this example we will use:</p>
 <ul class="simple">
 <li><p>The <strong>SeReST controller</strong> for trajectory tracking.</p></li>
@@ -512,7 +539,7 @@ You will later reference it using the parameters <code class="docutils literal n
 <p>—</p>
 </section>
 <section id="running-the-simulation">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Running the Simulation</a><a class="headerlink" href="#running-the-simulation" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Running the Simulation</a><a class="headerlink" href="#running-the-simulation" title="Permalink to this heading"></a></h2>
 <ol class="arabic">
 <li><p><strong>Launch the simulator</strong>
 You can disable the GUI to save computational resources:</p>
@@ -539,7 +566,7 @@ The robot will autonomously plan and navigate toward them.</p></li>
 <p>—</p>
 </section>
 <section id="notes">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>The <strong>Simple Stack</strong> uses a <strong>binary map</strong>: cells are free or occupied (no graded cost).</p></li>
 <li><p>For smoother paths or cost-aware planning, use the <strong>Costmap Stack</strong> (<a class="reference internal" href="costmap_mapping.html"><span class="doc">Mapping with the Costmap Stack</span></a>).</p></li>

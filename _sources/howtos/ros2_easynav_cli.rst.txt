@@ -9,6 +9,10 @@ NAME
 
 **ros2 easynav** — top-level command group providing EasyNav developer/operator utilities.
 
+This CLI is part of ``easynav_tools``, included in the core ``easynav`` package — no
+extra plugins needed. See :doc:`../build_install/index` if you have not installed
+EasyNav yet (APT, Pixi or source all work).
+
 
 SYNOPSIS
 ========

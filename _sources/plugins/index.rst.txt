@@ -17,22 +17,25 @@ Each plugin resides in its own ROS 2 package and is registered through ``pluginl
 Supported ROS 2 versions
 ------------------------
 
-- **ROS 2 jazzy** (Ubuntu 24.04)
-- **ROS 2 kilted** (Ubuntu 24.04, recommended)
 - **ROS 2 rolling**
-- **ROS 2 humble** (Ubuntu 22.04)
+- **ROS 2 lyrical**
+- **ROS 2 kilted** (recommended)
+- **ROS 2 jazzy**
 
-.. image:: https://img.shields.io/badge/ROS%202-jazzy-blue
-   :alt: ROS 2 jazzy
+See :doc:`../build_install/index` for the full install matrix (APT, Pixi, or source)
+per distro.
+
+.. image:: https://img.shields.io/badge/ROS%202-rolling-blue
+   :alt: ROS 2 rolling
+   :target: #
+.. image:: https://img.shields.io/badge/ROS%202-lyrical-blue
+   :alt: ROS 2 lyrical
    :target: #
 .. image:: https://img.shields.io/badge/ROS%202-kilted-blue
    :alt: ROS 2 kilted
    :target: #
-.. image:: https://img.shields.io/badge/ROS%202-rolling-blue
-   :alt: ROS 2 rolling
-   :target: #
-.. image:: https://img.shields.io/badge/ROS%202-humble-blue
-   :alt: ROS 2 humble
+.. image:: https://img.shields.io/badge/ROS%202-jazzy-blue
+   :alt: ROS 2 jazzy
    :target: #
 
 .. image:: https://github.com/EasyNavigation/easynav_plugins/actions/workflows/rolling.yaml/badge.svg
