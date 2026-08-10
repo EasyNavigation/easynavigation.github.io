@@ -7,6 +7,36 @@ GridMap Mapping with LidarSLAM and EasyNav
 This HowTo explains how to build a **multi-layer GridMap** from a **LidarSLAM** point cloud and save it
 to disk (YAML + one PGM per layer) so it can be loaded later by the **Gridmap Maps Manager** and the planner.
 
+.. warning::
+   **Deprecated / unmaintained.** The GridMap stack is not part of EasyNav's regularly
+   tested/maintained plugins and is currently **not known to build** on ROS 2 Rolling
+   (it fails against current toolchains in several of its dependencies — Eigen API
+   changes in ``grid_map_core``, the ``ament_target_dependencies`` CMake macro removed
+   from ``grid_map_ros``, and a third-party LidarSLAM dependency pinned to an old
+   branch that hits the same issue). This page is kept only as a historical reference
+   of the intended workflow; expect to do real fixing work before it runs. If you want
+   to pick this up, the relevant repositories are:
+
+   - `EasyNavigation/easynav_gridmap_stack <https://github.com/EasyNavigation/easynav_gridmap_stack>`_
+     — the ``GridmapMapsManager``, ``GridMapAStarPlanner`` and ``GridMapRRTStarPlanner`` plugins.
+   - `ANYbotics/grid_map <https://github.com/ANYbotics/grid_map>`_ — the underlying GridMap
+     library (``rolling`` branch does not currently build; a partial rolling-compatibility
+     fix exists at `fmrico/grid_map <https://github.com/fmrico/grid_map>`_, untested beyond
+     compiling).
+   - `EasyNavigation/easynav_lidarslam_ros2 <https://github.com/EasyNavigation/easynav_lidarslam_ros2>`_
+     — the LidarSLAM localizer/mapping nodes used below; excluded from the default build
+     (``COLCON_IGNORE``) and depends on the third-party submodule
+     `rsasaki0109/ndt_omp_ros2 <https://github.com/rsasaki0109/ndt_omp_ros2>`_, pinned to
+     its ``humble`` branch, which also needs a rolling-compatibility fix.
+   - `EasyNavigation/easynav_outdoor_testcase <https://github.com/EasyNavigation/easynav_outdoor_testcase>`_
+     — example maps/params for this stack. Note ``robots_params/maps_builder.params.yaml``
+     uses a stale node name (``pointcloud_maps_builder_node`` instead of the current
+     ``gridmap_maps_builder_node``), and ``launch/summit.launch.py`` /
+     ``robots_params/maps_manager.params.yaml`` reference a
+     ``easynav_pointcloud_maps_manager/PointCloudMapsManager`` plugin that does not exist
+     anywhere in this ecosystem — ``robots_params/summit_gridmap_ls_params.yaml`` is the
+     one example file in that repo that actually matches current plugin names.
+
 .. contents:: On this page
    :local:
    :depth: 2

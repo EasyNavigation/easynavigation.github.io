@@ -4,8 +4,36 @@
 Outdoor Navigation with GridMaps (Summit)
 =========================================
 
-This HowTo demonstrates how to run **EasyNav** outdoors using **GridMap** representation and the **Summit robot**.  
+This HowTo demonstrates how to run **EasyNav** outdoors using **GridMap** representation and the **Summit robot**.
 It uses the *GridMap Maps Manager* for environment representation and the *LidarSLAM Localizer plugin* for real-time localization.
+
+.. warning::
+   **Deprecated / unmaintained.** The GridMap stack is not part of EasyNav's regularly
+   tested/maintained plugins and is currently **not known to build** on ROS 2 Rolling
+   (it fails against current toolchains in several of its dependencies — Eigen API
+   changes in ``grid_map_core``, the ``ament_target_dependencies`` CMake macro removed
+   from ``grid_map_ros``, and a third-party LidarSLAM dependency pinned to an old
+   branch that hits the same issue). This page is kept only as a historical reference
+   of the intended workflow; expect to do real fixing work before it runs. If you want
+   to pick this up, the relevant repositories are:
+
+   - `EasyNavigation/easynav_gridmap_stack <https://github.com/EasyNavigation/easynav_gridmap_stack>`_
+     — the ``GridmapMapsManager``, ``GridMapAStarPlanner`` and ``GridMapRRTStarPlanner`` plugins.
+   - `ANYbotics/grid_map <https://github.com/ANYbotics/grid_map>`_ — the underlying GridMap
+     library (``rolling`` branch does not currently build; a partial rolling-compatibility
+     fix exists at `fmrico/grid_map <https://github.com/fmrico/grid_map>`_, untested beyond
+     compiling).
+   - `EasyNavigation/easynav_lidarslam_ros2 <https://github.com/EasyNavigation/easynav_lidarslam_ros2>`_
+     — provides ``easynav_lidarslam_localizer`` (the *LidarSLAM Localizer plugin* used
+     below); excluded from the default build (``COLCON_IGNORE``) and depends on the
+     third-party submodule `rsasaki0109/ndt_omp_ros2 <https://github.com/rsasaki0109/ndt_omp_ros2>`_,
+     pinned to its ``humble`` branch, which also needs a rolling-compatibility fix.
+   - `EasyNavigation/easynav_outdoor_testcase <https://github.com/EasyNavigation/easynav_outdoor_testcase>`_
+     — example maps/params for this stack. ``robots_params/summit_gridmap_ls_params.yaml``
+     is the example that matches current plugin names; ``launch/summit.launch.py`` and
+     ``robots_params/maps_manager.params.yaml`` still reference a
+     ``easynav_pointcloud_maps_manager/PointCloudMapsManager`` plugin that does not exist
+     anywhere in this ecosystem.
 
 .. contents:: On this page
    :local:
