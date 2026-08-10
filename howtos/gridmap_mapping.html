@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Outdoor Mapping from a Point Cloud: NavMap and Bonxai Maps &mdash; EasyNavigation 1.0.0 documentation</title>
+  <title>GridMap Mapping with LidarSLAM and EasyNav &mdash; EasyNavigation 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -24,7 +24,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3D/Uneven-Terrain Navigation with EasyNav: the NavMap Stack" href="gridmap_navigating.html" />
+    <link rel="next" title="Outdoor Navigation with GridMaps (Summit)" href="gridmap_navigating.html" />
     <link rel="prev" title="Using the Routes Maps Manager with Costmaps" href="routes_costmap_manager.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
@@ -189,21 +189,22 @@
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#gridmap-stack">GridMap Stack</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Outdoor Mapping from a Point Cloud: NavMap and Bonxai Maps</a><ul>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#start-the-simulator">1. Start the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#run-slam-to-produce-a-point-cloud-map">2. Run SLAM to Produce a Point-Cloud Map</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#drive-the-robot-to-build-the-map">3. Drive the Robot to Build the Map</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#launch-easynav-with-the-navmap-bonxai-maps-manager">4. Launch EasyNav with the NavMap/Bonxai Maps Manager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#save-the-map-to-disk">5. Save the Map to Disk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="gridmap_navigating.html">3D/Uneven-Terrain Navigation with EasyNav: the NavMap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-easynav-with-the-navmap-stack">2. Launch EasyNav with the NavMap Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#notes">Notes</a></li>
 </ul>
@@ -370,7 +371,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">HowTos and Practical Guides</a></li>
-      <li class="breadcrumb-item active">Outdoor Mapping from a Point Cloud: NavMap and Bonxai Maps</li>
+      <li class="breadcrumb-item active">GridMap Mapping with LidarSLAM and EasyNav</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -379,85 +380,85 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="outdoor-mapping-from-a-point-cloud-navmap-and-bonxai-maps">
-<span id="gridmap-mapping"></span><h1>Outdoor Mapping from a Point Cloud: NavMap and Bonxai Maps<a class="headerlink" href="#outdoor-mapping-from-a-point-cloud-navmap-and-bonxai-maps" title="Permalink to this heading"></a></h1>
+  <section id="gridmap-mapping-with-lidarslam-and-easynav">
+<span id="gridmap-mapping"></span><h1>GridMap Mapping with LidarSLAM and EasyNav<a class="headerlink" href="#gridmap-mapping-with-lidarslam-and-easynav" title="Permalink to this heading"></a></h1>
+<p>This HowTo explains how to build a <strong>multi-layer GridMap</strong> from a <strong>LidarSLAM</strong> point cloud and save it
+to disk (YAML + one PGM per layer) so it can be loaded later by the <strong>Gridmap Maps Manager</strong> and the planner.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p><strong>This page originally described a “GridMap” stack</strong> (<code class="docutils literal notranslate"><span class="pre">easynav_gridmap_stack</span></code>,
-a <code class="docutils literal notranslate"><span class="pre">GridmapMapsManager</span></code> plugin, a separate <code class="docutils literal notranslate"><span class="pre">gridmap_maps_builder_main</span></code> executable, and an
-<code class="docutils literal notranslate"><span class="pre">easynav_lidarslam_ros2</span></code>/<code class="docutils literal notranslate"><span class="pre">easynav_outdoor_testcase</span></code> integration for the Summit robot).
-None of these exist in the current EasyNav codebase: there is no “gridmap”/<code class="docutils literal notranslate"><span class="pre">grid_map</span></code>
-concept, no <code class="docutils literal notranslate"><span class="pre">easynav_gridmap_stack</span></code> or <code class="docutils literal notranslate"><span class="pre">easynav_gridmap_maps_manager</span></code> package, and no
-<code class="docutils literal notranslate"><span class="pre">easynav_lidarslam_ros2</span></code>/<code class="docutils literal notranslate"><span class="pre">easynav_outdoor_testcase</span></code> packages in this workspace. The
-3D/outdoor-capable map representations that <strong>do</strong> exist today are:</p>
+<p><strong>Deprecated / unmaintained.</strong> The GridMap stack is not part of EasyNav’s regularly
+tested/maintained plugins and is currently <strong>not known to build</strong> on ROS 2 Rolling
+(it fails against current toolchains in several of its dependencies — Eigen API
+changes in <code class="docutils literal notranslate"><span class="pre">grid_map_core</span></code>, the <code class="docutils literal notranslate"><span class="pre">ament_target_dependencies</span></code> CMake macro removed
+from <code class="docutils literal notranslate"><span class="pre">grid_map_ros</span></code>, and a third-party LidarSLAM dependency pinned to an old
+branch that hits the same issue). This page is kept only as a historical reference
+of the intended workflow; expect to do real fixing work before it runs. If you want
+to pick this up, the relevant repositories are:</p>
 <ul class="simple">
-<li><p><strong>NavMap</strong> — a triangulated 3D surface mesh (<cite>easynav_navmap_maps_manager</cite>), which can encode
-uneven/outdoor terrain and per-cell cost layers.</p></li>
-<li><p><strong>Bonxai</strong> — a probabilistic voxel occupancy map (<cite>easynav_bonxai_maps_manager</cite>).</p></li>
+<li><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_gridmap_stack">EasyNavigation/easynav_gridmap_stack</a>
+— the <code class="docutils literal notranslate"><span class="pre">GridmapMapsManager</span></code>, <code class="docutils literal notranslate"><span class="pre">GridMapAStarPlanner</span></code> and <code class="docutils literal notranslate"><span class="pre">GridMapRRTStarPlanner</span></code> plugins.</p></li>
+<li><p><a class="reference external" href="https://github.com/ANYbotics/grid_map">ANYbotics/grid_map</a> — the underlying GridMap
+library (<code class="docutils literal notranslate"><span class="pre">rolling</span></code> branch does not currently build; a partial rolling-compatibility
+fix exists at <a class="reference external" href="https://github.com/fmrico/grid_map">fmrico/grid_map</a>, untested beyond
+compiling).</p></li>
+<li><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_lidarslam_ros2">EasyNavigation/easynav_lidarslam_ros2</a>
+— the LidarSLAM localizer/mapping nodes used below; excluded from the default build
+(<code class="docutils literal notranslate"><span class="pre">COLCON_IGNORE</span></code>) and depends on the third-party submodule
+<a class="reference external" href="https://github.com/rsasaki0109/ndt_omp_ros2">rsasaki0109/ndt_omp_ros2</a>, pinned to
+its <code class="docutils literal notranslate"><span class="pre">humble</span></code> branch, which also needs a rolling-compatibility fix.</p></li>
+<li><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_outdoor_testcase">EasyNavigation/easynav_outdoor_testcase</a>
+— example maps/params for this stack. Note <code class="docutils literal notranslate"><span class="pre">robots_params/maps_builder.params.yaml</span></code>
+uses a stale node name (<code class="docutils literal notranslate"><span class="pre">pointcloud_maps_builder_node</span></code> instead of the current
+<code class="docutils literal notranslate"><span class="pre">gridmap_maps_builder_node</span></code>), and <code class="docutils literal notranslate"><span class="pre">launch/summit.launch.py</span></code> /
+<code class="docutils literal notranslate"><span class="pre">robots_params/maps_manager.params.yaml</span></code> reference a
+<code class="docutils literal notranslate"><span class="pre">easynav_pointcloud_maps_manager/PointCloudMapsManager</span></code> plugin that does not exist
+anywhere in this ecosystem — <code class="docutils literal notranslate"><span class="pre">robots_params/summit_gridmap_ls_params.yaml</span></code> is the
+one example file in that repo that actually matches current plugin names.</p></li>
 </ul>
-<p>Both maps managers build their representation <strong>directly</strong> from an incoming
-<code class="docutils literal notranslate"><span class="pre">sensor_msgs/msg/PointCloud2</span></code> — there is no separate “map builder” node to run. This page has
-been rewritten to reflect that; for a fully worked, verified example (playing back a recorded
-point-cloud map and building both a NavMap and a Bonxai map from it), see
-<a class="reference internal" href="bonxai_navmap_from_rosbag.html"><span class="doc">Building Bonxai and NavMap Maps from a Recorded ROSBag</span></a>, which covers the same ground with a concrete, working
-configuration.</p>
 </div>
-<p>This HowTo explains how to build a <strong>NavMap</strong> (or a <strong>Bonxai</strong> map) from a point cloud produced by
-a SLAM algorithm, and save it to disk so it can be loaded later by the corresponding Maps Manager
-and planner.</p>
 <nav class="contents local" id="on-this-page">
 <p class="topic-title">On this page</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#setup" id="id1">Setup</a></p></li>
 <li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
 <li><p><a class="reference internal" href="#start-the-simulator" id="id3">1. Start the Simulator</a></p></li>
-<li><p><a class="reference internal" href="#run-slam-to-produce-a-point-cloud-map" id="id4">2. Run SLAM to Produce a Point-Cloud Map</a></p></li>
-<li><p><a class="reference internal" href="#drive-the-robot-to-build-the-map" id="id5">3. Drive the Robot to Build the Map</a></p></li>
-<li><p><a class="reference internal" href="#launch-easynav-with-the-navmap-bonxai-maps-manager" id="id6">4. Launch EasyNav with the NavMap/Bonxai Maps Manager</a></p></li>
-<li><p><a class="reference internal" href="#save-the-map-to-disk" id="id7">5. Save the Map to Disk</a></p></li>
+<li><p><a class="reference internal" href="#launch-lidarslam" id="id4">2. Launch LidarSLAM</a></p></li>
+<li><p><a class="reference internal" href="#build-the-map-with-teleoperation" id="id5">3. Build the Map with Teleoperation</a></p></li>
+<li><p><a class="reference internal" href="#run-the-gridmap-builder-pointcloud-gridmap" id="id6">4. Run the GridMap Builder (PointCloud → GridMap)</a></p></li>
+<li><p><a class="reference internal" href="#run-the-gridmap-maps-manager" id="id7">5. Run the Gridmap Maps Manager</a></p></li>
+<li><p><a class="reference internal" href="#save-the-gridmap-to-disk" id="id8">6. Save the GridMap to Disk</a></p></li>
 </ul>
 </nav>
 <section id="setup">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
-<p>Complete the installation steps in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a> first (any of APT,
-Pixi or source). The core <code class="docutils literal notranslate"><span class="pre">easynav</span></code> package does not include plugins, so also
-install the <strong>NavMap Maps Manager</strong> and/or <strong>Bonxai Maps Manager</strong>, depending on
-which representation you want to build:</p>
-<ul>
-<li><p><strong>APT</strong>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-&lt;distro&gt;-easynav-navmap-maps-manager<span class="w">  </span><span class="c1"># NavMap</span>
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-&lt;distro&gt;-easynav-bonxai-maps-manager<span class="w">  </span><span class="c1"># Bonxai</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>Pixi</strong>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>add<span class="w"> </span>ros-&lt;distro&gt;-easynav-navmap-maps-manager<span class="w">  </span><span class="c1"># NavMap</span>
-pixi<span class="w"> </span>add<span class="w"> </span>ros-&lt;distro&gt;-easynav-bonxai-maps-manager<span class="w">  </span><span class="c1"># Bonxai</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>Source</strong>: already built if you followed <a class="reference internal" href="../build_install/index.html#build-from-source"><span class="std std-ref">Build from source</span></a> (that step
-clones <code class="docutils literal notranslate"><span class="pre">NavMap</span></code> alongside <code class="docutils literal notranslate"><span class="pre">EasyNavigation</span></code>/<code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code>, which is what
-provides the NavMap core library and ROS conversion utilities).</p></li>
-</ul>
-<p>You will also need, cloned into <code class="docutils literal notranslate"><span class="pre">~/easynav_ws/src</span></code> (source-only, not on APT/Pixi):</p>
+<p>Before starting, ensure that:</p>
+<ol class="arabic simple">
+<li><p>You have completed the installation described in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a>.</p></li>
+<li><p>You have a working workspace containing the following repositories:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">easynav_playground_summit</span></code> — provides the Summit simulator used in
-<a class="reference internal" href="#gridmap-mapping-step1"><span class="std std-ref">Step 1</span></a> below; <strong>required</strong> unless you already have
-a robot or recorded data providing a live point-cloud feed.</p></li>
-<li><p>A SLAM package of your choice able to publish a map as a
-<code class="docutils literal notranslate"><span class="pre">sensor_msgs/msg/PointCloud2</span></code> (this workspace does not currently bundle a
-specific outdoor LiDAR-SLAM integration).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EasyNavigation</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_gridmap_stack</span></code> <em>(for GridMap representation and planner)</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_lidarslam_ros2</span></code> <em>(for SLAM)</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">easynav_playground_summit</span></code> <em>(for the Summit simulation world)</em></p></li>
 </ul>
+</li>
+</ol>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Unlike the previous version of this page, there is <strong>no dedicated “GridMap” repository to
-clone</strong>. If you were pointed here expecting <code class="docutils literal notranslate"><span class="pre">easynav_gridmap_stack</span></code> or
-<code class="docutils literal notranslate"><span class="pre">easynav_lidarslam_ros2</span></code>, those packages are not part of the current EasyNav plugin
-ecosystem — use NavMap/Bonxai instead, as described below.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">easynav_gridmap_stack</span></code> [repository](<a class="reference external" href="https://github.com/EasyNavigation/easynav_gridmap_stack.git">https://github.com/EasyNavigation/easynav_gridmap_stack.git</a>) <strong>is not included</strong> in the default EasyNav build or in
+<code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code>.
+You must clone it manually into your workspace as shown above before building.
+It provides the GridMap representation, its Maps Manager, and the corresponding planner.</p>
 </div>
-<p>Then source your workspace as described in <a class="reference internal" href="../getting_started/index.html#gs-source-workspace"><span class="std std-ref">Build and source the workspace</span></a>.</p>
-<ol class="arabic simple" start="4">
+<ol class="arabic" start="3">
+<li><p>All packages build successfully and are sourced:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/ros/ros2/easynav_ws
+colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
+<span class="nb">source</span><span class="w"> </span>install/setup.bash
+</pre></div>
+</div>
+</li>
 <li><p><strong>RViz2</strong> is installed for visualization.</p></li>
 <li><p>Simulation nodes use <code class="docutils literal notranslate"><span class="pre">use_sim_time:</span> <span class="pre">true</span></code>.</p></li>
 </ol>
@@ -469,42 +470,42 @@ ecosystem — use NavMap/Bonxai instead, as described below.</p>
   <iframe width="450" height="300" src="https://www.youtube.com/embed/mZR1CqNV5aU" frameborder="0" allowfullscreen></iframe>
 </div><p>The workflow consists of:</p>
 <ol class="arabic simple">
-<li><p>Launching a simulation (e.g. the <strong>Summit playground</strong>) or otherwise obtaining a live sensor feed.</p></li>
-<li><p>Running a SLAM algorithm that publishes an accumulated map as a <code class="docutils literal notranslate"><span class="pre">PointCloud2</span></code>.</p></li>
-<li><p>Launching EasyNav with the <strong>NavMap Maps Manager</strong> and/or <strong>Bonxai Maps Manager</strong>, which build
-their map representation directly from that point cloud (no separate “builder” step).</p></li>
-<li><p>Saving the resulting map to disk for later use.</p></li>
+<li><p>Launching the <strong>Summit playground</strong> simulation.</p></li>
+<li><p>Running <strong>LidarSLAM</strong> to build a 3D point cloud of the environment.</p></li>
+<li><p>Converting the resulting map point cloud into a <strong>GridMap</strong> using the <strong>GridMap Builder</strong>.</p></li>
+<li><p>Feeding the built GridMap to the <strong>Gridmap Maps Manager</strong>.</p></li>
+<li><p>Saving the map to disk for later use.</p></li>
 </ol>
 <p>—</p>
 </section>
 <section id="start-the-simulator">
-<span id="gridmap-mapping-step1"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">1. Start the Simulator</a><a class="headerlink" href="#start-the-simulator" title="Permalink to this heading"></a></h2>
-<p>Start the Summit world simulation in Gazebo.</p>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">1. Start the Simulator</a><a class="headerlink" href="#start-the-simulator" title="Permalink to this heading"></a></h2>
+<p>Start the Summit world simulation in Gazebo with RViz configured automatically.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_summit<span class="w"> </span>playground_summit.launch.py
 </pre></div>
 </div>
-<p>This launch file (<code class="docutils literal notranslate"><span class="pre">easynav_playground_summit/launch/playground_summit.launch.py</span></code>) only starts the
-Gazebo simulation (it includes <code class="docutils literal notranslate"><span class="pre">summit_simulator</span></code>’s <code class="docutils literal notranslate"><span class="pre">robot_gazebo.launch.py</span></code>) — it does not
-start RViz2 or any EasyNav node, so start those separately as shown below.</p>
+<p>Keep the RViz window open to visualize topics such as the LIDAR scan and the map.</p>
 <p>—</p>
 </section>
-<section id="run-slam-to-produce-a-point-cloud-map">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">2. Run SLAM to Produce a Point-Cloud Map</a><a class="headerlink" href="#run-slam-to-produce-a-point-cloud-map" title="Permalink to this heading"></a></h2>
-<p>Run whichever SLAM pipeline you use to accumulate a 3D map of the environment, and confirm it
-publishes the map as a point cloud, for example:</p>
+<section id="launch-lidarslam">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">2. Launch LidarSLAM</a><a class="headerlink" href="#launch-lidarslam" title="Permalink to this heading"></a></h2>
+<p>Start the LidarSLAM pipeline (scan matcher + graph-based SLAM).
+If your package provides a consolidated launch file, you can start it directly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>lidarslam<span class="w"> </span>lidarslam.launch.py
+</pre></div>
+</div>
+<p>You can close any <em>extra</em> RViz instance this launch may open; we will use the one started in step (1).</p>
+<p>As the robot moves, LidarSLAM will publish a <strong>map point cloud</strong>:</p>
 <ul class="simple">
 <li><p><strong>Topic:</strong> <code class="docutils literal notranslate"><span class="pre">/map</span></code></p></li>
 <li><p><strong>Type:</strong> <code class="docutils literal notranslate"><span class="pre">sensor_msgs/msg/PointCloud2</span></code></p></li>
-<li><p><strong>Frame:</strong> <code class="docutils literal notranslate"><span class="pre">map</span></code> (or a frame you statically link to <code class="docutils literal notranslate"><span class="pre">map</span></code> — see
-<a class="reference internal" href="bonxai_navmap_from_rosbag.html"><span class="doc">Building Bonxai and NavMap Maps from a Recorded ROSBag</span></a> for an example of aligning frames with
-<code class="docutils literal notranslate"><span class="pre">tf2_ros</span> <span class="pre">static_transform_publisher</span></code>).</p></li>
+<li><p><strong>Frame:</strong> <code class="docutils literal notranslate"><span class="pre">map</span></code></p></li>
 </ul>
-<p>In RViz, add a <em>PointCloud2</em> display for that topic to check that the map is accumulating as the
-robot moves.</p>
+<p>In RViz, add a <em>PointCloud2</em> display for <code class="docutils literal notranslate"><span class="pre">/map</span></code> and increase the point size to improve visibility.</p>
 <p>—</p>
 </section>
-<section id="drive-the-robot-to-build-the-map">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">3. Drive the Robot to Build the Map</a><a class="headerlink" href="#drive-the-robot-to-build-the-map" title="Permalink to this heading"></a></h2>
+<section id="build-the-map-with-teleoperation">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">3. Build the Map with Teleoperation</a><a class="headerlink" href="#build-the-map-with-teleoperation" title="Permalink to this heading"></a></h2>
 <p>Drive the robot around the environment to accumulate the map:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>teleop_twist_keyboard
 </pre></div>
@@ -512,21 +513,47 @@ robot moves.</p>
 <p>Continue until the environment is sufficiently covered.</p>
 <p>—</p>
 </section>
-<section id="launch-easynav-with-the-navmap-bonxai-maps-manager">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">4. Launch EasyNav with the NavMap/Bonxai Maps Manager</a><a class="headerlink" href="#launch-easynav-with-the-navmap-bonxai-maps-manager" title="Permalink to this heading"></a></h2>
-<p>The <strong>NavMapMapsManager</strong> and <strong>BonxaiMapsManager</strong> each subscribe directly to an
-<code class="docutils literal notranslate"><span class="pre">incoming_pc2_map</span></code> topic and build their map representation from the accumulated cloud — there is
-no separate “map builder” executable to run first.</p>
-<p>Run EasyNav with a parameter file in which all plugins are <em>dummy</em> except the Maps Manager(s) you
-want to build, and remap <code class="docutils literal notranslate"><span class="pre">incoming_pc2_map</span></code> to your SLAM’s map topic:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_system<span class="w"> </span>system_main<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>/path/to/your/mapping.dummy.params.yaml<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-r<span class="w"> </span>/maps_manager_node/navmap/incoming_pc2_map:<span class="o">=</span>/map<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-r<span class="w"> </span>/maps_manager_node/bonxai/incoming_pc2_map:<span class="o">=</span>/map
+<section id="run-the-gridmap-builder-pointcloud-gridmap">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">4. Run the GridMap Builder (PointCloud → GridMap)</a><a class="headerlink" href="#run-the-gridmap-builder-pointcloud-gridmap" title="Permalink to this heading"></a></h2>
+<p>The <strong>GridMap Builder</strong> converts the accumulated <code class="docutils literal notranslate"><span class="pre">/map</span></code> point cloud into a multi-layer GridMap.
+The example parameters file listens to <code class="docutils literal notranslate"><span class="pre">/map</span></code> and downsamples the cloud before rasterization.</p>
+<p>Run the builder:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_gridmap_maps_manager<span class="w"> </span>gridmap_maps_builder_main<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>~/ros/ros2/easynav_ws/src/easynav_outdoor_testcase/robots_params/maps_builder.params.yaml
 </pre></div>
 </div>
-<p>Example parameter file (mirroring the verified configuration in
-<a class="reference internal" href="bonxai_navmap_from_rosbag.html"><span class="doc">Building Bonxai and NavMap Maps from a Recorded ROSBag</span></a>):</p>
+<p>Example configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">pointcloud_maps_builder_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">sensors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">map</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">downsample_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+<span class="w">    </span><span class="nt">perception_default_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+<span class="w">    </span><span class="nt">map</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_msgs/msg/PointCloud2</span>
+<span class="w">      </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">points</span>
+</pre></div>
+</div>
+<p>The builder publishes the resulting GridMap on:</p>
+<ul class="simple">
+<li><p><strong>Topic:</strong> <code class="docutils literal notranslate"><span class="pre">/maps_builder_gridmap/gridmap</span></code></p></li>
+<li><p><strong>Type:</strong> <code class="docutils literal notranslate"><span class="pre">grid_map_msgs/msg/GridMap</span></code></p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="run-the-gridmap-maps-manager">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">5. Run the Gridmap Maps Manager</a><a class="headerlink" href="#run-the-gridmap-maps-manager" title="Permalink to this heading"></a></h2>
+<p>The <strong>Gridmap Maps Manager</strong> can ingest the GridMap published by the builder via a remap of its <code class="docutils literal notranslate"><span class="pre">incoming_map</span></code> input.</p>
+<p><strong>Option A (recommended):</strong> start the full EasyNav system with a minimal parameter file where all plugins are <em>dummy</em> except the Gridmap Maps Manager:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_system<span class="w"> </span>system_main<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>~/ros/ros2/easynav_ws/src/easynav_playground_summit/config/summit_building_params.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>/maps_manager_node/gridmap/incoming_map:<span class="o">=</span>/maps_builder_gridmap/gridmap
+</pre></div>
+</div>
+<p><strong>Option B (standalone):</strong> if available, run a dedicated manager executable with the same remap.
+If your workspace does not include a standalone binary, use <strong>Option A</strong>.</p>
+<p>Example parameter file (<code class="docutils literal notranslate"><span class="pre">summit_building_params.yaml</span></code>):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -544,13 +571,10 @@ want to build, and remap <code class="docutils literal notranslate"><span class=
 <span class="nt">maps_manager_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">map_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">navmap</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bonxai</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">navmap</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">map_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">gridmap</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">gridmap</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
-<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_navmap_maps_manager/NavMapMapsManager</span>
-<span class="w">    </span><span class="nt">bonxai</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
-<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_bonxai_maps_manager/BonxaiMapsManager</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_gridmap_maps_manager/GridmapMapsManager</span>
 
 <span class="nt">planner_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -563,6 +587,12 @@ want to build, and remap <code class="docutils literal notranslate"><span class=
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">forget_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">    </span><span class="nt">sensors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">laser1</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">perception_default_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odom</span>
+<span class="w">    </span><span class="nt">laser1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/scan_raw</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensor_msgs/msg/LaserScan</span>
+<span class="w">      </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">points</span>
 
 <span class="nt">system_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -571,35 +601,21 @@ want to build, and remap <code class="docutils literal notranslate"><span class=
 <span class="w">    </span><span class="nt">angle_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
 </pre></div>
 </div>
-<p>This runs a lightweight EasyNav system in which the Maps Manager(s) receive the point cloud and
-build their map representation in real time.</p>
+<p>This setup runs a lightweight EasyNav system in which the <strong>Gridmap Maps Manager</strong> receives the GridMap from the builder.</p>
 <p>—</p>
 </section>
-<section id="save-the-map-to-disk">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">5. Save the Map to Disk</a><a class="headerlink" href="#save-the-map-to-disk" title="Permalink to this heading"></a></h2>
-<p>Once the map has been built, save it via the Maps Manager’s <code class="docutils literal notranslate"><span class="pre">savemap</span></code> service.</p>
-<p><strong>NavMap:</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/maps_manager_node/navmap/savemap<span class="w"> </span>std_srvs/srv/Trigger
+<section id="save-the-gridmap-to-disk">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">6. Save the GridMap to Disk</a><a class="headerlink" href="#save-the-gridmap-to-disk" title="Permalink to this heading"></a></h2>
+<p>Once the GridMap has been received, you can save it to disk by calling the Maps Manager service.
+This will create a <cite>.yaml</cite> file and <strong>one `.pgm` per layer</strong> (for example, <cite>_elevation.pgm</cite>, <cite>_traversability.pgm</cite>).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/maps_manager_node/gridmap/savemap<span class="w"> </span>std_srvs/srv/Trigger
 </pre></div>
 </div>
-<p>This unconditionally writes the mesh to <code class="docutils literal notranslate"><span class="pre">/tmp/map.navmap</span></code>, regardless of any
-<code class="docutils literal notranslate"><span class="pre">navmap_path_file</span></code> you configured; move/rename it afterwards.</p>
-<p><strong>Bonxai:</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/maps_manager_node/bonxai/savemap<span class="w"> </span>std_srvs/srv/Trigger
-</pre></div>
-</div>
-<p>This writes back to whichever path was used to <em>load</em> the map: <code class="docutils literal notranslate"><span class="pre">/tmp/bonxai_map.pcd</span></code> if
-<code class="docutils literal notranslate"><span class="pre">package</span></code>/<code class="docutils literal notranslate"><span class="pre">bonxai_path_file</span></code> were left unset, or the configured <code class="docutils literal notranslate"><span class="pre">package</span></code>/<code class="docutils literal notranslate"><span class="pre">bonxai_path_file</span></code>
-location otherwise (see the caveats in <a class="reference internal" href="bonxai_navmap_from_rosbag.html"><span class="doc">Building Bonxai and NavMap Maps from a Recorded ROSBag</span></a>).</p>
-<p>You can later reload either map by setting the corresponding <code class="docutils literal notranslate"><span class="pre">package</span></code> and
-<code class="docutils literal notranslate"><span class="pre">navmap_path_file</span></code>/<code class="docutils literal notranslate"><span class="pre">bonxai_path_file</span></code> parameters in your configuration.</p>
+<p>You can later reload this map in the <strong>Gridmap Maps Manager</strong> by setting the same <code class="docutils literal notranslate"><span class="pre">package</span></code> and <code class="docutils literal notranslate"><span class="pre">map_path_file</span></code> parameters in your configuration.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>NavMap supports per-layer cost data (e.g. <code class="docutils literal notranslate"><span class="pre">obstacles</span></code>, <code class="docutils literal notranslate"><span class="pre">inflated_obstacles</span></code>) on top of its
-triangulated surface and is the closest current equivalent to a multi-layer, terrain-aware map
-representation. Bonxai instead stores a probabilistic 3D occupancy voxel grid. Neither is a
-drop-in replacement for the previously-documented multi-layer <code class="docutils literal notranslate"><span class="pre">grid_map</span></code> format (there is no
-elevation/traversability-layer PGM export in the current codebase).</p>
+<p>GridMap supports multi-layer data structures (elevation, traversability, etc.) and is ideal for 3D or semi-structured terrain.
+You can visualize individual layers in RViz using the <em>GridMap</em> plugin or by converting to an image topic.</p>
 </div>
 </section>
 </section>

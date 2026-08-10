@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="SeReST Controller Fine-Tuning" href="serest_controller.html" />
-    <link rel="prev" title="3D/Uneven-Terrain Navigation with EasyNav: the NavMap Stack" href="gridmap_navigating.html" />
+    <link rel="prev" title="Outdoor Navigation with GridMaps (Summit)" href="gridmap_navigating.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
 
@@ -189,21 +189,22 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#gridmap-stack">GridMap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gridmap_mapping.html">Outdoor Mapping from a Point Cloud: NavMap and Bonxai Maps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-slam-to-produce-a-point-cloud-map">2. Run SLAM to Produce a Point-Cloud Map</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#drive-the-robot-to-build-the-map">3. Drive the Robot to Build the Map</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#launch-easynav-with-the-navmap-bonxai-maps-manager">4. Launch EasyNav with the NavMap/Bonxai Maps Manager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#save-the-map-to-disk">5. Save the Map to Disk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="gridmap_navigating.html">3D/Uneven-Terrain Navigation with EasyNav: the NavMap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#overview">Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-easynav-with-the-navmap-stack">2. Launch EasyNav with the NavMap Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#notes">Notes</a></li>
 </ul>
@@ -425,7 +426,7 @@ clones <code class="docutils literal notranslate"><span class="pre">NavMap</span
 </ul>
 <p>Then source your workspace as described in <a class="reference internal" href="../getting_started/index.html#gs-source-workspace"><span class="std std-ref">Build and source the workspace</span></a>. You will
 also need a recorded ROS bag containing a <code class="docutils literal notranslate"><span class="pre">PointCloud2</span></code> map (this workspace does
-not ship one — use your own or one produced by <a class="reference internal" href="gridmap_mapping.html"><span class="doc">Outdoor Mapping from a Point Cloud: NavMap and Bonxai Maps</span></a>).</p>
+not ship one — use your own or one produced by <a class="reference internal" href="gridmap_mapping.html"><span class="doc">GridMap Mapping with LidarSLAM and EasyNav</span></a>).</p>
 <p>—</p>
 </section>
 <section id="overview">
