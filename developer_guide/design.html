@@ -603,6 +603,10 @@ hardcoding a literal such as <code class="docutils literal notranslate"><span cl
 <p>This is why plugins (obstacle filters, localizers, the fused-perception publisher in
 <code class="docutils literal notranslate"><span class="pre">SensorsNode</span></code>, …) always resolve frames through <code class="docutils literal notranslate"><span class="pre">RTTFBuffer::getInstance()-&gt;get_tf_info()</span></code>
 rather than through a per-node parameter.</p>
+<p><code class="docutils literal notranslate"><span class="pre">get_tf_info()</span></code> returns a snapshot copy (taken under an internal lock), not a reference into
+live state — it is read continuously from both the real-time and non-real-time threads (see
+below) while <code class="docutils literal notranslate"><span class="pre">set_tf_info()</span></code> can in principle be called again on a reconfigure, so the code
+above is safe to use exactly as written from either thread.</p>
 </section>
 <section id="navstate-the-shared-blackboard">
 <h2>NavState: The Shared Blackboard<a class="headerlink" href="#navstate-the-shared-blackboard" title="Permalink to this heading"></a></h2>
@@ -648,7 +652,7 @@ This loop handles operations where occasional execution delays are tolerable. Ta
 </ul>
 </li>
 </ul>
-<p>Each EasyNav module is configured with a frequency for both real-time and non-real-time cycles. These are specified in the parameters as <cite>rt_freq</cite> and <cite>freq</cite>, respectively.</p>
+<p>Each EasyNav module is configured with a frequency for both real-time and non-real-time cycles. These are specified in the parameters as <cite>rt_freq</cite> and <cite>freq</cite>, respectively. Both must be strictly greater than zero — a plugin fails to initialize (<code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code>) if either resolves to <code class="docutils literal notranslate"><span class="pre">0</span></code> or a negative value, so a typo’d config is caught at startup rather than silently disabling that plugin’s cycle.</p>
 <p>Additionally, when new perception data is received, the real-time cycle is <strong>triggered immediately</strong>, allowing the system to respond as fast as possible and minimize perception-to-action latency.</p>
 <p>This dual-cycle model balances <strong>responsiveness</strong> with <strong>computational stability</strong>, ensuring critical actions happen with deterministic timing while less urgent tasks are scheduled opportunistically.</p>
 </section>

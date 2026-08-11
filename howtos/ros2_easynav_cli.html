@@ -540,9 +540,14 @@ in <code class="docutils literal notranslate"><span class="pre">easynav_tools/se
 <p><strong>Options</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">--duration</span> <span class="pre">SECONDS</span></code>   Seconds to run (default: <code class="docutils literal notranslate"><span class="pre">5000.0</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--pid</span> <span class="pre">PID</span></code>   PID of the EasyNav process to read stats from. Defaults to
+auto-discovering the most recently modified <code class="docutils literal notranslate"><span class="pre">/tmp/easynav_&lt;pid&gt;.log</span></code>; only needed
+when more than one EasyNav process is running on this host (each instance writes its
+own per-PID trace log, see <a class="reference internal" href="costmap_multirobot.html"><span class="doc">Multi-Robot Navigation with EasyNav</span></a>).</p></li>
 </ul>
 <p><strong>Example</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>easynav<span class="w"> </span>timestats<span class="w"> </span>--duration<span class="w"> </span><span class="m">15</span>
+ros2<span class="w"> </span>easynav<span class="w"> </span>timestats<span class="w"> </span>--pid<span class="w"> </span><span class="m">12345</span><span class="w"> </span>--duration<span class="w"> </span><span class="m">15</span>
 </pre></div>
 </div>
 </section>

@@ -260,7 +260,7 @@ Behavior
 
   - The underlying point clouds are **not modified**.
   - Collapse values (x, y, z) are stored and applied only when exporting points
-    (``as_points()`` or ``as_points(int)``).
+    via ``as_points()``.
   - Works for both owning and non-owning views.
 
 - ``lazy == false``:

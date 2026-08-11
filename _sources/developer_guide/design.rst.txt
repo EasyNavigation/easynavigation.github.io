@@ -244,6 +244,11 @@ This is why plugins (obstacle filters, localizers, the fused-perception publishe
 ``SensorsNode``, ...) always resolve frames through ``RTTFBuffer::getInstance()->get_tf_info()``
 rather than through a per-node parameter.
 
+``get_tf_info()`` returns a snapshot copy (taken under an internal lock), not a reference into
+live state — it is read continuously from both the real-time and non-real-time threads (see
+below) while ``set_tf_info()`` can in principle be called again on a reconfigure, so the code
+above is safe to use exactly as written from either thread.
+
 NavState: The Shared Blackboard
 ===============================
 
@@ -292,7 +297,7 @@ To achieve this, EasyNav separates execution into two distinct control loops:
   - localization corrections based on perception (e.g., particle filter resampling),
   - and path planning.
 
-Each EasyNav module is configured with a frequency for both real-time and non-real-time cycles. These are specified in the parameters as `rt_freq` and `freq`, respectively.
+Each EasyNav module is configured with a frequency for both real-time and non-real-time cycles. These are specified in the parameters as `rt_freq` and `freq`, respectively. Both must be strictly greater than zero — a plugin fails to initialize (``std::runtime_error``) if either resolves to ``0`` or a negative value, so a typo'd config is caught at startup rather than silently disabling that plugin's cycle.
 
 Additionally, when new perception data is received, the real-time cycle is **triggered immediately**, allowing the system to respond as fast as possible and minimize perception-to-action latency.
 
