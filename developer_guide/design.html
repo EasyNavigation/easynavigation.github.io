@@ -514,13 +514,27 @@
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">forget_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
-
-<span class="nt">system_node</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">position_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
-<span class="w">    </span><span class="nt">angle_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">cycle_time_rt</span></code>/<code class="docutils literal notranslate"><span class="pre">cycle_time_nort</span></code> are optional and default to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> (no delay, no CPU
+cost) — with them unset, Dummy plugins are as lightweight as the “minimal overhead” description
+above implies. When set, they are implemented as a <strong>busy-wait</strong>, not a sleep: the plugin will
+pin a CPU core at ~100% for that duration on every cycle. This is deliberate, so that a Dummy
+plugin configured this way simulates a genuinely CPU-bound slow plugin — including its effect on
+other <code class="docutils literal notranslate"><span class="pre">SCHED_FIFO</span></code> real-time work sharing that core — rather than just an equivalent
+wall-clock delay. Set these thoughtfully: a large <code class="docutils literal notranslate"><span class="pre">cycle_time_rt</span></code> relative to <code class="docutils literal notranslate"><span class="pre">rt_freq</span></code> will
+keep a core continuously busy.</p>
+<dl class="simple">
+<dt>system_node:</dt><dd><dl class="simple">
+<dt>ros__parameters:</dt><dd><p>use_sim_time: true
+position_tolerance: 0.1
+angle_tolerance: 0.05</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </div>
 <p>This configuration is especially useful for testing system integration, message flow, and user interfaces without requiring sensor data or a simulated robot. You can later replace dummy plugins with functional ones as needed.</p>
 <section id="coordinate-frames-tf">
