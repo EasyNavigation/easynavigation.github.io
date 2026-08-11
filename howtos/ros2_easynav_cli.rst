@@ -209,12 +209,17 @@ in ``easynav_tools/setup.py``, even though its implementation lives in
 **Options**
 
 - ``--duration SECONDS``   Seconds to run (default: ``5000.0``)
+- ``--pid PID``   PID of the EasyNav process to read stats from. Defaults to
+  auto-discovering the most recently modified ``/tmp/easynav_<pid>.log``; only needed
+  when more than one EasyNav process is running on this host (each instance writes its
+  own per-PID trace log, see :doc:`costmap_multirobot`).
 
 **Example**
 
 .. code-block:: bash
 
    ros2 easynav timestats --duration 15
+   ros2 easynav timestats --pid 12345 --duration 15
 
 
 OPTIONS (Common)
