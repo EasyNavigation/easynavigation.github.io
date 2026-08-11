@@ -165,6 +165,17 @@ Below is an example configuration using dummy plugins for all components, effect
        use_sim_time: true
        forget_time: 0.5
 
+.. note::
+
+   ``cycle_time_rt``/``cycle_time_nort`` are optional and default to ``0.0`` (no delay, no CPU
+   cost) — with them unset, Dummy plugins are as lightweight as the "minimal overhead" description
+   above implies. When set, they are implemented as a **busy-wait**, not a sleep: the plugin will
+   pin a CPU core at ~100% for that duration on every cycle. This is deliberate, so that a Dummy
+   plugin configured this way simulates a genuinely CPU-bound slow plugin — including its effect on
+   other ``SCHED_FIFO`` real-time work sharing that core — rather than just an equivalent
+   wall-clock delay. Set these thoughtfully: a large ``cycle_time_rt`` relative to ``rt_freq`` will
+   keep a core continuously busy.
+
    system_node:
      ros__parameters:
        use_sim_time: true
