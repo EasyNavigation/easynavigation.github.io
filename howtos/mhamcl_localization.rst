@@ -20,6 +20,12 @@ the Costmap Stack (see :doc:`costmap_navigating`).
    :local:
    :depth: 2
 
+.. raw:: html
+
+    <div align="center">
+      <iframe width="450" height="300" src="https://www.youtube.com/embed/AGpP1XzV-FY" frameborder="0" allowfullscreen></iframe>
+    </div>
+
 How it works
 ------------
 
