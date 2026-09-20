@@ -186,6 +186,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/mhamcl_localization.html">Global Localization and Kidnapping Recovery with MH-AMCL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#how-it-works">How it works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#configuring-the-localizer">Configuring the Localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#testing-global-localization-and-kidnapping">Testing Global Localization and Kidnapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#tuning">Tuning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#notes">Notes</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#gridmap-stack">GridMap Stack</a><ul>
@@ -556,7 +566,11 @@ per distro.</p>
 <td><p>AMCL-like localizer using <code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code>.</p></td>
 <td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_costmap_localizer/README.md">easynav_costmap_localizer README</a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_fusion_localizer</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_mhamcl_localizer</span></code></p></td>
+<td><p>Multi-Hypothesis AMCL using <code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code> (global loc.).</p></td>
+<td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_mhamcl_localizer/README.md">easynav_mhamcl_localizer README</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_fusion_localizer</span></code></p></td>
 <td><p>Multi-sensor fusion localizer (e.g., GPS + odometry + map).</p></td>
 <td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_fusion_localizer/README.md">easynav_fusion_localizer README</a></p></td>
 </tr>

@@ -48,6 +48,7 @@ Costmap Stack
 - :doc:`costmap_navigating`
 - :doc:`costmap_navigating_with_icreate`
 - :doc:`routes_costmap_manager`
+- :doc:`mhamcl_localization`
 
 .. toctree::
    :hidden:
@@ -56,6 +57,7 @@ Costmap Stack
    costmap_navigating
    costmap_navigating_with_icreate
    routes_costmap_manager
+   mhamcl_localization
 
 GridMap Stack
 --------------
