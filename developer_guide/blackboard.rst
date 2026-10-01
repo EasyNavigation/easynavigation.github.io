@@ -14,8 +14,11 @@ All information needed or produced by EasyNav modules flows through the `NavStat
 - a list of navigation goals (`goals`),
 - a path to follow (`path`),
 - environment maps (e.g., `map`, `map.base`, `map.navmap`),
-- control commands (`cmd_vel`),
-- perception data (`points`, `image`, etc.).
+- control commands (`cmd_vel`), and the velocity proposals of each source
+  (`cmd_vel.proposal.controller`, `.takeover`, `.override`, see :ref:`velocity_output`),
+- perception data (`points`, `image`, etc.),
+- recovery information, such as diagnostics (the `diagnostics` group) or the parameters changed by
+  the recovery system (`reconfigured_parameters`, see :ref:`recovery`).
 
 The `NavState` provides a simple API to check for, retrieve, and update entries using keys.
 
@@ -78,6 +81,9 @@ A controller reads the current pose and planned path, and outputs a velocity com
    geometry_msgs::msg::TwistStamped cmd_vel = compute_control(path, pose);
 
    nav_state.set("cmd_vel", cmd_vel);
+
+``ControllerNode`` proposes this command to its velocity mux, which may prefer a recovery system's
+command; the controller never publishes it itself (see :ref:`velocity_output`).
 
 **Localization Example**
 

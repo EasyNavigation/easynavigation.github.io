@@ -126,12 +126,13 @@ Save the following YAML file as
     controller_node:
       ros__parameters:
         use_sim_time: true
+        robot_limits:
+          max_linear_vel: 1.0
+          max_angular_vel: 1.0
         controller_types: [simple]
         simple:
           rt_freq: 30.0 
           plugin: easynav_simple_controller/SimpleController
-          max_linear_speed: 1.0
-          max_angular_speed: 1.0
           look_ahead_dist: 0.2
           k_rot: 0.5
 

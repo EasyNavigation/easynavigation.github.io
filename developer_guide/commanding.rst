@@ -57,6 +57,15 @@ The communication protocol over `/easynav_control` is designed around a type-bas
 
 Each message has a sequence number (`seq`), user ID (`user_id`), and optionally contains feedback fields if it is of a type that requires them.
 
+The recovery system (see :ref:`recovery`) can also act on a mission:
+
+- It can **abort** it: the client receives ``ERROR``, with the reason in ``status_message``.
+- It can **hold its progress**, e.g. while localization is lost: the mission stays active and
+  ``FEEDBACK`` keeps flowing, but no goal is taken as reached until the hold is released.
+
+A mission also survives a reconfiguration of EasyNav (see :ref:`design`): the client sees no
+interruption.
+
 To issue a navigation goal, a client should publish a message like:
 
 .. code-block:: cpp

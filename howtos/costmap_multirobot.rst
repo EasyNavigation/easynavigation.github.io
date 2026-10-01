@@ -215,12 +215,13 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
    r1/controller_node:
      ros__parameters:
        use_sim_time: true
+       robot_limits:
+         max_linear_vel: 1.0
+         max_angular_vel: 1.5
        controller_types: [simple]
        simple:
          rt_freq: 30.0
          plugin: easynav_simple_controller/SimpleController
-         max_linear_speed: 1.0
-         max_angular_speed: 1.5
          look_ahead_dist: 0.2
          k_rot: 0.7
 
@@ -259,7 +260,6 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
          inflation:
            plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
            inflation_radius: 1.3
-           inscribed_radius: 0.25
            cost_scaling_factor: 3.0
 
    r1/planner_node:
@@ -283,6 +283,8 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
    r1/system_node:
      ros__parameters:
        use_sim_time: true
+       robot_geometry:
+         inscribed_radius: 0.25
        use_real_time: true
        position_tolerance: 0.1
        angle_tolerance: 0.05
@@ -293,12 +295,13 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
    r2/controller_node:
      ros__parameters:
        use_sim_time: true
+       robot_limits:
+         max_linear_vel: 1.0
+         max_angular_vel: 1.5
        controller_types: [simple]
        simple:
          rt_freq: 30.0
          plugin: easynav_simple_controller/SimpleController
-         max_linear_speed: 1.0
-         max_angular_speed: 1.5
          look_ahead_dist: 0.2
          k_rot: 0.7
 
@@ -337,7 +340,6 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
          inflation:
            plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
            inflation_radius: 1.3
-           inscribed_radius: 0.25
            cost_scaling_factor: 3.0
 
    r2/planner_node:
@@ -361,6 +363,8 @@ Each section is namespaced (``r1/...``, ``r2/...``), so the same plugins can ope
    r2/system_node:
      ros__parameters:
        use_sim_time: true
+       robot_geometry:
+         inscribed_radius: 0.25
        use_real_time: true
        position_tolerance: 0.1
        angle_tolerance: 0.05

@@ -21,16 +21,18 @@ Its architecture relies on clear interfaces, shared data structures, and composa
    blackboard.rst
    perceptions.rst
    commanding.rst
+   recovery.rst
 
 Overview
 ========
 
 This guide is organized into several chapters, each covering a key subsystem of EasyNav:
 
-- **Design Principles** — Describes the architectural foundations of EasyNav, its modular organization, and execution model.  
+- **Design Principles** — Describes the architectural foundations of EasyNav, its modular organization, and execution model, together with the robot geometry, the velocity output (robot limits, mux and smoother), and how EasyNav can be reconfigured at runtime.  
 - **Blackboard and NavState** — Explains the shared memory model that interconnects all modules.  
 - **Perceptions System** — Details how sensory data is represented, processed, and accessed in a unified way.  
-- **Commanding Layer** — Describes how the planner, controller, and system nodes cooperate to generate robot motion.
+- **Commanding Layer** — Describes how applications send navigation goals to EasyNav and follow their progress.
+- **Recovery System** — Explains how EasyNav detects and handles problems: the recovery node, the ``RecoveryManagerBase`` plugin, how a recovery moves the robot, the ``SystemActions`` it can request, and the available recovery systems.
 
 Each chapter provides conceptual explanations, code structure guidelines, and practical examples extracted from the current EasyNav implementation.
 

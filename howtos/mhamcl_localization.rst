@@ -113,8 +113,9 @@ A complete, ready-to-use example (with the Regulated Pure Pursuit controller) is
 ``easynav_indoor_testcase/robots_params/costmap.rpp.mhamcl.params.yaml``.
 
 .. note::
-   The recovery plugins ``AmclConvergenceEvaluator`` and ``AmclRelocalizeMitigation`` belong to
-   ``easynav_costmap_localizer``. They are not needed with MH-AMCL, which relocalizes by itself.
+   The recovery plugins ``AmclConvergenceEvaluator`` and ``AmclRelocalizeMitigation`` (for
+   ``DiagnosticRecoveryManager``, see :ref:`recovery`) belong to ``easynav_costmap_localizer``.
+   They are not needed with MH-AMCL, which relocalizes by itself.
 
 ---
 

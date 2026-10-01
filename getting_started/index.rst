@@ -140,7 +140,7 @@ Now start the EasyNav system using the predefined parameter file:
    ros2 run easynav_system system_main \
       --ros-args --params-file src/easynav_indoor_testcase/robots_params/simple.params.yaml
 
-This command launches the EasyNav core using the *Simple Stack* configuration located in `easynav_plugins`.
+This command launches the EasyNav core using the *Simple Stack* configuration located in `easynav_indoor_testcase`.
 
 Visualizing in RViz2
 --------------------
@@ -196,7 +196,9 @@ The TUI is divided into several panels:
 
 - **Navigation Control:** shows the current navigation mode (e.g., FEEDBACK, ACTIVE), current robot pose, progress toward the goal, and remaining distance.
 - **Goal Info:** displays details of the active navigation goal, angular and positional tolerances, and goal list.
-- **Twist:** real-time linear and angular velocity commands issued by the controller.
+- **Twist:** real-time linear and angular velocity commands published by EasyNav.
+- **Diagnostics:** the diagnostics of the recovery system (``diagnostic_msgs/DiagnosticArray`` on ``diagnostics``), e.g. from ``DiagnosticRecoveryManager`` (see :ref:`recovery`).
+- **Mitigation:** what the active recovery mitigation reports doing (on ``mitigation``), cleared when the problem is resolved.
 - **NavState:** shows internal blackboard data structures such as `robot_pose`, `cmd_vel`, active `map`, and `navigation_state`.
 - **Time stats:** performance profiling of each system component (localizer, planner, controller, maps manager, etc.) including average execution time and update frequency.
 
@@ -219,6 +221,7 @@ Troubleshooting
 ---------------
 
 - **Robot does not move:** ensure that both Gazebo and EasyNav terminals are running and synchronized with the same simulation time (`use_sim_time:=true`).
+- **EasyNav terminates by itself:** the recovery system may have requested a shutdown (e.g. no sensor data, or a miswired ROS graph). The reason is printed when ``system_main`` exits.
 - **Map not visible in RViz2:** check the QoS setting and verify the `/map` topic is being published.
 - **Build errors:** revisit :doc:`../build_install/index` and ensure dependencies were correctly installed via `rosdep`.
 

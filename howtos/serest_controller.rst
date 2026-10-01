@@ -34,6 +34,13 @@ You will typically find it configured in:
 
     controller_node:
       ros__parameters:
+        # The robot's velocity/acceleration limits, shared by every controller and enforced by
+        # the velocity smoother (see the Developers Guide).
+        robot_limits:
+          max_linear_vel: 0.6
+          max_angular_vel: 1.5
+          max_linear_acc: 0.8
+          max_angular_acc: 2.0
         controller_types: [serest]
         serest:
           plugin: easynav_serest_controller/SerestController
@@ -52,10 +59,6 @@ Start with these default parameters (adjust namespace as needed):
       ros__parameters:
         # motion policy
         v_ref:                0.6
-        max_linear_speed:     0.6
-        max_angular_speed:    1.5
-        max_linear_acc:       0.8
-        max_angular_acc:      2.0
         allow_reverse:        false
 
         # tracking gains
@@ -142,8 +145,10 @@ Motion Limits & Reference
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - **``v_ref`` (0.4–0.8 m/s)** – Desired cruise speed.  
-- **``max_linear_speed`` / ``max_angular_speed``** – Respect hardware limits.  
-- **``max_linear_acc`` / ``max_angular_acc``** – ↑ if sluggish; ↓ if slipping.
+- **``controller_node.robot_limits.max_linear_vel`` / ``max_angular_vel``** – Respect hardware limits.  
+- **``controller_node.robot_limits.max_linear_acc`` / ``max_angular_acc``** – ↑ if sluggish; ↓ if slipping.  
+  SeReST's former ``max_linear_speed``, ``max_angular_speed``, ``max_linear_acc`` and
+  ``max_angular_acc`` still work, with a deprecation warning.
 
 Progress Robustness
 ^^^^^^^^^^^^^^^^^^^^
@@ -227,7 +232,7 @@ If only in corners, lower ``corner_boost_omega``.
 Feels sluggish to turn
 ^^^^^^^^^^^^^^^^^^^^^^
 Increase ``k_theta``.  
-Verify ``max_angular_speed`` and ``max_angular_acc`` are not too low.  
+Verify ``robot_limits.max_angular_vel`` and ``robot_limits.max_angular_acc`` are not too low.  
 Reduce ``corner_gain_eth`` or ``corner_gain_kappa`` if over-limiting.
 
 Emergency stops too often
