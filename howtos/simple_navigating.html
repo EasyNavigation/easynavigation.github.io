@@ -122,6 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#recoveries">🛟 Recoveries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
 </ul>
 </li>
@@ -184,6 +185,16 @@
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mhamcl_localization.html">Global Localization and Kidnapping Recovery with MH-AMCL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#how-it-works">How it works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#configuring-the-localizer">Configuring the Localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#testing-global-localization-and-kidnapping">Testing Global Localization and Kidnapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#tuning">Tuning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#notes">Notes</a></li>
 </ul>
 </li>
 </ul>
@@ -300,6 +311,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#robot-geometry">Robot Geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a></li>
 </ul>
@@ -337,6 +351,24 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/recovery.html">Recovery System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-recovery-node">The Recovery Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-base-class-recoverymanagerbase">The Base Class: <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#moving-the-robot">Moving the Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#system-actions">System Actions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#controlled-shutdown">Controlled shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#reconfiguration-as-a-mitigation">Reconfiguration as a mitigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#available-recovery-systems">Available Recovery Systems</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#dummyrecoverymanager">DummyRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#simplerecoverymanager">SimpleRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#diagnosticrecoverymanager">DiagnosticRecoveryManager</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#overview">Overview</a></li>
@@ -456,13 +488,14 @@ You will later reference it using the parameters <code class="docutils literal n
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">robot_limits</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">max_linear_vel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.8</span>
+<span class="w">      </span><span class="nt">max_angular_vel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.2</span>
 <span class="w">    </span><span class="nt">controller_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">serest</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">serest</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">rt_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0</span>
 <span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_serest_controller/SerestController</span>
 <span class="w">      </span><span class="nt">allow_reverse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="nt">max_linear_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.8</span>
-<span class="w">      </span><span class="nt">max_angular_speed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.2</span>
 <span class="w">      </span><span class="nt">v_progress_min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.08</span>
 <span class="w">      </span><span class="nt">k_s_share_max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
 <span class="w">      </span><span class="nt">k_theta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.5</span>
@@ -519,7 +552,6 @@ You will later reference it using the parameters <code class="docutils literal n
 <span class="w">    </span><span class="nt">simple</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
 <span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_simple_planner/SimplePlanner</span>
-<span class="w">      </span><span class="nt">robot_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span>
 
 <span class="nt">sensors_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -533,6 +565,8 @@ You will later reference it using the parameters <code class="docutils literal n
 <span class="nt">system_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">robot_geometry</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span>
 <span class="w">    </span><span class="nt">position_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
 <span class="w">    </span><span class="nt">angle_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.15</span>
 </pre></div>

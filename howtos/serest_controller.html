@@ -122,6 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#recoveries">🛟 Recoveries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
 </ul>
 </li>
@@ -184,6 +185,16 @@
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mhamcl_localization.html">Global Localization and Kidnapping Recovery with MH-AMCL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#how-it-works">How it works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#configuring-the-localizer">Configuring the Localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#testing-global-localization-and-kidnapping">Testing Global Localization and Kidnapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#tuning">Tuning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#notes">Notes</a></li>
 </ul>
 </li>
 </ul>
@@ -300,6 +311,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#robot-geometry">Robot Geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a></li>
 </ul>
@@ -337,6 +351,24 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/recovery.html">Recovery System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-recovery-node">The Recovery Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-base-class-recoverymanagerbase">The Base Class: <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#moving-the-robot">Moving the Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#system-actions">System Actions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#controlled-shutdown">Controlled shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#reconfiguration-as-a-mitigation">Reconfiguration as a mitigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#available-recovery-systems">Available Recovery Systems</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#dummyrecoverymanager">DummyRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#simplerecoverymanager">SimpleRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#diagnosticrecoverymanager">DiagnosticRecoveryManager</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#overview">Overview</a></li>
@@ -433,6 +465,13 @@ It blends path tracking, safety constraints, and curvature-aware motion limits i
 <p>You will typically find it configured in:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># The robot&#39;s velocity/acceleration limits, shared by every controller and enforced by</span>
+<span class="w">    </span><span class="c1"># the velocity smoother (see the Developers Guide).</span>
+<span class="w">    </span><span class="nt">robot_limits</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">max_linear_vel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">      </span><span class="nt">max_angular_vel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
+<span class="w">      </span><span class="nt">max_linear_acc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.8</span>
+<span class="w">      </span><span class="nt">max_angular_acc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
 <span class="w">    </span><span class="nt">controller_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">serest</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">serest</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_serest_controller/SerestController</span>
@@ -448,10 +487,6 @@ It blends path tracking, safety constraints, and curvature-aware motion limits i
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># motion policy</span>
 <span class="w">    </span><span class="nt">v_ref</span><span class="p">:</span><span class="w">                </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
-<span class="w">    </span><span class="nt">max_linear_speed</span><span class="p">:</span><span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
-<span class="w">    </span><span class="nt">max_angular_speed</span><span class="p">:</span><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
-<span class="w">    </span><span class="nt">max_linear_acc</span><span class="p">:</span><span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">0.8</span>
-<span class="w">    </span><span class="nt">max_angular_acc</span><span class="p">:</span><span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
 <span class="w">    </span><span class="nt">allow_reverse</span><span class="p">:</span><span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 
 <span class="w">    </span><span class="c1"># tracking gains</span>
@@ -532,8 +567,10 @@ Longitudinal suction. ↑ if drifting along the segment; ↓ if resisting motion
 <h3><a class="toc-backref" href="#id6" role="doc-backlink">Motion Limits &amp; Reference</a><a class="headerlink" href="#motion-limits-reference" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>``v_ref`` (0.4–0.8 m/s)</strong> – Desired cruise speed.</p></li>
-<li><p><strong>``max_linear_speed`` / ``max_angular_speed``</strong> – Respect hardware limits.</p></li>
-<li><p><strong>``max_linear_acc`` / ``max_angular_acc``</strong> – ↑ if sluggish; ↓ if slipping.</p></li>
+<li><p><strong>``controller_node.robot_limits.max_linear_vel`` / ``max_angular_vel``</strong> – Respect hardware limits.</p></li>
+<li><p><strong>``controller_node.robot_limits.max_linear_acc`` / ``max_angular_acc``</strong> – ↑ if sluggish; ↓ if slipping.
+SeReST’s former <code class="docutils literal notranslate"><span class="pre">max_linear_speed</span></code>, <code class="docutils literal notranslate"><span class="pre">max_angular_speed</span></code>, <code class="docutils literal notranslate"><span class="pre">max_linear_acc</span></code> and
+<code class="docutils literal notranslate"><span class="pre">max_angular_acc</span></code> still work, with a deprecation warning.</p></li>
 </ul>
 </section>
 <section id="progress-robustness">
@@ -622,7 +659,7 @@ If only in corners, lower <code class="docutils literal notranslate"><span class
 <section id="feels-sluggish-to-turn">
 <h3><a class="toc-backref" href="#id18" role="doc-backlink">Feels sluggish to turn</a><a class="headerlink" href="#feels-sluggish-to-turn" title="Permalink to this heading"></a></h3>
 <p>Increase <code class="docutils literal notranslate"><span class="pre">k_theta</span></code>.
-Verify <code class="docutils literal notranslate"><span class="pre">max_angular_speed</span></code> and <code class="docutils literal notranslate"><span class="pre">max_angular_acc</span></code> are not too low.
+Verify <code class="docutils literal notranslate"><span class="pre">robot_limits.max_angular_vel</span></code> and <code class="docutils literal notranslate"><span class="pre">robot_limits.max_angular_acc</span></code> are not too low.
 Reduce <code class="docutils literal notranslate"><span class="pre">corner_gain_eth</span></code> or <code class="docutils literal notranslate"><span class="pre">corner_gain_kappa</span></code> if over-limiting.</p>
 </section>
 <section id="emergency-stops-too-often">

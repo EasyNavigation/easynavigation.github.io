@@ -122,6 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#recoveries">🛟 Recoveries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
 </ul>
 </li>
@@ -184,6 +185,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#setup">Setup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/mhamcl_localization.html">Global Localization and Kidnapping Recovery with MH-AMCL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#how-it-works">How it works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#configuring-the-localizer">Configuring the Localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#testing-global-localization-and-kidnapping">Testing Global Localization and Kidnapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#tuning">Tuning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#notes">Notes</a></li>
 </ul>
 </li>
 </ul>
@@ -300,6 +311,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developers Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#robot-geometry">Robot Geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#real-time-execution-model">Real-Time Execution Model</a></li>
 </ul>
@@ -337,6 +351,24 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="recovery.html">Recovery System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#the-recovery-node">The Recovery Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#the-base-class-recoverymanagerbase">The Base Class: <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#moving-the-robot">Moving the Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#system-actions">System Actions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#controlled-shutdown">Controlled shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#reconfiguration-as-a-mitigation">Reconfiguration as a mitigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#available-recovery-systems">Available Recovery Systems</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#dummyrecoverymanager">DummyRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#simplerecoverymanager">SimpleRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#diagnosticrecoverymanager">DiagnosticRecoveryManager</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
@@ -396,6 +428,9 @@ Its architecture relies on clear interfaces, shared data structures, and composa
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html#robot-geometry">Robot Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design.html#real-time-execution-model">Real-Time Execution Model</a></li>
 </ul>
@@ -427,16 +462,26 @@ Its architecture relies on clear interfaces, shared data structures, and composa
 <li class="toctree-l2"><a class="reference internal" href="commanding.html#conclusion">Conclusion</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="recovery.html">Recovery System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="recovery.html#the-recovery-node">The Recovery Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovery.html#the-base-class-recoverymanagerbase">The Base Class: <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovery.html#moving-the-robot">Moving the Robot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovery.html#system-actions">System Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovery.html#available-recovery-systems">Available Recovery Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <section id="overview">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>This guide is organized into several chapters, each covering a key subsystem of EasyNav:</p>
 <ul class="simple">
-<li><p><strong>Design Principles</strong> — Describes the architectural foundations of EasyNav, its modular organization, and execution model.</p></li>
+<li><p><strong>Design Principles</strong> — Describes the architectural foundations of EasyNav, its modular organization, and execution model, together with the robot geometry, the velocity output (robot limits, mux and smoother), and how EasyNav can be reconfigured at runtime.</p></li>
 <li><p><strong>Blackboard and NavState</strong> — Explains the shared memory model that interconnects all modules.</p></li>
 <li><p><strong>Perceptions System</strong> — Details how sensory data is represented, processed, and accessed in a unified way.</p></li>
-<li><p><strong>Commanding Layer</strong> — Describes how the planner, controller, and system nodes cooperate to generate robot motion.</p></li>
+<li><p><strong>Commanding Layer</strong> — Describes how applications send navigation goals to EasyNav and follow their progress.</p></li>
+<li><p><strong>Recovery System</strong> — Explains how EasyNav detects and handles problems: the recovery node, the <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code> plugin, how a recovery moves the robot, the <code class="docutils literal notranslate"><span class="pre">SystemActions</span></code> it can request, and the available recovery systems.</p></li>
 </ul>
 <p>Each chapter provides conceptual explanations, code structure guidelines, and practical examples extracted from the current EasyNav implementation.</p>
 </section>

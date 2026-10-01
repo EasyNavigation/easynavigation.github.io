@@ -89,13 +89,14 @@ Below is a minimal working configuration for navigation with the *Simple Stack*.
     controller_node:
       ros__parameters:
         use_sim_time: true
+        robot_limits:
+          max_linear_vel: 0.8
+          max_angular_vel: 1.2
         controller_types: [serest]
         serest:
           rt_freq: 30.0
           plugin: easynav_serest_controller/SerestController
           allow_reverse: true
-          max_linear_speed: 0.8
-          max_angular_speed: 1.2
           v_progress_min: 0.08
           k_s_share_max: 0.5
           k_theta: 2.5
@@ -152,7 +153,6 @@ Below is a minimal working configuration for navigation with the *Simple Stack*.
         simple:
           freq: 0.5
           plugin: easynav_simple_planner/SimplePlanner
-          robot_radius: 0.25
 
     sensors_node:
       ros__parameters:
@@ -166,6 +166,8 @@ Below is a minimal working configuration for navigation with the *Simple Stack*.
     system_node:
       ros__parameters:
         use_sim_time: true
+        robot_geometry:
+          radius: 0.25
         position_tolerance: 0.3
         angle_tolerance: 0.15
 

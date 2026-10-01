@@ -96,8 +96,12 @@ routes only:
          inflation:
            plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
            inflation_radius: 1.3
-           inscribed_radius: 0.25
            cost_scaling_factor: 3.0
+
+   system_node:
+     ros__parameters:
+       robot_geometry:
+         inscribed_radius: 0.25
 
 Key points:
 
@@ -271,20 +275,14 @@ costmap-based localizer and planner, and the SerEst controller:
    controller_node:
      ros__parameters:
        use_sim_time: true
-       colision_checker:
-         active: true
-         debug_markers: true
-         downsample_leaf_size: 0.05
-         robot_radius: 0.30
-         brake_acc: 1.0
-         safety_margin: 0.05
+       robot_limits:
+         max_linear_vel: 0.8
+         max_angular_vel: 1.2
        controller_types: [serest]
        serest:
          rt_freq: 30.0
          plugin: easynav_serest_controller/SerestController
          allow_reverse: true
-         max_linear_speed: 0.8
-         max_angular_speed: 1.2
          v_progress_min: 0.08        # 8 cm/s minimum cruise speed when aligned
          k_s_share_max: 0.5          # lateral suction does not cancel >50% of forward motion
          k_theta: 2.5
@@ -351,7 +349,6 @@ costmap-based localizer and planner, and the SerEst controller:
          inflation:
            plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
            inflation_radius: 1.3
-           inscribed_radius: 0.25
            cost_scaling_factor: 3.0
 
    planner_node:
@@ -379,6 +376,9 @@ costmap-based localizer and planner, and the SerEst controller:
    system_node:
      ros__parameters:
        use_sim_time: true
+       robot_geometry:
+         radius: 0.30
+         inscribed_radius: 0.25
        use_real_time: true
        position_tolerance: 0.3
        angle_tolerance: 0.15

@@ -21,7 +21,9 @@ EasyNav runs within a single process that hosts a ROS 2 **Lifecycle Node** calle
 
 - **Planner Node**: Computes a path from the robot’s current position to its goal (as managed by the GoalManager). The selected plugin determines the planning algorithm used.
 
-- **Controller Node**: Generates velocity commands to follow the planned path. Its functionality is encapsulated in a plugin, which outputs either ``Twist`` or ``TwistStamped`` messages depending on configuration.
+- **Controller Node**: Generates velocity commands to follow the planned path, through a controller plugin. It is also the **single velocity output** of EasyNav: it selects, every real-time cycle, among the commands proposed by the controller and by the recovery system, smooths it within the robot's limits, and publishes it as ``Twist`` or ``TwistStamped`` (see :ref:`velocity_output`).
+
+- **Recovery Node**: Hosts the recovery system, a plugin that detects problems (localization lost, robot stuck, obstacle ahead...) and reacts to them: it can drive or stop the robot, hold or abort the mission, change parameters, or terminate EasyNav (see :ref:`recovery`).
 
 An EasyNav application is built by combining multiple plugins from the different EasyNav components. Typical configurations may include combinations such as the following:
 
@@ -45,12 +47,13 @@ These plugin combinations are defined in the single EasyNav configuration file, 
    controller_node:
      ros__parameters:
        use_sim_time: true
+       robot_limits:
+         max_linear_vel: 0.6
+         max_angular_vel: 1.0
        controller_types: [simple]
        simple:
-         rt_freq: 30.0 
+         rt_freq: 30.0
          plugin: easynav_simple_controller/SimpleController
-         max_linear_speed: 0.6
-         max_angular_speed: 1.0
          look_ahead_dist: 0.2
          k_rot: 0.5
 
@@ -91,7 +94,6 @@ These plugin combinations are defined in the single EasyNav configuration file, 
        simple:
          freq: 0.5
          plugin: easynav_simple_planner/SimplePlanner
-         robot_radius: 0.3
 
    sensors_node:
      ros__parameters:
@@ -102,12 +104,21 @@ These plugin combinations are defined in the single EasyNav configuration file, 
          topic: /scan_raw
          type: sensor_msgs/msg/LaserScan
 
+   recovery_node:
+     ros__parameters:
+       use_sim_time: true
+       recovery_manager:
+         plugin: easynav_simple_recovery/SimpleRecoveryManager
+
    system_node:
      ros__parameters:
        use_sim_time: true
+       robot_geometry:
+         radius: 0.3
+         height: 0.5
        position_tolerance: 0.1
        angle_tolerance: 0.05
-  
+
 Each node declares one or more plugin types (e.g., `simple`) that can be dynamically selected. The plugin name (e.g., `easynav_simple_controller/SimpleController`) must match the name registered in the plugin system.
 
 This design allows for easy experimentation with different algorithms or system behaviors simply by modifying configuration files—without changing any source code.
@@ -165,6 +176,21 @@ Below is an example configuration using dummy plugins for all components, effect
        use_sim_time: true
        forget_time: 0.5
 
+   recovery_node:
+     ros__parameters:
+       use_sim_time: true
+       recovery_manager:
+         plugin: easynav_recovery/DummyRecoveryManager
+
+   system_node:
+     ros__parameters:
+       use_sim_time: true
+       position_tolerance: 0.1
+       angle_tolerance: 0.05
+
+``DummyRecoveryManager`` does nothing. It is also what the recovery node loads when
+``recovery_manager.plugin`` is not set.
+
 .. note::
 
    ``cycle_time_rt``/``cycle_time_nort`` are optional and default to ``0.0`` (no delay, no CPU
@@ -175,12 +201,6 @@ Below is an example configuration using dummy plugins for all components, effect
    other ``SCHED_FIFO`` real-time work sharing that core — rather than just an equivalent
    wall-clock delay. Set these thoughtfully: a large ``cycle_time_rt`` relative to ``rt_freq`` will
    keep a core continuously busy.
-
-   system_node:
-     ros__parameters:
-       use_sim_time: true
-       position_tolerance: 0.1
-       angle_tolerance: 0.05
 
 This configuration is especially useful for testing system integration, message flow, and user interfaces without requiring sensor data or a simulated robot. You can later replace dummy plugins with functional ones as needed.
 
@@ -249,6 +269,105 @@ live state — it is read continuously from both the real-time and non-real-time
 below) while ``set_tf_info()`` can in principle be called again on a reconfigure, so the code
 above is safe to use exactly as written from either thread.
 
+Robot Geometry
+==============
+
+The robot's shape is configured once, in ``system_node``, and shared with every component that needs
+it (inflation filters, planners, safety reflexes, recovery systems...):
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 15 50
+
+   * - Parameter (on ``system_node``)
+     - Default
+     - Meaning
+   * - ``robot_geometry.radius``
+     - ``0.3``
+     - Circumscribed radius: the smallest circle containing the robot (m).
+   * - ``robot_geometry.inscribed_radius``
+     - ``radius``
+     - The largest circle inside the robot (m). Defaults to ``radius`` (a round robot).
+   * - ``robot_geometry.height``
+     - ``0.5``
+     - The top of the robot, above the robot frame (m).
+
+As with frames, ``SystemNode`` reads them on every configure and shares them, before its subnodes
+configure, through a process-wide singleton (``RobotGeometryRegistry``). Plugins read them with
+``MethodBase::get_robot_geometry()``; any other code, with ``easynav::get_robot_geometry(node)``
+(``easynav_common/RobotGeometry.hpp``).
+
+Components used to declare their own copies (e.g. an inflation filter's ``inscribed_radius``, a
+planner's ``robot_radius``). Those parameters still work, with a deprecation warning, where
+``robot_geometry`` does not configure that field; ``robot_geometry`` takes precedence when both are
+set.
+
+
+.. _velocity_output:
+
+Velocity Output: Robot Limits, Mux and Smoother
+===============================================
+
+``ControllerNode`` is the only component that publishes velocity commands (``cmd_vel``, or
+``cmd_vel_stamped`` with ``controller_node.use_cmd_vel_stamped``). Every real-time cycle:
+
+1. The controller plugin computes its command (``cmd_vel`` in NavState), which is proposed as the
+   ``CONTROLLER`` source.
+2. The recovery system may propose its own: ``TAKEOVER`` (it drives the robot) or ``OVERRIDE`` (an
+   emergency, e.g. braking). See :ref:`recovery`.
+3. The ``VelocityMux`` selects one: ``OVERRIDE`` > ``TAKEOVER`` > pause (zero velocity) >
+   ``CONTROLLER``. Proposals last one cycle, so no source can leave a stale command behind.
+4. The ``VelocitySmoother`` brings the published command towards the selected one within the robot
+   limits, per axis, stopping at zero before a change of direction. An ``OVERRIDE`` is published as
+   is.
+
+The robot limits are configured once, in ``controller_node``:
+
+.. code-block:: yaml
+
+   controller_node:
+     ros__parameters:
+       robot_limits:
+         max_linear_vel: 0.6      # m/s, forward
+         min_linear_vel: -0.3     # m/s, backward (0: no reversing)
+         max_angular_vel: 1.0     # rad/s, either direction
+         max_linear_acc: 1.0      # m/s^2, speeding up
+         max_linear_decel: 1.0    # m/s^2, slowing down
+         max_angular_acc: 2.0     # rad/s^2
+         max_angular_decel: 2.0   # rad/s^2
+
+Controller plugins read them with ``ControllerMethodBase::get_robot_limits()`` instead of declaring
+their own, and the smoother enforces the same limits on every command published. A controller's
+former limit parameters (e.g. ``max_linear_speed``) still work, with a deprecation warning, where
+``robot_limits`` does not set that limit. Likewise, ``system_node.use_cmd_vel_stamped`` is
+deprecated in favor of ``controller_node.use_cmd_vel_stamped``.
+
+When EasyNav is deactivated, ``ControllerNode`` brakes within the deceleration limits and always ends
+with an exact zero command: drivers usually keep executing the last command received.
+
+Braking before an obstacle is not the controller's job: the recovery system does it, for whatever
+command is about to be sent (the controller's former ``colision_checker.*`` parameters are gone).
+
+
+Reconfiguring EasyNav at Runtime
+================================
+
+EasyNav can go active → inactive → unconfigured → inactive → active in the middle of a mission, for
+example to change parameters or to switch plugins:
+
+- Parameters changed while unconfigured, including the plugin of any component, take effect when it
+  is configured again. Every plugin tolerates being initialized again on the same node, even after a
+  plugin of another type under the same name.
+- The mission survives: the ``GoalManager`` is kept across cleanup/configure, so an ongoing
+  navigation is neither cancelled nor lost.
+- Localizers continue from the last known pose. On its first cycle, a localizer gets the valid
+  ``robot_pose`` left in NavState by the previous one, of any type (e.g. AMCL ↔ Fusion), through
+  ``LocalizerMethodBase::on_last_known_pose()``.
+- The robot stops while EasyNav is not active.
+
+The recovery system can trigger such a reconfiguration itself (see :ref:`recovery`).
+
+
 NavState: The Shared Blackboard
 ===============================
 
@@ -288,14 +407,17 @@ To achieve this, EasyNav separates execution into two distinct control loops:
   
   - perception input processing,
   - pose prediction via odometry,
-  - and velocity command generation (e.g., ``Twist`` or ``TwistStamped``).
+  - velocity command generation by the controller,
+  - fast recovery reactions (e.g. braking before an obstacle),
+  - and the selection, smoothing and publication of the velocity command (``Twist`` or ``TwistStamped``).
 
 - **Non-Real-Time Cycle**  
   This loop handles operations where occasional execution delays are tolerable. Tasks in this loop include:
   
   - map updates,
   - localization corrections based on perception (e.g., particle filter resampling),
-  - and path planning.
+  - path planning,
+  - and recovery: diagnosing problems and deciding how to handle them.
 
 Each EasyNav module is configured with a frequency for both real-time and non-real-time cycles. These are specified in the parameters as `rt_freq` and `freq`, respectively. Both must be strictly greater than zero — a plugin fails to initialize (``std::runtime_error``) if either resolves to ``0`` or a negative value, so a typo'd config is caught at startup rather than silently disabling that plugin's cycle.
 

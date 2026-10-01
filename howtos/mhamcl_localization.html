@@ -122,6 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#recoveries">🛟 Recoveries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
 </ul>
 </li>
@@ -310,6 +311,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#robot-geometry">Robot Geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a></li>
 </ul>
@@ -347,6 +351,24 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/recovery.html">Recovery System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-recovery-node">The Recovery Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-base-class-recoverymanagerbase">The Base Class: <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#moving-the-robot">Moving the Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#system-actions">System Actions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#controlled-shutdown">Controlled shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#reconfiguration-as-a-mitigation">Reconfiguration as a mitigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#available-recovery-systems">Available Recovery Systems</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#dummyrecoverymanager">DummyRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#simplerecoverymanager">SimpleRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#diagnosticrecoverymanager">DiagnosticRecoveryManager</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#overview">Overview</a></li>
@@ -495,8 +517,9 @@ a controller, and the demo repositories, as in <a class="reference internal" hre
 <code class="docutils literal notranslate"><span class="pre">easynav_indoor_testcase/robots_params/costmap.rpp.mhamcl.params.yaml</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The recovery plugins <code class="docutils literal notranslate"><span class="pre">AmclConvergenceEvaluator</span></code> and <code class="docutils literal notranslate"><span class="pre">AmclRelocalizeMitigation</span></code> belong to
-<code class="docutils literal notranslate"><span class="pre">easynav_costmap_localizer</span></code>. They are not needed with MH-AMCL, which relocalizes by itself.</p>
+<p>The recovery plugins <code class="docutils literal notranslate"><span class="pre">AmclConvergenceEvaluator</span></code> and <code class="docutils literal notranslate"><span class="pre">AmclRelocalizeMitigation</span></code> (for
+<code class="docutils literal notranslate"><span class="pre">DiagnosticRecoveryManager</span></code>, see <a class="reference internal" href="../developer_guide/recovery.html#recovery"><span class="std std-ref">Recovery System</span></a>) belong to <code class="docutils literal notranslate"><span class="pre">easynav_costmap_localizer</span></code>.
+They are not needed with MH-AMCL, which relocalizes by itself.</p>
 </div>
 <p>—</p>
 </section>

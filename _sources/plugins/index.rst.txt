@@ -5,7 +5,7 @@ EasyNav Plugins
 ================
 
 **EasyNav Plugins** provides the official collection of plugins for the `Easy Navigation (EasyNav) <https://github.com/EasyNavigation>`_ framework.  
-These plugins extend the navigation core with planners, controllers, map managers, and localizers compatible with ROS 2.
+These plugins extend the navigation core with planners, controllers, map managers, localizers and recovery systems compatible with ROS 2.
 
 Each plugin resides in its own ROS 2 package and is registered through ``pluginlib``, enabling dynamic loading at runtime.
 
@@ -45,12 +45,13 @@ per distro.
 Repository overview
 -------------------
 
-This repository groups all the official plugins for EasyNav into four main categories:
+This repository groups all the official plugins for EasyNav into five main categories:
 
 1. **Planners** – generate paths from the robot’s current pose to the goal.  
 2. **Controllers** – convert paths into motion commands.  
 3. **Maps Managers** – manage and update spatial representations of the environment.  
 4. **Localizers** – estimate the robot’s pose using map and sensor data.  
+5. **Recoveries** – detect navigation problems and handle them.  
 
 Each plugin type implements a well-defined C++ interface and can be configured dynamically in the EasyNav parameter files.
 
@@ -139,6 +140,20 @@ Localization plugins based on different map types and sensors.
 +-------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
 | ``easynav_fusion_localizer``  | Multi-sensor fusion localizer (e.g., GPS + odometry + map). | `easynav_fusion_localizer README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_fusion_localizer/README.md>`_   |
 +-------------------------------+-------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+
+🛟 Recoveries
+-------------
+
+Recovery systems, loaded by ``recovery_node`` (see :ref:`recovery`). ``easynav_diagnostic_recovery`` is
+itself made of plugins (safety reflexes, evaluators and mitigations), documented in its README.
+
++---------------------------------+--------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Package**                     | **Description**                                                                | **Documentation**                                                                                                                                       |
++=================================+================================================================================+=========================================================================================================================================================+
+| ``easynav_simple_recovery``     | Simple recovery system, written as a tutorial.                                 | `easynav_simple_recovery README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/recoveries/easynav_simple_recovery/README.md>`_         |
++---------------------------------+--------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``easynav_diagnostic_recovery`` | Diagnosis-driven recovery system: safety reflexes, evaluators and mitigations. | `easynav_diagnostic_recovery README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/recoveries/easynav_diagnostic_recovery/README.md>`_ |
++---------------------------------+--------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 ---
 
