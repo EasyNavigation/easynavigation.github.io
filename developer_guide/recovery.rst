@@ -253,6 +253,10 @@ A complete recovery system driven by diagnostics, itself made of plugins at two 
   mitigation that fails is excluded for that diagnostic, so the next one is tried (escalation). While
   a mitigation is active or a diagnostic is in ``ERROR``, the mission's progress is held.
 
+Besides its own evaluators, it sees the diagnostics other components write to NavState's
+``diagnostics`` group, e.g. ``ControllerNode``'s ``diagnostics.cmd_vel`` when no new velocity command
+arrives or one is discarded (``hardware_id: controller_node``, see :ref:`velocity_output`).
+
 It ships evaluators (no path, obstacle too close, controller stuck, miswired ROS graph) and
 mitigations (safe retreat, advance, shutdown, wait for a human, cancel the mission). A component can
 ship recovery for its own failures: ``easynav_costmap_localizer`` provides

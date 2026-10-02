@@ -79,11 +79,14 @@ A controller reads the current pose and planned path, and outputs a velocity com
    const auto & pose = nav_state.get<nav_msgs::msg::Odometry>("robot_pose").pose.pose;
 
    geometry_msgs::msg::TwistStamped cmd_vel = compute_control(path, pose);
+   cmd_vel.header.stamp = get_node()->now();
 
    nav_state.set("cmd_vel", cmd_vel);
 
 ``ControllerNode`` proposes this command to its velocity mux, which may prefer a recovery system's
-command; the controller never publishes it itself (see :ref:`velocity_output`).
+command; the controller never publishes it itself (see :ref:`velocity_output`). Stamp each new
+command: one with the same stamp and value as the previous one is not proposed again, and without new
+commands the robot is stopped after ``controller_node.cmd_timeout``.
 
 **Localization Example**
 
