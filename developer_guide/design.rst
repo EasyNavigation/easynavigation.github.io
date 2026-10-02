@@ -312,11 +312,12 @@ Velocity Output: Robot Limits, Mux and Smoother
 ``cmd_vel_stamped`` with ``controller_node.use_cmd_vel_stamped``). Every real-time cycle:
 
 1. The controller plugin computes its command (``cmd_vel`` in NavState), which is proposed as the
-   ``CONTROLLER`` source.
+   ``CONTROLLER`` source if it is a new one: its stamp or its value changed since the last one.
 2. The recovery system may propose its own: ``TAKEOVER`` (it drives the robot) or ``OVERRIDE`` (an
    emergency, e.g. braking). See :ref:`recovery`.
 3. The ``VelocityMux`` selects one: ``OVERRIDE`` > ``TAKEOVER`` > pause (zero velocity) >
    ``CONTROLLER``. Proposals last one cycle, so no source can leave a stale command behind.
+   Proposals with non-finite values (NaN, inf) are discarded.
 4. The ``VelocitySmoother`` brings the published command towards the selected one within the robot
    limits, per axis, stopping at zero before a change of direction. An ``OVERRIDE`` is published as
    is.
@@ -344,6 +345,41 @@ deprecated in favor of ``controller_node.use_cmd_vel_stamped``.
 
 When EasyNav is deactivated, ``ControllerNode`` brakes within the deceleration limits and always ends
 with an exact zero command: drivers usually keep executing the last command received.
+
+Stale commands and keepalive
+----------------------------
+
+Drivers keep executing the last command they received, so ``ControllerNode`` makes sure it is never
+a stale one:
+
+.. code-block:: yaml
+
+   controller_node:
+     ros__parameters:
+       cmd_timeout: 0.5               # s, 0 disables it
+       cmd_vel_keepalive_period: 0.0  # s, 0 disables it
+
+- ``cmd_timeout``: if no source proposes a new command for this long, the robot brakes to zero
+  within the deceleration limits. This covers a controller that stops writing ``cmd_vel``, or keeps
+  writing the same one. It must be longer than the controller's period (``<controller>.rt_freq``),
+  or configuring fails. A controller plugin must therefore stamp each new command
+  (``header.stamp``).
+- ``cmd_vel_keepalive_period``: the current command is republished at least this often, even if it
+  does not change. The publisher then also offers ``deadline`` and ``liveliness`` QoS of twice this
+  period, so a driver or a safety controller that requests a deadline is notified when EasyNav stops
+  commanding (e.g. a blocked RT cycle or a dead process). It is off by default because publishing
+  zeros at rest would block a lower-priority teleoperation in a ``twist_mux``.
+
+The velocity publisher keeps only the latest command (depth 1).
+
+A timed-out or discarded command is reported in NavState as ``diagnostics.cmd_vel``
+(``diagnostic_msgs/DiagnosticStatus``, ``hardware_id: controller_node``), in ``ERROR`` while the
+problem lasts and back to ``OK`` when commands flow again. It is written only after the first
+problem, so a recovery system can handle it (see :ref:`recovery`).
+
+To test how EasyNav copes with a misbehaving controller, ``easynav_controller/FaultyController``
+injects a fault after ``<name>.fault_after`` updates: ``throw``, ``hang``, ``stop_proposing``,
+``freeze``, ``max_velocity`` or ``nan`` (``<name>.fault``).
 
 Braking before an obstacle is not the controller's job: the recovery system does it, for whatever
 command is about to be sent (the controller's former ``colision_checker.*`` parameters are gone).
