@@ -312,7 +312,10 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Core Design and Architecture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#robot-geometry">Robot Geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stale-commands-and-keepalive">Stale commands and keepalive</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#real-time-execution-model">Real-Time Execution Model</a></li>
@@ -701,11 +704,12 @@ set.</p>
 <code class="docutils literal notranslate"><span class="pre">cmd_vel_stamped</span></code> with <code class="docutils literal notranslate"><span class="pre">controller_node.use_cmd_vel_stamped</span></code>). Every real-time cycle:</p>
 <ol class="arabic simple">
 <li><p>The controller plugin computes its command (<code class="docutils literal notranslate"><span class="pre">cmd_vel</span></code> in NavState), which is proposed as the
-<code class="docutils literal notranslate"><span class="pre">CONTROLLER</span></code> source.</p></li>
+<code class="docutils literal notranslate"><span class="pre">CONTROLLER</span></code> source if it is a new one: its stamp or its value changed since the last one.</p></li>
 <li><p>The recovery system may propose its own: <code class="docutils literal notranslate"><span class="pre">TAKEOVER</span></code> (it drives the robot) or <code class="docutils literal notranslate"><span class="pre">OVERRIDE</span></code> (an
 emergency, e.g. braking). See <a class="reference internal" href="recovery.html#recovery"><span class="std std-ref">Recovery System</span></a>.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">VelocityMux</span></code> selects one: <code class="docutils literal notranslate"><span class="pre">OVERRIDE</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">TAKEOVER</span></code> &gt; pause (zero velocity) &gt;
-<code class="docutils literal notranslate"><span class="pre">CONTROLLER</span></code>. Proposals last one cycle, so no source can leave a stale command behind.</p></li>
+<code class="docutils literal notranslate"><span class="pre">CONTROLLER</span></code>. Proposals last one cycle, so no source can leave a stale command behind.
+Proposals with non-finite values (NaN, inf) are discarded.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">VelocitySmoother</span></code> brings the published command towards the selected one within the robot
 limits, per axis, stopping at zero before a change of direction. An <code class="docutils literal notranslate"><span class="pre">OVERRIDE</span></code> is published as
 is.</p></li>
@@ -730,8 +734,39 @@ former limit parameters (e.g. <code class="docutils literal notranslate"><span c
 deprecated in favor of <code class="docutils literal notranslate"><span class="pre">controller_node.use_cmd_vel_stamped</span></code>.</p>
 <p>When EasyNav is deactivated, <code class="docutils literal notranslate"><span class="pre">ControllerNode</span></code> brakes within the deceleration limits and always ends
 with an exact zero command: drivers usually keep executing the last command received.</p>
+<section id="stale-commands-and-keepalive">
+<h3>Stale commands and keepalive<a class="headerlink" href="#stale-commands-and-keepalive" title="Permalink to this heading"></a></h3>
+<p>Drivers keep executing the last command they received, so <code class="docutils literal notranslate"><span class="pre">ControllerNode</span></code> makes sure it is never
+a stale one:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">cmd_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span><span class="w">               </span><span class="c1"># s, 0 disables it</span>
+<span class="w">    </span><span class="nt">cmd_vel_keepalive_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">  </span><span class="c1"># s, 0 disables it</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cmd_timeout</span></code>: if no source proposes a new command for this long, the robot brakes to zero
+within the deceleration limits. This covers a controller that stops writing <code class="docutils literal notranslate"><span class="pre">cmd_vel</span></code>, or keeps
+writing the same one. It must be longer than the controller’s period (<code class="docutils literal notranslate"><span class="pre">&lt;controller&gt;.rt_freq</span></code>),
+or configuring fails. A controller plugin must therefore stamp each new command
+(<code class="docutils literal notranslate"><span class="pre">header.stamp</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmd_vel_keepalive_period</span></code>: the current command is republished at least this often, even if it
+does not change. The publisher then also offers <code class="docutils literal notranslate"><span class="pre">deadline</span></code> and <code class="docutils literal notranslate"><span class="pre">liveliness</span></code> QoS of twice this
+period, so a driver or a safety controller that requests a deadline is notified when EasyNav stops
+commanding (e.g. a blocked RT cycle or a dead process). It is off by default because publishing
+zeros at rest would block a lower-priority teleoperation in a <code class="docutils literal notranslate"><span class="pre">twist_mux</span></code>.</p></li>
+</ul>
+<p>The velocity publisher keeps only the latest command (depth 1).</p>
+<p>A timed-out or discarded command is reported in NavState as <code class="docutils literal notranslate"><span class="pre">diagnostics.cmd_vel</span></code>
+(<code class="docutils literal notranslate"><span class="pre">diagnostic_msgs/DiagnosticStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">controller_node</span></code>), in <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> while the
+problem lasts and back to <code class="docutils literal notranslate"><span class="pre">OK</span></code> when commands flow again. It is written only after the first
+problem, so a recovery system can handle it (see <a class="reference internal" href="recovery.html#recovery"><span class="std std-ref">Recovery System</span></a>).</p>
+<p>To test how EasyNav copes with a misbehaving controller, <code class="docutils literal notranslate"><span class="pre">easynav_controller/FaultyController</span></code>
+injects a fault after <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault_after</span></code> updates: <code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code>, <code class="docutils literal notranslate"><span class="pre">stop_proposing</span></code>,
+<code class="docutils literal notranslate"><span class="pre">freeze</span></code>, <code class="docutils literal notranslate"><span class="pre">max_velocity</span></code> or <code class="docutils literal notranslate"><span class="pre">nan</span></code> (<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault</span></code>).</p>
 <p>Braking before an obstacle is not the controller’s job: the recovery system does it, for whatever
 command is about to be sent (the controller’s former <code class="docutils literal notranslate"><span class="pre">colision_checker.*</span></code> parameters are gone).</p>
+</section>
 </section>
 <section id="reconfiguring-easynav-at-runtime">
 <h2>Reconfiguring EasyNav at Runtime<a class="headerlink" href="#reconfiguring-easynav-at-runtime" title="Permalink to this heading"></a></h2>

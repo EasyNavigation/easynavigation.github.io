@@ -312,7 +312,10 @@
 <li class="toctree-l2"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#robot-geometry">Robot Geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="design.html#stale-commands-and-keepalive">Stale commands and keepalive</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#real-time-execution-model">Real-Time Execution Model</a></li>
@@ -473,12 +476,15 @@ the recovery system (<cite>reconfigured_parameters</cite>, see <a class="referen
 <span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">pose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">nav_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Odometry</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;robot_pose&quot;</span><span class="p">).</span><span class="n">pose</span><span class="p">.</span><span class="n">pose</span><span class="p">;</span>
 
 <span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">TwistStamped</span><span class="w"> </span><span class="n">cmd_vel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compute_control</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">pose</span><span class="p">);</span>
+<span class="n">cmd_vel</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_node</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">();</span>
 
 <span class="n">nav_state</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;cmd_vel&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cmd_vel</span><span class="p">);</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">ControllerNode</span></code> proposes this command to its velocity mux, which may prefer a recovery system’s
-command; the controller never publishes it itself (see <a class="reference internal" href="design.html#velocity-output"><span class="std std-ref">Velocity Output: Robot Limits, Mux and Smoother</span></a>).</p>
+command; the controller never publishes it itself (see <a class="reference internal" href="design.html#velocity-output"><span class="std std-ref">Velocity Output: Robot Limits, Mux and Smoother</span></a>). Stamp each new
+command: one with the same stamp and value as the previous one is not proposed again, and without new
+commands the robot is stopped after <code class="docutils literal notranslate"><span class="pre">controller_node.cmd_timeout</span></code>.</p>
 <p><strong>Localization Example</strong></p>
 <p>A localizer typically updates the estimated pose:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nav_state</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;robot_pose&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">latest_odom</span><span class="p">);</span>
