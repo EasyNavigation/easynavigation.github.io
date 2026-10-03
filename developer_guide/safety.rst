@@ -86,13 +86,16 @@ Status: **Provided** — available today; **Partial** — part of it; **Planned*
      - Provided
    * - Fault injection to verify the behavior on failures
      - IEC 61508-3 (fault insertion testing)
-     - ``FaultyController`` (throw, hang, stop proposing, freeze, huge or NaN commands), used by the
-       tests. Fault plugins for the other components are planned. See :ref:`safety_faults`.
-     - Partial
-   * - Stale sensor data and transforms
+     - ``Faulty*`` plugins for the controller, localizer, planner and maps manager (throw, hang,
+       freeze, stop producing, NaN or absurd outputs), used by the tests. Simulation scenarios with
+       sensor and TF drops are planned. See :ref:`safety_faults`.
+     - Provided
+   * - Stale sensor data and robot pose
      - IEC 61508-3 (defensive programming)
-     - A maximum age for perceptions and TF is planned.
-     - Planned
+     - Perceptions older than ``forget_time`` are not used, and the collision reflex brakes if none
+       is left; a robot pose too old, or not finite, is an error, and in safety mode the robot
+       brakes until it is usable again. See :ref:`safety_data_age`.
+     - Provided
    * - Controlled stop on shutdown and on unrecoverable errors
      - IEC 60204-1 (stop categories)
      - On deactivation or shutdown, EasyNav brakes within the deceleration limits and its last
@@ -125,6 +128,7 @@ What EasyNav provides, in short:
 - real-time cycles that start late are detected, and a heartbeat tells others that EasyNav is alive;
 - the safety channel's state is followed: EasyNav does not fight a protective stop or a safely
   limited speed;
+- old sensor data is not used, and an old robot pose is detected;
 - an optional **safety mode** makes EasyNav stricter, and the process memory can be locked.
 
 The robot limits (``controller_node.robot_limits.*``, see :ref:`velocity_output`) **always apply**,
@@ -217,6 +221,7 @@ The safety parameters are grouped in ``system_node``:
            max_late_cycles: 10
          status:
            timeout: 0.0         # s, 0: the safety channel's state is not read
+         max_pose_age: 1.0      # s, 0: off
 
 ``safety.plc_limits``
    Not applied to the commands (``robot_limits`` are): they declare the limits the safety channel
@@ -246,6 +251,8 @@ The safety parameters are grouped in ``system_node``:
      be declared while EasyNav configures (it freezes again when done), so it can still go through
      its lifecycle;
    - too many real-time cycles starting late in a row stop EasyNav (see :ref:`safety_rt`).
+   - a robot pose too old, or not finite, stops the robot until it is usable again (see
+     :ref:`safety_data_age`).
 
 ``safety.mode`` and ``safety.lock_memory`` are independent: whether the memory can be locked depends
 on the hardware and the deployment, not on wanting the rest of the safety mode.
@@ -371,6 +378,41 @@ lasts ``max_stop_time`` seconds (0, the default: never), so a mitigation can han
 for human assistance (see :ref:`recovery`).
 
 Without ``safety.status.timeout`` (the default outside safety mode), nothing of this applies.
+
+
+.. _safety_data_age:
+
+Data age
+========
+
+Navigating with old data is navigating blind: a sensor driver that dies leaves its last scan
+behind, and a localizer that stops leaves the robot where it was. EasyNav checks the age of both.
+
+**Sensor data.** ``sensors_node.forget_time`` (s, 1.0 by default, ``> 0``) is the maximum age of a
+perception: every real-time cycle, a perception whose stamp is older than that (ROS time) is marked
+invalid, and every consumer (collision reflex, obstacle filters, controllers, evaluators) ignores
+it until new data arrives. A sensor whose data arrives already older than that (a delayed driver)
+is never used. ``forget_time`` must be longer than the period of your slowest sensor.
+
+- It is reported as ``diagnostics.sensors`` (``hardware_id: sensors_node``), on changes only:
+  ``WARN`` with the sensors without data yet (``no_data``) and those whose data is too old
+  (``stale``), ``OK`` when all are up to date.
+- ``CollisionSafetyReflex`` **fails safe**: commanded to move with no valid point perception left,
+  it cannot check for collisions, so it brakes. Rotating in place is still allowed. In particular,
+  after starting, the robot does not move until the first scan arrives.
+
+**Robot pose.** ``system_node.safety.max_pose_age`` (s, 1.0 by default; 0: off) is the maximum age
+of ``robot_pose``, the localizer's output (its stamp is usually that of the odometry it used):
+
+- a pose older than that, or not finite (NaN), is an ``ERROR`` in ``diagnostics.robot_pose``
+  (``hardware_id: system_node``), so the recovery system can handle it, and ``OK`` again once it
+  is usable; in any mode;
+- in **safety mode**, motion is also inhibited while it lasts: the command is zero, braking within
+  the deceleration limits, whoever proposes it. EasyNav keeps running, and the robot moves again
+  as soon as the pose is usable.
+
+Until a localizer publishes a pose, nothing is checked. Some setups need ``max_pose_age`` raised,
+e.g. a GPS localizer at 1 Hz.
 
 
 .. _safety_memory:
@@ -508,8 +550,30 @@ Fault injection
 ===============
 
 To test how EasyNav copes with components that misbehave, fault-injection plugins live next to the
-``Dummy*`` plugin of their component. Today there is one, for the controller; those for the other
-components are planned. ``easynav_controller/FaultyController`` commands a constant
-velocity (``<name>.linear_vel``, ``<name>.angular_vel``) and, after ``<name>.fault_after`` updates,
-injects the fault in ``<name>.fault``: ``throw``, ``hang`` (for ``<name>.hang_time`` s),
-``stop_proposing``, ``freeze``, ``max_velocity`` or ``nan``.
+``Dummy*`` plugin of their component. Each one works normally and, after ``<name>.fault_after``
+updates, injects the fault in ``<name>.fault`` (``hang`` blocks for ``<name>.hang_time`` s):
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 30 35
+
+   * - Plugin
+     - Works as
+     - Faults
+   * - ``easynav_controller/FaultyController``
+     - Constant velocity (``linear_vel``, ``angular_vel``)
+     - ``throw``, ``hang``, ``stop_proposing``, ``freeze``, ``max_velocity``, ``nan``
+   * - ``easynav_localizer/FaultyLocalizer``
+     - Fixed pose (``x``, ``y``, ``yaw``), stamped now
+     - ``throw``, ``hang``, ``freeze`` (old stamp), ``stop_publishing``, ``nan``, ``jump``
+       (``jump_distance``)
+   * - ``easynav_planner/FaultyPlanner``
+     - Straight path to the goal
+     - ``throw``, ``hang``, ``empty_path``, ``freeze`` (old path), ``nan``
+   * - ``easynav_maps_manager/FaultyMapsManager``
+     - No map
+     - ``throw``, ``hang``
+
+EasyNav's tests use them to check, for each fault, what reaches the robot: a throwing plugin is
+contained, a hanging RT plugin makes cycles late, a hanging non-RT plugin does not delay the
+real-time cycle, an old or NaN pose is reported, and in safety mode stops the robot.
