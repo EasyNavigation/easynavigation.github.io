@@ -94,9 +94,15 @@ plugins of the configuration in this guide, the closest to a typical Nav2 setup:
      ros-<distro>-easynav-costmap-maps-manager \
      ros-<distro>-easynav-costmap-localizer \
      ros-<distro>-easynav-costmap-planner \
-     ros-<distro>-easynav-regulated-pp-controller
+     ros-<distro>-easynav-regulated-pp-controller \
+     ros-<distro>-easynav-diagnostic-recovery \
+     ros-<distro>-easynav-collision-safety-reflex \
+     ros-<distro>-easynav-no-path-evaluator \
+     ros-<distro>-easynav-controller-stuck-evaluator \
+     ros-<distro>-easynav-advance-recovery \
+     ros-<distro>-easynav-cancel-mission-recovery
 
-Some plugins are not packaged for every distribution yet (see the note in
+The last six are the recovery system (see Step 3). Some plugins are not packaged for every distribution yet (see the note in
 :doc:`../build_install/index`). If one is missing, use Pixi or build ``easynav_plugins`` from
 source.
 
@@ -241,6 +247,31 @@ The comments say where each value comes from in your Nav2 file.
          xy_goal_tolerance: 0.1
          yaw_goal_tolerance: 0.105
 
+   # bt_navigator's recovery subtrees, behavior_server and collision_monitor, with the plugins'
+   # default parameters
+   recovery_node:
+     ros__parameters:
+       use_sim_time: true
+       recovery_manager:
+         plugin: easynav_diagnostic_recovery/DiagnosticRecoveryManager
+         # Brakes, every control cycle, if the command would hit an obstacle
+         safety_reflex_types: [collision]
+         collision:
+           plugin: easynav_collision_safety_reflex/CollisionSafetyReflex
+         # Diagnose problems...
+         evaluator_types: [no_path, controller_stuck]
+         no_path:
+           plugin: easynav_no_path_evaluator/NoPathEvaluator
+         controller_stuck:
+           plugin: easynav_controller_stuck_evaluator/ControllerStuckEvaluator
+         # ...and fix them, by priority (lower first); the last resort aborts the mission
+         mitigation_types: [advance, cancel_mission]
+         advance:
+           plugin: easynav_advance_recovery/AdvanceRecovery
+         cancel_mission:
+           plugin: easynav_cancel_mission_recovery/CancelMissionRecovery
+           priority: 2000
+
 A few things are worth knowing when you translate your own file:
 
 - **Velocity limits live in one place**, ``controller_node.robot_limits``, not in each controller.
@@ -256,10 +287,16 @@ A few things are worth knowing when you translate your own file:
 - **Other controllers**: for MPPI, start from ``costmap.mppi.params.yaml`` in
   `easynav_indoor_testcase <https://github.com/EasyNavigation/easynav_indoor_testcase>`_. Every
   plugin's parameters are in its README (see :doc:`../plugins/index`).
-- **Recoveries and collision protection** are optional: without ``recovery_node`` in the file,
-  nothing intervenes, like Nav2 without a ``behavior_server``. Once navigation works, copy the
-  ``recovery_node`` section of ``costmap.rpp.params.yaml``, which brakes before collisions and
-  handles a stuck robot, an obstacle too close or a lost localization (see :ref:`recovery`).
+- **Recoveries** (``recovery_node``) do what Nav2's recovery subtrees, ``behavior_server`` and
+  ``collision_monitor`` do: the collision reflex brakes before a collision; evaluators diagnose
+  problems (here, no path to the goal and a robot that does not progress); mitigations fix them
+  (here, advancing a little). When nothing can, ``cancel_mission`` aborts the mission, so your
+  application gets a failure, as a Nav2 client gets ``ABORTED``. Keep this section: without it,
+  nothing brakes before a collision, and **a mission never fails**, it waits forever.
+- **More recoveries**, when you need them: an obstacle too close (``ObstacleTooCloseEvaluator`` with
+  ``SafeRetreatRecovery``), a lost localization (``AmclConvergenceEvaluator`` with
+  ``AmclRelocalizeMitigation``), waiting for a human, or terminating EasyNav on a miswired ROS
+  graph. See :ref:`recovery` and the ``recovery_node`` section of ``costmap.rpp.params.yaml``.
 
 Step 4: Run it
 ==============
@@ -492,8 +529,9 @@ Differences to keep in mind
 - **Stopping is automatic.** If the controller stops producing commands, the robot brakes to zero
   after ``controller_node.cmd_timeout`` (0.5 s); when EasyNav is stopped (Ctrl+C included) it brakes
   within its deceleration limits and leaves a zero command.
-- **It may exit by itself.** With the recovery system, a problem it cannot solve (no sensor data, a
-  miswired ROS graph) may end EasyNav; the reason is printed when ``system_main`` exits.
+- **Failed missions.** With the recovery system above, a problem its mitigations cannot fix
+  aborts the mission: the client gets the reason (``status_message``), and through the Nav2 bridge,
+  ``ABORTED``. EasyNav keeps running, ready for the next goal.
 - **Safety-rated setups** (safety PLC, safety scanner) have their own page: :ref:`safety`.
 
 Troubleshooting
