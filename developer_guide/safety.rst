@@ -44,8 +44,9 @@ Status: **Provided** — available today; **Partial** — part of it; **Planned*
      - Integrator
    * - No stale velocity commands
      - IEC 61508-3 (defensive programming)
-     - Only new commands are sent; with none for ``cmd_timeout`` (0.5 s by default) the robot brakes
-       to zero; non-finite commands are discarded. See :ref:`safety_commands`.
+     - Only new controller commands are proposed; with no new command for ``cmd_timeout`` (0.5 s by
+       default) the robot brakes to zero; non-finite commands are discarded. See
+       :ref:`safety_commands`.
      - Provided
    * - Detecting that EasyNav stopped commanding (dead process, blocked cycle)
      - IEC 61784-3 (timeout of the safety communication)
@@ -90,8 +91,9 @@ Status: **Provided** — available today; **Partial** — part of it; **Planned*
      - Planned
    * - Controlled stop on shutdown and on unrecoverable errors
      - IEC 60204-1 (stop categories)
-     - Deactivating or shutting down brakes within the deceleration limits and ends with an exact
-       zero; an unrecoverable error ends EasyNav through the lifecycle's error path.
+     - On deactivation or shutdown, EasyNav brakes within the deceleration limits and its last
+       command is an exact zero; an unrecoverable error ends EasyNav through the lifecycle's error
+       path.
      - Provided
    * - Diagnostics and recovery
      - ISO 3691-4 (fault handling)
@@ -114,7 +116,7 @@ Overview
 
 What EasyNav provides, in short:
 
-- the velocity command sent to the robot is never stale or invalid;
+- the robot is never left executing a stale or invalid velocity command;
 - the configuration is checked, and fingerprinted, every time EasyNav is configured;
 - an optional **safety mode** makes EasyNav stricter, and the process memory can be locked.
 
@@ -173,8 +175,9 @@ In any mode, configuring fails, naming the parameter, when:
 
 - a robot limit is out of range or not finite: velocities ``max_* >= 0``, ``min_linear_vel <= 0``,
   accelerations and decelerations ``> 0``;
-- a frequency (``system_node.rt_freq``, ``freq``) is not ``> 0``, a spin time or a robot geometry
-  field is negative, or any of them is not finite;
+- a frequency (``system_node.rt_freq`` and ``freq``, and every plugin's ``<name>.rt_freq`` and
+  ``<name>.freq``) is not ``> 0``, a spin time or a robot geometry field is negative, or any of them
+  is not finite;
 - ``cmd_timeout`` or ``cmd_vel_keepalive_period`` is negative or not finite;
 - the robot limits exceed ``safety.plc_limits``, when given (see below).
 
@@ -209,8 +212,8 @@ The safety parameters are grouped in ``system_node``:
    given; required in safety mode.
 
 ``safety.lock_memory``
-   ``system_main`` locks the process memory before activating (see :ref:`safety_memory`). If it
-   cannot, EasyNav does not start.
+   ``system_main`` locks the process memory before activating (see :ref:`safety_memory`). If
+   ``RLIMIT_MEMLOCK`` does not allow it, configuring fails.
 
 ``safety.mode``
    Makes EasyNav stricter. Whatever is unsafe makes configuring fail, instead of a warning or a
@@ -218,13 +221,15 @@ The safety parameters are grouped in ``system_node``:
 
    - ``safety.plc_limits`` are required;
    - ``controller_node.cmd_vel_keepalive_period`` and ``cmd_timeout`` must be ``> 0``;
-   - real-time scheduling is required: ``use_real_time`` must be ``true``, and ``system_main``
-     terminates EasyNav if it cannot get ``SCHED_FIFO`` (see :ref:`realtime_setup`);
+   - real-time scheduling is required: ``use_real_time`` must be ``true``, and ``SCHED_FIFO`` must
+     be allowed. It is checked on configure, trying it on a temporary thread, so nothing is
+     activated without it (see :ref:`realtime_setup`);
    - once configured, **the configuration is frozen**: any change to a parameter of any EasyNav node
      is rejected (so plugins cannot be switched either), and so are the recovery system's
      ``request_reconfigure()`` and ``request_restore_parameters()``, which return ``false``.
-     Setting a parameter to the value it already has, or declaring a new one, is still accepted, so
-     EasyNav can still go through its lifecycle.
+     Setting a parameter to the value it already has is still accepted, and new parameters can only
+     be declared while EasyNav configures (it freezes again when done), so it can still go through
+     its lifecycle.
 
 ``safety.mode`` and ``safety.lock_memory`` are independent: whether the memory can be locked depends
 on the hardware and the deployment, not on wanting the rest of the safety mode.
@@ -262,8 +267,9 @@ a library (e.g. a plugin's ``.so``), which the kernel can drop even without swap
 again from disk. Touching such a page is a *page fault*: the process stops while the kernel brings the
 page in, which takes microseconds, or milliseconds if it has to read the disk.
 
-``SCHED_FIFO`` keeps other processes from taking the CPU away from the RT cycle, but a page fault is
-the RT cycle itself waiting for the disk: its priority does not help. For example, after the robot
+``SCHED_FIFO`` keeps normal-priority processes from taking the CPU away from the RT cycle (real-time
+threads of higher priority, and interrupts, still can), but a page fault is the RT cycle itself
+waiting for the disk: its priority does not help. For example, after the robot
 has been idle for a while, the kernel may have dropped the pages of the controller; the first cycle
 when it moves again then takes tens of milliseconds instead of one. It is rare, but a bounded response
 time has to hold always, not almost always.
@@ -303,13 +309,13 @@ parameter gives a different one.
 **How it is computed.**
 
 1. Every parameter of every EasyNav node (``system_node`` and its subnodes) is written, one per line,
-   sorted by node and name::
+   sorted by node and name, with its type::
 
-      controller_node/cmd_timeout=0.500000
-      controller_node/controller_types=[ctrl]
-      controller_node/ctrl.plugin=easynav_simple_controller/SimpleController
+      controller_node/cmd_timeout (double) = 0.5
+      controller_node/controller_types (string_array) = ["ctrl"]
+      controller_node/ctrl.plugin (string) = "easynav_simple_controller/SimpleController"
       ...
-      system_node/safety.mode=false
+      system_node/safety.mode (bool) = false
 
 2. The SHA-256 of that text is computed.
 3. It is logged, with the plugins loaded and where the parameters were saved, and left in NavState
@@ -352,9 +358,13 @@ their saved files; they are sorted text, one parameter per line:
   changes even though your YAML did not, because the behavior did.
 - **Sorted**: plugins declare their parameters in their own order; sorting gives the same text, and
   fingerprint, for the same configuration.
-- **SHA-256**, not ``std::hash``: it is a standard, the same on any machine and compiler, can be
-  checked with external tools (``sha256sum``), and two different configurations will in practice
-  never share it.
+- **Unambiguous**: two different configurations never give the same text. The type is written, so
+  ``"1"`` and ``1`` differ; strings are quoted and escaped, so a value cannot fake another line; and
+  doubles are written exactly (the shortest text that reads back as the same value), so close values
+  never print the same.
+- **SHA-256**, not ``std::hash``: it is a standard, the same on any machine and compiler, and two
+  different configurations will in practice never share it. It can be checked with external tools:
+  ``sha256sum`` of a saved file gives the fingerprint in its name.
 
 **What it is for.**
 
@@ -380,7 +390,8 @@ Fault injection
 ===============
 
 To test how EasyNav copes with components that misbehave, fault-injection plugins live next to the
-``Dummy*`` plugins of each component. ``easynav_controller/FaultyController`` commands a constant
+``Dummy*`` plugin of their component. Today there is one, for the controller; those for the other
+components are planned. ``easynav_controller/FaultyController`` commands a constant
 velocity (``<name>.linear_vel``, ``<name>.angular_vel``) and, after ``<name>.fault_after`` updates,
 injects the fault in ``<name>.fault``: ``throw``, ``hang`` (for ``<name>.hang_time`` s),
 ``stop_proposing``, ``freeze``, ``max_velocity`` or ``nan``.
