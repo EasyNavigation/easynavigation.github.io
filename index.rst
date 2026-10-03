@@ -42,7 +42,7 @@ Whether you are building robots for indoor or outdoor environments, structured o
 
 We invite you to explore, use, and contribute to this project!
 
-🧭 Coming from Nav2? :ref:`migration_nav2` shows how to try EasyNav on your robot.
+🧭 Already using Nav2? The :ref:`migration_nav2` shows how to try EasyNav on your robot.
 
 📚 Learn more about the contributors and project organization in :ref:`about`.
 
@@ -57,9 +57,9 @@ If you use this software in your work, please consider citing our next paper.
 
    build_install/index.rst
    getting_started/index.rst
-   migration_guide/index.rst
    plugins/index.rst
    simulations_real_robots/index.rst
    howtos/index.rst
    developer_guide/index.rst
+   migration_guide/index.rst
    about/index.rst

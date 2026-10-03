@@ -1,13 +1,13 @@
 .. _migration_nav2:
 
-==============================
-Migration Guide for Nav2 Users
-==============================
+===============
+Migration Guide
+===============
 
-You already navigate with Nav2 and want to try EasyNav on the same robot. This guide tells you
-what stays the same, what each Nav2 piece becomes in EasyNav, how to write the parameter file and
-how your applications send goals. You can follow it in about an hour, and switch back to Nav2 at
-any time: EasyNav does not change your robot, your maps or your TF tree.
+If your robot already navigates with Nav2, trying EasyNav on it takes little work: both build on
+the same ROS 2 conventions. This guide shows what you can reuse, how Nav2's components map to
+EasyNav's, how to write the parameter file and how your applications send goals. Both can live
+side by side: EasyNav does not change your robot, your maps or your TF tree.
 
 .. contents:: On this page
    :local:
@@ -28,8 +28,7 @@ Most of what you built for Nav2 is reused as is:
 - **Your Nav2 clients**, through the Nav2 bridge (see :ref:`migration_goals`).
 
 What changes is how navigation runs: **one process** (``system_main``) with **one parameter file**,
-where each component loads the plugin you choose. There is no behavior tree and no lifecycle manager
-to configure.
+where each component loads the plugin you choose.
 
 Nav2 and EasyNav, piece by piece
 ================================
@@ -101,8 +100,8 @@ Some plugins are not packaged for every distribution yet (see the note in
 :doc:`../build_install/index`). If one is missing, use Pixi or build ``easynav_plugins`` from
 source.
 
-**Let EasyNav run in real time.** Nav2 runs with normal priority, so your system was never asked
-for this. EasyNav runs its control cycle with real-time priority (``SCHED_FIFO`` 80), so that a
+**Let EasyNav run in real time.** This is a one-time system setting your Nav2 setup may not have
+needed. EasyNav runs its control cycle with real-time priority (``SCHED_FIFO`` 80), so that a
 loaded computer does not delay the commands to the robot. Linux only allows it if your user may use
 that priority. Check it:
 
@@ -326,7 +325,7 @@ Option A: the Nav2 bridge
 
 `easynav_nav2_bridge <https://github.com/EasyNavigation/easynav_nav2_bridge>`_ is a
 ``nav2_msgs/action/NavigateToPose`` server on ``navigate_to_pose`` that forwards goals to EasyNav,
-and EasyNav's feedback and result back. Any Nav2 client cannot tell it from ``bt_navigator``.
+and EasyNav's feedback and result back, so Nav2 clients work with EasyNav unchanged.
 
 It is built from source, in the workspace where you have EasyNav:
 
@@ -481,11 +480,10 @@ EasyNav also listens to ``/goal_pose`` (``geometry_msgs/PoseStamped``), which is
 Differences to keep in mind
 ===========================
 
-- **No behavior trees.** Navigation itself (plan, follow, replan, recover) needs none. What you
-  did with a custom tree on top (sequences of goals, tasks between them, conditions) goes in a
+- **Mission logic lives outside.** EasyNav plans, follows, replans and recovers by itself,
+  without a behavior tree. What you did with a custom tree on top (sequences of goals, tasks between them, conditions) goes in a
   node of yours with ``GoalManagerClient``, or in your own behavior tree with its own action nodes.
-- **One costmap.** There is no separate local costmap: the controller and the planner use the
-  same map, updated with live sensor data by the ``obstacles`` filter. Controllers such as RPP also
+- **One costmap.** The controller and the planner share the same map, updated with live sensor data by the ``obstacles`` filter. Controllers such as RPP also
   slow down near obstacles using the sensors directly.
 - **Real-time control cycle.** Localization prediction, control and collision checking run in a
   real-time thread, at ``rt_freq``; the rest runs apart, so a slow planner or map update never

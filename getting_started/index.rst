@@ -232,9 +232,9 @@ You have successfully launched **EasyNav** with a simulated robot!
 
 Continue exploring:
 
-- :doc:`../migration_guide/index` — if you use Nav2, how to move your robot's configuration to EasyNav.
 - :doc:`../howtos/index` — follow practical guides for mapping, navigation, and real robot deployment.  
 - :doc:`../developer_guide/index` — dive into the internal design and architecture of the EasyNav framework.
+- :doc:`../migration_guide/index` — if your robot already uses Nav2, how to try EasyNav on it.
 
 .. toctree::
    :hidden:
