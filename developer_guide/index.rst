@@ -22,6 +22,7 @@ Its architecture relies on clear interfaces, shared data structures, and composa
    perceptions.rst
    commanding.rst
    recovery.rst
+   safety.rst
 
 Overview
 ========
@@ -33,6 +34,7 @@ This guide is organized into several chapters, each covering a key subsystem of 
 - **Perceptions System** — Details how sensory data is represented, processed, and accessed in a unified way.  
 - **Commanding Layer** — Describes how applications send navigation goals to EasyNav and follow their progress.
 - **Recovery System** — Explains how EasyNav detects and handles problems: the recovery node, the ``RecoveryManagerBase`` plugin, how a recovery moves the robot, the ``SystemActions`` it can request, and the available recovery systems.
+- **Safety** — What EasyNav does for safety: stale and invalid velocity commands, configuration checks, the safety mode and its parameters, memory locking, the configuration fingerprint, and fault injection.
 
 Each chapter provides conceptual explanations, code structure guidelines, and practical examples extracted from the current EasyNav implementation.
 

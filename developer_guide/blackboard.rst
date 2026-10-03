@@ -85,8 +85,8 @@ A controller reads the current pose and planned path, and outputs a velocity com
 
 ``ControllerNode`` proposes this command to its velocity mux, which may prefer a recovery system's
 command; the controller never publishes it itself (see :ref:`velocity_output`). Stamp each new
-command: one with the same stamp and value as the previous one is not proposed again, and without new
-commands the robot is stopped after ``controller_node.cmd_timeout``.
+command: one with the same stamp and value as the previous one is not proposed again (see
+:ref:`safety_commands`).
 
 **Localization Example**
 
