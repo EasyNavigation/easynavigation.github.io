@@ -576,4 +576,8 @@ updates, injects the fault in ``<name>.fault`` (``hang`` blocks for ``<name>.han
 
 EasyNav's tests use them to check, for each fault, what reaches the robot: a throwing plugin is
 contained, a hanging RT plugin makes cycles late, a hanging non-RT plugin does not delay the
-real-time cycle, an old or NaN pose is reported, and in safety mode stops the robot.
+real-time cycle, an old or NaN pose is reported, and in safety mode stops the robot, an empty path
+is a ``NoPathEvaluator`` error, and a NaN path never moves the robot.
+
+``planner_node`` discards a ``path`` with a non-finite pose (NaN, inf): it leaves an empty one, so
+no controller follows it, and reports ``diagnostics.path`` (``ERROR``, ``hardware_id: planner``).
