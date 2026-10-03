@@ -378,6 +378,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#stale-and-invalid-commands">Stale and invalid commands</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration-checks">Configuration checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-time-cycle-monitoring-and-heartbeat">Real-time cycle monitoring and heartbeat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#memory-locking">Memory locking</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration-fingerprint">Configuration fingerprint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fault-injection">Fault injection</a></li>
@@ -479,10 +480,11 @@ default) the robot brakes to zero; non-finite commands are discarded. See
 </tr>
 <tr class="row-even"><td><p>Detecting that EasyNav stopped commanding (dead process, blocked cycle)</p></td>
 <td><p>IEC 61784-3 (timeout of the safety communication)</p></td>
-<td><p>Periodic republication of the command and <code class="docutils literal notranslate"><span class="pre">deadline</span></code>/<code class="docutils literal notranslate"><span class="pre">liveliness</span></code> QoS on <code class="docutils literal notranslate"><span class="pre">cmd_vel</span></code>, so
-the receiver can detect the loss. An explicit heartbeat with sequence counter and
-configuration hash is planned. See <a class="reference internal" href="#safety-commands"><span class="std std-ref">Stale and invalid commands</span></a>.</p></td>
-<td><p>Partial</p></td>
+<td><p>A heartbeat published from the real-time cycle, with sequence counter, real-time status and
+configuration fingerprint; periodic republication of the command; <code class="docutils literal notranslate"><span class="pre">deadline</span></code> and
+<code class="docutils literal notranslate"><span class="pre">liveliness</span></code> QoS on both, so the receiver can detect the loss. See <a class="reference internal" href="#safety-rt"><span class="std std-ref">Real-time cycle monitoring and heartbeat</span></a>,
+<a class="reference internal" href="#safety-commands"><span class="std std-ref">Stale and invalid commands</span></a>.</p></td>
+<td><p>Provided</p></td>
 </tr>
 <tr class="row-odd"><td><p>Velocity and acceleration limits</p></td>
 <td><p>ISO 3691-4 (speed control)</p></td>
@@ -506,8 +508,9 @@ parameters saved and published; in safety mode the configuration is frozen. See
 </tr>
 <tr class="row-even"><td><p>Timing: real-time scheduling, no page faults in the RT cycle</p></td>
 <td><p>IEC 61508-3 (timing behavior)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">SCHED_FIFO</span></code> priority 80, required in safety mode; optional memory locking. Monitoring of
-RT-cycle overruns is planned. See <a class="reference internal" href="#safety-mode"><span class="std std-ref">Safety parameters and safety mode</span></a>, <a class="reference internal" href="#safety-memory"><span class="std std-ref">Memory locking</span></a>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SCHED_FIFO</span></code> priority 80, required in safety mode; optional memory locking. Real-time cycles
+that start late are detected and reported, and stop EasyNav in safety mode. Not yet: a
+worst-case execution time analysis. See <a class="reference internal" href="#safety-rt"><span class="std std-ref">Real-time cycle monitoring and heartbeat</span></a>, <a class="reference internal" href="#safety-memory"><span class="std std-ref">Memory locking</span></a>.</p></td>
 <td><p>Partial</p></td>
 </tr>
 <tr class="row-odd"><td><p>Faulty software components</p></td>
@@ -560,6 +563,7 @@ requirements traceability.</p></td>
 <ul class="simple">
 <li><p>the robot is never left executing a stale or invalid velocity command;</p></li>
 <li><p>the configuration is checked, and fingerprinted, every time EasyNav is configured;</p></li>
+<li><p>real-time cycles that start late are detected, and a heartbeat tells others that EasyNav is alive;</p></li>
 <li><p>an optional <strong>safety mode</strong> makes EasyNav stricter, and the process memory can be locked.</p></li>
 </ul>
 <p>The robot limits (<code class="docutils literal notranslate"><span class="pre">controller_node.robot_limits.*</span></code>, see <a class="reference internal" href="design.html#velocity-output"><span class="std std-ref">Velocity Output: Robot Limits, Mux and Smoother</span></a>) <strong>always apply</strong>,
@@ -627,6 +631,11 @@ is not finite;</p></li>
 <span class="w">      </span><span class="nt">plc_limits</span><span class="p">:</span><span class="w">            </span><span class="c1"># limits configured in the safety channel (0: not given)</span>
 <span class="w">        </span><span class="nt">max_linear_vel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w">  </span><span class="c1"># m/s</span>
 <span class="w">        </span><span class="nt">max_angular_vel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span><span class="w"> </span><span class="c1"># rad/s</span>
+<span class="w">      </span><span class="nt">heartbeat</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">          </span><span class="c1"># s, 0: off</span>
+<span class="w">      </span><span class="nt">rt_monitor</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">max_period_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
+<span class="w">        </span><span class="nt">max_late_cycles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 </pre></div>
 </div>
 <dl class="simple">
@@ -642,7 +651,7 @@ given; required in safety mode.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">safety.mode</span></code></dt><dd><p>Makes EasyNav stricter. Whatever is unsafe makes configuring fail, instead of a warning or a
 default:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code> are required;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code> and the heartbeat (<code class="docutils literal notranslate"><span class="pre">safety.heartbeat.period</span></code>) are required;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">controller_node.cmd_vel_keepalive_period</span></code> and <code class="docutils literal notranslate"><span class="pre">cmd_timeout</span></code> must be <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>;</p></li>
 <li><p>real-time scheduling is required: <code class="docutils literal notranslate"><span class="pre">use_real_time</span></code> must be <code class="docutils literal notranslate"><span class="pre">true</span></code>, and <code class="docutils literal notranslate"><span class="pre">SCHED_FIFO</span></code> must
 be allowed. It is checked on configure, trying it on a temporary thread, so nothing is
@@ -652,7 +661,8 @@ is rejected (so plugins cannot be switched either), and so are the recovery syst
 <code class="docutils literal notranslate"><span class="pre">request_reconfigure()</span></code> and <code class="docutils literal notranslate"><span class="pre">request_restore_parameters()</span></code>, which return <code class="docutils literal notranslate"><span class="pre">false</span></code>.
 Setting a parameter to the value it already has is still accepted, and new parameters can only
 be declared while EasyNav configures (it freezes again when done), so it can still go through
-its lifecycle.</p></li>
+its lifecycle;</p></li>
+<li><p>too many real-time cycles starting late in a row stop EasyNav (see <a class="reference internal" href="#safety-rt"><span class="std std-ref">Real-time cycle monitoring and heartbeat</span></a>).</p></li>
 </ul>
 </dd>
 </dl>
@@ -689,6 +699,45 @@ on the hardware and the deployment, not on wanting the rest of the safety mode.<
 </tr>
 </tbody>
 </table>
+</section>
+<section id="real-time-cycle-monitoring-and-heartbeat">
+<span id="safety-rt"></span><h2>Real-time cycle monitoring and heartbeat<a class="headerlink" href="#real-time-cycle-monitoring-and-heartbeat" title="Permalink to this heading"></a></h2>
+<p><strong>Late cycles.</strong> At the start of each real-time cycle, EasyNav measures, with the monotonic clock
+(not ROS time, so simulation or clock jumps do not fool it), the time since the previous cycle
+started. The expected period is <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">system_node.rt_freq</span></code> (5 ms at 200 Hz). A cycle is <strong>late</strong> if
+it starts more than <code class="docutils literal notranslate"><span class="pre">safety.rt_monitor.max_period_factor</span></code> periods after the previous one (2 by
+default: more than 10 ms):</p>
+<ul class="simple">
+<li><p>after a late cycle the status is <code class="docutils literal notranslate"><span class="pre">LATE</span></code>; after <code class="docutils literal notranslate"><span class="pre">safety.rt_monitor.max_late_cycles</span></code> late cycles
+in a row (10 by default), <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>; a cycle on time makes it <code class="docutils literal notranslate"><span class="pre">OK</span></code> again, so isolated late
+cycles never add up to an error;</p></li>
+<li><p>the status is reported in NavState as <code class="docutils literal notranslate"><span class="pre">diagnostics.rt_cycle</span></code> (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">system_node</span></code>):
+<code class="docutils literal notranslate"><span class="pre">WARN</span></code> for <code class="docutils literal notranslate"><span class="pre">LATE</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> for <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, back to <code class="docutils literal notranslate"><span class="pre">OK</span></code>, written only on changes and after
+the first problem, so a recovery system can handle it;</p></li>
+<li><p>in <strong>safety mode</strong>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> stops EasyNav: it brakes, ends in <code class="docutils literal notranslate"><span class="pre">Finalized</span></code> and <code class="docutils literal notranslate"><span class="pre">system_main</span></code>
+exits with code 1. Outside it, it is only reported;</p></li>
+<li><p>after an activation, the monitor starts over: the time EasyNav was inactive is not a late cycle.</p></li>
+</ul>
+<p><strong>Heartbeat.</strong> With <code class="docutils literal notranslate"><span class="pre">safety.heartbeat.period</span></code> &gt; 0 (required in safety mode), a
+<code class="docutils literal notranslate"><span class="pre">easynav_interfaces/msg/Heartbeat</span></code> is published on <code class="docutils literal notranslate"><span class="pre">easynav_heartbeat</span></code> at that period, <strong>from the
+real-time cycle itself</strong>, so it stops if that cycle does:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>std_msgs/Header header
+uint64 sequence            # +1 per heartbeat: a gap means lost heartbeats
+uint8 rt_status            # RT_OK, RT_LATE or RT_ERROR
+uint64 late_cycles         # late cycles since activation
+bool safety_mode
+string configuration_hash  # see the configuration fingerprint
+</pre></div>
+</div>
+<p>The publisher offers <code class="docutils literal notranslate"><span class="pre">deadline</span></code> and <code class="docutils literal notranslate"><span class="pre">liveliness</span></code> QoS of twice the period: a driver, a safety
+controller or a supervisor that requests a deadline is notified as soon as heartbeats stop, and can
+check that the robot runs the validated configuration. What to do then is up to the receiver.</p>
+<p><strong>What they cover, and what not.</strong> They complement each other: the monitor sees cycles that start
+<strong>late</strong>; the heartbeat lets others see that they do <strong>not start at all</strong>, which the monitor cannot,
+since it runs at the start of the next cycle. The monitor measures the time between cycle starts, not
+how long each cycle takes, and the non-real-time cycle (planning, maps) is not monitored. Neither is
+a worst-case execution time analysis: they detect delays when they happen, they do not show they
+cannot happen.</p>
 </section>
 <section id="memory-locking">
 <span id="safety-memory"></span><h2>Memory locking<a class="headerlink" href="#memory-locking" title="Permalink to this heading"></a></h2>
