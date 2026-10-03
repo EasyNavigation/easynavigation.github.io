@@ -380,6 +380,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#real-time-cycle-monitoring-and-heartbeat">Real-time cycle monitoring and heartbeat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#safety-channel-status">Safety channel status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-age">Data age</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#memory-locking">Memory locking</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration-fingerprint">Configuration fingerprint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fault-injection">Fault injection</a></li>
@@ -541,14 +542,17 @@ worst-case execution time analysis. See <a class="reference internal" href="#saf
 </tr>
 <tr class="row-even"><td><p>Fault injection to verify the behavior on failures</p></td>
 <td><p>IEC 61508-3 (fault insertion testing)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">FaultyController</span></code> (throw, hang, stop proposing, freeze, huge or NaN commands), used by the
-tests. Fault plugins for the other components are planned. See <a class="reference internal" href="#safety-faults"><span class="std std-ref">Fault injection</span></a>.</p></td>
-<td><p>Partial</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Faulty*</span></code> plugins for the controller, localizer, planner and maps manager (throw, hang,
+freeze, stop producing, NaN or absurd outputs), used by the tests. Simulation scenarios with
+sensor and TF drops are planned. See <a class="reference internal" href="#safety-faults"><span class="std std-ref">Fault injection</span></a>.</p></td>
+<td><p>Provided</p></td>
 </tr>
-<tr class="row-odd"><td><p>Stale sensor data and transforms</p></td>
+<tr class="row-odd"><td><p>Stale sensor data and robot pose</p></td>
 <td><p>IEC 61508-3 (defensive programming)</p></td>
-<td><p>A maximum age for perceptions and TF is planned.</p></td>
-<td><p>Planned</p></td>
+<td><p>Perceptions older than <code class="docutils literal notranslate"><span class="pre">forget_time</span></code> are not used, and the collision reflex brakes if none
+is left; a robot pose too old, or not finite, is an error, and in safety mode the robot
+brakes until it is usable again. See <a class="reference internal" href="#safety-data-age"><span class="std std-ref">Data age</span></a>.</p></td>
+<td><p>Provided</p></td>
 </tr>
 <tr class="row-even"><td><p>Controlled stop on shutdown and on unrecoverable errors</p></td>
 <td><p>IEC 60204-1 (stop categories)</p></td>
@@ -587,6 +591,7 @@ requirements traceability.</p></td>
 <li><p>real-time cycles that start late are detected, and a heartbeat tells others that EasyNav is alive;</p></li>
 <li><p>the safety channel’s state is followed: EasyNav does not fight a protective stop or a safely
 limited speed;</p></li>
+<li><p>old sensor data is not used, and an old robot pose is detected;</p></li>
 <li><p>an optional <strong>safety mode</strong> makes EasyNav stricter, and the process memory can be locked.</p></li>
 </ul>
 <p>The robot limits (<code class="docutils literal notranslate"><span class="pre">controller_node.robot_limits.*</span></code>, see <a class="reference internal" href="design.html#velocity-output"><span class="std std-ref">Velocity Output: Robot Limits, Mux and Smoother</span></a>) <strong>always apply</strong>,
@@ -661,6 +666,7 @@ is not finite;</p></li>
 <span class="w">        </span><span class="nt">max_late_cycles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="w">      </span><span class="nt">status</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">         </span><span class="c1"># s, 0: the safety channel&#39;s state is not read</span>
+<span class="w">      </span><span class="nt">max_pose_age</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w">      </span><span class="c1"># s, 0: off</span>
 </pre></div>
 </div>
 <dl class="simple">
@@ -689,6 +695,8 @@ Setting a parameter to the value it already has is still accepted, and new param
 be declared while EasyNav configures (it freezes again when done), so it can still go through
 its lifecycle;</p></li>
 <li><p>too many real-time cycles starting late in a row stop EasyNav (see <a class="reference internal" href="#safety-rt"><span class="std std-ref">Real-time cycle monitoring and heartbeat</span></a>).</p></li>
+<li><p>a robot pose too old, or not finite, stops the robot until it is usable again (see
+<a class="reference internal" href="#safety-data-age"><span class="std std-ref">Data age</span></a>).</p></li>
 </ul>
 </dd>
 </dl>
@@ -812,6 +820,36 @@ lasts <code class="docutils literal notranslate"><span class="pre">max_stop_time
 for human assistance (see <a class="reference internal" href="recovery.html#recovery"><span class="std std-ref">Recovery System</span></a>).</p>
 <p>Without <code class="docutils literal notranslate"><span class="pre">safety.status.timeout</span></code> (the default outside safety mode), nothing of this applies.</p>
 </section>
+<section id="data-age">
+<span id="safety-data-age"></span><h2>Data age<a class="headerlink" href="#data-age" title="Permalink to this heading"></a></h2>
+<p>Navigating with old data is navigating blind: a sensor driver that dies leaves its last scan
+behind, and a localizer that stops leaves the robot where it was. EasyNav checks the age of both.</p>
+<p><strong>Sensor data.</strong> <code class="docutils literal notranslate"><span class="pre">sensors_node.forget_time</span></code> (s, 1.0 by default, <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>) is the maximum age of a
+perception: every real-time cycle, a perception whose stamp is older than that (ROS time) is marked
+invalid, and every consumer (collision reflex, obstacle filters, controllers, evaluators) ignores
+it until new data arrives. A sensor whose data arrives already older than that (a delayed driver)
+is never used. <code class="docutils literal notranslate"><span class="pre">forget_time</span></code> must be longer than the period of your slowest sensor.</p>
+<ul class="simple">
+<li><p>It is reported as <code class="docutils literal notranslate"><span class="pre">diagnostics.sensors</span></code> (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">sensors_node</span></code>), on changes only:
+<code class="docutils literal notranslate"><span class="pre">WARN</span></code> with the sensors without data yet (<code class="docutils literal notranslate"><span class="pre">no_data</span></code>) and those whose data is too old
+(<code class="docutils literal notranslate"><span class="pre">stale</span></code>), <code class="docutils literal notranslate"><span class="pre">OK</span></code> when all are up to date.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CollisionSafetyReflex</span></code> <strong>fails safe</strong>: commanded to move with no valid point perception left,
+it cannot check for collisions, so it brakes. Rotating in place is still allowed. In particular,
+after starting, the robot does not move until the first scan arrives.</p></li>
+</ul>
+<p><strong>Robot pose.</strong> <code class="docutils literal notranslate"><span class="pre">system_node.safety.max_pose_age</span></code> (s, 1.0 by default; 0: off) is the maximum age
+of <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>, the localizer’s output (its stamp is usually that of the odometry it used):</p>
+<ul class="simple">
+<li><p>a pose older than that, or not finite (NaN), is an <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> in <code class="docutils literal notranslate"><span class="pre">diagnostics.robot_pose</span></code>
+(<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">system_node</span></code>), so the recovery system can handle it, and <code class="docutils literal notranslate"><span class="pre">OK</span></code> again once it
+is usable; in any mode;</p></li>
+<li><p>in <strong>safety mode</strong>, motion is also inhibited while it lasts: the command is zero, braking within
+the deceleration limits, whoever proposes it. EasyNav keeps running, and the robot moves again
+as soon as the pose is usable.</p></li>
+</ul>
+<p>Until a localizer publishes a pose, nothing is checked. Some setups need <code class="docutils literal notranslate"><span class="pre">max_pose_age</span></code> raised,
+e.g. a GPS localizer at 1 Hz.</p>
+</section>
 <section id="memory-locking">
 <span id="safety-memory"></span><h2>Memory locking<a class="headerlink" href="#memory-locking" title="Permalink to this heading"></a></h2>
 <p><strong>The problem.</strong> Linux gives each process virtual memory: which of its pages (4 KB each) are really in
@@ -931,11 +969,46 @@ the map but not its name leaves the fingerprint unchanged.</p></li>
 <section id="fault-injection">
 <span id="safety-faults"></span><h2>Fault injection<a class="headerlink" href="#fault-injection" title="Permalink to this heading"></a></h2>
 <p>To test how EasyNav copes with components that misbehave, fault-injection plugins live next to the
-<code class="docutils literal notranslate"><span class="pre">Dummy*</span></code> plugin of their component. Today there is one, for the controller; those for the other
-components are planned. <code class="docutils literal notranslate"><span class="pre">easynav_controller/FaultyController</span></code> commands a constant
-velocity (<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.linear_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.angular_vel</span></code>) and, after <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault_after</span></code> updates,
-injects the fault in <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault</span></code>: <code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code> (for <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.hang_time</span></code> s),
-<code class="docutils literal notranslate"><span class="pre">stop_proposing</span></code>, <code class="docutils literal notranslate"><span class="pre">freeze</span></code>, <code class="docutils literal notranslate"><span class="pre">max_velocity</span></code> or <code class="docutils literal notranslate"><span class="pre">nan</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">Dummy*</span></code> plugin of their component. Each one works normally and, after <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault_after</span></code>
+updates, injects the fault in <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault</span></code> (<code class="docutils literal notranslate"><span class="pre">hang</span></code> blocks for <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.hang_time</span></code> s):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 30.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Plugin</p></th>
+<th class="head"><p>Works as</p></th>
+<th class="head"><p>Faults</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_controller/FaultyController</span></code></p></td>
+<td><p>Constant velocity (<code class="docutils literal notranslate"><span class="pre">linear_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">angular_vel</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code>, <code class="docutils literal notranslate"><span class="pre">stop_proposing</span></code>, <code class="docutils literal notranslate"><span class="pre">freeze</span></code>, <code class="docutils literal notranslate"><span class="pre">max_velocity</span></code>, <code class="docutils literal notranslate"><span class="pre">nan</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_localizer/FaultyLocalizer</span></code></p></td>
+<td><p>Fixed pose (<code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">yaw</span></code>), stamped now</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code>, <code class="docutils literal notranslate"><span class="pre">freeze</span></code> (old stamp), <code class="docutils literal notranslate"><span class="pre">stop_publishing</span></code>, <code class="docutils literal notranslate"><span class="pre">nan</span></code>, <code class="docutils literal notranslate"><span class="pre">jump</span></code>
+(<code class="docutils literal notranslate"><span class="pre">jump_distance</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_planner/FaultyPlanner</span></code></p></td>
+<td><p>Straight path to the goal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code>, <code class="docutils literal notranslate"><span class="pre">empty_path</span></code>, <code class="docutils literal notranslate"><span class="pre">freeze</span></code> (old path), <code class="docutils literal notranslate"><span class="pre">nan</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_maps_manager/FaultyMapsManager</span></code></p></td>
+<td><p>No map</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>EasyNav’s tests use them to check, for each fault, what reaches the robot: a throwing plugin is
+contained, a hanging RT plugin makes cycles late, a hanging non-RT plugin does not delay the
+real-time cycle, an old or NaN pose is reported, and in safety mode stops the robot, an empty path
+is a <code class="docutils literal notranslate"><span class="pre">NoPathEvaluator</span></code> error, and a NaN path never moves the robot.</p>
+<p><code class="docutils literal notranslate"><span class="pre">planner_node</span></code> discards a <code class="docutils literal notranslate"><span class="pre">path</span></code> with a non-finite pose (NaN, inf): it leaves an empty one, so
+no controller follows it, and reports <code class="docutils literal notranslate"><span class="pre">diagnostics.path</span></code> (<code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, <code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">planner</span></code>).</p>
 </section>
 </section>
 
