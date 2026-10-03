@@ -50,21 +50,24 @@ Status: **Provided** — available today; **Partial** — part of it; **Planned*
      - Provided
    * - Detecting that EasyNav stopped commanding (dead process, blocked cycle)
      - IEC 61784-3 (timeout of the safety communication)
-     - Periodic republication of the command and ``deadline``/``liveliness`` QoS on ``cmd_vel``, so
-       the receiver can detect the loss. An explicit heartbeat with sequence counter and
-       configuration hash is planned. See :ref:`safety_commands`.
-     - Partial
+     - A heartbeat published from the real-time cycle, with sequence counter, real-time status and
+       configuration fingerprint; periodic republication of the command; ``deadline`` and
+       ``liveliness`` QoS on both, so the receiver can detect the loss. See :ref:`safety_rt`,
+       :ref:`safety_commands`.
+     - Provided
    * - Velocity and acceleration limits
      - ISO 3691-4 (speed control)
      - ``robot_limits`` are enforced on every command, in any mode; they are not safety-rated.
        See :ref:`velocity_output`.
      - Provided
-   * - Consistency with the safety channel's limits
+   * - Cooperation with the safety channel (protective stop, safely limited speed)
      - ISO 3691-4 (speed and protective fields)
-     - Configuring fails if ``robot_limits`` exceed the declared ``safety.plc_limits``. Reading the
-       channel's live state (active field, current speed limit, protective stop) is planned.
-       See :ref:`safety_mode`.
-     - Partial
+     - Configuring fails if ``robot_limits`` exceed the declared ``safety.plc_limits``. The
+       channel's live state is read: during a protective stop EasyNav commands zero and keeps the
+       mission, resuming from zero when released; a safely limited speed cuts the robot limits
+       down; without a valid state, the robot is stopped. See :ref:`safety_mode`,
+       :ref:`safety_channel`.
+     - Provided
    * - Configuration data: validated, identified, unchanged while running
      - IEC 61508-3 (configuration data)
      - Invalid values fail to configure; a SHA-256 fingerprint of every parameter is logged, and the
@@ -73,8 +76,9 @@ Status: **Provided** — available today; **Partial** — part of it; **Planned*
      - Provided
    * - Timing: real-time scheduling, no page faults in the RT cycle
      - IEC 61508-3 (timing behavior)
-     - ``SCHED_FIFO`` priority 80, required in safety mode; optional memory locking. Monitoring of
-       RT-cycle overruns is planned. See :ref:`safety_mode`, :ref:`safety_memory`.
+     - ``SCHED_FIFO`` priority 80, required in safety mode; optional memory locking. Real-time cycles
+       that start late are detected and reported, and stop EasyNav in safety mode. Not yet: a
+       worst-case execution time analysis. See :ref:`safety_rt`, :ref:`safety_memory`.
      - Partial
    * - Faulty software components
      - IEC 61508-3 (fault detection, fail-safe behavior)
@@ -118,6 +122,9 @@ What EasyNav provides, in short:
 
 - the robot is never left executing a stale or invalid velocity command;
 - the configuration is checked, and fingerprinted, every time EasyNav is configured;
+- real-time cycles that start late are detected, and a heartbeat tells others that EasyNav is alive;
+- the safety channel's state is followed: EasyNav does not fight a protective stop or a safely
+  limited speed;
 - an optional **safety mode** makes EasyNav stricter, and the process memory can be locked.
 
 The robot limits (``controller_node.robot_limits.*``, see :ref:`velocity_output`) **always apply**,
@@ -203,6 +210,13 @@ The safety parameters are grouped in ``system_node``:
          plc_limits:            # limits configured in the safety channel (0: not given)
            max_linear_vel: 1.0  # m/s
            max_angular_vel: 2.0 # rad/s
+         heartbeat:
+           period: 0.0          # s, 0: off
+         rt_monitor:
+           max_period_factor: 2.0
+           max_late_cycles: 10
+         status:
+           timeout: 0.0         # s, 0: the safety channel's state is not read
 
 ``safety.plc_limits``
    Not applied to the commands (``robot_limits`` are): they declare the limits the safety channel
@@ -219,7 +233,8 @@ The safety parameters are grouped in ``system_node``:
    Makes EasyNav stricter. Whatever is unsafe makes configuring fail, instead of a warning or a
    default:
 
-   - ``safety.plc_limits`` are required;
+   - ``safety.plc_limits``, the heartbeat (``safety.heartbeat.period``) and the safety channel's
+     state (``safety.status.timeout``) are required;
    - ``controller_node.cmd_vel_keepalive_period`` and ``cmd_timeout`` must be ``> 0``;
    - real-time scheduling is required: ``use_real_time`` must be ``true``, and ``SCHED_FIFO`` must
      be allowed. It is checked on configure, trying it on a temporary thread, so nothing is
@@ -229,7 +244,8 @@ The safety parameters are grouped in ``system_node``:
      ``request_reconfigure()`` and ``request_restore_parameters()``, which return ``false``.
      Setting a parameter to the value it already has is still accepted, and new parameters can only
      be declared while EasyNav configures (it freezes again when done), so it can still go through
-     its lifecycle.
+     its lifecycle;
+   - too many real-time cycles starting late in a row stop EasyNav (see :ref:`safety_rt`).
 
 ``safety.mode`` and ``safety.lock_memory`` are independent: whether the memory can be locked depends
 on the hardware and the deployment, not on wanting the rest of the safety mode.
@@ -253,6 +269,108 @@ on the hardware and the deployment, not on wanting the rest of the safety mode.
    * - ``true``
      - ``true``
      - Full safety mode and memory locked (or EasyNav does not start).
+
+
+.. _safety_rt:
+
+Real-time cycle monitoring and heartbeat
+========================================
+
+**Late cycles.** At the start of each real-time cycle, EasyNav measures, with the monotonic clock
+(not ROS time, so simulation or clock jumps do not fool it), the time since the previous cycle
+started. The expected period is ``1 / system_node.rt_freq`` (5 ms at 200 Hz). A cycle is **late** if
+it starts more than ``safety.rt_monitor.max_period_factor`` periods after the previous one (2 by
+default: more than 10 ms):
+
+- after a late cycle the status is ``LATE``; after ``safety.rt_monitor.max_late_cycles`` late cycles
+  in a row (10 by default), ``ERROR``; a cycle on time makes it ``OK`` again, so isolated late
+  cycles never add up to an error;
+- the status is reported in NavState as ``diagnostics.rt_cycle`` (``hardware_id: system_node``):
+  ``WARN`` for ``LATE``, ``ERROR`` for ``ERROR``, back to ``OK``, written only on changes and after
+  the first problem, so a recovery system can handle it;
+- in **safety mode**, ``ERROR`` stops EasyNav: it brakes, ends in ``Finalized`` and ``system_main``
+  exits with code 1. Outside it, it is only reported;
+- after an activation, the monitor starts over: the time EasyNav was inactive is not a late cycle.
+
+**Heartbeat.** With ``safety.heartbeat.period`` > 0 (required in safety mode), a
+``easynav_interfaces/msg/Heartbeat`` is published on ``easynav_heartbeat`` at that period, **from the
+real-time cycle itself**, so it stops if that cycle does:
+
+.. code-block:: text
+
+   std_msgs/Header header
+   uint64 sequence            # +1 per heartbeat: a gap means lost heartbeats
+   uint8 rt_status            # RT_OK, RT_LATE or RT_ERROR
+   uint64 late_cycles         # late cycles since activation
+   bool safety_mode
+   string configuration_hash  # see the configuration fingerprint
+
+The publisher offers ``deadline`` and ``liveliness`` QoS of twice the period: a driver, a safety
+controller or a supervisor that requests a deadline is notified as soon as heartbeats stop, and can
+check that the robot runs the validated configuration. What to do then is up to the receiver.
+
+**What they cover, and what not.** They complement each other: the monitor sees cycles that start
+**late**; the heartbeat lets others see that they do **not start at all**, which the monitor cannot,
+since it runs at the start of the next cycle. The monitor measures the time between cycle starts, not
+how long each cycle takes, and the non-real-time cycle (planning, maps) is not monitored. Neither is
+a worst-case execution time analysis: they detect delays when they happen, they do not show they
+cannot happen.
+
+
+.. _safety_channel:
+
+Safety channel status
+=====================
+
+The safety channel stops the robot or limits its speed by itself. If EasyNav does not know, it works
+against it: it keeps commanding a robot that cannot move, its evaluators take the stop for a stuck
+robot and start recoveries, and it commands more than the safely limited speed (SLS), which only
+ends in another protective stop. Reading the channel's state avoids that. EasyNav still does not
+implement any safety function: it only stops getting in the way.
+
+**The message.** With ``safety.status.timeout`` > 0 (required in safety mode), ``system_node``
+subscribes to ``easynav_safety_status`` (``easynav_interfaces/msg/SafetyStatus``, reliable QoS).
+The integrator publishes it from the safety channel, through whatever bridge the safety PLC or
+scanner needs, faster than the timeout:
+
+.. code-block:: text
+
+   std_msgs/Header header
+   bool protective_stop     # the safety channel is stopping, or has stopped, the robot
+   bool speed_limited       # a safely limited speed is in force:
+   float64 max_linear_vel   #   m/s, either direction (>= 0)
+   float64 max_angular_vel  #   rad/s, either direction (>= 0)
+   string active_field      # for diagnostics only
+   bool muting              # for diagnostics only
+
+**What EasyNav does**, every real-time cycle:
+
+- **protective stop**: the command is zero, above any other source (controller, recoveries taking
+  over the motion, overrides). No ramp: the robot is already being stopped. The mission is kept:
+  the goal stays active, ``ControllerStuckEvaluator`` does not take the stop for a stuck robot, and
+  when the stop is released navigation goes on by itself, starting **from zero** within the
+  acceleration limits, never from what was commanded before;
+- **safely limited speed**: the limits enforced are ``robot_limits`` cut down to it
+  (``max_linear_vel``, ``|min_linear_vel|`` and ``max_angular_vel``); a lower limit is reached
+  braking within the deceleration limits, and controllers that ask
+  ``get_robot_limits()`` see it. When lifted, ``robot_limits`` apply again;
+- **no valid status**: none yet, none for longer than the timeout (counted with the monotonic clock
+  from its reception, not from its header), or an invalid one (e.g. a negative or NaN limit) is
+  treated as a protective stop. In particular, after starting, the robot does not move until the
+  first status arrives.
+
+The status is received in the real-time callback group, and applied through NavState
+(``safety_status``, an ``easynav::SafetyChannelState``) without allocating memory in the real-time
+cycle. Its changes are reported as ``diagnostics.safety_status`` (``hardware_id: system_node``):
+``OK`` (with the speed limit, if any), ``WARN`` during a protective stop, ``ERROR`` without a valid
+status, with the active field and muting as values.
+
+**Long stops.** ``easynav_safety_channel_evaluator/SafetyChannelEvaluator``, a recovery evaluator,
+reports a protective stop as ``WARN`` (``hardware_id: safety_channel``), and as ``ERROR`` once it
+lasts ``max_stop_time`` seconds (0, the default: never), so a mitigation can handle it, e.g. asking
+for human assistance (see :ref:`recovery`).
+
+Without ``safety.status.timeout`` (the default outside safety mode), nothing of this applies.
 
 
 .. _safety_memory:
