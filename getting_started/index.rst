@@ -234,6 +234,7 @@ Continue exploring:
 
 - :doc:`../howtos/index` — follow practical guides for mapping, navigation, and real robot deployment.  
 - :doc:`../developer_guide/index` — dive into the internal design and architecture of the EasyNav framework.
+- :doc:`../migration_guide/index` — if your robot already uses Nav2, how to try EasyNav on it.
 
 .. toctree::
    :hidden:

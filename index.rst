@@ -42,6 +42,8 @@ Whether you are building robots for indoor or outdoor environments, structured o
 
 We invite you to explore, use, and contribute to this project!
 
+🧭 Already using Nav2? The :ref:`migration_nav2` shows how to try EasyNav on your robot.
+
 📚 Learn more about the contributors and project organization in :ref:`about`.
 
 📦 Source code: `github.com/EasyNavigation/EasyNavigation <https://github.com/EasyNavigation/EasyNavigation>`_
@@ -59,4 +61,5 @@ If you use this software in your work, please consider citing our next paper.
    simulations_real_robots/index.rst
    howtos/index.rst
    developer_guide/index.rst
+   migration_guide/index.rst
    about/index.rst
