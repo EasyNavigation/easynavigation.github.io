@@ -24,7 +24,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="About and Contact" href="../about/index.html" />
+    <link rel="next" title="Safety" href="safety.html" />
     <link rel="prev" title="Sending Navigation Commands to EasyNav" href="commanding.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#run-tests-optional">Run tests (optional)</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#real-time-system-setup-optional">Real-time system setup (optional)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#troubleshooting">Troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#uninstall-clean">Uninstall / clean</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#next-steps">Next steps</a><ul class="simple">
@@ -312,10 +313,7 @@
 <li class="toctree-l2"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#robot-geometry">Robot Geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="design.html#stale-commands-and-keepalive">Stale commands and keepalive</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#real-time-execution-model">Real-Time Execution Model</a></li>
@@ -372,6 +370,17 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#writing-a-recovery-system">Writing a Recovery System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#summary">Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#stale-and-invalid-commands">Stale and invalid commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#configuration-checks">Configuration checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#memory-locking">Memory locking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#configuration-fingerprint">Configuration fingerprint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#fault-injection">Fault injection</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#overview">Overview</a></li>
@@ -495,8 +504,8 @@ run. This is where problems are diagnosed and decided upon.</p></li>
 <span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">abort_mission</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">reason</span><span class="p">);</span>
 <span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">hold_mission_progress</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">hold</span><span class="p">);</span>
 <span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">request_shutdown</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">reason</span><span class="p">);</span>
-<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">request_reconfigure</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ParameterChange</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">changes</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">reason</span><span class="p">);</span>
-<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">request_restore_parameters</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">reason</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">request_reconfigure</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ParameterChange</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">changes</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">reason</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">request_restore_parameters</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">reason</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
 </div>
@@ -580,11 +589,12 @@ until released, across missions; unloading the recovery system releases it.</p><
 reason is kept.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">request_reconfigure(changes,</span> <span class="pre">reason)</span></code></p></td>
-<td><p>Changes parameters of any EasyNav node and reconfigures EasyNav to apply them (see below).</p></td>
+<td><p>Changes parameters of any EasyNav node and reconfigures EasyNav to apply them (see below).
+Returns <code class="docutils literal notranslate"><span class="pre">false</span></code> if rejected.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">request_restore_parameters(reason)</span></code></p></td>
 <td><p>Restores every parameter changed by <code class="docutils literal notranslate"><span class="pre">request_reconfigure()</span></code> to its value before the first
-change, and reconfigures.</p></td>
+change, and reconfigures. Returns <code class="docutils literal notranslate"><span class="pre">false</span></code> if rejected.</p></td>
 </tr>
 </tbody>
 </table>
@@ -610,6 +620,8 @@ keeps the request (a newer one replaces it), and the supervisor applies it betwe
 goes active → inactive → unconfigured, sets the parameters, and goes back to active. The mission goes
 on, localizers continue from the last known pose, and the robot only stops during the transitions.</p>
 <ul class="simple">
+<li><p>In safety mode the request is rejected and the call returns <code class="docutils literal notranslate"><span class="pre">false</span></code>, so the recovery system must
+try something else (see <a class="reference internal" href="safety.html#safety-mode"><span class="std std-ref">Safety parameters and safety mode</span></a>).</p></li>
 <li><p>An unknown node or parameter rejects the request. If a value is not accepted or configure fails,
 the previous values are restored; if that fails too, EasyNav shuts down.</p></li>
 <li><p>The recovery system is a <strong>new instance</strong> after a reconfiguration: anything it must remember goes
@@ -680,7 +692,8 @@ long</p></td>
 </tr>
 <tr class="row-even"><td><p>Stuck (commanded but not moving)</p></td>
 <td><p>Back up; after <code class="docutils literal notranslate"><span class="pre">max_backup_attempts</span></code>, slow down with <code class="docutils literal notranslate"><span class="pre">request_reconfigure()</span></code>; still
-stuck, <code class="docutils literal notranslate"><span class="pre">abort_mission()</span></code>. The speed is restored when the mission ends.</p></td>
+stuck, or the slow down rejected (safety mode), <code class="docutils literal notranslate"><span class="pre">abort_mission()</span></code>. The speed is
+restored when the mission ends.</p></td>
 </tr>
 </tbody>
 </table>
@@ -704,7 +717,7 @@ a mitigation is active or a diagnostic is in <code class="docutils literal notra
 </ul>
 <p>Besides its own evaluators, it sees the diagnostics other components write to NavState’s
 <code class="docutils literal notranslate"><span class="pre">diagnostics</span></code> group, e.g. <code class="docutils literal notranslate"><span class="pre">ControllerNode</span></code>’s <code class="docutils literal notranslate"><span class="pre">diagnostics.cmd_vel</span></code> when no new velocity command
-arrives or one is discarded (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">controller_node</span></code>, see <a class="reference internal" href="design.html#velocity-output"><span class="std std-ref">Velocity Output: Robot Limits, Mux and Smoother</span></a>).</p>
+arrives or one is discarded (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">controller_node</span></code>, see <a class="reference internal" href="safety.html#safety-commands"><span class="std std-ref">Stale and invalid commands</span></a>).</p>
 <p>It ships evaluators (no path, obstacle too close, controller stuck, miswired ROS graph) and
 mitigations (safe retreat, advance, shutdown, wait for a human, cancel the mission). A component can
 ship recovery for its own failures: <code class="docutils literal notranslate"><span class="pre">easynav_costmap_localizer</span></code> provides

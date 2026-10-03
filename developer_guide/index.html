@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../build_install/index.html#run-tests-optional">Run tests (optional)</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#real-time-system-setup-optional">Real-time system setup (optional)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#troubleshooting">Troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#uninstall-clean">Uninstall / clean</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#next-steps">Next steps</a><ul class="simple">
@@ -312,10 +313,7 @@
 <li class="toctree-l2"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#robot-geometry">Robot Geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="design.html#stale-commands-and-keepalive">Stale commands and keepalive</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#real-time-execution-model">Real-Time Execution Model</a></li>
@@ -372,6 +370,17 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#summary">Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#stale-and-invalid-commands">Stale and invalid commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#configuration-checks">Configuration checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#memory-locking">Memory locking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#configuration-fingerprint">Configuration fingerprint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safety.html#fault-injection">Fault injection</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
@@ -474,6 +483,17 @@ Its architecture relies on clear interfaces, shared data structures, and composa
 <li class="toctree-l2"><a class="reference internal" href="recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#stale-and-invalid-commands">Stale and invalid commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#configuration-checks">Configuration checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#memory-locking">Memory locking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#configuration-fingerprint">Configuration fingerprint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#fault-injection">Fault injection</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <section id="overview">
@@ -485,6 +505,7 @@ Its architecture relies on clear interfaces, shared data structures, and composa
 <li><p><strong>Perceptions System</strong> — Details how sensory data is represented, processed, and accessed in a unified way.</p></li>
 <li><p><strong>Commanding Layer</strong> — Describes how applications send navigation goals to EasyNav and follow their progress.</p></li>
 <li><p><strong>Recovery System</strong> — Explains how EasyNav detects and handles problems: the recovery node, the <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code> plugin, how a recovery moves the robot, the <code class="docutils literal notranslate"><span class="pre">SystemActions</span></code> it can request, and the available recovery systems.</p></li>
+<li><p><strong>Safety</strong> — What EasyNav does for safety: stale and invalid velocity commands, configuration checks, the safety mode and its parameters, memory locking, the configuration fingerprint, and fault injection.</p></li>
 </ul>
 <p>Each chapter provides conceptual explanations, code structure guidelines, and practical examples extracted from the current EasyNav implementation.</p>
 </section>

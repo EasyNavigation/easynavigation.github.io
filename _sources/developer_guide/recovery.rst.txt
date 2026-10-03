@@ -74,8 +74,8 @@ A recovery system derives from ``easynav::RecoveryManagerBase`` (``easynav_core`
      void abort_mission(const std::string & reason);
      void hold_mission_progress(bool hold);
      void request_shutdown(const std::string & reason);
-     void request_reconfigure(const std::vector<ParameterChange> & changes, const std::string & reason);
-     void request_restore_parameters(const std::string & reason);
+     bool request_reconfigure(const std::vector<ParameterChange> & changes, const std::string & reason);
+     bool request_restore_parameters(const std::string & reason);
    };
 
 A faulty recovery system cannot bring EasyNav down: ``update()`` and ``update_rt()`` run inside
@@ -147,9 +147,10 @@ with a warning, when there is no system, e.g. in a unit test).
        reason is kept.
    * - ``request_reconfigure(changes, reason)``
      - Changes parameters of any EasyNav node and reconfigures EasyNav to apply them (see below).
+       Returns ``false`` if rejected.
    * - ``request_restore_parameters(reason)``
      - Restores every parameter changed by ``request_reconfigure()`` to its value before the first
-       change, and reconfigures.
+       change, and reconfigures. Returns ``false`` if rejected.
 
 Controlled shutdown
 -------------------
@@ -177,6 +178,8 @@ keeps the request (a newer one replaces it), and the supervisor applies it betwe
 goes active → inactive → unconfigured, sets the parameters, and goes back to active. The mission goes
 on, localizers continue from the last known pose, and the robot only stops during the transitions.
 
+- In safety mode the request is rejected and the call returns ``false``, so the recovery system must
+  try something else (see :ref:`safety_mode`).
 - An unknown node or parameter rejects the request. If a value is not accepted or configure fails,
   the previous values are restored; if that fails too, EasyNav shuts down.
 - The recovery system is a **new instance** after a reconfiguration: anything it must remember goes
@@ -234,7 +237,8 @@ framework offers.
          long
      * - Stuck (commanded but not moving)
        - Back up; after ``max_backup_attempts``, slow down with ``request_reconfigure()``; still
-         stuck, ``abort_mission()``. The speed is restored when the mission ends.
+         stuck, or the slow down rejected (safety mode), ``abort_mission()``. The speed is
+         restored when the mission ends.
 
 See the `easynav_simple_recovery README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/recoveries/easynav_simple_recovery/README.md>`_
 for its parameters.
@@ -255,7 +259,7 @@ A complete recovery system driven by diagnostics, itself made of plugins at two 
 
 Besides its own evaluators, it sees the diagnostics other components write to NavState's
 ``diagnostics`` group, e.g. ``ControllerNode``'s ``diagnostics.cmd_vel`` when no new velocity command
-arrives or one is discarded (``hardware_id: controller_node``, see :ref:`velocity_output`).
+arrives or one is discarded (``hardware_id: controller_node``, see :ref:`safety_commands`).
 
 It ships evaluators (no path, obstacle too close, controller stuck, miswired ROS graph) and
 mitigations (safe retreat, advance, shutdown, wait for a human, cancel the mission). A component can
