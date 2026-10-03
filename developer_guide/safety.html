@@ -24,7 +24,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="About and Contact" href="../about/index.html" />
+    <link rel="next" title="Migration Guide" href="../migration_guide/index.html" />
     <link rel="prev" title="Recovery System" href="recovery.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
@@ -379,6 +379,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#configuration-checks">Configuration checks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#real-time-cycle-monitoring-and-heartbeat">Real-time cycle monitoring and heartbeat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safety-channel-status">Safety channel status</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#memory-locking">Memory locking</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration-fingerprint">Configuration fingerprint</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fault-injection">Fault injection</a></li>
@@ -386,6 +387,24 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../migration_guide/index.html">Migration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#what-stays-the-same">What stays the same</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#nav2-and-easynav-piece-by-piece">Nav2 and EasyNav, piece by piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-1-install-easynav">Step 1: Install EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-2-your-map">Step 2: Your map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-3-the-parameter-file">Step 3: The parameter file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-4-run-it">Step 4: Run it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-5-send-goals-from-your-applications">Step 5: Send goals from your applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-a-the-nav2-bridge">Option A: the Nav2 bridge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-b-goalmanagerclient">Option B: GoalManagerClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-c-just-a-pose">Option C: just a pose</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#differences-to-keep-in-mind">Differences to keep in mind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#next-steps">Next steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
@@ -492,12 +511,14 @@ configuration fingerprint; periodic republication of the command; <code class="d
 See <a class="reference internal" href="design.html#velocity-output"><span class="std std-ref">Velocity Output: Robot Limits, Mux and Smoother</span></a>.</p></td>
 <td><p>Provided</p></td>
 </tr>
-<tr class="row-even"><td><p>Consistency with the safety channel’s limits</p></td>
+<tr class="row-even"><td><p>Cooperation with the safety channel (protective stop, safely limited speed)</p></td>
 <td><p>ISO 3691-4 (speed and protective fields)</p></td>
-<td><p>Configuring fails if <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> exceed the declared <code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code>. Reading the
-channel’s live state (active field, current speed limit, protective stop) is planned.
-See <a class="reference internal" href="#safety-mode"><span class="std std-ref">Safety parameters and safety mode</span></a>.</p></td>
-<td><p>Partial</p></td>
+<td><p>Configuring fails if <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> exceed the declared <code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code>. The
+channel’s live state is read: during a protective stop EasyNav commands zero and keeps the
+mission, resuming from zero when released; a safely limited speed cuts the robot limits
+down; without a valid state, the robot is stopped. See <a class="reference internal" href="#safety-mode"><span class="std std-ref">Safety parameters and safety mode</span></a>,
+<a class="reference internal" href="#safety-channel"><span class="std std-ref">Safety channel status</span></a>.</p></td>
+<td><p>Provided</p></td>
 </tr>
 <tr class="row-odd"><td><p>Configuration data: validated, identified, unchanged while running</p></td>
 <td><p>IEC 61508-3 (configuration data)</p></td>
@@ -564,6 +585,8 @@ requirements traceability.</p></td>
 <li><p>the robot is never left executing a stale or invalid velocity command;</p></li>
 <li><p>the configuration is checked, and fingerprinted, every time EasyNav is configured;</p></li>
 <li><p>real-time cycles that start late are detected, and a heartbeat tells others that EasyNav is alive;</p></li>
+<li><p>the safety channel’s state is followed: EasyNav does not fight a protective stop or a safely
+limited speed;</p></li>
 <li><p>an optional <strong>safety mode</strong> makes EasyNav stricter, and the process memory can be locked.</p></li>
 </ul>
 <p>The robot limits (<code class="docutils literal notranslate"><span class="pre">controller_node.robot_limits.*</span></code>, see <a class="reference internal" href="design.html#velocity-output"><span class="std std-ref">Velocity Output: Robot Limits, Mux and Smoother</span></a>) <strong>always apply</strong>,
@@ -636,6 +659,8 @@ is not finite;</p></li>
 <span class="w">      </span><span class="nt">rt_monitor</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">max_period_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
 <span class="w">        </span><span class="nt">max_late_cycles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">      </span><span class="nt">status</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">         </span><span class="c1"># s, 0: the safety channel&#39;s state is not read</span>
 </pre></div>
 </div>
 <dl class="simple">
@@ -651,7 +676,8 @@ given; required in safety mode.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">safety.mode</span></code></dt><dd><p>Makes EasyNav stricter. Whatever is unsafe makes configuring fail, instead of a warning or a
 default:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code> and the heartbeat (<code class="docutils literal notranslate"><span class="pre">safety.heartbeat.period</span></code>) are required;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code>, the heartbeat (<code class="docutils literal notranslate"><span class="pre">safety.heartbeat.period</span></code>) and the safety channel’s
+state (<code class="docutils literal notranslate"><span class="pre">safety.status.timeout</span></code>) are required;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">controller_node.cmd_vel_keepalive_period</span></code> and <code class="docutils literal notranslate"><span class="pre">cmd_timeout</span></code> must be <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>;</p></li>
 <li><p>real-time scheduling is required: <code class="docutils literal notranslate"><span class="pre">use_real_time</span></code> must be <code class="docutils literal notranslate"><span class="pre">true</span></code>, and <code class="docutils literal notranslate"><span class="pre">SCHED_FIFO</span></code> must
 be allowed. It is checked on configure, trying it on a temporary thread, so nothing is
@@ -738,6 +764,53 @@ since it runs at the start of the next cycle. The monitor measures the time betw
 how long each cycle takes, and the non-real-time cycle (planning, maps) is not monitored. Neither is
 a worst-case execution time analysis: they detect delays when they happen, they do not show they
 cannot happen.</p>
+</section>
+<section id="safety-channel-status">
+<span id="safety-channel"></span><h2>Safety channel status<a class="headerlink" href="#safety-channel-status" title="Permalink to this heading"></a></h2>
+<p>The safety channel stops the robot or limits its speed by itself. If EasyNav does not know, it works
+against it: it keeps commanding a robot that cannot move, its evaluators take the stop for a stuck
+robot and start recoveries, and it commands more than the safely limited speed (SLS), which only
+ends in another protective stop. Reading the channel’s state avoids that. EasyNav still does not
+implement any safety function: it only stops getting in the way.</p>
+<p><strong>The message.</strong> With <code class="docutils literal notranslate"><span class="pre">safety.status.timeout</span></code> &gt; 0 (required in safety mode), <code class="docutils literal notranslate"><span class="pre">system_node</span></code>
+subscribes to <code class="docutils literal notranslate"><span class="pre">easynav_safety_status</span></code> (<code class="docutils literal notranslate"><span class="pre">easynav_interfaces/msg/SafetyStatus</span></code>, reliable QoS).
+The integrator publishes it from the safety channel, through whatever bridge the safety PLC or
+scanner needs, faster than the timeout:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>std_msgs/Header header
+bool protective_stop     # the safety channel is stopping, or has stopped, the robot
+bool speed_limited       # a safely limited speed is in force:
+float64 max_linear_vel   #   m/s, either direction (&gt;= 0)
+float64 max_angular_vel  #   rad/s, either direction (&gt;= 0)
+string active_field      # for diagnostics only
+bool muting              # for diagnostics only
+</pre></div>
+</div>
+<p><strong>What EasyNav does</strong>, every real-time cycle:</p>
+<ul class="simple">
+<li><p><strong>protective stop</strong>: the command is zero, above any other source (controller, recoveries taking
+over the motion, overrides). No ramp: the robot is already being stopped. The mission is kept:
+the goal stays active, <code class="docutils literal notranslate"><span class="pre">ControllerStuckEvaluator</span></code> does not take the stop for a stuck robot, and
+when the stop is released navigation goes on by itself, starting <strong>from zero</strong> within the
+acceleration limits, never from what was commanded before;</p></li>
+<li><p><strong>safely limited speed</strong>: the limits enforced are <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> cut down to it
+(<code class="docutils literal notranslate"><span class="pre">max_linear_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">|min_linear_vel|</span></code> and <code class="docutils literal notranslate"><span class="pre">max_angular_vel</span></code>); a lower limit is reached
+braking within the deceleration limits, and controllers that ask
+<code class="docutils literal notranslate"><span class="pre">get_robot_limits()</span></code> see it. When lifted, <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> apply again;</p></li>
+<li><p><strong>no valid status</strong>: none yet, none for longer than the timeout (counted with the monotonic clock
+from its reception, not from its header), or an invalid one (e.g. a negative or NaN limit) is
+treated as a protective stop. In particular, after starting, the robot does not move until the
+first status arrives.</p></li>
+</ul>
+<p>The status is received in the real-time callback group, and applied through NavState
+(<code class="docutils literal notranslate"><span class="pre">safety_status</span></code>, an <code class="docutils literal notranslate"><span class="pre">easynav::SafetyChannelState</span></code>) without allocating memory in the real-time
+cycle. Its changes are reported as <code class="docutils literal notranslate"><span class="pre">diagnostics.safety_status</span></code> (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">system_node</span></code>):
+<code class="docutils literal notranslate"><span class="pre">OK</span></code> (with the speed limit, if any), <code class="docutils literal notranslate"><span class="pre">WARN</span></code> during a protective stop, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> without a valid
+status, with the active field and muting as values.</p>
+<p><strong>Long stops.</strong> <code class="docutils literal notranslate"><span class="pre">easynav_safety_channel_evaluator/SafetyChannelEvaluator</span></code>, a recovery evaluator,
+reports a protective stop as <code class="docutils literal notranslate"><span class="pre">WARN</span></code> (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">safety_channel</span></code>), and as <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> once it
+lasts <code class="docutils literal notranslate"><span class="pre">max_stop_time</span></code> seconds (0, the default: never), so a mitigation can handle it, e.g. asking
+for human assistance (see <a class="reference internal" href="recovery.html#recovery"><span class="std std-ref">Recovery System</span></a>).</p>
+<p>Without <code class="docutils literal notranslate"><span class="pre">safety.status.timeout</span></code> (the default outside safety mode), nothing of this applies.</p>
 </section>
 <section id="memory-locking">
 <span id="safety-memory"></span><h2>Memory locking<a class="headerlink" href="#memory-locking" title="Permalink to this heading"></a></h2>
