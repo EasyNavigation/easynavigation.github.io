@@ -19,8 +19,7 @@ Sensor Configuration
 --------------------
 
 Sensors are defined via ROS 2 parameters under the `sensors_node` configuration. For example
-(matching the shipped reference file
-``easynav_indoor_testcase/robots_params/costmap.serest.params.yaml``):
+(from ``params/costmap.rpp.params.yaml`` of the :doc:`Kobuki PlayGround <../playgrounds/kobuki>`):
 
 .. code-block:: yaml
 

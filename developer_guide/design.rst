@@ -40,7 +40,7 @@ It is also possible to use *Dummy* plugins. Each component provides one in case 
    :align: center
    :alt: Alternative plugin combinations
 
-These plugin combinations are defined in the single EasyNav configuration file, where the plugins for each component and their execution frequencies are specified.
+These plugin combinations are defined in the single EasyNav configuration file, where the plugins for each component and their execution frequencies are specified. This is, simplified, ``params/simple.params.yaml`` of the :doc:`Kobuki PlayGround <../playgrounds/kobuki>`:
 
 .. code-block:: yaml
 
@@ -84,7 +84,7 @@ These plugin combinations are defined in the single EasyNav configuration file, 
        simple:
          freq: 10.0 
          plugin: easynav_simple_maps_manager/SimpleMapsManager
-         package: easynav_indoor_testcase
+         package: easynav_playground_kobuki
          map_path_file: maps/home.map
 
    planner_node:

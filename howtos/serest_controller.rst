@@ -51,58 +51,59 @@ You will typically find it configured in:
 Quick-Start Defaults
 --------------------
 
-Start with these default parameters (adjust namespace as needed):
+These are the parameters and their defaults, in the ``serest`` entry of ``controller_node``:
 
 .. code-block:: yaml
 
-    serest_controller:
+    controller_node:
       ros__parameters:
-        # motion policy
-        v_ref:                0.6
-        allow_reverse:        false
+        serest:
+          # motion policy
+          v_ref:                0.6
+          allow_reverse:        false
 
-        # tracking gains
-        k_theta:              2.0
-        k_y:                  1.2
-        k_s:                  0.8
-        ell:                  0.3
+          # tracking gains
+          k_theta:              2.0
+          k_y:                  1.2
+          k_s:                  0.8
+          ell:                  0.3
 
-        # safety governor
-        a_acc:                0.8
-        a_brake:              1.2
-        a_lat_max:            1.5
-        d0_margin:            0.30
-        tau_latency:          0.10
-        d_hard:               0.20
-        t_emerg:              0.25
-        dist_search_radius:   2.0
+          # safety governor
+          a_acc:                0.8
+          a_brake:              1.2
+          a_lat_max:            1.5
+          d0_margin:            0.30
+          tau_latency:          0.10
+          d_hard:               0.20
+          t_emerg:              0.25
+          dist_search_radius:   2.0
 
-        # local heading smoothing
-        blend_base:           0.6
-        blend_k_per_v:        0.6
-        kappa_max:            2.5
+          # local heading smoothing
+          blend_base:           0.6
+          blend_k_per_v:        0.6
+          kappa_max:            2.5
 
-        # progress robustness
-        v_progress_min:       0.05
-        k_s_share_max:        0.5
+          # progress robustness
+          v_progress_min:       0.05
+          k_s_share_max:        0.5
 
-        # goal behavior
-        goal_pos_tol:         0.05
-        goal_yaw_tol_deg:     5.0
-        slow_radius:          0.60
-        slow_min_speed:       0.03
-        final_align_k:        2.0
-        final_align_wmax:     0.6
+          # goal behavior
+          goal_pos_tol:         0.05
+          goal_yaw_tol_deg:     5.0
+          slow_radius:          0.60
+          slow_min_speed:       0.03
+          final_align_k:        2.0
+          final_align_wmax:     0.6
 
-        # corner guard (tight turns)
-        corner_guard_enable:  true
-        a_lat_soft:           1.1
-        corner_gain_ey:       1.5
-        corner_gain_eth:      0.7
-        corner_gain_kappa:    0.4
-        corner_min_alpha:     0.35
-        corner_boost_omega:   0.8
-        apex_ey_des:          0.05
+          # corner guard (tight turns)
+          corner_guard_enable:  true
+          a_lat_soft:           1.1
+          corner_gain_ey:       1.5
+          corner_gain_eth:      0.7
+          corner_gain_kappa:    0.4
+          corner_min_alpha:     0.35
+          corner_boost_omega:   0.8
+          apex_ey_des:          0.05
 
 ---
 

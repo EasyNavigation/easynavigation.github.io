@@ -29,6 +29,8 @@ Available commands:
 - **navigation_control**   Print live Navigation Control info for a duration.
 - **twist**                Print `geometry_msgs/Twist` and `TwistStamped` for a duration.
 - **timestats**            Print periodic time-stats (TUI-like refresh) for a duration.
+- **pause**                Pause the active navigation.
+- **resume**               Resume a paused navigation.
 
 Note that these verb names use underscores (e.g. ``nav_state``, not ``nav-state``), since
 each is registered as a ``ros2cli`` verb entry point spelled exactly that way in
@@ -209,18 +211,37 @@ in ``easynav_tools/setup.py``, even though its implementation lives in
 **Options**
 
 - ``--duration SECONDS``   Seconds to run (default: ``5000.0``)
-- ``--pid PID``   PID of the EasyNav process to read stats from. Defaults to
-  auto-discovering the most recently modified ``/tmp/easynav_<pid>.log``; only needed
-  when more than one EasyNav process is running on this host (each instance writes its
-  own per-PID trace log, see :doc:`costmap_multirobot`).
+- ``--namespace NAMESPACE``   ROS namespace of the EasyNav instance to read stats from
+  (e.g. ``r1``). Defaults to auto-discovering the most recently modified
+  ``/tmp/easynav*.log``; only needed when more than one EasyNav instance is running on
+  this host (each instance writes its own trace log, named after its namespace:
+  ``/tmp/easynav.log`` in the root namespace, ``/tmp/easynav_r1.log`` in ``/r1``; see
+  :doc:`costmap_multirobot`).
 
 **Example**
 
 .. code-block:: bash
 
    ros2 easynav timestats --duration 15
-   ros2 easynav timestats --pid 12345 --duration 15
+   ros2 easynav timestats --namespace r1 --duration 15
 
+
+pause / resume
+--------------
+
+Pause the active navigation, and resume it later (see :ref:`commanding`). The robot stops while
+paused; the goal is kept. Each command waits for EasyNav to confirm it.
+
+**Usage**
+
+.. code-block:: bash
+
+   ros2 easynav pause [--timeout SECONDS]
+   ros2 easynav resume [--timeout SECONDS]
+
+**Options**
+
+- ``--timeout SECONDS``   Seconds to wait for a confirmation from EasyNav (default: ``3.0``)
 
 OPTIONS (Common)
 ================

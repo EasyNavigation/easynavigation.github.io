@@ -18,32 +18,11 @@ or ``map`` frame.
 Setup
 -----
 
-Complete the installation steps in :doc:`../build_install/index` first (any of APT,
-Pixi or source). This tutorial uses the **Bonxai Maps Manager** and **NavMap Maps
-Manager** plugins, which the core ``easynav`` package does not include:
+Build EasyNav from source as described in :ref:`build_from_source` (which also clones
+``NavMap``). This tutorial uses the **Bonxai Maps Manager** and **NavMap Maps Manager** plugins.
 
-- **APT**:
-
-  .. code-block:: bash
-
-     sudo apt install \
-       ros-<distro>-easynav-bonxai-maps-manager \
-       ros-<distro>-easynav-navmap-maps-manager
-
-- **Pixi**:
-
-  .. code-block:: bash
-
-     pixi add \
-       ros-<distro>-easynav-bonxai-maps-manager \
-       ros-<distro>-easynav-navmap-maps-manager
-
-- **Source**: already built if you followed :ref:`build_from_source` (which also
-  clones ``NavMap``, needed by the NavMap Maps Manager).
-
-Then source your workspace as described in :ref:`gs_source_workspace`. You will
-also need a recorded ROS bag containing a ``PointCloud2`` map (this workspace does
-not ship one — use your own or one produced by :doc:`gridmap_mapping`).
+You also need a recorded ROS bag containing a ``PointCloud2`` map, e.g. recorded while running a
+3D lidar SLAM. The commands below use a bag of the URJC excavation; use your own.
 
 ---
 
@@ -117,7 +96,9 @@ This setup assumes:
 - Both managers will build their respective maps automatically.
 
 The file ``bonxai-navmap.dummy.params.yaml`` defines **dummy plugins**
-for all nodes except ``maps_manager_node``.
+for all nodes except ``maps_manager_node``. The maps managers have no map file (``package`` and
+``bonxai_path_file`` / ``navmap_path_file``), so they start empty and build their maps from the
+incoming cloud.
 
 Example configuration:
 
@@ -150,15 +131,11 @@ Example configuration:
         use_sim_time: true
         map_types: [bonxai, navmap]
         bonxai:
-          freq: 10.0 
+          freq: 10.0
           plugin: easynav_bonxai_maps_manager/BonxaiMapsManager
-          package: easynav_indoor_testcase
-          bonxai_path_file: maps/excavation_urjc.pcd
         navmap:
-          freq: 10.0 
+          freq: 10.0
           plugin: easynav_navmap_maps_manager/NavMapMapsManager
-          package: easynav_indoor_testcase
-          navmap_path_file: maps/excavation_urjc.navmap
 
     planner_node:
       ros__parameters:
@@ -285,17 +262,10 @@ you configured). Rename and move it to your desired location (e.g. inside ``maps
 
    ros2 service call /maps_manager_node/bonxai/savemap std_srvs/srv/Trigger
 
-Unlike the NavMap manager, ``BonxaiMapsManager`` saves back to whatever path it used to *load*
-the map: if ``package``/``bonxai_path_file`` are left unset, it saves to ``/tmp/bonxai_map.pcd``;
-otherwise it overwrites the ``package``/``bonxai_path_file`` location.
-
-.. warning::
-
-   The example configuration above sets ``bonxai_path_file: maps/excavation_urjc.pcd``, so calling
-   ``savemap`` here will **overwrite** ``easynav_indoor_testcase/maps/excavation_urjc.pcd`` (the
-   original source map) rather than writing to ``/tmp/bonxai_map.pcd``. If you want to keep the
-   original file intact, back it up first, or temporarily clear ``package``/``bonxai_path_file``
-   before calling ``savemap``.
+Unlike the NavMap manager, ``BonxaiMapsManager`` saves back to the path it loaded the map from
+(``package``/``bonxai_path_file``): with no map file configured, as here, to
+``/tmp/bonxai_map.pcd``. Move both files into the ``maps/`` directory of a package, and load them
+with ``package`` and ``bonxai_path_file`` / ``navmap_path_file`` (see :doc:`navmap_navigating`).
 
 ---
 
@@ -310,13 +280,12 @@ You have:
 - ✅ Visualized them in RViz  
 - ✅ Saved both maps to disk for future use
 
-These maps can now be used in EasyNav navigation stacks (e.g. with
-the **Costmap** or **NavMap** planners).
+These maps can now be used in a NavMap + Bonxai navigation stack (see
+:doc:`navmap_navigating`).
 
 ---
 
 **Next steps:**
 
 - :doc:`../developer_guide/design`
-- :doc:`../howtos/simple_navigating`
-- :doc:`../howtos/costmap_navigating`
+- :doc:`navmap_navigating`

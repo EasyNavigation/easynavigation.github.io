@@ -6,15 +6,12 @@ Deploying EasyNav on a Real iCreate3 Robot
 
 This HowTo explains how to deploy the **Costmap Stack** of EasyNavigation (EasyNav) on a real **iRobot iCreate3** robot,
 using a Raspberry Pi 4 as on-board computer and ROS 2 Kilted.
-It is based on the same workflow as the *Simple Stack* tutorials but adapted for **real hardware** with a graded
+It follows the workflow of :doc:`costmap_mapping` and :doc:`costmap_navigating`, adapted for **real hardware**, with a graded
 **Costmap2D** environment representation.
 
 .. note::
-   This guide is written for **ROS 2 Kilted** on Ubuntu 24.04 (the Raspberry Pi's OS) and
-   builds EasyNav **from source** (see :ref:`build_from_source`). Kilted also has APT and
-   Pixi packages (see :doc:`../build_install/index`) if you would rather not build from
-   source. For a different distro, replace every ``kilted`` below with your target
-   (``rolling``, ``jazzy`` or ``lyrical``) and use the matching git branch.
+   This guide was written for **ROS 2 Kilted** on Ubuntu 24.04 (the Raspberry Pi's OS), with
+   EasyNav built **from source** (see :ref:`build_from_source`).
 
 .. contents:: On this page
    :local:
@@ -29,10 +26,9 @@ Before starting, ensure that:
 2. You have a workspace on the Raspberry Pi (for example ``~/easynav_ws``) and it is sourced correctly.
 3. The following repositories are cloned inside your ``src/`` folder:
 
-   - ``EasyNavigation``
-   - ``easynav_plugins`` *(includes the costmap-based maps manager, localizer, planner and controllers)*
-   - ``easynav_indoor_testcase`` *(for maps and configuration examples)*
+   - ``EasyNavigation``, ``easynav_plugins``, ``NavMap`` and ``yaets`` (see :ref:`build_from_source`)
    - ``sllidar_ros2`` *(LIDAR driver)*
+   - a package of your own for the robot's maps and parameter file (``my_robot_easynav`` below)
 
 4. Your robot and laptop can communicate over the same Wi-Fi network.
 
@@ -47,7 +43,7 @@ Hardware Setup
    :class: shadow rounded
 
 .. note::
-   The overall workflow mirrors the one in the Simple Stack tutorials, but here you will run on **real hardware**.
+   The overall workflow mirrors :doc:`costmap_mapping` and :doc:`costmap_navigating`, but here you will run on **real hardware**.
    The navigation stack represents the environment as a graded **Costmap2D**.
 
 - **Base:** `iRobot iCreate3 <https://edu.irobot.com/create3-setup>`_  
@@ -119,34 +115,48 @@ https://docs.ros.org/en/kilted/Installation/Ubuntu-Install-Debs.html
 EasyNav Setup on the Raspberry Pi
 ---------------------------------
 
-1. **Create the workspace:**
+1. **Build EasyNav from source** in ``~/easynav_ws``, as described in :ref:`build_from_source`.
+
+2. **Clone the LIDAR driver** and build it:
 
    .. code-block:: bash
 
-      mkdir -p ~/easynav_ws/src
       cd ~/easynav_ws/src
-
-2. **Clone the required repositories:**
-
-   .. code-block:: bash
-
-      git clone -b kilted https://github.com/EasyNavigation/easynav_plugins.git
-      git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
-      git clone -b kilted --recursive https://github.com/EasyNavigation/EasyNavigation.git
       git clone https://github.com/Slamtec/sllidar_ros2.git
-
-3. **Install dependencies:**
-
-   .. code-block:: bash
-
       cd ~/easynav_ws
       rosdep install --from-paths src --ignore-src -r -y
+      colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
-4. **Build the workspace:**
+3. **Create a package for the robot's maps and parameters.** Any ROS 2 package that installs a
+   ``maps/`` and a ``params/`` directory works:
 
    .. code-block:: bash
 
-      colcon build --symlink-install
+      cd ~/easynav_ws/src
+      ros2 pkg create --build-type ament_cmake my_robot_easynav
+      mkdir -p my_robot_easynav/maps my_robot_easynav/params
+
+   and add to its ``CMakeLists.txt``, before ``ament_package()``:
+
+   .. code-block:: cmake
+
+      install(DIRECTORY maps params DESTINATION share/${PROJECT_NAME})
+
+4. **Start from the Kobuki PlayGround's parameter file**, the reference for robots with a 2D lidar
+   (see :doc:`costmap_navigating`):
+
+   .. code-block:: bash
+
+      curl -L -o ~/easynav_ws/src/my_robot_easynav/params/icreate.params.yaml \
+        https://raw.githubusercontent.com/EasyNavigation/easynav_playground_kobuki/rolling/params/costmap.rpp.params.yaml
+
+   and adapt it to the iCreate3 and the real world:
+
+   - ``use_sim_time: false`` in every node;
+   - ``sensors_node.laser1.topic: scan`` (the RPLidar driver's topic);
+   - ``system_node.robot_geometry``: the radius and height of your robot, with the LIDAR mount;
+   - ``maps_manager_node.costmap``: ``package: my_robot_easynav`` and the map you build below in
+     ``map_path_file``.
 
 5. **Source automatically in ``~/.bashrc``:**
 
@@ -215,8 +225,8 @@ Mapping
 
       ros2 service call /slam_toolbox/save_map slam_toolbox/srv/SaveMap
 
-8. Store the generated ``.yaml`` and image file (``.pgm``/``.png``) under  
-   ``~/easynav_ws/src/easynav_indoor_testcase/maps``.  
+8. Store the generated ``.yaml`` and image file (``.pgm``/``.png``) under
+   ``~/easynav_ws/src/my_robot_easynav/maps``, and build the workspace again.
    If you rename the map, ensure the YAML’s image field matches.
 
 .. tip::
@@ -239,8 +249,8 @@ Navigation
 
 Repeat steps **(2)** and **(3)** from *Mapping* if the transform publisher or laser driver were closed.
 
-Verify the parameter file at:  
-``~/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap.serest.params.yaml``
+Verify the parameter file at
+``~/easynav_ws/src/my_robot_easynav/params/icreate.params.yaml``.
 
 Ensure that:
 - ``map_path_file`` points to your saved map (e.g., ``maps/casa.yaml``)
@@ -251,7 +261,7 @@ Start EasyNav on the Raspberry Pi:
 .. code-block:: bash
 
    ros2 run easynav_system system_main \
-     --ros-args --params-file ~/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap.serest.params.yaml
+     --ros-args --params-file ~/easynav_ws/src/my_robot_easynav/params/icreate.params.yaml
 
 ---
 

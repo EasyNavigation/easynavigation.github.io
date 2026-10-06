@@ -25,13 +25,8 @@ We will set up a system composed of three main parts:
     Ensure that all machines (Robot, Docker Container, and PC) use the same **Zenoh** version to avoid protocol mismatches. The provided Dockerfile uses version **1.7.2**.
 
 .. note::
-    This example builds EasyNav **from source** inside the image using ROS 2 Rolling,
-    but the same pattern works for **jazzy**, **kilted** or **lyrical** — just change
-    the base image tag and the ``-b rolling`` branch in the ``git clone`` commands to
-    match. For jazzy/kilted/lyrical you can also skip the source build entirely and
-    replace the whole "clone + rosdep + colcon build" block with a single
-    ``apt-get install ros-<distro>-easynav`` (plus any plugin packages you need — see
-    :doc:`../build_install/index`), which makes for a much smaller image.
+    This example builds EasyNav **from source** inside the image, on ROS 2 Rolling. To use another
+    distro, change the base image tag.
 
 ---
 
@@ -45,7 +40,7 @@ Create a file named ``Dockerfile`` with the following content. This configuratio
 .. code-block:: dockerfile
 
     # Use the official ROS 2 Rolling image as base
-    FROM ros:rolling-ros-base-noble
+    FROM ros:rolling-ros-base-resolute
 
     # Prevent interactive prompts during installation
     ENV DEBIAN_FRONTEND=noninteractive
@@ -64,7 +59,6 @@ Create a file named ``Dockerfile`` with the following content. This configuratio
         && rm -rf /var/lib/apt/lists/*
 
     # Install Zenoh Bridge for ROS 2 DDS
-    # Using version 1.7.2 as requested by the user
     RUN wget https://github.com/eclipse-zenoh/zenoh-plugin-ros2dds/releases/download/1.7.2/zenoh-plugin-ros2dds-1.7.2-x86_64-unknown-linux-gnu-standalone.zip && \
         unzip zenoh-plugin-ros2dds-1.7.2-x86_64-unknown-linux-gnu-standalone.zip && \
         chmod +x zenoh-bridge-ros2dds && \
@@ -75,7 +69,7 @@ Create a file named ``Dockerfile`` with the following content. This configuratio
     RUN mkdir -p $WORKSPACE/src
     WORKDIR $WORKSPACE
 
-    # Clone the Easynav project and research repositories
+    # Clone EasyNav, its plugins, NavMap and yaets
     RUN cd src && \
         git clone -b rolling https://github.com/EasyNavigation/EasyNavigation.git  && \
         git clone -b rolling https://github.com/EasyNavigation/NavMap.git  && \
@@ -90,7 +84,7 @@ Create a file named ``Dockerfile`` with the following content. This configuratio
 
     # Compile the workspace using colcon
     RUN . /opt/ros/rolling/setup.sh && \
-        colcon build --symlink-install
+        colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
     # Configure the environment to source setups automatically
     RUN echo "source /opt/ros/rolling/setup.bash" >> ~/.bashrc && \
@@ -159,7 +153,10 @@ Now we launch the EasyNav container on the robot (or on a computer connected to 
 .. code-block:: bash
 
     # Run the container with host networking and shared memory
-    docker run -it --net=host --ipc=host --name easynav_test -e ROS_DOMAIN_ID=23 easynav_rolling
+    docker run -it --net=host --ipc=host --ulimit rtprio=98 --name easynav_test -e ROS_DOMAIN_ID=23 easynav_rolling
+
+``--ulimit rtprio=98`` lets EasyNav run its control cycle with real-time priority (see
+:ref:`realtime_setup`); without it, EasyNav warns and runs with normal priority.
 
 Inside the container you can now start the navigation system. The entrypoint script automatically starts the Zenoh bridge in the background.
 

@@ -372,7 +372,7 @@ cycle. Its changes are reported as ``diagnostics.safety_status`` (``hardware_id:
 ``OK`` (with the speed limit, if any), ``WARN`` during a protective stop, ``ERROR`` without a valid
 status, with the active field and muting as values.
 
-**Long stops.** ``easynav_safety_channel_evaluator/SafetyChannelEvaluator``, a recovery evaluator,
+**Long stops.** ``easynav_diagnostic_recovery/SafetyChannelEvaluator``, a recovery evaluator,
 reports a protective stop as ``WARN`` (``hardware_id: safety_channel``), and as ``ERROR`` once it
 lasts ``max_stop_time`` seconds (0, the default: never), so a mitigation can handle it, e.g. asking
 for human assistance (see :ref:`recovery`).

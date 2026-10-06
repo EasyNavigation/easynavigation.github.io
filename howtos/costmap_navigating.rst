@@ -4,89 +4,45 @@
 Navigating with the Costmap Stack
 =================================
 
-This HowTo shows how to perform **navigation** with the **Costmap Stack** in **EasyNavigation (EasyNav)**,
-using a map produced with **SLAM Toolbox**.
-It assumes that the environment has already been mapped (see :doc:`costmap_mapping`) and that you will now
-configure and run EasyNav to navigate using the generated map.
+This HowTo shows how to perform **navigation** with the **Costmap Stack** in **EasyNavigation
+(EasyNav)**: a costmap with obstacles and inflation, AMCL, A* and the **Regulated Pure Pursuit**
+controller. It is EasyNav's reference configuration for indoor robots with a 2D lidar.
 
 .. contents:: On this page
    :local:
    :depth: 2
 
 Setup
-------
+-----
 
-Before starting, complete the installation steps in :doc:`../build_install/index`
-(any of APT, Pixi or source). This tutorial's example configuration uses the
-**SeReST Controller**, **Costmap Localizer**, **Costmap Maps Manager** and
-**Costmap Planner** plugins, which the core ``easynav`` package does not include:
+Build EasyNav and the Kobuki PlayGround as described in :doc:`../getting_started/index`.
 
-- **APT**:
+The PlayGround ships a map of its world (``maps/home2.yaml``). To navigate in your own map, create
+it first following :doc:`costmap_mapping`, or use an existing Nav2 map.
 
-  .. code-block:: bash
-
-     sudo apt install \
-       ros-<distro>-easynav-serest-controller \
-       ros-<distro>-easynav-costmap-localizer \
-       ros-<distro>-easynav-costmap-maps-manager \
-       ros-<distro>-easynav-costmap-planner
-
-- **Pixi**:
-
-  .. code-block:: bash
-
-     pixi add \
-       ros-<distro>-easynav-serest-controller \
-       ros-<distro>-easynav-costmap-localizer \
-       ros-<distro>-easynav-costmap-maps-manager \
-       ros-<distro>-easynav-costmap-planner
-
-- **Source**: already built if you cloned ``easynav_plugins`` as described in
-  :ref:`build_from_source`.
-
-You will also need the demo/simulation repositories, which are only distributed
-as source — clone them into ``~/easynav_ws/src`` regardless of install method:
+Running it
+----------
 
 .. code-block:: bash
 
-   cd ~/easynav_ws/src
-   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
-   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
+   ros2 launch easynav_playground_kobuki easynav_costmap_rpp.launch.yaml
 
-Then build and source the workspace as described in :ref:`gs_source_workspace`.
+It starts Gazebo, the Kobuki, EasyNav with ``params/costmap.rpp.params.yaml`` and RViz2. In
+**RViz2**, use the **"2D Goal Pose"** tool to send navigation goals. You can disable the Gazebo GUI
+with ``gui:=false``, and use your own parameter file with ``params_file:=/path/to/my.params.yaml``.
 
----
+The Parameter File
+------------------
 
-Mapping and Preparation
------------------------
+This is ``params/costmap.rpp.params.yaml`` of the Kobuki PlayGround:
 
-.. raw:: html
-
-    <div align="center">
-      <iframe width="450" height="300" src="https://www.youtube.com/embed/n1vDA4ZeG6M" frameborder="0" allowfullscreen></iframe>
-    </div>
-
-If you have not yet created a map, follow the steps in :doc:`costmap_mapping`.  
-Once the environment is mapped, save the resulting map files (YAML + image) in the directory of any package
-in your workspace — for example, inside ``easynav_indoor_testcase/maps``.
-
-You can later reference this map using the parameters ``package`` and ``map_path_file`` in your configuration file.
-(Alternatively, you may use an absolute path with ``map_path_file`` alone.)
-
----
-
-Creating a Parameter File
--------------------------
-
-In this example, we will use:
-
-- The **SeReST controller** for motion control.
-- The **AMCL localizer** for probabilistic localization, running over the Costmap.
-- The **Costmap Maps Manager** to load the graded map produced by SLAM Toolbox (YAML + image pair).
-
-Below is a minimal configuration that allows a simulated robot to navigate in a mapped environment.
-This matches the shipped reference file
-``easynav_indoor_testcase/robots_params/costmap.serest.params.yaml``.
+- The **Costmap Maps Manager** loads the map, adds the obstacles the sensors see
+  (``ObstaclesFilter``) and inflates them (``InflationFilter``).
+- The **Costmap Localizer**, an AMCL over the costmap.
+- The **Costmap Planner**, an A* over the costmap that keeps paths away from obstacles
+  (``cost_factor``) and replans continuously.
+- The **Regulated Pure Pursuit** controller, a port of Nav2's.
+- The **Diagnostic recovery system**: a collision safety reflex and recoveries (see below).
 
 .. code-block:: yaml
 
@@ -94,31 +50,41 @@ This matches the shipped reference file
       ros__parameters:
         use_sim_time: true
         robot_limits:
-          max_linear_vel: 0.8
+          max_linear_vel: 0.6
+          min_linear_vel: -0.3
           max_angular_vel: 1.2
-        controller_types: [serest]
-        serest:
+          max_linear_acc: 1.0
+          max_linear_decel: 1.0
+          max_angular_acc: 2.0
+          max_angular_decel: 2.0
+        controller_types: [rpp]
+        rpp:
           rt_freq: 30.0
-          plugin: easynav_serest_controller/SerestController
-          allow_reverse: true
-          v_progress_min: 0.08
-          k_s_share_max: 0.5
-          k_theta: 2.5
-          k_y: 1.5
-          goal_pos_tol: 0.1
-          goal_yaw_tol_deg: 6.0
-          slow_radius: 0.60
-          slow_min_speed: 0.03
-          final_align_k: 2.0
-          final_align_wmax: 0.6
-          corner_guard_enable: true
-          corner_gain_ey: 1.8
-          corner_gain_eth: 0.7
-          corner_gain_kappa: 0.4
-          corner_min_alpha: 0.35
-          corner_boost_omega: 1.0
-          a_lat_soft: 0.9
-          apex_ey_des: 0.05
+          plugin: easynav_regulated_pp_controller/RegulatedPurePursuitController
+          safety_margin: 0.05
+          use_dynamic_window: false
+          allow_reversing: false
+          lookahead_dist: 0.4
+          min_lookahead_dist: 0.2
+          max_lookahead_dist: 0.6
+          lookahead_time: 1.2
+          use_velocity_scaled_lookahead_dist: true
+          use_rotate_to_heading: true
+          rotate_to_heading_angular_vel: 1.0
+          rotate_to_heading_min_angle: 0.785
+          use_regulated_linear_velocity_scaling: true
+          regulated_linear_scaling_min_radius: 0.9
+          regulated_linear_scaling_min_speed: 0.15
+          use_fixed_curvature_lookahead: false
+          curvature_lookahead_dist: 1.0
+          interpolate_curvature_after_goal: false
+          use_obstacle_regulated_linear_velocity_scaling: true
+          obstacle_scaling_dist: 0.4
+          obstacle_scaling_gain: 0.8
+          min_approach_linear_velocity: 0.05
+          approach_velocity_scaling_dist: 0.6
+          xy_goal_tolerance: 0.1
+          yaw_goal_tolerance: 0.105
 
     localizer_node:
       ros__parameters:
@@ -147,15 +113,15 @@ This matches the shipped reference file
         costmap:
           freq: 10.0
           plugin: easynav_costmap_maps_manager/CostmapMapsManager
-          package: easynav_indoor_testcase
+          package: easynav_playground_kobuki
           map_path_file: maps/home2.yaml
           filters: [obstacles, inflation]
           obstacles:
             plugin: easynav_costmap_maps_manager/CostmapMapsManager/ObstaclesFilter
           inflation:
             plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
-            inflation_radius: 1.3
-            cost_scaling_factor: 3.0
+            inflation_radius: 1.0
+            cost_scaling_factor: 5.0
 
     planner_node:
       ros__parameters:
@@ -178,52 +144,41 @@ This matches the shipped reference file
 
     system_node:
       ros__parameters:
-        use_sim_time: true
         robot_geometry:
-          radius: 0.30
-          inscribed_radius: 0.25
+          radius: 0.178
+          inscribed_radius: 0.178
+          height: 0.5
+        use_sim_time: true
         use_real_time: true
         position_tolerance: 0.3
         angle_tolerance: 0.15
 
----
+The file ends with the ``recovery_node`` section, the **Diagnostic recovery system**:
 
-Running the Simulation
-----------------------
+- a **collision safety reflex**, checked every control cycle, that brakes if the command would hit
+  an obstacle;
+- **evaluators** that diagnose problems: no path to the goal, an obstacle too close, a robot that
+  does not progress, a lost AMCL localization, or a miswired ROS graph;
+- **mitigations** that fix them, in priority order: retreat from the obstacle, rotate to
+  relocalize, advance a little; terminate EasyNav on a miswired graph; wait for a human; and, as
+  the last resort, cancel the mission.
 
-1. **Launch the simulator.**  
-   You can disable the Gazebo GUI to save resources:
+See :ref:`recovery` and the
+`easynav_diagnostic_recovery README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/recoveries/easynav_diagnostic_recovery/README.md>`_
+for its parameters.
 
-   .. code-block:: bash
+Adapting it to your robot
+-------------------------
 
-      ros2 launch easynav_playground_kobuki playground_kobuki.launch.py gui:=false
-
-2. **Launch RViz2** in a new terminal:
-
-   .. code-block:: bash
-
-      ros2 run rviz2 rviz2 --ros-args -p use_sim_time:=true
-
-3. **Start EasyNav** using your parameter file:  
-
-   .. code-block:: bash
-
-      ros2 run easynav_system system_main \
-         --ros-args --params-file ~/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap.serest.params.yaml
-
-   *(You can also create a dedicated launcher file for convenience.)*
-
-4. In **RViz2**, use the **“2D Goal Pose”** tool to send navigation goals.  
-   The robot should begin navigating autonomously along collision-free paths.
-
----
-
-Notes
------
-
-- Ensure that the ``map_path_file`` path and package name correspond to your actual map (the YAML + image pair
-  produced by SLAM Toolbox / ``map_saver``, not the *Simple Stack*'s single-file ``.map`` format).
-- Tune ``inflation_radius`` and ``cost_scaling_factor`` under the ``inflation`` filter to control how far the
-  robot stays from obstacles.
-- If navigation oscillates or stalls, verify that the controller gains (``k_theta``, ``k_y``) and speed limits
-  are consistent with your robot's maximum velocities.
+- **Map**: set ``package`` and ``map_path_file`` (both are needed: the map is looked up in the
+  share directory of ``package``). It must be a YAML + image pair, as Nav2's, not the Simple
+  stack's ``.map`` file.
+- **Robot**: ``system_node.robot_geometry`` (radius, inscribed radius and height) is shared by
+  every component; ``controller_node.robot_limits`` holds the velocity and acceleration limits,
+  enforced on every command.
+- **Sensors**: list your lidar under ``sensors_node.sensors`` with its topic and type.
+- **Distance to obstacles**: tune ``inflation_radius`` and ``cost_scaling_factor`` under the
+  ``inflation`` filter, and ``cost_factor`` in the planner.
+- **Other controllers**: the Kobuki PlayGround has the same stack with MPPI, MPC and SeReST (see
+  :doc:`../playgrounds/kobuki`). Every plugin's parameters are in its README (see
+  :doc:`../plugins/index`).

@@ -10,7 +10,7 @@
       <div>
         <div style="position: relative; padding-bottom: 0%; overflow: hidden; max-width: 100%; height: auto;">
           <iframe width="450" height="300" src="https://www.youtube.com/embed/MssaLixuv2g?autoplay=1&mute=1" frameborder="1" allowfullscreen></iframe>
-          <iframe width="450" height="300" src="https://www.youtube.com/embed/mxivTYNY1yY?autoplay=1&mute=1" frameborder="1" allowfullscreen></iframe>
+          <iframe width="450" height="300" src="https://www.youtube.com/embed/1GeKgw3Pbr4?autoplay=1&mute=1" frameborder="1" allowfullscreen></iframe>
         </div>
       </div>
     </h1>
@@ -21,7 +21,7 @@ Overview
 
 **EasyNavigation (EasyNav)** is an open-source navigation system for ROS 2, designed to be:
 
-- ✅ **Representation-agnostic**, supporting a wide variety of environment models: 2D costmaps, elevation-aware gridmaps, Octomap-based 3D representations, raw point clouds, or hybrid combinations.
+- ✅ **Representation-agnostic**, supporting a wide variety of environment models: 2D costmaps, NavMap 3D navigable surfaces, Bonxai probabilistic voxel maps, or hybrid combinations.
 - ⚡ **Real-time capable**, minimizing latency between perception and action.
 - 🧩 **Modular**, through a plugin architecture and reusable navigation stacks.
 - 🚀 **Lightweight and simple to deploy**, using a single binary and a parameter file for configuration.
@@ -36,7 +36,7 @@ It is structured around:
 - A **core**, responsible for real-time data processing and behavior execution.
 - **Stacks**, which specialize the system for different environment types or use cases.
 - **Plugins**, that define localization, path planning, control, and map representation methods.
-- **PlayGrounds**, which offer complete simulation scenarios with robots, maps, and example configurations.
+- :doc:`PlayGrounds <playgrounds/index>`, which offer complete simulation scenarios with robots, maps, and example configurations: indoors, outdoors and with omnidirectional robots.
 
 Whether you are building robots for indoor or outdoor environments, structured or unstructured terrains, EasyNav provides the flexibility and performance needed to achieve robust autonomous navigation.
 
@@ -57,8 +57,8 @@ If you use this software in your work, please consider citing our next paper.
 
    build_install/index.rst
    getting_started/index.rst
+   playgrounds/index.rst
    plugins/index.rst
-   simulations_real_robots/index.rst
    howtos/index.rst
    developer_guide/index.rst
    migration_guide/index.rst

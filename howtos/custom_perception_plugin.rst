@@ -34,36 +34,19 @@ every received sample.
 Setup
 -----
 
-Writing and compiling a new plugin requires the EasyNav headers, so this guide builds
-everything **from source** — regardless of whether you normally use APT or Pixi for
-day-to-day EasyNav use, see :ref:`build_from_source`. Replace ``<distro>`` below with
-your target ROS 2 distro (``rolling``, ``jazzy``, ``kilted`` or ``lyrical``):
+Writing and compiling a new plugin requires the EasyNav headers, so this guide builds everything
+**from source** (see :ref:`build_from_source`). Clone the example plugin, and the Summit
+PlayGround to try it, into the same workspace:
 
 .. code-block:: bash
 
-   mkdir -p ~/easynav_ws/src && cd ~/easynav_ws/src
-   git clone -b <distro> https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b <distro> https://github.com/EasyNavigation/easynav_plugins.git
-   git clone https://github.com/EasyNavigation/easynav_alt_imu_sensor.git
-   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
-
-Then build and source the workspace:
-
-.. code-block:: bash
-
+   cd ~/easynav_ws/src
+   git clone -b rolling https://github.com/EasyNavigation/easynav_alt_imu_sensor.git
+   git clone -b rolling https://github.com/EasyNavigation/easynav_playground_summit.git
    cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -y -r
-   colcon build --symlink-install
-   source /opt/ros/<distro>/setup.bash
+   colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
    source install/setup.bash
-
-The example configuration used later in this guide also exercises the **MPC
-Controller**, **NavMap Localizer**, **Bonxai Maps Manager**, **NavMap Maps Manager**
-and **NavMap Planner** plugins — all already built above since ``easynav_plugins``
-was cloned in full. (If you only need those plugins, without developing a new one,
-you can instead install them via APT/Pixi — see :doc:`../build_install/index` — but
-``easynav_alt_imu_sensor`` itself, being the subject of this tutorial, is only
-distributed as source.)
 
 ---
 
@@ -71,7 +54,7 @@ The ``PerceptionHandler`` interface
 ------------------------------------
 
 Every perception plugin derives from ``easynav::PerceptionHandler``
-(``easynav_sensors/types/Perceptions.hpp``). The base class only requires two overrides:
+(``easynav_sensors/types/Perceptions.hpp``). These are the methods a handler overrides:
 
 .. list-table::
    :header-rows: 1
@@ -88,6 +71,11 @@ Every perception plugin derives from ``easynav::PerceptionHandler``
      - Yes
      - Called every real-time cycle. Must write the perception into ``NavState`` under
        ``get_sensor_name()`` and return ``true`` if new data arrived since the last call.
+   * - ``get_perception()``
+     - Recommended
+     - Returns the perception object the handler keeps up to date. ``SensorsNode`` uses it to
+       invalidate the data once it is older than ``forget_time``. The default returns
+       ``nullptr``: the data is then never invalidated.
 
 Two protected helpers are available once the handler has been initialized:
 ``get_node()`` (the parent ``SensorsNode`` lifecycle node) and ``get_sensor_name()`` (the sensor's
@@ -169,7 +157,10 @@ reimplements the subscription itself so it can add its own logic):
      return should_trigger;
    }
 
-This is exactly the same pattern used by the built-in ``IMUPerceptionHandler``, ``GNSSPerceptionHandler``,
+``AltIMUPerceptionHandler`` does not override ``get_perception()``, so ``SensorsNode`` does not
+invalidate its data after ``forget_time``; a real handler should return ``perception_data_``.
+
+This is the same pattern used by the built-in ``IMUPerceptionHandler``, ``GNSSPerceptionHandler``,
 etc. (see :ref:`perceptions`): declare ``topic``/``type`` under the sensor's own parameter
 namespace, subscribe with the real-time callback group (``get_realtime_cbg()``), stash the message
 in the perception object and mark ``new_data``, then in ``cycle_rt()`` push it into ``NavState``
@@ -243,13 +234,16 @@ Set ``plugin:`` explicitly on the sensor that should use your handler — this o
          type: sensor_msgs/msg/Imu
          plugin: easynav_alt_imu_sensor/AltIMUPerceptionHandler
 
-This is precisely the configuration used by the real, shipped
-``easynav_indoor_testcase/robots_params/bonxai.amcl.params.urjc_alt_imu.yaml`` (a NavMap/Bonxai +
-MPC controller setup for the URJC excavation world), together with its matching launch file:
+To try it, use the Summit PlayGround, whose IMU publishes on ``imu/data``. Copy its
+``params/bonxai.amcl.params.yaml``, add the ``plugin:`` line to the ``imu`` sensor, and launch it
+with your copy:
 
 .. code-block:: bash
 
-   ros2 launch easynav_indoor_testcase easynav_bonxai_amcl_altimu.launch.py
+   cp $(ros2 pkg prefix easynav_playground_summit)/share/easynav_playground_summit/params/bonxai.amcl.params.yaml \
+     ~/alt_imu.params.yaml
+   # edit ~/alt_imu.params.yaml: sensors_node.imu.plugin: easynav_alt_imu_sensor/AltIMUPerceptionHandler
+   ros2 launch easynav_playground_summit easynav_bonxai_amcl.launch.yaml params_file:=$HOME/alt_imu.params.yaml
 
 Once running, every IMU message logs ``Alternative IMUPerceptionHandler received IMU message`` to
 the terminal running ``system_main`` — confirming your plugin (and not the built-in

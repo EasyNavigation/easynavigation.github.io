@@ -4,8 +4,8 @@ Using the Routes Maps Manager with Costmaps
 ===========================================
 
 This how-to describes how to create and use navigation routes with
-:mod:`easynav_routes_maps_manager` and how to constrain a 2D costmap
-around those routes using the :mod:`easynav_routes_maps_manager/RoutesCostmapFilter`
+``easynav_routes_maps_manager`` and how to constrain a 2D costmap
+around those routes using the ``easynav_routes_maps_manager/RoutesCostmapFilter``
 plugin.
 
 The process is split in two main steps:
@@ -14,66 +14,33 @@ The process is split in two main steps:
 2. **Using the saved routes** in a full navigation stack so that the
    costmap is filtered to keep the robot close to the defined routes.
 
-.. note::
-
-   This how-to assumes that you already have an EasyNav workspace and a
-   working costmap-based scenario (e.g., the indoor testcase). Only the
-   parts specific to routes are shown here.
-
-Setup
------
-
-Complete the installation steps in :doc:`../build_install/index` first (any of APT,
-Pixi or source). The examples below use the **Costmap Maps Manager**, **Routes Maps
-Manager**, **SeReST Controller**, **Costmap Localizer** and **Costmap Planner**
-plugins, which the core ``easynav`` package does not include:
-
-- **APT**:
-
-  .. code-block:: bash
-
-     sudo apt install \
-       ros-<distro>-easynav-costmap-maps-manager \
-       ros-<distro>-easynav-routes-maps-manager \
-       ros-<distro>-easynav-serest-controller \
-       ros-<distro>-easynav-costmap-localizer \
-       ros-<distro>-easynav-costmap-planner
-
-- **Pixi**:
-
-  .. code-block:: bash
-
-     pixi add \
-       ros-<distro>-easynav-costmap-maps-manager \
-       ros-<distro>-easynav-routes-maps-manager \
-       ros-<distro>-easynav-serest-controller \
-       ros-<distro>-easynav-costmap-localizer \
-       ros-<distro>-easynav-costmap-planner
-
-- **Source**: already built if you cloned ``easynav_plugins`` as described in
-  :ref:`build_from_source`.
-
+This how-to uses the :doc:`Kobuki PlayGround <../playgrounds/kobuki>`, which ships
+the configurations used below (``params/routes.params.yaml`` and
+``params/costmap.rpp.routed.params.yaml``) and a set of routes for its world
+(``maps/routes_1.yaml``). Build EasyNav and the PlayGround as described in
+:doc:`../getting_started/index`.
 
 1) Creating routes
 ------------------
 
-In this first step we will run only the maps manager node with a minimal
-configuration: a costmap maps manager providing the 2D map, and a routes
-maps manager with the routes costmap filter enabled. All other components
-(controller, planner, localizer, etc.) can be left out or run with dummy
-configurations, since we only care about editing and saving the routes.
+In this first step only the maps manager matters: a costmap maps manager providing the 2D map,
+and a routes maps manager with the routes costmap filter enabled. All other components
+(controller, planner, localizer) use dummy plugins, since we only care about editing and saving
+the routes.
 
 Example parameters file
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Below is an example of a minimal parameters file focused on costmap and
-routes only:
+Below is the ``maps_manager_node`` section of a minimal parameters file focused on costmap and
+routes. Copy ``params/routes.params.yaml`` of the Kobuki PlayGround and remove ``package`` and
+``map_path_file`` under ``routes`` to start from scratch (as is, it loads
+``maps/routes_1.yaml`` to edit those routes):
 
 .. code-block:: yaml
 
    maps_manager_node:
      ros__parameters:
-       use_sim_time: false
+       use_sim_time: true
        map_types: [costmap, routes]
        routes:
          freq: 10.0
@@ -83,12 +50,10 @@ routes only:
            plugin: easynav_routes_maps_manager/RoutesCostmapFilter
            min_cost: 50
            route_width: 0.5
-         cycle_time_nort: 0.001
-         cycle_time_rt: 0.001
        costmap:
          freq: 10.0
          plugin: easynav_costmap_maps_manager/CostmapMapsManager
-         package: easynav_indoor_testcase
+         package: easynav_playground_kobuki
          map_path_file: maps/home2.yaml
          filters: [obstacles, inflation]
          obstacles:
@@ -98,29 +63,28 @@ routes only:
            inflation_radius: 1.3
            cost_scaling_factor: 3.0
 
-   system_node:
-     ros__parameters:
-       robot_geometry:
-         inscribed_radius: 0.25
-
 Key points:
 
 - The ``costmap`` block is configured as in a normal EasyNav scenario and
   provides the 2D map on which the routes will be drawn.
-- The ``routes`` block enables the :class:`easynav::RoutesMapsManager`
-  plugin and the :class:`easynav::RoutesCostmapFilter` filter. In this
-  phase we mainly care about seeing the effect of the routes corridor on
-  the costmap while editing the routes.
-- No ``package`` or ``map_path_file`` are provided under ``routes``. In
-  this case the routes manager starts with a single default segment from
-  ``(0, 0, 0)`` to ``(1, 0, 0)`` in the map frame.
+- The ``routes`` block enables the ``RoutesMapsManager`` plugin and the ``RoutesCostmapFilter``
+  filter. In this phase we mainly care about seeing the effect of the routes corridor on the
+  costmap while editing the routes.
+- No ``package`` or ``map_path_file`` are provided under ``routes``. In this case the routes
+  manager starts with a single default segment from ``(0, 0, 0)`` to ``(1, 0, 0)`` in the map
+  frame, and saves the routes to ``/tmp/routes.yaml``. ``map_path_file`` may also be an absolute
+  path, without ``package``.
 
 Running the maps manager
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-With the parameters file in place, start the maps manager node (for
-example from a launch file or directly with ``ros2 run``), and open
-RViz22.
+Start the simulation, EasyNav with this parameter file, and RViz2:
+
+.. code-block:: bash
+
+   ros2 launch easynav_playground_kobuki easynav_costmap_mapping.launch.yaml \
+     params_file:=/path/to/my_routes.params.yaml \
+     rviz_config:=$(ros2 pkg prefix easynav_playground_kobuki)/share/easynav_playground_kobuki/rviz/easynav_costmap_routed.rviz
 
 You should see:
 
@@ -159,9 +123,8 @@ Step 1 – enabling the edit markers
 
 The routes manager publishes interactive markers for editing the start
 and end points of each segment and for adding/removing segments. In RViz2,
-add an "Interactive Markers" display and select the server corresponding
-to ``routes`` (typically ``routes_imarkers`` or similar, depending on
-your namespace).
+add an "Interactive Markers" display and select the server ``routes_imarkers``
+(``<plugin name>_imarkers``).
 
 Click the **green box** associated with the segment to toggle edit mode
 on. When edit mode is enabled, RViz2 displays interactive markers on the
@@ -240,14 +203,16 @@ Call the service with:
 
    ros2 service call /maps_manager_node/routes/save_routes std_srvs/srv/Trigger {}
 
-If ``routes.package`` and ``routes.map_path_file`` are configured, the
-routes are written back to that YAML file following the format described
-in the ``easynav_routes_maps_manager`` README (see the
-`easynav_routes_maps_manager` package for details). If they are not
-configured (as in the minimal example above), you can later load the
-generated file by setting the appropriate ``package`` and
+If ``routes.package`` and ``routes.map_path_file`` are configured, the routes are written back to
+that YAML file, in the share directory of the package (with ``colcon build --symlink-install``,
+that is the file in your source tree), following the format described in the
+`easynav_routes_maps_manager README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/maps_managers/easynav_routes_maps_manager/README.md>`_.
+If they are not configured (as in the minimal example above), they are written to
+``/tmp/routes.yaml``: copy it into a package and load it by setting ``package`` and
 ``map_path_file``.
 
+Routes can also be replaced at runtime by publishing an
+``easynav_routes_maps_manager/msg/RoutesMap`` on ``/maps_manager_node/routes/incoming_routes``.
 
 2) Using the routes for navigation
 ----------------------------------
@@ -259,68 +224,21 @@ generated file by setting the appropriate ``package`` and
    </div>
 
 In this second step we integrate the routes maps manager and the
-RoutesCostmapFilter into a full navigation stack, including localizer,
-planner, controller, sensors, and system nodes. The goal is for the
-costmap to be filtered so that global and local plans stay close to the
-saved routes.
+RoutesCostmapFilter into a full navigation stack. The goal is for the
+costmap to be filtered so that the plans stay close to the saved routes.
 
-Example navigation parameters file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Running it
+^^^^^^^^^^
 
-The following example shows a complete configuration using routes with a
-costmap-based localizer and planner, and the SerEst controller:
+.. code-block:: bash
+
+   ros2 launch easynav_playground_kobuki easynav_routes.launch.yaml
+
+It runs the Kobuki PlayGround's ``params/costmap.rpp.routed.params.yaml``: the costmap stack with
+the Regulated Pure Pursuit controller of :doc:`costmap_navigating`, with the routes added to the
+maps manager:
 
 .. code-block:: yaml
-
-   controller_node:
-     ros__parameters:
-       use_sim_time: true
-       robot_limits:
-         max_linear_vel: 0.8
-         max_angular_vel: 1.2
-       controller_types: [serest]
-       serest:
-         rt_freq: 30.0
-         plugin: easynav_serest_controller/SerestController
-         allow_reverse: true
-         v_progress_min: 0.08        # 8 cm/s minimum cruise speed when aligned
-         k_s_share_max: 0.5          # lateral suction does not cancel >50% of forward motion
-         k_theta: 2.5
-         k_y: 1.5
-         goal_pos_tol: 0.1           # 10 cm
-         goal_yaw_tol_deg: 6.0       # 6 degrees
-         slow_radius: 0.60
-         slow_min_speed: 0.03
-         final_align_k: 2.0
-         final_align_wmax: 0.6
-         corner_guard_enable: true
-         corner_gain_ey: 1.8
-         corner_gain_eth: 0.7
-         corner_gain_kappa: 0.4
-         corner_min_alpha: 0.35
-         corner_boost_omega: 1.0
-         a_lat_soft: 0.9
-         apex_ey_des: 0.05
-
-   localizer_node:
-     ros__parameters:
-       use_sim_time: true
-       localizer_types: [costmap]
-       costmap:
-         rt_freq: 50.0
-         freq: 5.0
-         reseed_freq: 1.0
-         plugin: easynav_costmap_localizer/AMCLLocalizer
-         num_particles: 100
-         noise_translation: 0.05
-         noise_rotation: 0.1
-         noise_translation_to_rotation: 0.1
-         initial_pose:
-           x: 0.0
-           y: 0.1
-           yaw: 0.0
-           std_dev_xy: 0.1
-           std_dev_yaw: 0.01
 
    maps_manager_node:
      ros__parameters:
@@ -329,59 +247,27 @@ costmap-based localizer and planner, and the SerEst controller:
        routes:
          freq: 10.0
          plugin: easynav_routes_maps_manager/RoutesMapsManager
-         package: easynav_indoor_testcase
+         package: easynav_playground_kobuki
          map_path_file: maps/routes_1.yaml
          filters: [routes_costmap]
          routes_costmap:
            plugin: easynav_routes_maps_manager/RoutesCostmapFilter
-           min_cost: 50
+           min_cost: 200
            route_width: 0.1
-         cycle_time_nort: 0.001
-         cycle_time_rt: 0.001
        costmap:
          freq: 10.0
          plugin: easynav_costmap_maps_manager/CostmapMapsManager
-         package: easynav_indoor_testcase
+         package: easynav_playground_kobuki
          map_path_file: maps/home2.yaml
          filters: [obstacles, inflation]
          obstacles:
            plugin: easynav_costmap_maps_manager/CostmapMapsManager/ObstaclesFilter
          inflation:
            plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
-           inflation_radius: 1.3
-           cost_scaling_factor: 3.0
+           inflation_radius: 1.0
+           cost_scaling_factor: 5.0
 
-   planner_node:
-     ros__parameters:
-       use_sim_time: true
-       planner_types: [simple]
-       simple:
-         freq: 0.5
-         plugin: easynav_costmap_planner/CostmapPlanner
-         cost_factor: 10.0
-         continuous_replan: true
-
-   sensors_node:
-     ros__parameters:
-       use_sim_time: true
-       forget_time: 0.5
-       sensors: [laser1]
-       laser1:
-         topic: scan_raw
-         type: sensor_msgs/msg/LaserScan
-       camera1:
-         topic: rgbd_camera/points
-         type: sensor_msgs/msg/PointCloud2
-
-   system_node:
-     ros__parameters:
-       use_sim_time: true
-       robot_geometry:
-         radius: 0.30
-         inscribed_radius: 0.25
-       use_real_time: true
-       position_tolerance: 0.3
-       angle_tolerance: 0.15
+``easynav_costmap_mppi_routed.launch.yaml`` does the same with the MPPI controller.
 
 How the routes affect navigation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -393,19 +279,17 @@ With this configuration:
   ``routes``.
 - The ``RoutesCostmapFilter`` reads the routes and the dynamic costmap
   and raises the cost of all cells that lie outside a corridor of width
-  ``2 * route_width`` around the segments (down to a minimum of
-  ``min_cost``).
-- The costmap planner and the SerEst controller operate on this filtered
-  costmap. As a result, global and local paths are biased to stay close
-  to the defined routes, avoiding large deviations into low-cost but
-  undesired areas.
+  ``2 * route_width`` around the segments (up to at least ``min_cost``).
+- The costmap planner and the controller operate on this filtered
+  costmap. As a result, the paths are biased to stay close to the defined routes, avoiding large
+  deviations into low-cost but undesired areas.
 
 You can visualize the effect of the filter by subscribing to the debug
-``routes_map`` OccupancyGrid published by the filter, and by comparing it
+``routes_map`` OccupancyGrid published by the filter
+(``/maps_manager_node/routes/routes_map``), and by comparing it
 with the original dynamic costmap. The difference will show the high-cost
 areas outside the routes corridor.
 
 From here you can tune ``route_width`` and ``min_cost`` to adjust how
 strictly the robot should follow the routes, or implement additional
-routes filters (for example, for NavMap or Octomap) following the same
-pattern.
+routes filters (for example, for NavMap) following the same pattern.

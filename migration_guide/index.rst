@@ -85,26 +85,8 @@ Nav2 and EasyNav, piece by piece
 Step 1: Install EasyNav
 =======================
 
-Follow :doc:`../build_install/index`. Besides the core (``ros-<distro>-easynav``), install the
-plugins of the configuration in this guide, the closest to a typical Nav2 setup:
-
-.. code-block:: bash
-
-   sudo apt install \
-     ros-<distro>-easynav-costmap-maps-manager \
-     ros-<distro>-easynav-costmap-localizer \
-     ros-<distro>-easynav-costmap-planner \
-     ros-<distro>-easynav-regulated-pp-controller \
-     ros-<distro>-easynav-diagnostic-recovery \
-     ros-<distro>-easynav-collision-safety-reflex \
-     ros-<distro>-easynav-no-path-evaluator \
-     ros-<distro>-easynav-controller-stuck-evaluator \
-     ros-<distro>-easynav-advance-recovery \
-     ros-<distro>-easynav-cancel-mission-recovery
-
-The last six are the recovery system (see Step 3). Some plugins are not packaged for every distribution yet (see the note in
-:doc:`../build_install/index`). If one is missing, use Pixi or build ``easynav_plugins`` from
-source.
+Follow :doc:`../build_install/index`: it installs EasyNav with all the plugins used in this
+guide.
 
 **Let EasyNav run in real time.** This is a one-time system setting your Nav2 setup may not have
 needed. EasyNav runs its control cycle with real-time priority (``SCHED_FIFO`` 80), so that a
@@ -124,13 +106,13 @@ Step 2: Your map
 ================
 
 **If you already have a Nav2 map**, use it as it is. Put the ``.yaml`` and the image in a package
-of your workspace, e.g. ``my_robot_maps/maps/office.yaml``, or anywhere and give an absolute
-path (see Step 3).
+of your workspace that installs them (e.g. ``my_robot_maps/maps/office.yaml``, with
+``install(DIRECTORY maps DESTINATION share/${PROJECT_NAME})`` in its ``CMakeLists.txt``): the
+map is located by package and path inside it (see Step 3).
 
 **If you need a new one**, map exactly as you would for Nav2: SLAM Toolbox, teleoperation, and
-``map_saver`` or ``slam_toolbox/save_map``. :doc:`../howtos/simple_mapping` walks through it
-step by step in simulation, and :doc:`../howtos/costmap_mapping` shows how to check the result
-with the Costmap maps manager.
+``map_saver`` or ``slam_toolbox/save_map``. :doc:`../howtos/costmap_mapping` walks through it
+step by step in simulation.
 
 Step 3: The parameter file
 ==========================
@@ -138,7 +120,8 @@ Step 3: The parameter file
 A single YAML file configures everything, one section per node. Each node lists the plugin it uses
 in ``<kind>_types`` (one entry), and that entry holds the plugin and its parameters. This is a
 complete file for a robot with a 2D lidar, Nav2-style: AMCL, A* on a costmap and Regulated Pure
-Pursuit. It is ``easynav_indoor_testcase/robots_params/costmap.rpp.params.yaml``, simplified.
+Pursuit. It is ``params/costmap.rpp.params.yaml`` of the :doc:`Kobuki PlayGround
+<../playgrounds/kobuki>`, simplified.
 The comments say where each value comes from in your Nav2 file.
 
 .. code-block:: yaml
@@ -176,7 +159,7 @@ The comments say where each value comes from in your Nav2 file.
        costmap:
          plugin: easynav_costmap_maps_manager/CostmapMapsManager
          freq: 10.0
-         # map_server yaml_filename: a package and a path inside it, or an absolute path alone
+         # map_server yaml_filename: a package and a path inside its share directory (both needed)
          package: my_robot_maps
          map_path_file: maps/office.yaml
          # costmap plugins: obstacle_layer and inflation_layer
@@ -257,19 +240,19 @@ The comments say where each value comes from in your Nav2 file.
          # Brakes, every control cycle, if the command would hit an obstacle
          safety_reflex_types: [collision]
          collision:
-           plugin: easynav_collision_safety_reflex/CollisionSafetyReflex
+           plugin: easynav_diagnostic_recovery/CollisionSafetyReflex
          # Diagnose problems...
          evaluator_types: [no_path, controller_stuck]
          no_path:
-           plugin: easynav_no_path_evaluator/NoPathEvaluator
+           plugin: easynav_diagnostic_recovery/NoPathEvaluator
          controller_stuck:
-           plugin: easynav_controller_stuck_evaluator/ControllerStuckEvaluator
+           plugin: easynav_diagnostic_recovery/ControllerStuckEvaluator
          # ...and fix them, by priority (lower first); the last resort aborts the mission
          mitigation_types: [advance, cancel_mission]
          advance:
-           plugin: easynav_advance_recovery/AdvanceRecovery
+           plugin: easynav_diagnostic_recovery/AdvanceRecovery
          cancel_mission:
-           plugin: easynav_cancel_mission_recovery/CancelMissionRecovery
+           plugin: easynav_diagnostic_recovery/CancelMissionRecovery
            priority: 2000
 
 A few things are worth knowing when you translate your own file:
@@ -284,9 +267,9 @@ A few things are worth knowing when you translate your own file:
   ``controller_node.use_cmd_vel_stamped: true``: they then go out on ``/cmd_vel_stamped``, so remap it
   to what your base listens to. AMCL reads odometry from ``/odom``, or from TF with
   ``compute_odom_from_tf: true``.
-- **Other controllers**: for MPPI, start from ``costmap.mppi.params.yaml`` in
-  `easynav_indoor_testcase <https://github.com/EasyNavigation/easynav_indoor_testcase>`_. Every
-  plugin's parameters are in its README (see :doc:`../plugins/index`).
+- **Other controllers**: for MPPI, start from ``params/costmap.mppi.params.yaml`` of the
+  :doc:`Kobuki PlayGround <../playgrounds/kobuki>`. Every plugin's parameters are in its README
+  (see :doc:`../plugins/index`).
 - **Recoveries** (``recovery_node``) do what Nav2's recovery subtrees, ``behavior_server`` and
   ``collision_monitor`` do: the collision reflex brakes before a collision; evaluators diagnose
   problems (here, no path to the goal and a robot that does not progress); mitigations fix them

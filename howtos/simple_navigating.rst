@@ -4,8 +4,13 @@
 Navigating with SimpleStack and EasyNav
 =======================================
 
-This HowTo explains how to perform **navigation using the Simple Stack** in EasyNavigation (EasyNav).  
-The Simple Stack operates on a **binary occupancy map**, ideal for lightweight simulations or quick prototyping.
+This HowTo explains how to perform **navigation using the Simple Stack** in EasyNavigation (EasyNav).
+The Simple Stack operates on a **binary occupancy map**.
+
+.. warning::
+   The Simple stack is a minimal example, with very basic algorithms, made to show how EasyNav
+   works and how plugins are written. Do not expect good navigation from it. For real use, see
+   :doc:`costmap_navigating`.
 
 .. contents:: On this page
    :local:
@@ -20,69 +25,28 @@ Overview
       <iframe width="450" height="300" src="https://www.youtube.com/embed/p4aqNA0JNhA" frameborder="0" allowfullscreen></iframe>
     </div>
 
-This tutorial assumes you already have a map created with SLAM Toolbox or another mapping method.
-If you have not yet generated a map, follow :doc:`simple_mapping` first.
+This tutorial uses the :doc:`Kobuki PlayGround <../playgrounds/kobuki>`, which ships
+a map of its world (``maps/home.map``). To navigate in your own map, create it first following
+:doc:`simple_mapping`.
 
 Setup
 -----
 
-Complete the installation steps in :doc:`../build_install/index` first (any of APT,
-Pixi or source). This tutorial's example configuration uses the **SeReST
-Controller**, **Simple Localizer**, **Simple Maps Manager** and **Simple Planner**
-plugins, which the core ``easynav`` package does not include:
+Build EasyNav and the Kobuki PlayGround as described in :doc:`../getting_started/index`.
 
-- **APT**:
-
-  .. code-block:: bash
-
-     sudo apt install \
-       ros-<distro>-easynav-serest-controller \
-       ros-<distro>-easynav-simple-localizer \
-       ros-<distro>-easynav-simple-maps-manager \
-       ros-<distro>-easynav-simple-planner
-
-- **Pixi**:
-
-  .. code-block:: bash
-
-     pixi add \
-       ros-<distro>-easynav-serest-controller \
-       ros-<distro>-easynav-simple-localizer \
-       ros-<distro>-easynav-simple-maps-manager \
-       ros-<distro>-easynav-simple-planner
-
-- **Source**: already built if you cloned ``easynav_plugins`` as described in
-  :ref:`build_from_source`.
-
-You will also need the simulator and example config, which are only distributed as
-source — clone them into ``~/easynav_ws/src`` regardless of install method:
-
-.. code-block:: bash
-
-   cd ~/easynav_ws/src
-   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
-   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
-
-Build and source the workspace as described in :ref:`gs_source_workspace`.
-
-Once you have your map, save the resulting ``.map`` file (the Simple Maps Manager's own text format,
-produced by its ``savemap`` service) in any package within your workspace,
-such as ``easynav_indoor_testcase/maps``.
-You will later reference it using the parameters ``package`` and ``map_path_file``.
-(Alternatively, you can use an absolute path with ``map_path_file`` alone.)
-
----
-
-Creating a Parameter File
--------------------------
+The Parameter File
+------------------
 
 In this example we will use:
 
-- The **SeReST controller** for trajectory tracking.  
-- The **AMCL localizer** for probabilistic localization.  
-- The **Simple Maps Manager** to load the occupancy map.  
+- The **Simple Maps Manager** to load the binary map.
+- The **AMCL localizer** of the Simple stack (``easynav_simple_localizer``).
+- The **Simple Planner**, an A* over the binary map.
+- The **SeReST controller** for path tracking (see :doc:`serest_controller`).
+- The **Simple recovery system**, which brakes before an obstacle ahead, rotates to relocalize and
+  backs up when stuck (see :ref:`recovery`).
 
-Below is a minimal working configuration for navigation with the *Simple Stack*.
+This is ``params/simple.serest.params.yaml`` of the Kobuki PlayGround:
 
 .. code-block:: yaml
 
@@ -90,8 +54,13 @@ Below is a minimal working configuration for navigation with the *Simple Stack*.
       ros__parameters:
         use_sim_time: true
         robot_limits:
-          max_linear_vel: 0.8
-          max_angular_vel: 1.2
+          max_linear_vel: 0.6
+          min_linear_vel: -0.6
+          max_angular_vel: 1.5
+          max_linear_acc: 0.8
+          max_linear_decel: 1.0
+          max_angular_acc: 2.0
+          max_angular_decel: 2.0
         controller_types: [serest]
         serest:
           rt_freq: 30.0
@@ -143,7 +112,7 @@ Below is a minimal working configuration for navigation with the *Simple Stack*.
         simple:
           freq: 10.0
           plugin: easynav_simple_maps_manager/SimpleMapsManager
-          package: easynav_indoor_testcase
+          package: easynav_playground_kobuki
           map_path_file: maps/home.map
 
     planner_node:
@@ -159,6 +128,7 @@ Below is a minimal working configuration for navigation with the *Simple Stack*.
         use_sim_time: true
         forget_time: 0.5
         sensors: [laser1]
+        perception_default_frame: odom
         laser1:
           topic: scan_raw
           type: sensor_msgs/msg/LaserScan
@@ -168,46 +138,42 @@ Below is a minimal working configuration for navigation with the *Simple Stack*.
         use_sim_time: true
         robot_geometry:
           radius: 0.25
+          height: 0.5
         position_tolerance: 0.3
         angle_tolerance: 0.15
 
----
+    recovery_node:
+      ros__parameters:
+        use_sim_time: true
+        recovery_manager:
+          plugin: easynav_simple_recovery/SimpleRecoveryManager
+          stop_distance: 0.3
+          sensors_timeout: 5.0
+          max_position_variance: 1.0
+
+To use your own map, change ``package`` and ``map_path_file`` (both are needed: the map is looked
+up in the share directory of ``package``).
 
 Running the Simulation
 ----------------------
 
-1. **Launch the simulator**  
-   You can disable the GUI to save computational resources:
+1. **Launch the simulator, EasyNav and RViz2**:
 
    .. code-block:: bash
 
-      ros2 launch easynav_playground_kobuki playground_kobuki.launch.py gui:=false
+      ros2 launch easynav_playground_kobuki easynav_simple_serest.launch.yaml
 
-2. **Open RViz2** in a new terminal:
+   You can disable the Gazebo GUI with ``gui:=false``, and use your own parameter file with
+   ``params_file:=/path/to/my.params.yaml``.
 
-   .. code-block:: bash
-
-      ros2 run rviz2 rviz2 --ros-args -p use_sim_time:=true
-
-3. **Start EasyNav** with your parameter file:
-
-   .. code-block:: bash
-
-      ros2 run easynav_system system_main \
-         --ros-args --params-file ~/easynav_ws/src/easynav_indoor_testcase/robots_params/simple.serest_params.yaml
-
-   *(You can also create a launcher for convenience.)*
-
-4. **Send navigation goals**  
-   In RViz2, use the **“2D Goal Pose”** tool to send target positions.  
-   The robot will autonomously plan and navigate toward them.
-
----
+2. **Send navigation goals**: in RViz2, use the **"2D Goal Pose"** tool. The robot will plan and
+   navigate toward them.
 
 Notes
 -----
 
-- The **Simple Stack** uses a **binary map**: cells are free or occupied (no graded cost).  
-- For smoother paths or cost-aware planning, use the **Costmap Stack** (:doc:`costmap_mapping`).  
-- Verify that ``map_path_file`` and ``package`` point to the correct files.  
-- You can tune controller parameters (``k_theta``, ``k_y``, etc.) and speed limits for better performance.
+- The **Simple Stack** uses a **binary map**: cells are free or occupied (no graded cost), so paths
+  are not kept away from obstacles. For cost-aware planning, use the **Costmap Stack**
+  (:doc:`costmap_navigating`).
+- ``easynav_simple.launch.yaml`` runs the same stack with the Simple controller, the one of
+  :doc:`../getting_started/index`.

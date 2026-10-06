@@ -39,54 +39,19 @@ whichever language fits your own application.
 Setup
 -----
 
-Before starting, complete the installation steps in :doc:`../build_install/index`
-(any of APT, Pixi or source). The navigation stack launched below
-(``costmap.serest.params.yaml``) uses the **SeReST Controller**, **Costmap
-Localizer**, **Costmap Maps Manager** and **Costmap Planner** plugins, which the
-core ``easynav`` package does not include:
+Build EasyNav and the Kobuki PlayGround as described in :doc:`../getting_started/index`. The
+waypoints of the example are in the Kobuki PlayGround's world.
 
-- **APT**:
-
-  .. code-block:: bash
-
-     sudo apt install \
-       ros-<distro>-easynav-serest-controller \
-       ros-<distro>-easynav-costmap-localizer \
-       ros-<distro>-easynav-costmap-maps-manager \
-       ros-<distro>-easynav-costmap-planner
-
-- **Pixi**:
-
-  .. code-block:: bash
-
-     pixi add \
-       ros-<distro>-easynav-serest-controller \
-       ros-<distro>-easynav-costmap-localizer \
-       ros-<distro>-easynav-costmap-maps-manager \
-       ros-<distro>-easynav-costmap-planner
-
-- **Source**: already built if you cloned ``easynav_plugins`` as described in
-  :ref:`build_from_source`.
-
-``easynav_behaviors`` (which provides both patrolling packages), ``easynav_indoor_testcase``
-(simulation/config used below) and ``easynav_playground_kobuki`` (the simulator launched
-below) are demo/example content and only distributed as source — clone them into
-``~/easynav_ws/src`` regardless of install method:
+``easynav_behaviors`` provides both patrolling packages. It is example content, only distributed
+as source: clone it into ``~/easynav_ws/src`` and build it:
 
 .. code-block:: bash
 
    cd ~/easynav_ws/src
-   git clone https://github.com/EasyNavigation/easynav_behaviors.git
-   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
-   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
-
-Build and source the workspace as described in :ref:`gs_source_workspace`:
-
-.. code-block:: bash
-
+   git clone -b rolling https://github.com/EasyNavigation/easynav_behaviors.git
    cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -r -y
-   colcon build --symlink-install
+   colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 ---
 
@@ -122,26 +87,12 @@ corresponding ``wpN:`` entries to define your own route.
 Launching Navigation
 --------------------
 
-Before starting the patrol, launch the Costmap-based navigation stack.
-
-**Terminal 1 – Simulator:**
-
-.. code-block:: bash
-
-   ros2 launch easynav_playground_kobuki playground_kobuki.launch.py gui:=false
-
-**Terminal 2 – Visualization:**
+Before starting the patrol, launch the simulation and the Costmap navigation stack (see
+:doc:`costmap_navigating`):
 
 .. code-block:: bash
 
-   ros2 run rviz2 rviz2 --ros-args -p use_sim_time:=true
-
-**Terminal 3 – EasyNav system:**
-
-.. code-block:: bash
-
-   ros2 run easynav_system system_main \
-     --ros-args --params-file ~/easynav_ws/src/easynav_indoor_testcase/robots_params/costmap.serest.params.yaml
+   ros2 launch easynav_playground_kobuki easynav_costmap_rpp.launch.yaml
 
 ---
 

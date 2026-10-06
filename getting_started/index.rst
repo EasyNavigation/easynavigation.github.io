@@ -4,9 +4,9 @@
 Getting Started
 ================
 
-This section guides you through your **first run of EasyNavigation (EasyNav)** using a simulated Turtlebot2 robot in a domestic environment.
-
-If you have not yet installed EasyNav, please complete the steps in :doc:`../build_install/index`.
+This section guides you through your **first run of EasyNavigation (EasyNav)** using a simulated
+Turtlebot2 robot in a domestic environment, from the :doc:`Kobuki PlayGround
+<../playgrounds/kobuki>`.
 
 .. contents:: On this page
    :local:
@@ -17,173 +17,143 @@ Overview
 
 We will run a ready-to-use simulation setup consisting of:
 
-- **Robot:** Turtlebot2 (Kobuki)
-- **Environment:** indoor domestic map
-- **Stack:** *Simple Stack* included within `easynav_plugins`
+- **Robot:** Turtlebot2 (Kobuki) with a 2D lidar
+- **Environment:** indoor domestic map (AWS RoboMaker small house)
+- **Configuration:** first the *Simple* plugins, then the *Costmap* plugins with the Regulated
+  Pure Pursuit controller
 - **Simulator:** Gazebo Harmonic with RViz2 visualization
 
-Workspace layout
-----------------
+Setting up the workspace
+------------------------
 
-This guide builds two extra packages on top of your EasyNav installation:
-``easynav_playground_kobuki`` (the Gazebo simulation) and ``easynav_indoor_testcase``
-(maps, parameter files and RViz configurations). These are example/demo content and
-are only distributed as source, so you need a small colcon workspace at
-``~/easynav_ws`` regardless of which method you used to install EasyNav's core
-packages in :doc:`../build_install/index`:
+Build EasyNav from source as described in :ref:`build_from_source` (``~/easynav_ws``).
 
-- Installed via :ref:`install_apt`: create the workspace now.
-
-  .. code-block:: bash
-
-     mkdir -p ~/easynav_ws/src
-
-- Installed via :ref:`install_pixi`: reuse the workspace where you saved your
-  ``pixi.toml`` (``~/easynav_ws``), and add the build tools needed to compile source
-  packages inside the Pixi environment.
-
-  .. code-block:: bash
-
-     cd ~/easynav_ws
-     pixi add colcon-common-extensions compilers cmake make ninja pkg-config rosdep
-     mkdir -p src
-
-- Installed via :ref:`build_from_source`: you already have this workspace, with
-  ``EasyNavigation``, ``NavMap``, ``easynav_plugins`` and ``yaets`` cloned under
-  ``src/``.
-
-Clone the demo repositories into ``~/easynav_ws/src`` and install their dependencies:
+Then clone the Kobuki PlayGround into the same workspace, install its dependencies and build it:
 
 .. code-block:: bash
 
    cd ~/easynav_ws/src
-   git clone https://github.com/EasyNavigation/easynav_playground_kobuki.git
-   git clone https://github.com/EasyNavigation/easynav_indoor_testcase.git
-   # Clone third-party dependencies using vcs tool
-   vcs import . < easynav_playground_kobuki/thirdparty.repos
-   # Install dependencies via rosdep
+   git clone -b rolling https://github.com/EasyNavigation/easynav_playground_kobuki.git
    cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -y -r
+   colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+The PlayGround is self-contained: the robot model, the world, the maps and the EasyNav
+configurations are all in this package.
 
 .. _gs_source_workspace:
 
-Build and source the workspace
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sourcing the workspace
+~~~~~~~~~~~~~~~~~~~~~~
+
+In every new terminal you open for the rest of this guide:
 
 .. code-block:: bash
 
-   cd ~/easynav_ws
-   colcon build --symlink-install
+   source /opt/ros/<distro>/setup.bash
+   source ~/easynav_ws/install/setup.bash
 
-Then source the environment, depending on how you installed EasyNav:
+First run: the Simple stack
+---------------------------
 
-- **APT** or **build from source**:
+Launching the simulator
+~~~~~~~~~~~~~~~~~~~~~~~
 
-  .. code-block:: bash
-
-     source /opt/ros/<distro>/setup.bash
-     source ~/easynav_ws/install/setup.bash
-
-- **Pixi** (run inside ``pixi shell``, or prefix commands with ``pixi run``):
-
-  .. code-block:: bash
-
-     source ~/easynav_ws/install/setup.bash
-
-You will need to repeat this sourcing step in every new terminal you open for the
-rest of this guide.
-
-
-Repository overview
--------------------
-
-- **easynav_playground_kobuki** --> Gazebo simulation for the Turtlebot2 (Kobuki).
-- **easynav_indoor_testcase** --> provides maps, parameter files, and RViz configurations for indoor navigation.
-
-Simulation setup
-----------------
-
-Once your workspace is built and sourced, launch the Gazebo simulation:
+In a first terminal, start the simulation of a Turtlebot2 robot in a domestic environment:
 
 .. code-block:: bash
 
-   cd ~/easynav_ws
-   ros2 launch easynav_playground_kobuki playground_kobuki.launch.py
-
-This starts a Gazebo Harmonic simulation of a Turtlebot2 robot in a domestic environment.
+   ros2 launch easynav_playground_kobuki gazebo_sim.launch.yaml
 
 .. image:: ../images/kobuki_sim.png
    :align: center
    :alt: Turtlebot2 simulation in Gazebo
 
-
-To save resources, you can disable the Gazebo graphical interface:
-
-.. code-block:: bash
-
-   ros2 launch easynav_playground_kobuki playground_kobuki.launch.py gui:=false
+To save resources, you can disable the Gazebo graphical interface with ``gui:=false``.
 
 Launching EasyNav
------------------
+~~~~~~~~~~~~~~~~~
 
-With the simulator running, open a **new terminal** and source your workspace again
-as described in :ref:`gs_source_workspace`:
-
-.. code-block:: bash
-
-   cd ~/easynav_ws
-
-Now start the EasyNav system using the predefined parameter file:
+EasyNav is **a single program**, ``system_main``, and **a parameter file** that says which
+plugins it uses and how. In a second terminal, start it with the PlayGround's
+``params/simple.params.yaml``:
 
 .. code-block:: bash
 
-   ros2 run easynav_system system_main \
-      --ros-args --params-file src/easynav_indoor_testcase/robots_params/simple.params.yaml
+   ros2 run easynav_system system_main --ros-args \
+     --params-file $(ros2 pkg prefix easynav_playground_kobuki)/share/easynav_playground_kobuki/params/simple.params.yaml
 
-This command launches the EasyNav core using the *Simple Stack* configuration located in `easynav_indoor_testcase`.
+The parameter file configures the *Simple* plugins: a binary occupancy map (``maps/home.map``),
+an AMCL localizer over it, an A* planner and a proportional controller.
+
+.. warning::
+   The Simple stack is a **minimal example**, with very basic algorithms, made to show how EasyNav
+   works and how plugins are written. Do not expect good navigation from it. For real use, try the
+   Costmap configuration below.
 
 Visualizing in RViz2
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
-Open another new terminal and start RViz2 with the provided configuration:
+In a third terminal, start RViz2 with the PlayGround's configuration:
 
 .. code-block:: bash
 
-   # Note: First, source the environment as shown previously.
    ros2 run rviz2 rviz2 \
-      -d ~/easynav_ws/src/easynav_indoor_testcase/rviz/simple.rviz \
-      --ros-args -p use_sim_time:=true
+     -d $(ros2 pkg prefix easynav_playground_kobuki)/share/easynav_playground_kobuki/rviz/easynav_simple.rviz \
+     --ros-args -p use_sim_time:=true
 
-.. image:: ../images/kobuki_simple.png 
+.. image:: ../images/kobuki_simple.png
    :align: center
    :alt: RViz2 with EasyNav loaded
 
-.. note::
-
-   In RViz2, ensure the **QoS** of the ``/map`` topic is set to **Transient Local**  
-   so that the map is properly displayed when EasyNav publishes it.
-
 Sending navigation goals
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once RViz2 is open, use the **"2D Goal Pose"** tool (in the top toolbar)  
-to send a navigation goal. Click on a point in the map, and the robot will start navigating.
-
-.. note::
-
-   The Simple stack contains very basic algorithms, like A* and PID-based controller. It is expected that
-   navigation won't be optimal.
-
+In RViz2, use the **"2D Goal Pose"** tool (in the top toolbar) to send a navigation goal. Click on
+a point in the map, and the robot will start navigating.
 
 .. image:: ../images/kobuki_simple_navigating.png
    :align: center
    :alt: Turtlebot2 navigating using EasyNav
 
+Navigating with the Costmap stack
+---------------------------------
+
+Stop EasyNav (**Ctrl+C** in its terminal) and start it again with another parameter file, the
+recommended indoor configuration: a costmap with obstacles and inflation, AMCL, A* and the
+Regulated Pure Pursuit controller. Same program, different parameters:
+
+.. code-block:: bash
+
+   ros2 run easynav_system system_main --ros-args \
+     --params-file $(ros2 pkg prefix easynav_playground_kobuki)/share/easynav_playground_kobuki/params/costmap.rpp.params.yaml
+
+In RViz2, open the costmap view (*File > Open Config*,
+``share/easynav_playground_kobuki/rviz/easynav_costmap.rviz``, or restart RViz2 with it), and send
+goals as before.
+
+This configuration also runs the recovery system (see :ref:`recovery`): a collision safety reflex
+that brakes before a collision, and recoveries for an obstacle too close, a robot that does not
+progress, a lost localization, or no path to the goal.
+
+All in one launch file
+~~~~~~~~~~~~~~~~~~~~~~
+
+The PlayGround also has launch files that start the three things at once. For the configuration
+above:
+
+.. code-block:: bash
+
+   ros2 launch easynav_playground_kobuki easynav_costmap_rpp.launch.yaml
+
+The :doc:`Kobuki PlayGround <../playgrounds/kobuki>` page lists the other configurations (MPPI,
+MPC, SeReST, MH-AMCL, routes, safety mode, multirobot), and what each launch file starts.
+
 Visualizing internal process with the TUI
 -----------------------------------------
 
 In addition to RViz2, **EasyNav** provides a **Terminal User Interface (TUI)** that allows you to monitor
-the internal state of the navigation system in real time.  
+the internal state of the navigation system in real time.
 It is a text-based dashboard that displays key diagnostic information and performance metrics directly in the terminal.
 
 You can launch it in a new terminal after starting the EasyNav system:
@@ -216,14 +186,18 @@ Press **q** to exit the TUI.
    The TUI is optimized for dark terminals and supports color highlighting for active modules and
    real-time performance indicators.
 
-
 Troubleshooting
 ---------------
 
-- **Robot does not move:** ensure that both Gazebo and EasyNav terminals are running and synchronized with the same simulation time (`use_sim_time:=true`).
-- **EasyNav terminates by itself:** the recovery system may have requested a shutdown (e.g. no sensor data, or a miswired ROS graph). The reason is printed when ``system_main`` exits.
-- **Map not visible in RViz2:** check the QoS setting and verify the `/map` topic is being published.
-- **Build errors:** revisit :doc:`../build_install/index` and ensure dependencies were correctly installed via `rosdep`.
+- **Robot does not move:** check that EasyNav is running (``system_main`` in its terminal) and
+  that the localization in RViz2 matches the robot's position in Gazebo.
+- **EasyNav terminates by itself:** the recovery system may have requested a shutdown (e.g. no
+  sensor data, or a miswired ROS graph). The reason is printed when ``system_main`` exits.
+- **The robot does not appear in Gazebo:** if you switched branches of the PlayGround, remove its
+  ``build/`` and ``install/`` directories and build it again: with ``--symlink-install``, files
+  removed in the new branch stay in ``install/`` as broken links.
+- **Build errors:** revisit :doc:`../build_install/index` and ensure dependencies were correctly
+  installed via ``rosdep``.
 
 Next steps
 ----------
@@ -232,7 +206,8 @@ You have successfully launched **EasyNav** with a simulated robot!
 
 Continue exploring:
 
-- :doc:`../howtos/index` — follow practical guides for mapping, navigation, and real robot deployment.  
+- :doc:`../playgrounds/index` — the other robots and configurations.
+- :doc:`../howtos/index` — follow practical guides for mapping, navigation, and real robot deployment.
 - :doc:`../developer_guide/index` — dive into the internal design and architecture of the EasyNav framework.
 - :doc:`../migration_guide/index` — if your robot already uses Nav2, how to try EasyNav on it.
 
