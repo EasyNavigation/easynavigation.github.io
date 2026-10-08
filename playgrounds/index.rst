@@ -5,8 +5,32 @@ PlayGrounds
 ===========
 
 The **PlayGrounds** are complete Gazebo Harmonic simulations integrated with EasyNav: a robot, its
-world, the maps and ready-to-run EasyNav configurations. Each one is a single, self-contained
-package, and each configuration is a launch file that starts Gazebo, the robot, EasyNav and RViz2.
+world, the maps and ready-to-run EasyNav configurations. They all live in one repository,
+`easynav_playgrounds <https://github.com/EasyNavigation/easynav_playgrounds>`_, and each
+configuration is a launch file that starts Gazebo, the robot, EasyNav and RViz2.
+
+Each PlayGround is split in three packages, so that the robot model and the simulation can be used
+without EasyNav:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 38 62
+
+   * - Package
+     - Contents
+   * - ``easynav_playground_<robot>_description``
+     - The robot model: URDF, meshes and controllers. Neither Gazebo nor EasyNav.
+   * - ``easynav_playground_<robot>_worlds``
+     - The Gazebo simulation: worlds, their maps, and the launchers that spawn the robot
+       (``gazebo_sim.launch.yaml`` starts Gazebo and the robot). No EasyNav.
+   * - ``easynav_playground_<robot>``
+     - The EasyNav configurations (``params/``) and launchers (``easynav_*.launch.yaml``).
+
+.. note::
+
+   The PlayGrounds need Gazebo Harmonic or newer, so they run on Jazzy and later distributions,
+   but not on Humble, whose Gazebo is Fortress. EasyNav itself (core and plugins) does run on
+   Humble: only these simulations do not.
 
 They are the reference configurations of EasyNav: the HowTos (:doc:`../howtos/index`) and the
 :doc:`../getting_started/index` guide use them, and they are a good starting point for your own
@@ -26,6 +50,9 @@ robot's parameter file.
    * - :doc:`summit` (**outdoor reference**)
      - Robotnik Summit XL in an outdoor excavation and in an indoor warehouse
      - NavMap and Bonxai (RPP, MPPI, MPC), GPS fusion, warehouse logistics
+   * - :doc:`tiago`
+     - PAL Robotics' TIAGo in a small house
+     - Costmap with RPP; NavMap and Bonxai with NavMap AMCL
    * - :doc:`omni`
      - Three- to six-wheel omnidirectional robots in two mazes
      - Costmap with RPP
@@ -33,15 +60,14 @@ robot's parameter file.
 Installation
 ------------
 
-The PlayGrounds are only distributed as source. Clone the ones you want into the workspace where
-you built EasyNav, install their dependencies and build:
+The PlayGrounds are only distributed as source. Clone the repository into the workspace where you
+built EasyNav, install their dependencies and build them (all, or ``--packages-up-to`` the one you
+want):
 
 .. code-block:: bash
 
    cd ~/easynav_ws/src
-   git clone -b rolling https://github.com/EasyNavigation/easynav_playground_kobuki.git
-   git clone -b rolling https://github.com/EasyNavigation/easynav_playground_summit.git
-   git clone -b rolling https://github.com/EasyNavigation/easynav_playground_omni.git
+   git clone -b rolling https://github.com/EasyNavigation/easynav_playgrounds.git
    cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -r -y
    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
@@ -70,4 +96,5 @@ geometry and limits, and the map. See:
 
    kobuki
    summit
+   tiago
    omni

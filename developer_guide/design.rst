@@ -425,9 +425,68 @@ To achieve this, EasyNav separates execution into two distinct control loops:
   - path planning,
   - and recovery: diagnosing problems and deciding how to handle them.
 
-Each EasyNav module is configured with a frequency for both real-time and non-real-time cycles. These are specified in the parameters as `rt_freq` and `freq`, respectively. Both must be strictly greater than zero — a plugin fails to initialize (``std::runtime_error``) if either resolves to ``0`` or a negative value, so a typo'd config is caught at startup rather than silently disabling that plugin's cycle.
-
 Additionally, when new perception data is received, the real-time cycle is **triggered immediately**, allowing the system to respond as fast as possible and minimize perception-to-action latency.
+
+.. _component_frequencies:
+
+Frequencies: system cycles and components
+-----------------------------------------
+
+There are two kinds of frequencies, and only one of them is what navigation needs:
+
+- **Each component's frequency** — ``rt_freq`` and ``freq`` of every plugin (controller,
+  localizer, maps manager, planner, recovery evaluators). This is what matters: the controller
+  computes a command at its ``rt_freq``, the planner plans at its ``freq``, and so on.
+- **The system cycles** — ``system_node.rt_freq`` (200 Hz by default) and ``system_node.freq``.
+  They do not run the components at that rate: each cycle receives the sensor data (RT), publishes
+  the velocity command (RT) and checks, for each component, **whether it is time for it to run**.
+  If it is not, the component does nothing in that cycle — except when it is **triggered** by new
+  perceptions. So the system frequency is the resolution of that check, not the components' rate.
+
+The rules that follow from this:
+
+- A component's frequency must not exceed its system cycle's: every ``<plugin>.rt_freq`` at most
+  ``system_node.rt_freq`` and every ``<plugin>.freq`` at most ``system_node.freq``. Otherwise
+  EasyNav fails to configure, naming the parameter. Both must also be finite and greater than zero
+  (``std::runtime_error`` when the plugin initializes).
+- The schedule does **not drift**: each run is scheduled one period after the previous *scheduled*
+  time, not after the cycle that ran it. A controller at 30 Hz checked by a 50 Hz cycle runs
+  30 times per second, alternating gaps of 20 and 40 ms; a cycle that comes a little late does not
+  cost a run. If a component falls more than one period behind (e.g. the cycle stalled), the missed
+  runs are lost — it runs once and its schedule restarts from then, without a burst of catch-up
+  runs. A triggered run also restarts the schedule.
+- **Whether each component keeps its frequency is monitored.** Every component's runs are counted
+  in windows of 1 s or 10 periods, whichever is longer. A window with fewer than 90 % of the
+  expected runs (with one run of margin) is slow: the component's diagnostic becomes ``WARN`` (after
+  3 slow windows in a row, its message says for how long); a window on rate makes it ``OK`` again.
+  It is **only reported**, never an ``ERROR``: the recovery system does not abort, mitigate or ask
+  for help because of it. Time without checks counts too (a component that blocks its cycle for
+  seconds is reported), except while EasyNav is inactive: the nodes restart the measurement when
+  they are activated. The diagnostics are in NavState's ``diagnostics`` group (and on
+  ``/diagnostics`` with the diagnostic recovery manager):
+
+  .. list-table::
+     :header-rows: 1
+
+     * - NavState key
+       - Monitors
+     * - ``diagnostics.<plugin>.rt_rate``
+       - ``<plugin>.rt_freq`` (controller, localizer RT update)
+     * - ``diagnostics.<plugin>.rate``
+       - ``<plugin>.freq`` (localizer, maps manager, planner, recovery evaluators)
+
+  Each one is written when first checked (``OK``, "measuring") and then only on changes. Running
+  faster than configured (e.g. triggered by the sensors) is fine. The rates are measured with the
+  nodes' clock: in simulation, simulated time.
+- The system RT cycle itself is monitored too (``diagnostics.rt_cycle``, see :ref:`safety_rt`), but
+  outside safety mode a late RT cycle is only a ``WARN``: if the components still keep their
+  frequencies, navigation is not affected. A slow RT cycle matters by itself only for what it does
+  directly — receiving the sensors and publishing the commands.
+
+In practice: set ``system_node.rt_freq`` high enough for the fastest RT component and for the
+latency you want between a perception and its command; and if a component reports that it does not
+keep its frequency, lower that component's frequency or make its update (or what shares its cycle)
+cheaper — raising the system frequency does not help.
 
 The real-time cycle runs in its own thread with ``SCHED_FIFO`` priority 80 when
 ``system_node.use_real_time`` is ``true`` (the default). The system must allow it; see

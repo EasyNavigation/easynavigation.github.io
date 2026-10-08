@@ -42,7 +42,7 @@ PlayGround to try it, into the same workspace:
 
    cd ~/easynav_ws/src
    git clone -b rolling https://github.com/EasyNavigation/easynav_alt_imu_sensor.git
-   git clone -b rolling https://github.com/EasyNavigation/easynav_playground_summit.git
+   git clone -b rolling https://github.com/EasyNavigation/easynav_playgrounds.git
    cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -y -r
    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release

@@ -90,14 +90,20 @@ Maps
   startup from a 2D occupancy grid in the Nav2 YAML + image format (``occmap_path_file``), which
   gives a flat NavMap.
 - The ``obstacles`` filter keeps the static map and adds the points the sensors see, within
-  ``max_range`` and below ``max_height`` (robot frame).
+  ``max_range`` and below ``max_height`` (robot frame), that rise more than ``min_height``
+  (0.1 m by default) above the NavMap surface under them. So a 2D laser sees obstacles too, and
+  the ground or a ramp, being on the surface, is not one. On rough terrain,
+  ``min_height_per_meter`` makes the threshold grow with the distance to the robot, since a small
+  tilt error lifts the far ground more.
 - The ``inflation`` filter adds a cost around obstacles up to ``inflation_radius``, which keeps
   paths away from them. Cells closer than ``system_node.robot_geometry.inscribed_radius`` are
   blocked.
 
 The outdoor configuration (``params/bonxai.amcl.params.yaml``) is the same with
-``maps/excavation_urjc.pcd`` and ``maps/excavation_urjc.navmap``, and no range or height limits on
-the obstacles.
+``maps/excavation_urjc.pcd`` and ``maps/excavation_urjc.navmap``; its obstacles filter uses
+``max_range: 5.0``, ``min_height: 0.3`` and ``min_height_per_meter: 0.05``, since its NavMap is a
+coarse mesh of an uneven terrain: ground points rise above it, more the farther they are and on
+slopes, where any error in the robot's localized tilt lifts them.
 
 Localization
 ^^^^^^^^^^^^

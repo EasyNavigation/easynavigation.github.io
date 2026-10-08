@@ -4,7 +4,7 @@
 Kobuki PlayGround
 =================
 
-`easynav_playground_kobuki <https://github.com/EasyNavigation/easynav_playground_kobuki>`_ is
+`easynav_playground_kobuki <https://github.com/EasyNavigation/easynav_playgrounds/tree/rolling/playground_kobuki>`_ is
 EasyNav's **indoor reference**: a Turtlebot2 (Kobuki) with a 2D lidar in the AWS RoboMaker small
 house, with costmap and simple map configurations.
 
@@ -172,7 +172,7 @@ To run Gazebo and the Kobuki without EasyNav or RViz2:
 
 .. code-block:: bash
 
-   ros2 launch easynav_playground_kobuki gazebo_sim.launch.yaml
+   ros2 launch easynav_playground_kobuki_worlds gazebo_sim.launch.yaml
 
 or, with two robots, ``multirobot_gazebo_sim.launch.yaml``. To add a robot to a running
 simulation, use ``kobuki.launch.yaml`` with a ``namespace`` and a spawn pose (``x``, ``y``,

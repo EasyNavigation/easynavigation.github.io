@@ -57,7 +57,7 @@ If something is missing, clone the required repositories:
 
    cd ~/ros/ros2/easynav_ws/src
    git clone https://github.com/EasyNavigation/easynav_plugins.git
-   git clone https://github.com/EasyNavigation/easynav_playground_summit.git
+   git clone -b rolling https://github.com/EasyNavigation/easynav_playgrounds.git
    git clone https://github.com/EasyNavigation/easynav_outdoor_testcase.git
    git clone -b rolling https://github.com/EasyNavigation/easynav_lidarslam_ros2.git
    git clone -b rolling_ament_fixed https://github.com/fmrico/grid_map.git

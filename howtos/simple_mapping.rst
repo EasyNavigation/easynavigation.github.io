@@ -54,7 +54,7 @@ Step-by-Step Instructions
 
    .. code-block:: bash
 
-      ros2 launch easynav_playground_kobuki gazebo_sim.launch.yaml gui:=false
+      ros2 launch easynav_playground_kobuki_worlds gazebo_sim.launch.yaml gui:=false
 
 2. **Launch SLAM Toolbox**
 

@@ -148,7 +148,7 @@ EasyNav Setup on the Raspberry Pi
    .. code-block:: bash
 
       curl -L -o ~/easynav_ws/src/my_robot_easynav/params/icreate.params.yaml \
-        https://raw.githubusercontent.com/EasyNavigation/easynav_playground_kobuki/rolling/params/costmap.rpp.params.yaml
+        https://raw.githubusercontent.com/EasyNavigation/easynav_playgrounds/rolling/playground_kobuki/easynav_playground_kobuki/params/costmap.rpp.params.yaml
 
    and adapt it to the iCreate3 and the real world:
 

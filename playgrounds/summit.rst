@@ -4,7 +4,7 @@
 Summit PlayGround
 =================
 
-`easynav_playground_summit <https://github.com/EasyNavigation/easynav_playground_summit>`_ is
+`easynav_playground_summit <https://github.com/EasyNavigation/easynav_playgrounds/tree/rolling/playground_summit>`_ is
 EasyNav's **outdoor reference**: a Robotnik Summit XL with a 3D lidar, a depth camera, an IMU and
 a GPS, navigating with NavMap and Bonxai maps in two worlds:
 
@@ -129,7 +129,7 @@ To run Gazebo and the Summit XL without EasyNav or RViz2:
 
 .. code-block:: bash
 
-   ros2 launch easynav_playground_summit gazebo_sim.launch.yaml
+   ros2 launch easynav_playground_summit_worlds gazebo_sim.launch.yaml
 
 It loads the excavation; pass ``world:=<path to a .world file>`` for another one, e.g.
 ``worlds/small_warehouse.world``. To spawn the robot in a running simulation, use
@@ -233,46 +233,41 @@ What each one starts:
 Building maps of a world
 ------------------------
 
-The warehouse maps were generated from the simulation with two scripts installed with the
-package:
+The warehouse maps were generated from the simulation with NavMap's ``navmap_tools``:
 
-1. ``map_builder.py`` builds the 3D cloud (``warehouse.pcd``, for Bonxai). It teleports the robot
-   through the free space and puts its lidar scans together at the ground-truth poses.
-2. ``map2d_from_pcd.py`` builds the 2D occupancy grid (``warehouse.pgm``/``.yaml``, for the flat
-   NavMap) from that cloud: points between 0.1 and 1.2 m high are obstacles.
+1. ``navmap_map_builder`` builds the 3D cloud (``warehouse.pcd``, for Bonxai). It teleports the
+   robot through the free space and puts its sensors' clouds together at the ground-truth poses.
+2. ``navmap_map2d_from_pcd`` builds the 2D occupancy grid (``warehouse.pgm``/``.yaml``, for the
+   flat NavMap) from that cloud: points between 0.1 and 1.2 m high are obstacles.
 
 .. code-block:: bash
 
-   ros2 launch easynav_playground_summit gazebo_sim.launch.yaml gui:=false \
-     world:=$(ros2 pkg prefix easynav_playground_summit)/share/easynav_playground_summit/worlds/small_warehouse.world
-   ros2 run easynav_playground_summit map_builder.py /tmp/warehouse --world warehouse
-   ros2 run easynav_playground_summit map2d_from_pcd.py /tmp/warehouse.pcd /tmp/warehouse
+   ros2 launch easynav_playground_summit_worlds gazebo_sim.launch.yaml gui:=false \
+     world:=$(ros2 pkg prefix easynav_playground_summit_worlds)/share/easynav_playground_summit_worlds/worlds/small_warehouse.world
+   ros2 run navmap_tools navmap_map_builder /tmp/warehouse --world warehouse --model summit_xl \
+     --cloud-topic /front_laser/points --ground-truth-topic /ground_truth
+   ros2 run navmap_tools navmap_map2d_from_pcd /tmp/warehouse.pcd /tmp/warehouse
 
-Run each script with ``--help`` for its options. The package README explains the whole process.
+Run each tool with ``--help`` for its options. The README of ``easynav_playground_summit_worlds``
+explains the whole process.
 
 Package layout
 --------------
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 75
+   :widths: 40 60
 
-   * - Directory
+   * - Package and directory
      - Contents
-   * - ``launch/``
-     - Launch files, in YAML
-   * - ``params/``
-     - EasyNav parameters, one file per configuration
-   * - ``maps/``
+   * - ``easynav_playground_summit``: ``launch/``, ``params/``, ``rviz/``
+     - EasyNav launch files, parameters (one file per configuration) and RViz2 configurations
+   * - ``easynav_playground_summit_worlds``: ``launch/``, ``config/bridge/``
+     - Gazebo launchers (``gazebo_sim``, ``world``, ``summit``) and ROS–Gazebo bridge topics
+   * - ``easynav_playground_summit_worlds``: ``maps/``
      - NavMap (``.navmap``), Bonxai (``.pcd``) and 2D occupancy grid (``warehouse.pgm``/``.yaml``)
        maps
-   * - ``rviz/``
-     - RViz2 configurations
-   * - ``config/``
-     - ros2_control controllers and ROS–Gazebo bridge topics
-   * - ``urdf/``, ``meshes/``
-     - Summit XL model
-   * - ``worlds/``, ``models/``
+   * - ``easynav_playground_summit_worlds``: ``worlds/``, ``models/``
      - URJC excavation and small warehouse worlds
-   * - ``scripts/``
-     - Map building tools
+   * - ``easynav_playground_summit_description``: ``urdf/``, ``meshes/``, ``config/``
+     - Summit XL model and its ros2_control controllers

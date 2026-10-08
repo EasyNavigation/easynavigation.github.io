@@ -33,7 +33,7 @@ Then clone the Kobuki PlayGround into the same workspace, install its dependenci
 .. code-block:: bash
 
    cd ~/easynav_ws/src
-   git clone -b rolling https://github.com/EasyNavigation/easynav_playground_kobuki.git
+   git clone -b rolling https://github.com/EasyNavigation/easynav_playgrounds.git
    cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -y -r
    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
@@ -63,7 +63,7 @@ In a first terminal, start the simulation of a Turtlebot2 robot in a domestic en
 
 .. code-block:: bash
 
-   ros2 launch easynav_playground_kobuki gazebo_sim.launch.yaml
+   ros2 launch easynav_playground_kobuki_worlds gazebo_sim.launch.yaml
 
 .. image:: ../images/kobuki_sim.png
    :align: center

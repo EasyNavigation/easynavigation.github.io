@@ -4,7 +4,7 @@
 Omni PlayGround
 ===============
 
-`easynav_playground_omni <https://github.com/EasyNavigation/easynav_playground_omni>`_ simulates
+`easynav_playground_omni <https://github.com/EasyNavigation/easynav_playgrounds/tree/rolling/playground_omni>`_ simulates
 three- to six-wheel **omnidirectional robots** in two mazes, navigating with the Costmap plugins
 and the Regulated Pure Pursuit controller.
 
@@ -69,7 +69,7 @@ To run Gazebo and the robot, without EasyNav or RViz2:
 
 .. code-block:: bash
 
-   ros2 launch easynav_playground_omni gazebo_sim.launch.yaml robot:=4w world:=maze2
+   ros2 launch easynav_playground_omni_worlds gazebo_sim.launch.yaml robot:=4w world:=maze2
 
 It also accepts ``gui:=false`` to run Gazebo headless.
 

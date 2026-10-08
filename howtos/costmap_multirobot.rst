@@ -99,7 +99,7 @@ Step by step, this is what the launch file does, and what you would do with your
 
    .. code-block:: bash
 
-      ros2 launch easynav_playground_kobuki multirobot_gazebo_sim.launch.yaml gui:=false
+      ros2 launch easynav_playground_kobuki_worlds multirobot_gazebo_sim.launch.yaml gui:=false
 
 2. **Start EasyNav for each robot**, with the same parameter file, its own namespace and the TF
    remapping:
