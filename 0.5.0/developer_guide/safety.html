@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safety &mdash; EasyNavigation 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Migration Guide" href="../migration_guide/index.html" />
+    <link rel="prev" title="Recovery System" href="recovery.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EasyNavigation
+              <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-with-apt-recommended">Install with APT (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#other-options">Other options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/binaries.html">Install from Binaries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#release-status">Release status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#install-from-binaries-apt-recommended">Install from binaries (APT, recommended)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#install-via-pixi">Install via Pixi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#package-availability">Package availability</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/realtime.html">Real-time System Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#common-problems">Common problems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#uninstall-clean">Uninstall / clean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#running-the-tests">Running the tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#setting-up">Setting up</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#sourcing-the-workspace">Sourcing the workspace</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#first-run-the-simple-stack">First run: the Simple stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#launching-the-simulator">Launching the simulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#navigating-with-the-costmap-stack">Navigating with the Costmap stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#all-in-one-launch-file">All in one launch file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../playgrounds/index.html">PlayGrounds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../playgrounds/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../playgrounds/index.html#real-robots">Real robots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/kobuki.html">Kobuki PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#multirobot">Multirobot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#launch-files">Launch files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#package-layout">Package layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/summit.html">Summit PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#launch-files">Launch files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#building-maps-of-a-world">Building maps of a world</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#package-layout">Package layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/tiago.html">TIAGo PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#packages">Packages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/omni.html">Omni PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launch-files">Launch files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">EasyNav Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#supported-ros-2-versions">Supported ROS 2 versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#planners">🧭 Planners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#recoveries">🛟 Recoveries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#other-plugins">Other plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howtos/index.html">HowTos and Practical Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#overview">📘 Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#costmap-stack">Costmap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_mapping.html">Mapping with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_mapping.html#saving-the-map">Saving the map</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating.html">Navigating with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#running-it">Running it</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#the-parameter-file">The Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating.html#adapting-it-to-your-robot">Adapting it to your robot</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/mhamcl_localization.html">Global Localization and Kidnapping Recovery with MH-AMCL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#how-it-works">How it works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#configuring-the-localizer">Configuring the Localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#testing-global-localization-and-kidnapping">Testing Global Localization and Kidnapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#tuning">Tuning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/mhamcl_localization.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#hardware-setup">Hardware Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#ros-2-setup-on-the-raspberry-pi">ROS 2 Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#easynav-setup-on-the-raspberry-pi">EasyNav Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#mapping">Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_navigating_with_icreate.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#navmap-bonxai-stack">NavMap + Bonxai Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/navmap_navigating.html">Navigating with the NavMap + Bonxai Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/navmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/navmap_navigating.html#the-two-scenarios">The two scenarios</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/navmap_navigating.html#the-parameter-file">The parameter file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/navmap_navigating.html#building-the-maps">Building the maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#simple-stack">Simple Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/simple_mapping.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#saving-and-reusing-the-map">Saving and Reusing the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_mapping.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#the-parameter-file">The Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/simple_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#controllers">Controllers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#recommended-tuning-order">Recommended Tuning Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/serest_controller.html#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#behaviors">Behaviors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/patrolling_behavior.html">Patrolling Behavior</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#waypoint-configuration">Waypoint Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#code-explanation-python-version">Code Explanation (Python Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/patrolling_behavior.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#general">General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/costmap_multirobot.html">Multi-Robot Navigation with EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_multirobot.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_multirobot.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_multirobot.html#topic-naming-and-tf-management">1. Topic Naming and TF Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_multirobot.html#launching-in-simulation">2. Launching in Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_multirobot.html#example-parameters">3. Example Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/costmap_multirobot.html#tips-gotchas">Tips &amp; Gotchas</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/ros2_easynav_cli.html">ros2 easynav — EasyNav CLI Extensions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#name">NAME</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#synopsis">SYNOPSIS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#description">DESCRIPTION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#commands">COMMANDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#options-common">OPTIONS (Common)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#exit-status">EXIT STATUS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#examples">EXAMPLES</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/ros2_easynav_cli.html#see-also">SEE ALSO</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/docker_crossdistro.html">Docker Setup with Zenoh Bridge (Cross-Distro)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-1-building-the-docker-image-rolling">Step 1: Building the Docker Image (Rolling)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-2-preparing-the-robot-host">Step 2: Preparing the Robot (Host)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-3-running-the-container">Step 3: Running the Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/custom_perception_plugin.html">Writing a Custom Perception Plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#when-do-you-need-a-custom-perception-plugin">When do you need a custom perception plugin?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#the-perceptionhandler-interface">The <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#walking-through-altimuperceptionhandler">Walking through <code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#registering-the-plugin">Registering the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#using-the-plugin">Using the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#writing-a-plugin-for-a-genuinely-new-message-type">Writing a plugin for a genuinely new message type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/custom_perception_plugin.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../howtos/index.html#deprecated">Deprecated</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../howtos/gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../howtos/gridmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developers Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#robot-geometry">Robot Geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#real-time-execution-model">Real-Time Execution Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="design.html#frequencies-system-cycles-and-components">Frequencies: system cycles and components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blackboard.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#grouping-sensors-group-is-optional-and-changes-visibility">Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#filter-min-bounds-max-bounds-lazy-post-fuse"><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="perceptions.html#collapse-collapse-dims-lazy"><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#other-perception-types">Other Perception Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="commanding.html#protocol-description">Protocol Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commanding.html#using-goalmanagerclient">Using <cite>GoalManagerClient</cite></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="recovery.html">Recovery System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#the-recovery-node">The Recovery Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#the-base-class-recoverymanagerbase">The Base Class: <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#moving-the-robot">Moving the Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#system-actions">System Actions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#controlled-shutdown">Controlled shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#reconfiguration-as-a-mitigation">Reconfiguration as a mitigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#available-recovery-systems">Available Recovery Systems</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#dummyrecoverymanager">DummyRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#simplerecoverymanager">SimpleRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="recovery.html#diagnosticrecoverymanager">DiagnosticRecoveryManager</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Safety</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stale-and-invalid-commands">Stale and invalid commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-checks">Configuration checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-time-cycle-monitoring-and-heartbeat">Real-time cycle monitoring and heartbeat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safety-channel-status">Safety channel status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-age">Data age</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-locking">Memory locking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-fingerprint">Configuration fingerprint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fault-injection">Fault injection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../migration_guide/index.html">Migration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#what-stays-the-same">What stays the same</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#nav2-and-easynav-piece-by-piece">Nav2 and EasyNav, piece by piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-1-install-easynav">Step 1: Install EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-2-your-map">Step 2: Your map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-3-the-parameter-file">Step 3: The parameter file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-4-run-it">Step 4: Run it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-5-send-goals-from-your-applications">Step 5: Send goals from your applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-a-the-nav2-bridge">Option A: the Nav2 bridge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-b-goalmanagerclient">Option B: GoalManagerClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-c-just-a-pose">Option C: just a pose</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#differences-to-keep-in-mind">Differences to keep in mind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Developers Guide</a></li>
+      <li class="breadcrumb-item active">Safety</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="safety">
+<span id="id1"></span><h1>Safety<a class="headerlink" href="#safety" title="Permalink to this heading"></a></h1>
+<p><strong>EasyNav is not a certified safety component.</strong> It runs on Linux and ROS 2, for which no
+certification evidence exists. It is designed to be the <strong>non-safety</strong> part of a robot whose safety
+functions (protective stop, safely limited speed, emergency stop) are implemented by an independent,
+certified <strong>safety channel</strong>: a safety laser scanner, a safety PLC and STO (safe torque off) on the
+drives, typically PL d / SIL 2 under ISO 3691-4 or ISO 13482. EasyNav makes integrating with that
+channel easier, keeps it from being triggered needlessly, and never stands in its way.</p>
+<section id="summary">
+<span id="safety-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>Status: <strong>Provided</strong> — available today; <strong>Partial</strong> — part of it; <strong>Planned</strong> — on the roadmap;
+<strong>Integrator</strong> — the integrator’s responsibility, outside EasyNav.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 24.0%" />
+<col style="width: 40.0%" />
+<col style="width: 14.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Topic</p></th>
+<th class="head"><p>Reference</p></th>
+<th class="head"><p>What EasyNav does</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Safety functions (protective stop, safely limited speed, emergency stop, STO)</p></td>
+<td><p>ISO 3691-4, ISO 13482; ISO 13849-1 PL d / IEC 61508 SIL 2</p></td>
+<td><p>None: they must be implemented by the certified safety channel. EasyNav’s own collision
+braking (<code class="docutils literal notranslate"><span class="pre">CollisionSafetyReflex</span></code>) reduces how often that channel has to act, but it is not
+a safety function.</p></td>
+<td><p>Integrator</p></td>
+</tr>
+<tr class="row-odd"><td><p>Certification of EasyNav (SIL / PL)</p></td>
+<td><p>IEC 61508-3, ISO 13849-1</p></td>
+<td><p>Not certified, and not designed to be: EasyNav is the non-safety element next to the safety
+channel.</p></td>
+<td><p>Integrator</p></td>
+</tr>
+<tr class="row-even"><td><p>Freedom from interference: EasyNav cannot prevent the safety channel from acting</p></td>
+<td><p>IEC 61508-3 annex F (non-interference)</p></td>
+<td><p>By architecture: EasyNav only requests velocities, and has no path to the STO chain. The
+safety channel must supervise the measured speed, not trust EasyNav’s commands.</p></td>
+<td><p>Integrator</p></td>
+</tr>
+<tr class="row-odd"><td><p>No stale velocity commands</p></td>
+<td><p>IEC 61508-3 (defensive programming)</p></td>
+<td><p>Only new controller commands are proposed; with no new command for <code class="docutils literal notranslate"><span class="pre">cmd_timeout</span></code> (0.5 s by
+default) the robot brakes to zero; non-finite commands are discarded. See
+<a class="reference internal" href="#safety-commands"><span class="std std-ref">Stale and invalid commands</span></a>.</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-even"><td><p>Detecting that EasyNav stopped commanding (dead process, blocked cycle)</p></td>
+<td><p>IEC 61784-3 (timeout of the safety communication)</p></td>
+<td><p>A heartbeat published from the real-time cycle, with sequence counter, real-time status and
+configuration fingerprint; periodic republication of the command; <code class="docutils literal notranslate"><span class="pre">deadline</span></code> and
+<code class="docutils literal notranslate"><span class="pre">liveliness</span></code> QoS on both, so the receiver can detect the loss. See <a class="reference internal" href="#safety-rt"><span class="std std-ref">Real-time cycle monitoring and heartbeat</span></a>,
+<a class="reference internal" href="#safety-commands"><span class="std std-ref">Stale and invalid commands</span></a>.</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-odd"><td><p>Velocity and acceleration limits</p></td>
+<td><p>ISO 3691-4 (speed control)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> are enforced on every command, in any mode; they are not safety-rated.
+See <a class="reference internal" href="design.html#velocity-output"><span class="std std-ref">Velocity Output: Robot Limits, Mux and Smoother</span></a>.</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-even"><td><p>Cooperation with the safety channel (protective stop, safely limited speed)</p></td>
+<td><p>ISO 3691-4 (speed and protective fields)</p></td>
+<td><p>Configuring fails if <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> exceed the declared <code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code>. The
+channel’s live state is read: during a protective stop EasyNav commands zero and keeps the
+mission, resuming from zero when released; a safely limited speed cuts the robot limits
+down; without a valid state, the robot is stopped. See <a class="reference internal" href="#safety-mode"><span class="std std-ref">Safety parameters and safety mode</span></a>,
+<a class="reference internal" href="#safety-channel"><span class="std std-ref">Safety channel status</span></a>.</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configuration data: validated, identified, unchanged while running</p></td>
+<td><p>IEC 61508-3 (configuration data)</p></td>
+<td><p>Invalid values fail to configure; a SHA-256 fingerprint of every parameter is logged, and the
+parameters saved and published; in safety mode the configuration is frozen. See
+<a class="reference internal" href="#safety-checks"><span class="std std-ref">Configuration checks</span></a>, <a class="reference internal" href="#safety-fingerprint"><span class="std std-ref">Configuration fingerprint</span></a>.</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-even"><td><p>Timing: real-time scheduling, no page faults in the RT cycle</p></td>
+<td><p>IEC 61508-3 (timing behavior)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SCHED_FIFO</span></code> priority 80, required in safety mode; optional memory locking. Real-time cycles
+that start late are detected and reported, and stop EasyNav in safety mode; each component’s
+rate is monitored. Not yet: a worst-case execution time analysis. See <a class="reference internal" href="#safety-rt"><span class="std std-ref">Real-time cycle monitoring and heartbeat</span></a>,
+<a class="reference internal" href="design.html#component-frequencies"><span class="std std-ref">Frequencies: system cycles and components</span></a>, <a class="reference internal" href="#safety-memory"><span class="std std-ref">Memory locking</span></a>.</p></td>
+<td><p>Partial</p></td>
+</tr>
+<tr class="row-odd"><td><p>Faulty software components</p></td>
+<td><p>IEC 61508-3 (fault detection, fail-safe behavior)</p></td>
+<td><p>Exceptions in any plugin are contained; a failing controller or safety reflex stops the robot.</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-even"><td><p>Fault injection to verify the behavior on failures</p></td>
+<td><p>IEC 61508-3 (fault insertion testing)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Faulty*</span></code> plugins for the controller, localizer, planner and maps manager (throw, hang,
+freeze, stop producing, NaN or absurd outputs), used by the tests. Simulation scenarios with
+sensor and TF drops are planned. See <a class="reference internal" href="#safety-faults"><span class="std std-ref">Fault injection</span></a>.</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stale sensor data and robot pose</p></td>
+<td><p>IEC 61508-3 (defensive programming)</p></td>
+<td><p>Perceptions older than <code class="docutils literal notranslate"><span class="pre">forget_time</span></code> are not used, and the collision reflex brakes if none
+is left; a robot pose too old, or not finite, is an error, and in safety mode the robot
+brakes until it is usable again. See <a class="reference internal" href="#safety-data-age"><span class="std std-ref">Data age</span></a>.</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-even"><td><p>Controlled stop on shutdown and on unrecoverable errors</p></td>
+<td><p>IEC 60204-1 (stop categories)</p></td>
+<td><p>On deactivation or shutdown, EasyNav brakes within the deceleration limits and its last
+command is an exact zero; an unrecoverable error ends EasyNav through the lifecycle’s error
+path.</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-odd"><td><p>Diagnostics and recovery</p></td>
+<td><p>ISO 3691-4 (fault handling)</p></td>
+<td><p>Standard diagnostics in NavState and on <code class="docutils literal notranslate"><span class="pre">diagnostics</span></code>; a diagnostic-driven recovery system
+(see <a class="reference internal" href="recovery.html#recovery"><span class="std std-ref">Recovery System</span></a>).</p></td>
+<td><p>Provided</p></td>
+</tr>
+<tr class="row-even"><td><p>Development process: tests, CI, coverage</p></td>
+<td><p>IEC 61508-3 (verification techniques, annexes A and B)</p></td>
+<td><p>Unit and integration tests in CI on every supported ROS 2 distribution, coverage published.
+Not yet: a coding standard (MISRA C++), mandatory static analysis, 100 % statement coverage,
+requirements traceability.</p></td>
+<td><p>Partial</p></td>
+</tr>
+<tr class="row-odd"><td><p>Information for integrators</p></td>
+<td><p>IEC 61508-3 annex D (safety manual)</p></td>
+<td><p>This page: assumptions of use, safety-related parameters and interfaces.</p></td>
+<td><p>Partial</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>What EasyNav provides, in short:</p>
+<ul class="simple">
+<li><p>the robot is never left executing a stale or invalid velocity command;</p></li>
+<li><p>the configuration is checked, and fingerprinted, every time EasyNav is configured;</p></li>
+<li><p>real-time cycles that start late are detected, and a heartbeat tells others that EasyNav is alive;</p></li>
+<li><p>the safety channel’s state is followed: EasyNav does not fight a protective stop or a safely
+limited speed;</p></li>
+<li><p>old sensor data is not used, and an old robot pose is detected;</p></li>
+<li><p>an optional <strong>safety mode</strong> makes EasyNav stricter, and the process memory can be locked.</p></li>
+</ul>
+<p>The robot limits (<code class="docutils literal notranslate"><span class="pre">controller_node.robot_limits.*</span></code>, see <a class="reference internal" href="design.html#velocity-output"><span class="std std-ref">Velocity Output: Robot Limits, Mux and Smoother</span></a>) <strong>always apply</strong>,
+whatever the safety parameters below say.</p>
+<p>The code lives in <code class="docutils literal notranslate"><span class="pre">safety</span></code> modules (namespace <code class="docutils literal notranslate"><span class="pre">easynav::safety</span></code>), so the nodes only delegate to
+it: <code class="docutils literal notranslate"><span class="pre">safety::CommandGuard</span></code> in <code class="docutils literal notranslate"><span class="pre">easynav_controller</span></code> and <code class="docutils literal notranslate"><span class="pre">safety::SafetySupervisor</span></code> in
+<code class="docutils literal notranslate"><span class="pre">easynav_system</span></code>.</p>
+</section>
+<section id="stale-and-invalid-commands">
+<span id="safety-commands"></span><h2>Stale and invalid commands<a class="headerlink" href="#stale-and-invalid-commands" title="Permalink to this heading"></a></h2>
+<p>Drivers keep executing the last command they received, so <code class="docutils literal notranslate"><span class="pre">ControllerNode</span></code> makes sure it is never
+a stale or invalid one:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">cmd_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span><span class="w">               </span><span class="c1"># s, 0 disables it</span>
+<span class="w">    </span><span class="nt">cmd_vel_keepalive_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">  </span><span class="c1"># s, 0 disables it</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Only new controller commands</strong> are proposed: a command whose stamp and value are the same as the
+previous one is not proposed again. A controller plugin must therefore stamp each new command
+(<code class="docutils literal notranslate"><span class="pre">header.stamp</span></code>).</p></li>
+<li><p><strong>Non-finite commands</strong> (NaN or inf in any axis, from any source) are discarded; the mux uses the
+next valid source.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmd_timeout</span></code>: if no source proposes a new command for this long, the robot brakes to zero
+within the deceleration limits. This covers a controller that stops writing <code class="docutils literal notranslate"><span class="pre">cmd_vel</span></code>, keeps
+writing the same one, or only produces non-finite values. It must be longer than the controller’s
+period (<code class="docutils literal notranslate"><span class="pre">&lt;controller&gt;.rt_freq</span></code>), or configuring fails. If the clock jumps back (e.g. a simulation
+restarts), the timeout counts from the jump.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmd_vel_keepalive_period</span></code>: the current command is republished at least this often, even if it
+does not change. The publisher then also offers <code class="docutils literal notranslate"><span class="pre">deadline</span></code> and <code class="docutils literal notranslate"><span class="pre">liveliness</span></code> QoS of twice this
+period, so a driver or a safety controller that requests a deadline is notified when EasyNav stops
+commanding (e.g. a blocked RT cycle or a dead process). It is off by default because publishing
+zeros at rest would block a lower-priority teleoperation in a <code class="docutils literal notranslate"><span class="pre">twist_mux</span></code>.</p></li>
+<li><p>The velocity publisher keeps only the latest command (depth 1).</p></li>
+</ul>
+<p>A timed-out or discarded command is reported in NavState as <code class="docutils literal notranslate"><span class="pre">diagnostics.cmd_vel</span></code>
+(<code class="docutils literal notranslate"><span class="pre">diagnostic_msgs/DiagnosticStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">controller_node</span></code>), in <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> while the
+problem lasts and back to <code class="docutils literal notranslate"><span class="pre">OK</span></code> when commands flow again. It is written only after the first
+problem, so a recovery system can handle it (see <a class="reference internal" href="recovery.html#recovery"><span class="std std-ref">Recovery System</span></a>).</p>
+</section>
+<section id="configuration-checks">
+<span id="safety-checks"></span><h2>Configuration checks<a class="headerlink" href="#configuration-checks" title="Permalink to this heading"></a></h2>
+<p>In any mode, configuring fails, naming the parameter, when:</p>
+<ul class="simple">
+<li><p>a robot limit is out of range or not finite: velocities <code class="docutils literal notranslate"><span class="pre">max_*</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">min_linear_vel</span> <span class="pre">&lt;=</span> <span class="pre">0</span></code>,
+accelerations and decelerations <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>;</p></li>
+<li><p>a frequency (<code class="docutils literal notranslate"><span class="pre">system_node.rt_freq</span></code> and <code class="docutils literal notranslate"><span class="pre">freq</span></code>, and every plugin’s <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.rt_freq</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.freq</span></code>) is not <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>, a spin time or a robot geometry field is negative, or any of them
+is not finite;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmd_timeout</span></code> or <code class="docutils literal notranslate"><span class="pre">cmd_vel_keepalive_period</span></code> is negative or not finite;</p></li>
+<li><p>the robot limits exceed <code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code>, when given (see below).</p></li>
+</ul>
+<p>A failed configure leaves every EasyNav node unconfigured.</p>
+<p>Every configure also fingerprints the configuration (see <a class="reference internal" href="#safety-fingerprint"><span class="std std-ref">Configuration fingerprint</span></a>).</p>
+</section>
+<section id="safety-parameters-and-safety-mode">
+<span id="safety-mode"></span><h2>Safety parameters and safety mode<a class="headerlink" href="#safety-parameters-and-safety-mode" title="Permalink to this heading"></a></h2>
+<p>The safety parameters are grouped in <code class="docutils literal notranslate"><span class="pre">system_node</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">system_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">safety</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">            </span><span class="c1"># stricter, see below</span>
+<span class="w">      </span><span class="nt">lock_memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">     </span><span class="c1"># lock the process memory, in any mode</span>
+<span class="w">      </span><span class="nt">plc_limits</span><span class="p">:</span><span class="w">            </span><span class="c1"># limits configured in the safety channel (0: not given)</span>
+<span class="w">        </span><span class="nt">max_linear_vel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w">  </span><span class="c1"># m/s</span>
+<span class="w">        </span><span class="nt">max_angular_vel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span><span class="w"> </span><span class="c1"># rad/s</span>
+<span class="w">      </span><span class="nt">heartbeat</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">          </span><span class="c1"># s, 0: off</span>
+<span class="w">      </span><span class="nt">rt_monitor</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">max_period_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span>
+<span class="w">        </span><span class="nt">max_late_cycles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">      </span><span class="nt">status</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">         </span><span class="c1"># s, 0: the safety channel's state is not read</span>
+<span class="w">      </span><span class="nt">max_pose_age</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w">      </span><span class="c1"># s, 0: off</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code></dt><dd><p>Not applied to the commands (<code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> are): they declare the limits the safety channel
+enforces, e.g. the safety PLC’s safely limited speed. <code class="docutils literal notranslate"><span class="pre">robot_limits.max_linear_vel</span></code>,
+<code class="docutils literal notranslate"><span class="pre">|min_linear_vel|</span></code> and <code class="docutils literal notranslate"><span class="pre">max_angular_vel</span></code> may not exceed them, so EasyNav is never configured
+to command more than the channel allows, which would only end in safety stops. Checked whenever
+given; required in safety mode.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">safety.lock_memory</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">system_main</span></code> locks the process memory before activating (see <a class="reference internal" href="#safety-memory"><span class="std std-ref">Memory locking</span></a>). If
+<code class="docutils literal notranslate"><span class="pre">RLIMIT_MEMLOCK</span></code> does not allow it, configuring fails.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">safety.mode</span></code></dt><dd><p>Makes EasyNav stricter. Whatever is unsafe makes configuring fail, instead of a warning or a
+default:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code>, the heartbeat (<code class="docutils literal notranslate"><span class="pre">safety.heartbeat.period</span></code>) and the safety channel’s
+state (<code class="docutils literal notranslate"><span class="pre">safety.status.timeout</span></code>) are required;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">controller_node.cmd_vel_keepalive_period</span></code> and <code class="docutils literal notranslate"><span class="pre">cmd_timeout</span></code> must be <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>;</p></li>
+<li><p>real-time scheduling is required: <code class="docutils literal notranslate"><span class="pre">use_real_time</span></code> must be <code class="docutils literal notranslate"><span class="pre">true</span></code>, and <code class="docutils literal notranslate"><span class="pre">SCHED_FIFO</span></code> must
+be allowed. It is checked on configure, trying it on a temporary thread, so nothing is
+activated without it (see <a class="reference internal" href="../build_install/realtime.html#realtime-setup"><span class="std std-ref">Real-time System Setup</span></a>);</p></li>
+<li><p>once configured, <strong>the configuration is frozen</strong>: any change to a parameter of any EasyNav node
+is rejected (so plugins cannot be switched either), and so are the recovery system’s
+<code class="docutils literal notranslate"><span class="pre">request_reconfigure()</span></code> and <code class="docutils literal notranslate"><span class="pre">request_restore_parameters()</span></code>, which return <code class="docutils literal notranslate"><span class="pre">false</span></code>.
+Setting a parameter to the value it already has is still accepted, and new parameters can only
+be declared while EasyNav configures (it freezes again when done), so it can still go through
+its lifecycle;</p></li>
+<li><p>too many real-time cycles starting late in a row stop EasyNav (see <a class="reference internal" href="#safety-rt"><span class="std std-ref">Real-time cycle monitoring and heartbeat</span></a>).</p></li>
+<li><p>a robot pose too old, or not finite, stops the robot until it is usable again (see
+<a class="reference internal" href="#safety-data-age"><span class="std std-ref">Data age</span></a>).</p></li>
+</ul>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">safety.mode</span></code> and <code class="docutils literal notranslate"><span class="pre">safety.lock_memory</span></code> are independent: whether the memory can be locked depends
+on the hardware and the deployment, not on wanting the rest of the safety mode.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 20.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">mode</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">lock_memory</span></code></p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Default behavior.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Memory locked (or EasyNav does not start); nothing else required.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Full safety mode, without locking the memory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Full safety mode and memory locked (or EasyNav does not start).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="real-time-cycle-monitoring-and-heartbeat">
+<span id="safety-rt"></span><h2>Real-time cycle monitoring and heartbeat<a class="headerlink" href="#real-time-cycle-monitoring-and-heartbeat" title="Permalink to this heading"></a></h2>
+<p><strong>Late cycles.</strong> At the start of each real-time cycle, EasyNav measures, with the monotonic clock
+(not ROS time, so simulation or clock jumps do not fool it), the time since the previous cycle
+started. The expected period is <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">system_node.rt_freq</span></code> (5 ms at 200 Hz). A cycle is <strong>late</strong> if
+it starts more than <code class="docutils literal notranslate"><span class="pre">safety.rt_monitor.max_period_factor</span></code> periods after the previous one (2 by
+default: more than 10 ms):</p>
+<ul class="simple">
+<li><p>after a late cycle the status is <code class="docutils literal notranslate"><span class="pre">LATE</span></code>; after <code class="docutils literal notranslate"><span class="pre">safety.rt_monitor.max_late_cycles</span></code> late cycles
+in a row (10 by default), <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>; a cycle on time makes it <code class="docutils literal notranslate"><span class="pre">OK</span></code> again, so isolated late
+cycles never add up to an error;</p></li>
+<li><p>the status is reported in NavState as <code class="docutils literal notranslate"><span class="pre">diagnostics.rt_cycle</span></code> (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">system_node</span></code>),
+written only on changes and after the first problem: <code class="docutils literal notranslate"><span class="pre">WARN</span></code> for <code class="docutils literal notranslate"><span class="pre">LATE</span></code>, back to <code class="docutils literal notranslate"><span class="pre">OK</span></code>. For
+<code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, in <strong>safety mode</strong> it is an <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> and stops EasyNav: it brakes, ends in
+<code class="docutils literal notranslate"><span class="pre">Finalized</span></code> and <code class="docutils literal notranslate"><span class="pre">system_main</span></code> exits with code 1, since this cycle receives the sensors and
+publishes the commands. Outside safety mode it is only a <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, like a component that does not
+keep its own frequency, which is reported separately (see <a class="reference internal" href="design.html#component-frequencies"><span class="std std-ref">Frequencies: system cycles and components</span></a>);</p></li>
+<li><p>after an activation, the monitor starts over: the time EasyNav was inactive is not a late cycle.</p></li>
+</ul>
+<p><strong>Heartbeat.</strong> With <code class="docutils literal notranslate"><span class="pre">safety.heartbeat.period</span></code> &gt; 0 (required in safety mode), a
+<code class="docutils literal notranslate"><span class="pre">easynav_interfaces/msg/Heartbeat</span></code> is published on <code class="docutils literal notranslate"><span class="pre">easynav_heartbeat</span></code> at that period, <strong>from the
+real-time cycle itself</strong>, so it stops if that cycle does:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>std_msgs/Header header
+uint64 sequence            # +1 per heartbeat: a gap means lost heartbeats
+uint8 rt_status            # RT_OK, RT_LATE or RT_ERROR
+uint64 late_cycles         # late cycles since activation
+bool safety_mode
+string configuration_hash  # see the configuration fingerprint
+</pre></div>
+</div>
+<p>The publisher offers <code class="docutils literal notranslate"><span class="pre">deadline</span></code> and <code class="docutils literal notranslate"><span class="pre">liveliness</span></code> QoS of twice the period: a driver, a safety
+controller or a supervisor that requests a deadline is notified as soon as heartbeats stop, and can
+check that the robot runs the validated configuration. What to do then is up to the receiver.</p>
+<p><strong>What they cover, and what not.</strong> They complement each other: the monitor sees cycles that start
+<strong>late</strong>; the heartbeat lets others see that they do <strong>not start at all</strong>, which the monitor cannot,
+since it runs at the start of the next cycle. The monitor measures the time between cycle starts, not
+how long each cycle takes, and the non-real-time cycle (planning, maps) is not monitored by it: the
+components of both cycles are, by their rate diagnostics (<a class="reference internal" href="design.html#component-frequencies"><span class="std std-ref">Frequencies: system cycles and components</span></a>). Neither is
+a worst-case execution time analysis: they detect delays when they happen, they do not show they
+cannot happen.</p>
+</section>
+<section id="safety-channel-status">
+<span id="safety-channel"></span><h2>Safety channel status<a class="headerlink" href="#safety-channel-status" title="Permalink to this heading"></a></h2>
+<p>The safety channel stops the robot or limits its speed by itself. If EasyNav does not know, it works
+against it: it keeps commanding a robot that cannot move, its evaluators take the stop for a stuck
+robot and start recoveries, and it commands more than the safely limited speed (SLS), which only
+ends in another protective stop. Reading the channel’s state avoids that. EasyNav still does not
+implement any safety function: it only stops getting in the way.</p>
+<p><strong>The message.</strong> With <code class="docutils literal notranslate"><span class="pre">safety.status.timeout</span></code> &gt; 0 (required in safety mode), <code class="docutils literal notranslate"><span class="pre">system_node</span></code>
+subscribes to <code class="docutils literal notranslate"><span class="pre">easynav_safety_status</span></code> (<code class="docutils literal notranslate"><span class="pre">easynav_interfaces/msg/SafetyStatus</span></code>, reliable QoS).
+The integrator publishes it from the safety channel, through whatever bridge the safety PLC or
+scanner needs, faster than the timeout:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>std_msgs/Header header
+bool protective_stop     # the safety channel is stopping, or has stopped, the robot
+bool speed_limited       # a safely limited speed is in force:
+float64 max_linear_vel   #   m/s, either direction (&gt;= 0)
+float64 max_angular_vel  #   rad/s, either direction (&gt;= 0)
+string active_field      # for diagnostics only
+bool muting              # for diagnostics only
+</pre></div>
+</div>
+<p><strong>What EasyNav does</strong>, every real-time cycle:</p>
+<ul class="simple">
+<li><p><strong>protective stop</strong>: the command is zero, above any other source (controller, recoveries taking
+over the motion, overrides). No ramp: the robot is already being stopped. The mission is kept:
+the goal stays active, <code class="docutils literal notranslate"><span class="pre">ControllerStuckEvaluator</span></code> does not take the stop for a stuck robot, and
+when the stop is released navigation goes on by itself, starting <strong>from zero</strong> within the
+acceleration limits, never from what was commanded before;</p></li>
+<li><p><strong>safely limited speed</strong>: the limits enforced are <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> cut down to it
+(<code class="docutils literal notranslate"><span class="pre">max_linear_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">|min_linear_vel|</span></code> and <code class="docutils literal notranslate"><span class="pre">max_angular_vel</span></code>); a lower limit is reached
+braking within the deceleration limits, and controllers that ask
+<code class="docutils literal notranslate"><span class="pre">get_robot_limits()</span></code> see it. When lifted, <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> apply again;</p></li>
+<li><p><strong>no valid status</strong>: none yet, none for longer than the timeout (counted with the monotonic clock
+from its reception, not from its header), or an invalid one (e.g. a negative or NaN limit) is
+treated as a protective stop. In particular, after starting, the robot does not move until the
+first status arrives.</p></li>
+</ul>
+<p>The status is received in the real-time callback group, and applied through NavState
+(<code class="docutils literal notranslate"><span class="pre">safety_status</span></code>, an <code class="docutils literal notranslate"><span class="pre">easynav::SafetyChannelState</span></code>) without allocating memory in the real-time
+cycle. Its changes are reported as <code class="docutils literal notranslate"><span class="pre">diagnostics.safety_status</span></code> (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">system_node</span></code>):
+<code class="docutils literal notranslate"><span class="pre">OK</span></code> (with the speed limit, if any), <code class="docutils literal notranslate"><span class="pre">WARN</span></code> during a protective stop, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> without a valid
+status, with the active field and muting as values.</p>
+<p><strong>Long stops.</strong> <code class="docutils literal notranslate"><span class="pre">easynav_diagnostic_recovery/SafetyChannelEvaluator</span></code>, a recovery evaluator,
+reports a protective stop as <code class="docutils literal notranslate"><span class="pre">WARN</span></code> (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">safety_channel</span></code>), and as <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> once it
+lasts <code class="docutils literal notranslate"><span class="pre">max_stop_time</span></code> seconds (0, the default: never), so a mitigation can handle it, e.g. asking
+for human assistance (see <a class="reference internal" href="recovery.html#recovery"><span class="std std-ref">Recovery System</span></a>).</p>
+<p>Without <code class="docutils literal notranslate"><span class="pre">safety.status.timeout</span></code> (the default outside safety mode), nothing of this applies.</p>
+</section>
+<section id="data-age">
+<span id="safety-data-age"></span><h2>Data age<a class="headerlink" href="#data-age" title="Permalink to this heading"></a></h2>
+<p>Navigating with old data is navigating blind: a sensor driver that dies leaves its last scan
+behind, and a localizer that stops leaves the robot where it was. EasyNav checks the age of both.</p>
+<p><strong>Sensor data.</strong> <code class="docutils literal notranslate"><span class="pre">sensors_node.forget_time</span></code> (s, 1.0 by default, <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>) is the maximum age of a
+perception: every real-time cycle, a perception whose stamp is older than that (ROS time) is marked
+invalid, and every consumer (collision reflex, obstacle filters, controllers, evaluators) ignores
+it until new data arrives. A sensor whose data arrives already older than that (a delayed driver)
+is never used. <code class="docutils literal notranslate"><span class="pre">forget_time</span></code> must be longer than the period of your slowest sensor.</p>
+<ul class="simple">
+<li><p>It is reported as <code class="docutils literal notranslate"><span class="pre">diagnostics.sensors</span></code> (<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">sensors_node</span></code>), on changes only:
+<code class="docutils literal notranslate"><span class="pre">WARN</span></code> with the sensors without data yet (<code class="docutils literal notranslate"><span class="pre">no_data</span></code>) and those whose data is too old
+(<code class="docutils literal notranslate"><span class="pre">stale</span></code>), <code class="docutils literal notranslate"><span class="pre">OK</span></code> when all are up to date.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CollisionSafetyReflex</span></code> <strong>fails safe</strong>: commanded to move with no valid point perception left,
+it cannot check for collisions, so it brakes. Rotating in place is still allowed. In particular,
+after starting, the robot does not move until the first scan arrives.</p></li>
+</ul>
+<p><strong>Robot pose.</strong> <code class="docutils literal notranslate"><span class="pre">system_node.safety.max_pose_age</span></code> (s, 1.0 by default; 0: off) is the maximum age
+of <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>, the localizer’s output (its stamp is usually that of the odometry it used):</p>
+<ul class="simple">
+<li><p>a pose older than that, or not finite (NaN), is an <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> in <code class="docutils literal notranslate"><span class="pre">diagnostics.robot_pose</span></code>
+(<code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">system_node</span></code>), so the recovery system can handle it, and <code class="docutils literal notranslate"><span class="pre">OK</span></code> again once it
+is usable; in any mode;</p></li>
+<li><p>in <strong>safety mode</strong>, motion is also inhibited while it lasts: the command is zero, braking within
+the deceleration limits, whoever proposes it. EasyNav keeps running, and the robot moves again
+as soon as the pose is usable.</p></li>
+</ul>
+<p>Until a localizer publishes a pose, nothing is checked. Some setups need <code class="docutils literal notranslate"><span class="pre">max_pose_age</span></code> raised,
+e.g. a GPS localizer at 1 Hz.</p>
+</section>
+<section id="memory-locking">
+<span id="safety-memory"></span><h2>Memory locking<a class="headerlink" href="#memory-locking" title="Permalink to this heading"></a></h2>
+<p><strong>The problem.</strong> Linux gives each process virtual memory: which of its pages (4 KB each) are really in
+RAM at a given moment is up to the kernel. A page may not be there because it was never touched yet
+(memory is only given when first written), because it was moved to swap, or because it holds code of
+a library (e.g. a plugin’s <code class="docutils literal notranslate"><span class="pre">.so</span></code>), which the kernel can drop even without swap since it can read it
+again from disk. Touching such a page is a <em>page fault</em>: the process stops while the kernel brings the
+page in, which takes microseconds, or milliseconds if it has to read the disk.</p>
+<p><code class="docutils literal notranslate"><span class="pre">SCHED_FIFO</span></code> keeps normal-priority processes from taking the CPU away from the RT cycle (real-time
+threads of higher priority, and interrupts, still can), but a page fault is the RT cycle itself
+waiting for the disk: its priority does not help. For example, after the robot
+has been idle for a while, the kernel may have dropped the pages of the controller; the first cycle
+when it moves again then takes tens of milliseconds instead of one. It is rare, but a bounded response
+time has to hold always, not almost always.</p>
+<p><strong>The solution.</strong> With <code class="docutils literal notranslate"><span class="pre">safety.lock_memory</span></code>, <code class="docutils literal notranslate"><span class="pre">system_main</span></code> calls
+<code class="docutils literal notranslate"><span class="pre">mlockall(MCL_CURRENT</span> <span class="pre">|</span> <span class="pre">MCL_FUTURE)</span></code> before activating: every page of the process, those it has
+and those it gets later, stays in RAM and is never dropped. This is the usual practice in real-time
+ROS 2 (e.g. <code class="docutils literal notranslate"><span class="pre">ros2_control</span></code>).</p>
+<p><strong>Why the limit must be unlimited.</strong> The memory a process may lock is limited by <code class="docutils literal notranslate"><span class="pre">RLIMIT_MEMLOCK</span></code>
+(<code class="docutils literal notranslate"><span class="pre">ulimit</span> <span class="pre">-l</span></code>), often a few MB. With <code class="docutils literal notranslate"><span class="pre">MCL_FUTURE</span></code> and a finite limit, locking may work at first,
+but once EasyNav needs more locked memory than allowed, <strong>new allocations fail</strong>: a <code class="docutils literal notranslate"><span class="pre">new</span></code> throws
+anywhere, e.g. when a large map or point cloud arrives. EasyNav with ROS 2, DDS and its plugins uses
+hundreds of MB, so that would happen almost at once, which is far worse than not locking at all.
+That is why EasyNav checks the limit first and refuses to start instead. To allow it, see
+<a class="reference internal" href="../build_install/realtime.html#realtime-setup"><span class="std std-ref">Real-time System Setup</span></a>, for user sessions, systemd services and Docker.</p>
+<p><strong>The cost.</strong> All of EasyNav’s memory stays in RAM: it cannot go to swap and the system cannot reclaim
+it when short of memory. On a robot with enough RAM it does not matter; on one that is short of it,
+other processes may fail instead of slowing down. That is why it is optional, and independent of
+<code class="docutils literal notranslate"><span class="pre">safety.mode</span></code>: whether it can be done depends on the hardware and the deployment.</p>
+<p><strong>How much it helps.</strong> On a robot without swap and with plenty of RAM the gain is moderate, but code
+pages can still be dropped without swap. In a safety argument it matters to be able to state that
+there are no page faults from evicted pages, rather than to measure it and trust it does not happen.</p>
+</section>
+<section id="configuration-fingerprint">
+<span id="safety-fingerprint"></span><h2>Configuration fingerprint<a class="headerlink" href="#configuration-fingerprint" title="Permalink to this heading"></a></h2>
+<p>Every time EasyNav configures successfully, it computes a fingerprint of its configuration: a
+SHA-256, 64 hex characters. The same fingerprint means the same configuration; changing a single
+parameter gives a different one.</p>
+<p><strong>How it is computed.</strong></p>
+<ol class="arabic">
+<li><p>Every parameter of every EasyNav node (<code class="docutils literal notranslate"><span class="pre">system_node</span></code> and its subnodes) is written, one per line,
+sorted by node and name, with its type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">controller_node</span><span class="o">/</span><span class="n">cmd_timeout</span> <span class="p">(</span><span class="n">double</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">controller_node</span><span class="o">/</span><span class="n">controller_types</span> <span class="p">(</span><span class="n">string_array</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ctrl"</span><span class="p">]</span>
+<span class="n">controller_node</span><span class="o">/</span><span class="n">ctrl</span><span class="o">.</span><span class="n">plugin</span> <span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="o">=</span> <span class="s2">"easynav_simple_controller/SimpleController"</span>
+<span class="o">...</span>
+<span class="n">system_node</span><span class="o">/</span><span class="n">safety</span><span class="o">.</span><span class="n">mode</span> <span class="p">(</span><span class="nb">bool</span><span class="p">)</span> <span class="o">=</span> <span class="n">false</span>
+</pre></div>
+</div>
+</li>
+<li><p>The SHA-256 of that text is computed.</p></li>
+<li><p>It is logged, with the plugins loaded and where the parameters were saved, and left in NavState
+as <code class="docutils literal notranslate"><span class="pre">configuration_hash</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">INFO</span><span class="p">]</span> <span class="p">[</span><span class="n">system_node</span><span class="p">]:</span> <span class="n">Configuration</span> <span class="n">SHA</span><span class="o">-</span><span class="mi">256</span><span class="p">:</span> <span class="mi">1</span><span class="n">c161c031f71</span><span class="o">..</span><span class="mf">.65</span><span class="n">a</span>
+  <span class="p">(</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">ros</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">easynav_configuration_1c161c031f71</span><span class="o">..</span><span class="mf">.65</span><span class="n">a</span><span class="o">.</span><span class="n">txt</span><span class="p">)</span><span class="o">.</span> <span class="n">Plugins</span><span class="p">:</span>
+  <span class="n">controller_node</span><span class="p">:</span> <span class="n">ctrl</span> <span class="p">[</span><span class="n">easynav_simple_controller</span><span class="o">/</span><span class="n">SimpleController</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p><strong>Where the parameters are.</strong> The fingerprint tells whether two configurations differ; the parameters
+behind it tell how:</p>
+<ul>
+<li><p>They are saved in the ROS log directory (<code class="docutils literal notranslate"><span class="pre">$ROS_LOG_DIR</span></code>, else <code class="docutils literal notranslate"><span class="pre">$ROS_HOME/log</span></code>, else
+<code class="docutils literal notranslate"><span class="pre">~/.ros/log</span></code>), in <code class="docutils literal notranslate"><span class="pre">easynav_configuration_&lt;hash&gt;.txt</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">easynav_configuration_&lt;namespace&gt;_&lt;hash&gt;.txt</span></code> for an EasyNav in a namespace (e.g.
+<code class="docutils literal notranslate"><span class="pre">easynav_configuration_robot1_&lt;hash&gt;.txt</span></code> for <code class="docutils literal notranslate"><span class="pre">/robot1</span></code>). A configuration seen before is not
+saved again: same hash, same contents. Saving never stops EasyNav; if it fails, a warning says why.</p></li>
+<li><p>They are also published on the <code class="docutils literal notranslate"><span class="pre">easynav_configuration</span></code> topic (<code class="docutils literal notranslate"><span class="pre">/&lt;namespace&gt;/easynav_configuration</span></code>
+in a namespace; <code class="docutils literal notranslate"><span class="pre">std_msgs/String</span></code>, latched: a subscriber that comes later still gets the last
+one), with a first line <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">SHA-256:</span> <span class="pre">&lt;hash&gt;</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>--once<span class="w"> </span>--qos-durability<span class="w"> </span>transient_local<span class="w"> </span>/easynav_configuration
+</pre></div>
+</div>
+<p>This is handy for a quick look at a remote robot; <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">topic</span> <span class="pre">echo</span></code> prints it quoted, as YAML.</p>
+</li>
+</ul>
+<p>To see what differs between two robots, or between a robot and the validated configuration, compare
+their saved files; they are sorted text, one parameter per line:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>diff<span class="w"> </span>easynav_configuration_&lt;validated_hash&gt;.txt<span class="w"> </span>easynav_configuration_&lt;robot_hash&gt;.txt
+</pre></div>
+</div>
+<p><strong>Why this way.</strong></p>
+<ul class="simple">
+<li><p>The <strong>effective parameters</strong>, not the YAML file: launch arguments, several files and default values
+all end up in what runs. Comments, formatting and order in the YAML do not matter.</p></li>
+<li><p><strong>Default values are included</strong>: if a new version of a plugin changes a default, the fingerprint
+changes even though your YAML did not, because the behavior did.</p></li>
+<li><p><strong>Sorted</strong>: plugins declare their parameters in their own order; sorting gives the same text, and
+fingerprint, for the same configuration.</p></li>
+<li><p><strong>Unambiguous</strong>: two different configurations never give the same text. The type is written, so
+<code class="docutils literal notranslate"><span class="pre">&quot;1&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code> differ; strings are quoted and escaped, so a value cannot fake another line; and
+doubles are written exactly (the shortest text that reads back as the same value), so close values
+never print the same.</p></li>
+<li><p><strong>SHA-256</strong>, not <code class="docutils literal notranslate"><span class="pre">std::hash</span></code>: it is a standard, the same on any machine and compiler, and two
+different configurations will in practice never share it. It can be checked with external tools:
+<code class="docutils literal notranslate"><span class="pre">sha256sum</span></code> of a saved file gives the fingerprint in its name.</p></li>
+</ul>
+<p><strong>What it is for.</strong></p>
+<ul class="simple">
+<li><p>Knowing which configuration a robot runs: compare one log line between two robots, or with a robot
+someone has “tuned” in the field.</p></li>
+<li><p>Tying the validated configuration to the deployed one: record the fingerprint of the configuration
+that passed the tests, and check the robot runs the same. For functional safety, parameters are
+configuration data, and it must be shown that what runs is what was validated.</p></li>
+<li><p>In safety mode the configuration is frozen once configured, so the fingerprint stays valid while
+EasyNav runs. Outside it, a parameter changed at run time is only reflected at the next configure.</p></li>
+</ul>
+<p><strong>What it does not cover.</strong> It fingerprints <strong>parameters</strong>, not the whole system:</p>
+<ul class="simple">
+<li><p><strong>Software</strong>: two robots with the same fingerprint may run different versions of EasyNav or of the
+plugins, if those versions do not change any parameter.</p></li>
+<li><p><strong>Contents of external files</strong>: a map or a calibration file only counts through its path; changing
+the map but not its name leaves the fingerprint unchanged.</p></li>
+</ul>
+</section>
+<section id="fault-injection">
+<span id="safety-faults"></span><h2>Fault injection<a class="headerlink" href="#fault-injection" title="Permalink to this heading"></a></h2>
+<p>To test how EasyNav copes with components that misbehave, fault-injection plugins live next to the
+<code class="docutils literal notranslate"><span class="pre">Dummy*</span></code> plugin of their component. Each one works normally and, after <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault_after</span></code>
+updates, injects the fault in <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault</span></code> (<code class="docutils literal notranslate"><span class="pre">hang</span></code> blocks for <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.hang_time</span></code> s):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 30.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Plugin</p></th>
+<th class="head"><p>Works as</p></th>
+<th class="head"><p>Faults</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_controller/FaultyController</span></code></p></td>
+<td><p>Constant velocity (<code class="docutils literal notranslate"><span class="pre">linear_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">angular_vel</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code>, <code class="docutils literal notranslate"><span class="pre">stop_proposing</span></code>, <code class="docutils literal notranslate"><span class="pre">freeze</span></code>, <code class="docutils literal notranslate"><span class="pre">max_velocity</span></code>, <code class="docutils literal notranslate"><span class="pre">nan</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_localizer/FaultyLocalizer</span></code></p></td>
+<td><p>Fixed pose (<code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">yaw</span></code>), stamped now</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code>, <code class="docutils literal notranslate"><span class="pre">freeze</span></code> (old stamp), <code class="docutils literal notranslate"><span class="pre">stop_publishing</span></code>, <code class="docutils literal notranslate"><span class="pre">nan</span></code>, <code class="docutils literal notranslate"><span class="pre">jump</span></code>
+(<code class="docutils literal notranslate"><span class="pre">jump_distance</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_planner/FaultyPlanner</span></code></p></td>
+<td><p>Straight path to the goal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code>, <code class="docutils literal notranslate"><span class="pre">empty_path</span></code>, <code class="docutils literal notranslate"><span class="pre">freeze</span></code> (old path), <code class="docutils literal notranslate"><span class="pre">nan</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_maps_manager/FaultyMapsManager</span></code></p></td>
+<td><p>No map</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">throw</span></code>, <code class="docutils literal notranslate"><span class="pre">hang</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>EasyNav’s tests use them to check, for each fault, what reaches the robot: a throwing plugin is
+contained, a hanging RT plugin makes cycles late, a hanging non-RT plugin does not delay the
+real-time cycle, an old or NaN pose is reported, and in safety mode stops the robot, an empty path
+is a <code class="docutils literal notranslate"><span class="pre">NoPathEvaluator</span></code> error, and a NaN path never moves the robot.</p>
+<p><code class="docutils literal notranslate"><span class="pre">planner_node</span></code> discards a <code class="docutils literal notranslate"><span class="pre">path</span></code> with a non-finite pose (NaN, inf): it leaves an empty one, so
+no controller follows it, and reports <code class="docutils literal notranslate"><span class="pre">diagnostics.path</span></code> (<code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, <code class="docutils literal notranslate"><span class="pre">hardware_id:</span> <span class="pre">planner</span></code>).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" id="easynav-versions" style="display: none;">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> EasyNav</span>
+    v: <span id="easynav-current-version"></span>
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="easynav-version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script src="../_static/version_switcher.js"></script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

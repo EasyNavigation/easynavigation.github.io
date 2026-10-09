@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patrolling Behavior &mdash; EasyNavigation 0.5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Multi-Robot Navigation with EasyNav" href="costmap_multirobot.html" />
+    <link rel="prev" title="SeReST Controller Fine-Tuning" href="serest_controller.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EasyNavigation
+              <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.5.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-with-apt-recommended">Install with APT (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#other-options">Other options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/binaries.html">Install from Binaries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#release-status">Release status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#install-from-binaries-apt-recommended">Install from binaries (APT, recommended)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#install-via-pixi">Install via Pixi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#package-availability">Package availability</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/realtime.html">Real-time System Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#common-problems">Common problems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#uninstall-clean">Uninstall / clean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#running-the-tests">Running the tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#setting-up">Setting up</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#sourcing-the-workspace">Sourcing the workspace</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#first-run-the-simple-stack">First run: the Simple stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#launching-the-simulator">Launching the simulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#navigating-with-the-costmap-stack">Navigating with the Costmap stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#all-in-one-launch-file">All in one launch file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../playgrounds/index.html">PlayGrounds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../playgrounds/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../playgrounds/index.html#real-robots">Real robots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/kobuki.html">Kobuki PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#multirobot">Multirobot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#launch-files">Launch files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#package-layout">Package layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/summit.html">Summit PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#launch-files">Launch files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#building-maps-of-a-world">Building maps of a world</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#package-layout">Package layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/tiago.html">TIAGo PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#packages">Packages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/omni.html">Omni PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launch-files">Launch files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">EasyNav Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#supported-ros-2-versions">Supported ROS 2 versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#planners">🧭 Planners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#recoveries">🛟 Recoveries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#other-plugins">Other plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTos and Practical Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#overview">📘 Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#costmap-stack">Costmap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="costmap_mapping.html">Mapping with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#saving-the-map">Saving the map</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating.html">Navigating with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#running-it">Running it</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#the-parameter-file">The Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#adapting-it-to-your-robot">Adapting it to your robot</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mhamcl_localization.html">Global Localization and Kidnapping Recovery with MH-AMCL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#how-it-works">How it works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#configuring-the-localizer">Configuring the Localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#testing-global-localization-and-kidnapping">Testing Global Localization and Kidnapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#tuning">Tuning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#hardware-setup">Hardware Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#ros-2-setup-on-the-raspberry-pi">ROS 2 Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#easynav-setup-on-the-raspberry-pi">EasyNav Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#mapping">Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#navmap-bonxai-stack">NavMap + Bonxai Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="navmap_navigating.html">Navigating with the NavMap + Bonxai Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#the-two-scenarios">The two scenarios</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#the-parameter-file">The parameter file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#building-the-maps">Building the maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#simple-stack">Simple Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_mapping.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#saving-and-reusing-the-map">Saving and Reusing the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#the-parameter-file">The Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#controllers">Controllers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#recommended-tuning-order">Recommended Tuning Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#behaviors">Behaviors</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Patrolling Behavior</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#waypoint-configuration">Waypoint Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#launching-navigation">Launching Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-explanation-python-version">Code Explanation (Python Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#general">General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="costmap_multirobot.html">Multi-Robot Navigation with EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#topic-naming-and-tf-management">1. Topic Naming and TF Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#launching-in-simulation">2. Launching in Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#example-parameters">3. Example Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#tips-gotchas">Tips &amp; Gotchas</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ros2_easynav_cli.html">ros2 easynav — EasyNav CLI Extensions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#name">NAME</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#synopsis">SYNOPSIS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#description">DESCRIPTION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#commands">COMMANDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#options-common">OPTIONS (Common)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#exit-status">EXIT STATUS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#examples">EXAMPLES</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#see-also">SEE ALSO</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docker_crossdistro.html">Docker Setup with Zenoh Bridge (Cross-Distro)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-1-building-the-docker-image-rolling">Step 1: Building the Docker Image (Rolling)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-2-preparing-the-robot-host">Step 2: Preparing the Robot (Host)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-3-running-the-container">Step 3: Running the Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="custom_perception_plugin.html">Writing a Custom Perception Plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#when-do-you-need-a-custom-perception-plugin">When do you need a custom perception plugin?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#the-perceptionhandler-interface">The <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#walking-through-altimuperceptionhandler">Walking through <code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#registering-the-plugin">Registering the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#using-the-plugin">Using the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#writing-a-plugin-for-a-genuinely-new-message-type">Writing a plugin for a genuinely new message type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#deprecated">Deprecated</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#robot-geometry">Robot Geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/design.html#frequencies-system-cycles-and-components">Frequencies: system cycles and components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#grouping-sensors-group-is-optional-and-changes-visibility">Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/perceptions.html#filter-min-bounds-max-bounds-lazy-post-fuse"><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/perceptions.html#collapse-collapse-dims-lazy"><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#other-perception-types">Other Perception Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#protocol-description">Protocol Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#using-goalmanagerclient">Using <cite>GoalManagerClient</cite></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/recovery.html">Recovery System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-recovery-node">The Recovery Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-base-class-recoverymanagerbase">The Base Class: <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#moving-the-robot">Moving the Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#system-actions">System Actions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#controlled-shutdown">Controlled shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#reconfiguration-as-a-mitigation">Reconfiguration as a mitigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#available-recovery-systems">Available Recovery Systems</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#dummyrecoverymanager">DummyRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#simplerecoverymanager">SimpleRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#diagnosticrecoverymanager">DiagnosticRecoveryManager</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/safety.html">Safety</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#summary">Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#stale-and-invalid-commands">Stale and invalid commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#configuration-checks">Configuration checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#real-time-cycle-monitoring-and-heartbeat">Real-time cycle monitoring and heartbeat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#safety-channel-status">Safety channel status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#data-age">Data age</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#memory-locking">Memory locking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#configuration-fingerprint">Configuration fingerprint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#fault-injection">Fault injection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../migration_guide/index.html">Migration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#what-stays-the-same">What stays the same</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#nav2-and-easynav-piece-by-piece">Nav2 and EasyNav, piece by piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-1-install-easynav">Step 1: Install EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-2-your-map">Step 2: Your map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-3-the-parameter-file">Step 3: The parameter file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-4-run-it">Step 4: Run it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-5-send-goals-from-your-applications">Step 5: Send goals from your applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-a-the-nav2-bridge">Option A: the Nav2 bridge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-b-goalmanagerclient">Option B: GoalManagerClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-c-just-a-pose">Option C: just a pose</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#differences-to-keep-in-mind">Differences to keep in mind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">HowTos and Practical Guides</a></li>
+      <li class="breadcrumb-item active">Patrolling Behavior</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="patrolling-behavior">
+<span id="id1"></span><h1>Patrolling Behavior<a class="headerlink" href="#patrolling-behavior" title="Permalink to this heading"></a></h1>
+<p>This HowTo demonstrates how to run a <strong>patrolling behavior</strong> on top of EasyNav’s navigation stack.
+The robot repeatedly navigates through a predefined list of waypoints, automatically looping back
+to the first point when the sequence finishes.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#setup" id="id3">Setup</a></p></li>
+<li><p><a class="reference internal" href="#waypoint-configuration" id="id4">Waypoint Configuration</a></p></li>
+<li><p><a class="reference internal" href="#launching-navigation" id="id5">Launching Navigation</a></p></li>
+<li><p><a class="reference internal" href="#running-the-patrolling-behavior" id="id6">Running the Patrolling Behavior</a></p></li>
+<li><p><a class="reference internal" href="#code-explanation-c-version" id="id7">Code Explanation (C++ Version)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#loading-waypoints" id="id8">1. Loading waypoints</a></p></li>
+<li><p><a class="reference internal" href="#the-state-machine" id="id9">2. The state machine</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#code-explanation-python-version" id="id10">Code Explanation (Python Version)</a></p></li>
+<li><p><a class="reference internal" href="#notes" id="id11">Notes</a></p></li>
+</ul>
+</nav>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<div align="center">
+  <iframe width="450" height="300" src="https://www.youtube.com/embed/yN80Dqan5rE" frameborder="0" allowfullscreen></iframe>
+</div><p>The <strong>Patrolling Behavior</strong> shows how to send navigation goals programmatically, monitor their
+completion, and reset the navigation state to repeat missions, using the <code class="docutils literal notranslate"><span class="pre">GoalManagerClient</span></code>
+interface exposed by <code class="docutils literal notranslate"><span class="pre">easynav_system</span></code>. It ships as a real, ready-to-run package, in two
+equivalent flavors, both under the <code class="docutils literal notranslate"><span class="pre">easynav_behaviors</span></code> repository:</p>
+<ul class="simple">
+<li><p><strong>C++</strong>: <code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior</span></code> — a plain <code class="docutils literal notranslate"><span class="pre">rclcpp::Node</span></code> and a <code class="docutils literal notranslate"><span class="pre">patrolling_main</span></code>
+executable.</p></li>
+<li><p><strong>Python</strong>: <code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior_py</span></code> — the same behavior built on <code class="docutils literal notranslate"><span class="pre">rclpy</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">easynav_goalmanager_py</span></code> client module.</p></li>
+</ul>
+<p>Both implementations poll the same underlying client API and follow the same state machine; pick
+whichever language fits your own application.</p>
+<p>—</p>
+</section>
+<section id="setup">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>Build EasyNav and the Kobuki PlayGround as described in <a class="reference internal" href="../getting_started/index.html"><span class="doc">Getting Started</span></a>. The
+waypoints of the example are in the Kobuki PlayGround’s world.</p>
+<p><code class="docutils literal notranslate"><span class="pre">easynav_behaviors</span></code> provides both patrolling packages. It is example content, only distributed
+as source: clone it into <code class="docutils literal notranslate"><span class="pre">~/easynav_ws/src</span></code> and build it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws/src
+git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/EasyNavigation/easynav_behaviors.git
+<span class="nb">cd</span><span class="w"> </span>~/easynav_ws
+rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
+colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install<span class="w"> </span>--cmake-args<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release
+</pre></div>
+</div>
+<p>—</p>
+</section>
+<section id="waypoint-configuration">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Waypoint Configuration</a><a class="headerlink" href="#waypoint-configuration" title="Permalink to this heading"></a></h2>
+<p>Both packages read the same parameter shape. Waypoints are declared as a list of <strong>names</strong> under
+<code class="docutils literal notranslate"><span class="pre">waypoints:</span></code>, and each name is itself a parameter holding a 3-element <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span> <span class="pre">yaw]</span></code> array
+(<code class="docutils literal notranslate"><span class="pre">yaw</span></code> in radians) — not a list of <code class="docutils literal notranslate"><span class="pre">{x,</span> <span class="pre">y,</span> <span class="pre">yaw}</span></code> maps.</p>
+<p>Real, shipped example (<code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior/config/patrolling_params.yaml</span></code>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">patrolling_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">frame_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+<span class="w">    </span><span class="nt">waypoints</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">wp1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">wp2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">wp3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">wp4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">wp5</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">wp1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">4.23</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-3.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">wp2</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-1.47</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-4.08</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.57</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">wp3</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-6.76</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-3.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3.14</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">wp4</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-7.36</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.38</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">wp5</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The Python package ships its own, slightly different example under
+<code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior_py/config/patrolling_params.yaml</span></code> (same shape, different waypoints,
+and <code class="docutils literal notranslate"><span class="pre">use_sim_time:</span> <span class="pre">false</span></code> by default). Edit either file’s <code class="docutils literal notranslate"><span class="pre">waypoints:</span></code> list and the
+corresponding <code class="docutils literal notranslate"><span class="pre">wpN:</span></code> entries to define your own route.</p>
+<p>—</p>
+</section>
+<section id="launching-navigation">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Launching Navigation</a><a class="headerlink" href="#launching-navigation" title="Permalink to this heading"></a></h2>
+<p>Before starting the patrol, launch the simulation and the Costmap navigation stack (see
+<a class="reference internal" href="costmap_navigating.html"><span class="doc">Navigating with the Costmap Stack</span></a>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>easynav_costmap_rpp.launch.yaml
+</pre></div>
+</div>
+<p>—</p>
+</section>
+<section id="running-the-patrolling-behavior">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Running the Patrolling Behavior</a><a class="headerlink" href="#running-the-patrolling-behavior" title="Permalink to this heading"></a></h2>
+<p><strong>C++ version.</strong> <code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior</span></code> builds a <code class="docutils literal notranslate"><span class="pre">patrolling_main</span></code> executable, but does
+<strong>not</strong> currently ship a working launch file (its <code class="docutils literal notranslate"><span class="pre">launch/</span></code> directory only contains an empty
+placeholder file). Run it directly with its own parameter file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_patrolling_behavior<span class="w"> </span>patrolling_main<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>~/easynav_ws/src/easynav_behaviors/easynav_patrolling_behavior/config/patrolling_params.yaml
+</pre></div>
+</div>
+<p><strong>Python version.</strong> <code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior_py</span></code> does ship a launch file that loads its own
+config automatically:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_patrolling_behavior_py<span class="w"> </span>patrolling.launch.py
+</pre></div>
+</div>
+<p>—</p>
+</section>
+<section id="code-explanation-c-version">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Code Explanation (C++ Version)</a><a class="headerlink" href="#code-explanation-c-version" title="Permalink to this heading"></a></h2>
+<p>The C++ node (<code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior/src/easynav_patrolling_behavior/PatrollingNode.cpp</span></code>)
+runs its own simple state machine — <code class="docutils literal notranslate"><span class="pre">PatrolState</span> <span class="pre">{IDLE,</span> <span class="pre">PATROLLING,</span> <span class="pre">FINISHED,</span> <span class="pre">ERROR}</span></code> — on a
+100 ms timer, layered on top of the real <code class="docutils literal notranslate"><span class="pre">easynav_system::GoalManagerClient</span></code> API
+(<code class="docutils literal notranslate"><span class="pre">easynav_system/include/easynav_system/GoalManagerClient.hpp</span></code>).</p>
+<section id="loading-waypoints">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">1. Loading waypoints</a><a class="headerlink" href="#loading-waypoints" title="Permalink to this heading"></a></h3>
+<p>On the first tick, <code class="docutils literal notranslate"><span class="pre">initialize()</span></code> reads <code class="docutils literal notranslate"><span class="pre">waypoints</span></code> and <code class="docutils literal notranslate"><span class="pre">frame_id</span></code>, then reads each named
+waypoint’s <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span> <span class="pre">yaw]</span></code> array and converts it into a <code class="docutils literal notranslate"><span class="pre">geometry_msgs::msg::PoseStamped</span></code>,
+appended to a <code class="docutils literal notranslate"><span class="pre">nav_msgs::msg::Goals</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">waypoints</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">wp_coord</span><span class="p">;</span>
+<span class="w">  </span><span class="n">declare_parameter</span><span class="p">(</span><span class="n">wp</span><span class="p">,</span><span class="w"> </span><span class="n">wp_coord</span><span class="p">);</span>
+<span class="w">  </span><span class="n">get_parameter</span><span class="p">(</span><span class="n">wp</span><span class="p">,</span><span class="w"> </span><span class="n">wp_coord</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PoseStamped</span><span class="w"> </span><span class="n">wp_pose</span><span class="p">;</span>
+<span class="w">  </span><span class="n">wp_pose</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frame_id_</span><span class="p">;</span>
+<span class="w">  </span><span class="n">wp_pose</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp_coord</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">  </span><span class="n">wp_pose</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wp_coord</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">  </span><span class="n">wp_pose</span><span class="p">.</span><span class="n">pose</span><span class="p">.</span><span class="n">orientation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">orientationAroundZAxis</span><span class="p">(</span><span class="n">wp_coord</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+<span class="w">  </span><span class="n">goals_</span><span class="p">.</span><span class="n">goals</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">wp_pose</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="the-state-machine">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">2. The state machine</a><a class="headerlink" href="#the-state-machine" title="Permalink to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">state_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">PatrolState</span><span class="o">::</span><span class="no">IDLE</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">initialized_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">gm_client_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GoalManagerClient</span><span class="o">::</span><span class="n">make_shared</span><span class="p">(</span><span class="n">shared_from_this</span><span class="p">());</span>
+<span class="w">      </span><span class="n">initialize</span><span class="p">();</span>
+<span class="w">      </span><span class="n">initialized_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">gm_client_</span><span class="o">-&gt;</span><span class="n">send_goals</span><span class="p">(</span><span class="n">goals_</span><span class="p">);</span>
+<span class="w">    </span><span class="n">state_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PatrolState</span><span class="o">::</span><span class="n">PATROLLING</span><span class="p">;</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">PatrolState</span><span class="o">::</span><span class="no">PATROLLING</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">nav_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gm_client_</span><span class="o">-&gt;</span><span class="n">get_state</span><span class="p">();</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">nav_state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">GoalManagerClient</span><span class="o">::</span><span class="no">State</span><span class="o">::</span><span class="no">NAVIGATION_REJECTED</span><span class="p">:</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">GoalManagerClient</span><span class="o">::</span><span class="no">State</span><span class="o">::</span><span class="no">NAVIGATION_FAILED</span><span class="p">:</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">GoalManagerClient</span><span class="o">::</span><span class="no">State</span><span class="o">::</span><span class="no">NAVIGATION_CANCELLED</span><span class="p">:</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">GoalManagerClient</span><span class="o">::</span><span class="no">State</span><span class="o">::</span><span class="no">ERROR</span><span class="p">:</span>
+<span class="w">        </span><span class="n">state_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PatrolState</span><span class="o">::</span><span class="n">ERROR</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">GoalManagerClient</span><span class="o">::</span><span class="no">State</span><span class="o">::</span><span class="no">NAVIGATION_FINISHED</span><span class="p">:</span>
+<span class="w">        </span><span class="n">state_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PatrolState</span><span class="o">::</span><span class="n">FINISHED</span><span class="p">;</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">      </span><span class="k">default</span><span class="o">:</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w">  </span><span class="c1">// still SENT_GOAL / ACCEPTED_AND_NAVIGATING: keep waiting</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">PatrolState</span><span class="o">::</span><span class="no">FINISHED</span><span class="p">:</span>
+<span class="w">    </span><span class="n">gm_client_</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">();</span>
+<span class="w">    </span><span class="n">state_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PatrolState</span><span class="o">::</span><span class="n">IDLE</span><span class="p">;</span><span class="w">  </span><span class="c1">// loops back: goals are re-sent next tick</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">PatrolState</span><span class="o">::</span><span class="no">ERROR</span><span class="p">:</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span><span class="w">  </span><span class="c1">// terminal: no automatic recovery</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note the node’s own <code class="docutils literal notranslate"><span class="pre">PatrolState</span></code> (a simple IDLE/PATROLLING/FINISHED/ERROR mission-level status)
+is distinct from <code class="docutils literal notranslate"><span class="pre">GoalManagerClient::State</span></code>, the finer-grained request/accept/feedback protocol
+described in <a class="reference internal" href="../developer_guide/commanding.html#commanding"><span class="std std-ref">Sending Navigation Commands to EasyNav</span></a>. <code class="docutils literal notranslate"><span class="pre">PatrollingNode</span></code> polls the latter to drive the former. Also note
+that reaching <code class="docutils literal notranslate"><span class="pre">PatrolState::ERROR</span></code> is a dead end in the current implementation — there is no
+automatic retry; you would need to extend <code class="docutils literal notranslate"><span class="pre">cycle()</span></code> yourself (e.g. transition back to <code class="docutils literal notranslate"><span class="pre">IDLE</span></code>)
+if you want the patrol to recover from a failed/rejected/cancelled goal instead of stopping.</p>
+<p>—</p>
+</section>
+</section>
+<section id="code-explanation-python-version">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Code Explanation (Python Version)</a><a class="headerlink" href="#code-explanation-python-version" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior_py/patrolling_node.py</span></code> mirrors the same four-state machine using
+<code class="docutils literal notranslate"><span class="pre">easynav_goalmanager_py</span></code>’s <code class="docutils literal notranslate"><span class="pre">GoalManagerClient</span></code>/<code class="docutils literal notranslate"><span class="pre">ClientState</span></code>, on a 0.2 s timer. Two details
+differ from the C++ version:</p>
+<ul class="simple">
+<li><p>In <code class="docutils literal notranslate"><span class="pre">PatrolState.IDLE</span></code>, it keeps <strong>resending</strong> <code class="docutils literal notranslate"><span class="pre">send_goals()</span></code> on every tick until the state
+becomes <code class="docutils literal notranslate"><span class="pre">ClientState.ACCEPTED_AND_NAVIGATING</span></code>, rather than sending once and immediately moving
+to <code class="docutils literal notranslate"><span class="pre">PATROLLING</span></code>.</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">PatrolState.FINISHED</span></code>, it calls <code class="docutils literal notranslate"><span class="pre">reset()</span></code> repeatedly until <code class="docutils literal notranslate"><span class="pre">get_state()</span></code> reports
+<code class="docutils literal notranslate"><span class="pre">ClientState.IDLE</span></code>, only then moving back to <code class="docutils literal notranslate"><span class="pre">IDLE</span></code> itself — instead of resetting once and
+assuming it succeeded.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span>
+    <span class="k">case</span> <span class="n">PatrolState</span><span class="o">.</span><span class="n">IDLE</span><span class="p">:</span>
+        <span class="n">nav_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gm</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nav_state</span> <span class="o">!=</span> <span class="n">ClientState</span><span class="o">.</span><span class="n">ACCEPTED_AND_NAVIGATING</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_goals</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_clock</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">to_msg</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gm</span><span class="o">.</span><span class="n">send_goals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_goals</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">PatrolState</span><span class="o">.</span><span class="n">PATROLLING</span>
+    <span class="k">case</span> <span class="n">PatrolState</span><span class="o">.</span><span class="n">PATROLLING</span><span class="p">:</span>
+        <span class="n">nav_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gm</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nav_state</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ClientState</span><span class="o">.</span><span class="n">NAVIGATION_REJECTED</span><span class="p">,</span> <span class="n">ClientState</span><span class="o">.</span><span class="n">NAVIGATION_FAILED</span><span class="p">,</span>
+                         <span class="n">ClientState</span><span class="o">.</span><span class="n">NAVIGATION_CANCELLED</span><span class="p">,</span> <span class="n">ClientState</span><span class="o">.</span><span class="n">ERROR</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">PatrolState</span><span class="o">.</span><span class="n">ERROR</span>
+        <span class="k">elif</span> <span class="n">nav_state</span> <span class="o">==</span> <span class="n">ClientState</span><span class="o">.</span><span class="n">NAVIGATION_FINISHED</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">PatrolState</span><span class="o">.</span><span class="n">FINISHED</span>
+    <span class="k">case</span> <span class="n">PatrolState</span><span class="o">.</span><span class="n">FINISHED</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gm</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="o">!=</span> <span class="n">ClientState</span><span class="o">.</span><span class="n">IDLE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gm</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">PatrolState</span><span class="o">.</span><span class="n">IDLE</span>
+    <span class="k">case</span> <span class="n">PatrolState</span><span class="o">.</span><span class="n">ERROR</span><span class="p">:</span>
+        <span class="k">pass</span>  <span class="c1"># terminal here too</span>
+</pre></div>
+</div>
+<p>—</p>
+</section>
+<section id="notes">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>The <strong>patrolling behavior</strong> is a simple example of commanding navigation goals
+programmatically. It can be extended to perform inspection, delivery, or monitoring tasks.</p></li>
+<li><p>The C++ (<code class="docutils literal notranslate"><span class="pre">easynav_system::GoalManagerClient</span></code>) and Python (<code class="docutils literal notranslate"><span class="pre">easynav_goalmanager_py</span></code>) client
+APIs mirror the same request/accept/feedback/result protocol, so both behavior nodes follow the
+same underlying state machine even though their own IDLE/FINISHED handling loops differ
+slightly (see above).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset()</span></code> may only be called from one of the terminal <code class="docutils literal notranslate"><span class="pre">GoalManagerClient</span></code> states
+(<code class="docutils literal notranslate"><span class="pre">NAVIGATION_FINISHED</span></code>, <code class="docutils literal notranslate"><span class="pre">NAVIGATION_REJECTED</span></code>, <code class="docutils literal notranslate"><span class="pre">NAVIGATION_FAILED</span></code>,
+<code class="docutils literal notranslate"><span class="pre">NAVIGATION_CANCELLED</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>); calling it earlier is logged as an error and ignored.</p></li>
+<li><p>The YAML file defines the patrol route; it can be edited live or generated from recorded
+positions.</p></li>
+<li><p>Ensure that all waypoints are reachable within the current map and costmap configuration.</p></li>
+<li><p>The Python package’s <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> declares an <code class="docutils literal notranslate"><span class="pre">exec_depend</span></code> on <code class="docutils literal notranslate"><span class="pre">easynav_goalmanager_py</span></code>,
+but that is the <em>Python import name</em>, not a separate ROS package — the actual package providing
+it is <code class="docutils literal notranslate"><span class="pre">easynav_support_py</span></code>. If <code class="docutils literal notranslate"><span class="pre">rosdep</span></code>/<code class="docutils literal notranslate"><span class="pre">colcon</span></code> complain about a missing
+<code class="docutils literal notranslate"><span class="pre">easynav_goalmanager_py</span></code> package, make sure <code class="docutils literal notranslate"><span class="pre">easynav_support_py</span></code> is built and sourced.</p></li>
+</ul>
+<p>—</p>
+<p>With this setup, the robot will continuously patrol between the defined waypoints, showcasing how EasyNav behaviors can coordinate higher-level missions on top of the navigation stack.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" id="easynav-versions" style="display: none;">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> EasyNav</span>
+    v: <span id="easynav-current-version"></span>
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="easynav-version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script src="../_static/version_switcher.js"></script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

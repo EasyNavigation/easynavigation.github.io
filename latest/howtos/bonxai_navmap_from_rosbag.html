@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building Bonxai and NavMap Maps from a Recorded ROSBag &mdash; EasyNavigation latest documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Mapping with SLAM Toolbox and EasyNav" href="simple_mapping.html" />
+    <link rel="prev" title="Navigating with the NavMap + Bonxai Stack" href="navmap_navigating.html" />
+
+<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: orange" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            EasyNavigation
+              <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-with-apt-recommended">Install with APT (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#other-options">Other options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/binaries.html">Install from Binaries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#release-status">Release status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#install-from-binaries-apt-recommended">Install from binaries (APT, recommended)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#install-via-pixi">Install via Pixi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#package-availability">Package availability</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/realtime.html">Real-time System Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../build_install/troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#common-problems">Common problems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#uninstall-clean">Uninstall / clean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#running-the-tests">Running the tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#setting-up">Setting up</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#sourcing-the-workspace">Sourcing the workspace</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#first-run-the-simple-stack">First run: the Simple stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#launching-the-simulator">Launching the simulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#navigating-with-the-costmap-stack">Navigating with the Costmap stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#all-in-one-launch-file">All in one launch file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#next-steps">Next steps</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../playgrounds/index.html">PlayGrounds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../playgrounds/index.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../playgrounds/index.html#real-robots">Real robots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/kobuki.html">Kobuki PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#multirobot">Multirobot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#launch-files">Launch files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#package-layout">Package layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/summit.html">Summit PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#launch-files">Launch files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#building-maps-of-a-world">Building maps of a world</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#package-layout">Package layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/tiago.html">TIAGo PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#packages">Packages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/omni.html">Omni PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#simulation-only">Simulation only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launch-files">Launch files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">EasyNav Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#supported-ros-2-versions">Supported ROS 2 versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#repository-overview">Repository overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#planners">🧭 Planners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#recoveries">🛟 Recoveries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#other-plugins">Other plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTos and Practical Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#overview">📘 Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#costmap-stack">Costmap Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="costmap_mapping.html">Mapping with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#saving-the-map">Saving the map</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating.html">Navigating with the Costmap Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#running-it">Running it</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#the-parameter-file">The Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#adapting-it-to-your-robot">Adapting it to your robot</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mhamcl_localization.html">Global Localization and Kidnapping Recovery with MH-AMCL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#how-it-works">How it works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#configuring-the-localizer">Configuring the Localizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#testing-global-localization-and-kidnapping">Testing Global Localization and Kidnapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#tuning">Tuning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="costmap_navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#hardware-setup">Hardware Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#ros-2-setup-on-the-raspberry-pi">ROS 2 Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#easynav-setup-on-the-raspberry-pi">EasyNav Setup on the Raspberry Pi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#mapping">Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#navmap-bonxai-stack">NavMap + Bonxai Stack</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="navmap_navigating.html">Navigating with the NavMap + Bonxai Stack</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#the-two-scenarios">The two scenarios</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#the-parameter-file">The parameter file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#building-the-maps">Building the maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#play-the-rosbag">2. Play the ROSBag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navmap-build-parameters">4. NavMap Build Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#visualize-in-rviz2">5. Visualize in RViz2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#save-the-maps">6. Save the Maps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#summary">7. Summary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#simple-stack">Simple Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_mapping.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#saving-and-reusing-the-map">Saving and Reusing the Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#the-parameter-file">The Parameter File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#controllers">Controllers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#recommended-tuning-order">Recommended Tuning Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#faq">FAQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#behaviors">Behaviors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="patrolling_behavior.html">Patrolling Behavior</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#waypoint-configuration">Waypoint Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#code-explanation-python-version">Code Explanation (Python Version)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#general">General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="costmap_multirobot.html">Multi-Robot Navigation with EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#topic-naming-and-tf-management">1. Topic Naming and TF Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#launching-in-simulation">2. Launching in Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#example-parameters">3. Example Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#tips-gotchas">Tips &amp; Gotchas</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ros2_easynav_cli.html">ros2 easynav — EasyNav CLI Extensions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#name">NAME</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#synopsis">SYNOPSIS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#description">DESCRIPTION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#commands">COMMANDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#options-common">OPTIONS (Common)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#exit-status">EXIT STATUS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#examples">EXAMPLES</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#see-also">SEE ALSO</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docker_crossdistro.html">Docker Setup with Zenoh Bridge (Cross-Distro)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-1-building-the-docker-image-rolling">Step 1: Building the Docker Image (Rolling)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-2-preparing-the-robot-host">Step 2: Preparing the Robot (Host)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-3-running-the-container">Step 3: Running the Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="custom_perception_plugin.html">Writing a Custom Perception Plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#when-do-you-need-a-custom-perception-plugin">When do you need a custom perception plugin?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#the-perceptionhandler-interface">The <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#walking-through-altimuperceptionhandler">Walking through <code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#registering-the-plugin">Registering the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#using-the-plugin">Using the plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#writing-a-plugin-for-a-genuinely-new-message-type">Writing a plugin for a genuinely new message type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#deprecated">Deprecated</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gridmap_navigating.html">Outdoor Navigation with GridMaps (Summit)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-the-simulator">1. Launch the Simulator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridmap_navigating.html#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#robot-geometry">Robot Geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/design.html#frequencies-system-cycles-and-components">Frequencies: system cycles and components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/blackboard.html">How to use the NavState BlackBoard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#basic-api">Basic API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#best-practices">Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/perceptions.html">Sensor Input and Perception Handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#grouping-sensors-group-is-optional-and-changes-visibility">Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#operation-summary">Operation Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/perceptions.html#filter-min-bounds-max-bounds-lazy-post-fuse"><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/perceptions.html#collapse-collapse-dims-lazy"><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#fused-visualization">Fused Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#other-perception-types">Other Perception Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#protocol-description">Protocol Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#using-goalmanagerclient">Using <cite>GoalManagerClient</cite></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/recovery.html">Recovery System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-recovery-node">The Recovery Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-base-class-recoverymanagerbase">The Base Class: <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#moving-the-robot">Moving the Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#system-actions">System Actions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#controlled-shutdown">Controlled shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#reconfiguration-as-a-mitigation">Reconfiguration as a mitigation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#available-recovery-systems">Available Recovery Systems</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#dummyrecoverymanager">DummyRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#simplerecoverymanager">SimpleRecoveryManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#diagnosticrecoverymanager">DiagnosticRecoveryManager</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/safety.html">Safety</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#summary">Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#stale-and-invalid-commands">Stale and invalid commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#configuration-checks">Configuration checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#real-time-cycle-monitoring-and-heartbeat">Real-time cycle monitoring and heartbeat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#safety-channel-status">Safety channel status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#data-age">Data age</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#memory-locking">Memory locking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#configuration-fingerprint">Configuration fingerprint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#fault-injection">Fault injection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../migration_guide/index.html">Migration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#what-stays-the-same">What stays the same</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#nav2-and-easynav-piece-by-piece">Nav2 and EasyNav, piece by piece</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-1-install-easynav">Step 1: Install EasyNav</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-2-your-map">Step 2: Your map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-3-the-parameter-file">Step 3: The parameter file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-4-run-it">Step 4: Run it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-5-send-goals-from-your-applications">Step 5: Send goals from your applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-a-the-nav2-bridge">Option A: the Nav2 bridge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-b-goalmanagerclient">Option B: GoalManagerClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-c-just-a-pose">Option C: just a pose</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#differences-to-keep-in-mind">Differences to keep in mind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EasyNavigation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+
+<span style="float: right;" >
+    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
+</span>
+
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">HowTos and Practical Guides</a></li>
+      <li class="breadcrumb-item active">Building Bonxai and NavMap Maps from a Recorded ROSBag</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="building-bonxai-and-navmap-maps-from-a-recorded-rosbag">
+<span id="bonxai-navmap-from-rosbag"></span><h1>Building Bonxai and NavMap Maps from a Recorded ROSBag<a class="headerlink" href="#building-bonxai-and-navmap-maps-from-a-recorded-rosbag" title="Permalink to this heading"></a></h1>
+<p>This HowTo shows how to generate both <strong>Bonxai</strong> and <strong>NavMap</strong> representations
+from a <strong>recorded ROSBag</strong> containing a <code class="docutils literal notranslate"><span class="pre">PointCloud2</span></code> map, typically produced
+by a SLAM algorithm. The input point cloud must be referenced to the <code class="docutils literal notranslate"><span class="pre">world</span></code>
+or <code class="docutils literal notranslate"><span class="pre">map</span></code> frame.</p>
+<nav class="contents local" id="on-this-page">
+<p class="topic-title">On this page</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#setup" id="id3">Setup</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id4">Overview</a></p></li>
+<li><p><a class="reference internal" href="#align-the-frames-world-map" id="id5">1. Align the Frames (world → map)</a></p></li>
+<li><p><a class="reference internal" href="#play-the-rosbag" id="id6">2. Play the ROSBag</a></p></li>
+<li><p><a class="reference internal" href="#launch-easynav-with-bonxai-and-navmap-maps-managers" id="id7">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></p></li>
+<li><p><a class="reference internal" href="#navmap-build-parameters" id="id8">4. NavMap Build Parameters</a></p></li>
+<li><p><a class="reference internal" href="#visualize-in-rviz2" id="id9">5. Visualize in RViz2</a></p></li>
+<li><p><a class="reference internal" href="#save-the-maps" id="id10">6. Save the Maps</a></p></li>
+<li><p><a class="reference internal" href="#summary" id="id11">7. Summary</a></p></li>
+</ul>
+</nav>
+<p>—</p>
+<section id="setup">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<p>Install EasyNav (see <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a>) with the two plugins this tutorial uses, the
+<strong>Bonxai Maps Manager</strong> and the <strong>NavMap Maps Manager</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-&lt;distro&gt;-easynav<span class="w"> </span>ros-&lt;distro&gt;-easynav-bonxai-maps-manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ros-&lt;distro&gt;-easynav-navmap-maps-manager
+</pre></div>
+</div>
+<p>You also need a recorded ROS bag containing a <code class="docutils literal notranslate"><span class="pre">PointCloud2</span></code> map, e.g. recorded while running a
+3D lidar SLAM. The commands below use a bag of the URJC excavation; use your own.</p>
+<p>—</p>
+</section>
+<section id="overview">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>You will:</p>
+<ol class="arabic simple">
+<li><p>Align coordinate frames (<code class="docutils literal notranslate"><span class="pre">world</span></code> → <code class="docutils literal notranslate"><span class="pre">map</span></code> if needed).</p></li>
+<li><p>Play a pre-recorded ROS bag containing the <code class="docutils literal notranslate"><span class="pre">/map</span></code> point cloud.</p></li>
+<li><p>Launch EasyNav with both <strong>BonxaiMapsManager</strong> and <strong>NavMapMapsManager</strong>
+to build the two maps simultaneously.</p></li>
+<li><p>Visualize both in <strong>RViz2</strong>.</p></li>
+<li><p>Save the resulting maps to disk.</p></li>
+</ol>
+<p>—</p>
+</section>
+<section id="align-the-frames-world-map">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">1. Align the Frames (world → map)</a><a class="headerlink" href="#align-the-frames-world-map" title="Permalink to this heading"></a></h2>
+<p>If your ROS bag publishes a <code class="docutils literal notranslate"><span class="pre">PointCloud2</span></code> in the frame <code class="docutils literal notranslate"><span class="pre">world</span></code>,
+you need to publish a static transform so that the <strong>map managers</strong>
+receive data in <code class="docutils literal notranslate"><span class="pre">map</span></code>.</p>
+<p>In a new terminal, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>tf2_ros<span class="w"> </span>static_transform_publisher<span class="w"> </span>--frame-id<span class="w"> </span>world<span class="w"> </span>--child-frame-id<span class="w"> </span>map
+</pre></div>
+</div>
+<p>Keep this terminal <strong>running for the entire session</strong>.
+If your point cloud is already in the <code class="docutils literal notranslate"><span class="pre">map</span></code> frame, skip this step.</p>
+<p>—</p>
+</section>
+<section id="play-the-rosbag">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">2. Play the ROSBag</a><a class="headerlink" href="#play-the-rosbag" title="Permalink to this heading"></a></h2>
+<p>Next, replay the recorded ROS bag containing the point cloud map.</p>
+<p>The example bag is about 1600 seconds long.
+To jump close to the end (around 1500 seconds, when the map is already dense)
+but still leave a few seconds to build the maps, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>bag<span class="w"> </span>play<span class="w"> </span>rosbag_excavation_urjc_map_tf_only<span class="w"> </span>--clock<span class="w"> </span>--start-offset<span class="w"> </span><span class="m">1500</span>
+</pre></div>
+</div>
+<p>This will replay the point cloud topic <code class="docutils literal notranslate"><span class="pre">/map</span></code> and the TF tree
+needed by the map managers.</p>
+<p>—</p>
+</section>
+<section id="launch-easynav-with-bonxai-and-navmap-maps-managers">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a><a class="headerlink" href="#launch-easynav-with-bonxai-and-navmap-maps-managers" title="Permalink to this heading"></a></h2>
+<p>In a new terminal, launch <strong>EasyNav System</strong> with both map managers active.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_system<span class="w"> </span>system_main<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--ros-args<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--params-file<span class="w"> </span>/absolute/path/to/bonxai-navmap.dummy.params.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>/maps_manager_node/navmap/incoming_pc2_map:<span class="o">=</span>/map<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>/maps_manager_node/bonxai/incoming_pc2_map:<span class="o">=</span>/map
+</pre></div>
+</div>
+<p>This setup assumes:</p>
+<ul class="simple">
+<li><p>The input cloud topic is <code class="docutils literal notranslate"><span class="pre">/map</span></code>.</p></li>
+<li><p>The QoS settings are standard (reliable, transient local).</p></li>
+<li><p>Both managers will build their respective maps automatically.</p></li>
+</ul>
+<p>The file <code class="docutils literal notranslate"><span class="pre">bonxai-navmap.dummy.params.yaml</span></code> defines <strong>dummy plugins</strong>
+for all nodes except <code class="docutils literal notranslate"><span class="pre">maps_manager_node</span></code>. The maps managers have no map file (<code class="docutils literal notranslate"><span class="pre">package</span></code> and
+<code class="docutils literal notranslate"><span class="pre">bonxai_path_file</span></code> / <code class="docutils literal notranslate"><span class="pre">navmap_path_file</span></code>), so they start empty and build their maps from the
+incoming cloud.</p>
+<p>Example configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">controller_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">dummy</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">dummy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">rt_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_controller/DummyController</span>
+<span class="w">      </span><span class="nt">cycle_time_nort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
+<span class="w">      </span><span class="nt">cycle_time_rt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
+
+<span class="nt">localizer_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">localizer_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">dummy</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">dummy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">rt_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50.0</span>
+<span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">      </span><span class="nt">reseed_freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_localizer/DummyLocalizer</span>
+<span class="w">      </span><span class="nt">cycle_time_nort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
+<span class="w">      </span><span class="nt">cycle_time_rt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
+
+<span class="nt">maps_manager_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">map_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">bonxai</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">navmap</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">bonxai</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_bonxai_maps_manager/BonxaiMapsManager</span>
+<span class="w">    </span><span class="nt">navmap</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_navmap_maps_manager/NavMapMapsManager</span>
+
+<span class="nt">planner_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">planner_types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">dummy</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">dummy</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">freq</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easynav_planner/DummyPlanner</span>
+<span class="w">      </span><span class="nt">cycle_time_nort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
+<span class="w">      </span><span class="nt">cycle_time_rt</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span>
+
+<span class="nt">sensors_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">forget_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+
+<span class="nt">system_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">use_real_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">position_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">    </span><span class="nt">angle_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.15</span>
+</pre></div>
+</div>
+<p>—</p>
+</section>
+<section id="navmap-build-parameters">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">4. NavMap Build Parameters</a><a class="headerlink" href="#navmap-build-parameters" title="Permalink to this heading"></a></h2>
+<p>Internally, when the <strong>NavMapMapsManager</strong> builds a mesh from an incoming <code class="docutils literal notranslate"><span class="pre">PointCloud2</span></code>
+(<code class="docutils literal notranslate"><span class="pre">incoming_pc2_map</span></code>), it calls <code class="docutils literal notranslate"><span class="pre">navmap_ros::from_pointcloud2()</span></code> with a
+<code class="docutils literal notranslate"><span class="pre">navmap_ros::BuildParams</span></code> structure that controls mesh reconstruction quality:</p>
+<p><strong>Available parameters (current defaults, not yet exposed as ROS parameters)</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Parameter</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">resolution</span></code></p></td>
+<td><p>In-plane sampling resolution (m) for voxelization.</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_edge_len</span></code></p></td>
+<td><p>Maximum triangle edge length (m).</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_dz</span></code></p></td>
+<td><p>Maximum allowed vertical jump (m) between vertices.</p></td>
+<td><p>0.25</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_slope_deg</span></code></p></td>
+<td><p>Maximum slope (degrees) relative to the vertical axis.</p></td>
+<td><p>30.0</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">neighbor_radius</span></code></p></td>
+<td><p>Neighborhood radius (m) for triangle connectivity.</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">k_neighbors</span></code></p></td>
+<td><p>Alternative to radius: number of nearest neighbors.</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_area</span></code></p></td>
+<td><p>Minimum triangle area (m²) to reject degenerate faces.</p></td>
+<td><p>1e-6</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">use_radius</span></code></p></td>
+<td><p>Use radius-based vs. k-NN connectivity. (bool)</p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">min_angle_deg</span></code></p></td>
+<td><p>Minimum interior angle (degrees) to avoid slivers.</p></td>
+<td><p>20.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_surfaces</span></code></p></td>
+<td><p>Keep only the N largest connected surfaces (0 = all).</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These fields are defined by <code class="docutils literal notranslate"><span class="pre">navmap_ros::BuildParams</span></code> (see <code class="docutils literal notranslate"><span class="pre">navmap_ros/conversions.hpp</span></code> in
+the <a class="reference external" href="https://github.com/EasyNavigation/NavMap">NavMap</a> repository), but as of this writing the
+<code class="docutils literal notranslate"><span class="pre">NavMapMapsManager</span></code> constructs this structure with its default values when handling
+<code class="docutils literal notranslate"><span class="pre">incoming_pc2_map</span></code> — it does <strong>not</strong> currently read them from the <code class="docutils literal notranslate"><span class="pre">navmap</span></code> plugin’s YAML
+configuration. If you need different mesh-reconstruction quality, you must change these defaults
+in code (or check whether a newer release of <code class="docutils literal notranslate"><span class="pre">easynav_navmap_maps_manager</span></code> has since exposed
+them as ROS parameters).</p>
+</div>
+<p>—</p>
+</section>
+<section id="visualize-in-rviz2">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">5. Visualize in RViz2</a><a class="headerlink" href="#visualize-in-rviz2" title="Permalink to this heading"></a></h2>
+<p>Open <strong>RViz2</strong> to monitor both map managers.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span>--ros-args<span class="w"> </span>-p<span class="w"> </span>use_sim_time:<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+<p>In RViz:</p>
+<ul class="simple">
+<li><p>Add a <strong>PointCloud2</strong> display for <strong>Bonxai</strong> maps.
+- Select the topic published by BonxaiMapsManager (e.g., <code class="docutils literal notranslate"><span class="pre">/maps_manager_node/bonxai/map</span></code>).
+- QoS: <strong>Transient Local</strong>.
+- You can visualize the cloud as boxes with configurable size for clearer 3D structure.</p></li>
+<li><p>Add a <strong>NavMapDisplay</strong> (custom display type).
+- Select the topic published by NavMapMapsManager (e.g., <code class="docutils literal notranslate"><span class="pre">/maps_manager_node/navmap/map</span></code>).
+- QoS: <strong>Transient Local</strong>.</p></li>
+</ul>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/mapping_tut_bonxai.png"><img alt="../_images/mapping_tut_bonxai.png" src="../_images/mapping_tut_bonxai.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figure 6 </span><span class="caption-text">Bonxai map visualization in RViz.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/mapping_tut_navmap.png"><img alt="../_images/mapping_tut_navmap.png" src="../_images/mapping_tut_navmap.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Figure 7 </span><span class="caption-text">NavMap mesh visualization in RViz.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>—</p>
+</section>
+<section id="save-the-maps">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">6. Save the Maps</a><a class="headerlink" href="#save-the-maps" title="Permalink to this heading"></a></h2>
+<p>When both maps are visible and complete, you can store them to disk using
+their respective map manager services.</p>
+<p><strong>Save NavMap</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/maps_manager_node/navmap/savemap<span class="w"> </span>std_srvs/srv/Trigger
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">NavMapMapsManager</span></code> always writes to the hardcoded path <code class="docutils literal notranslate"><span class="pre">/tmp/map.navmap</span></code>
+(this is unconditional in the current implementation, regardless of any <code class="docutils literal notranslate"><span class="pre">navmap_path_file</span></code>
+you configured). Rename and move it to your desired location (e.g. inside <code class="docutils literal notranslate"><span class="pre">maps/</span></code>).</p>
+<p><strong>Save Bonxai Map</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/maps_manager_node/bonxai/savemap<span class="w"> </span>std_srvs/srv/Trigger
+</pre></div>
+</div>
+<p>Unlike the NavMap manager, <code class="docutils literal notranslate"><span class="pre">BonxaiMapsManager</span></code> saves back to the path it loaded the map from
+(<code class="docutils literal notranslate"><span class="pre">package</span></code>/<code class="docutils literal notranslate"><span class="pre">bonxai_path_file</span></code>): with no map file configured, as here, to
+<code class="docutils literal notranslate"><span class="pre">/tmp/bonxai_map.pcd</span></code>. Move both files into the <code class="docutils literal notranslate"><span class="pre">maps/</span></code> directory of a package, and load them
+with <code class="docutils literal notranslate"><span class="pre">package</span></code> and <code class="docutils literal notranslate"><span class="pre">bonxai_path_file</span></code> / <code class="docutils literal notranslate"><span class="pre">navmap_path_file</span></code> (see <a class="reference internal" href="navmap_navigating.html"><span class="doc">Navigating with the NavMap + Bonxai Stack</span></a>).</p>
+<p>—</p>
+</section>
+<section id="summary">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">7. Summary</a><a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>You have:</p>
+<ul class="simple">
+<li><p>✅ Aligned frames between <code class="docutils literal notranslate"><span class="pre">world</span></code> and <code class="docutils literal notranslate"><span class="pre">map</span></code></p></li>
+<li><p>✅ Played a recorded ROS bag with point cloud data</p></li>
+<li><p>✅ Built Bonxai and NavMap maps simultaneously</p></li>
+<li><p>✅ Visualized them in RViz</p></li>
+<li><p>✅ Saved both maps to disk for future use</p></li>
+</ul>
+<p>These maps can now be used in a NavMap + Bonxai navigation stack (see
+<a class="reference internal" href="navmap_navigating.html"><span class="doc">Navigating with the NavMap + Bonxai Stack</span></a>).</p>
+<p>—</p>
+<p><strong>Next steps:</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../developer_guide/design.html"><span class="doc">Core Design and Architecture</span></a></p></li>
+<li><p><a class="reference internal" href="navmap_navigating.html"><span class="doc">Navigating with the NavMap + Bonxai Stack</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Various.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+
+
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" id="easynav-versions" style="display: none;">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> EasyNav</span>
+    v: <span id="easynav-current-version"></span>
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="easynav-version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script src="../_static/version_switcher.js"></script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+<script type="text/javascript" src="../_static/tcs_theme.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+</body>
+</html>

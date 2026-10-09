@@ -1,0 +1,16 @@
+[workspace]
+name = "easynav-kilted"
+# EasyNav's channel first: Pixi takes each package from the first channel that has it
+channels = [
+  "https://prefix.dev/irl-kilted",
+  "https://prefix.dev/robostack-kilted",
+  "https://prefix.dev/conda-forge",
+]
+platforms = ["linux-64"]
+
+[dependencies]
+ros-kilted-easynav = "*"
+
+# RoboStack's gz_ros2_control does not set it in this distro: Gazebo would not find the plugin
+[activation.env]
+GZ_SIM_SYSTEM_PLUGIN_PATH = "$CONDA_PREFIX/lib"
