@@ -243,8 +243,9 @@ We recommend a standard ROS 2 workspace:
 Clone sources
 ~~~~~~~~~~~~~
 
-You can retrieve EasyNav sources by cloning the monorepo(s) you need. Each repository
-has one branch per supported ROS 2 distro — pick the block matching your target distro.
+You can retrieve EasyNav sources by cloning the monorepo(s) you need. Each block clones the
+versions released with EasyNav 0.4.2 for that ROS 2 distro (git tags) — pick the block matching
+your target distro.
 
 .. note::
    Unlike the APT and Pixi methods, cloning ``easynav_plugins`` already brings in
@@ -258,10 +259,10 @@ Rolling
 .. code-block:: bash
 
    cd ~/easynav_ws/src
-   git clone -b rolling https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b rolling https://github.com/EasyNavigation/NavMap.git
-   git clone -b rolling https://github.com/EasyNavigation/easynav_plugins.git
-   git clone -b rolling https://github.com/fmrico/yaets.git
+   git clone -b 0.4.2 https://github.com/EasyNavigation/EasyNavigation.git
+   git clone -b 0.5.0 https://github.com/EasyNavigation/NavMap.git
+   git clone -b 0.4.2 https://github.com/EasyNavigation/easynav_plugins.git
+   git clone -b 1.1.0 https://github.com/fmrico/yaets.git
 
 Lyrical
 ^^^^^^^
@@ -269,10 +270,10 @@ Lyrical
 .. code-block:: bash
 
    cd ~/easynav_ws/src
-   git clone -b lyrical https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b lyrical https://github.com/EasyNavigation/NavMap.git
-   git clone -b lyrical https://github.com/EasyNavigation/easynav_plugins.git
-   git clone -b lyrical https://github.com/fmrico/yaets.git
+   git clone -b 0.4.2 https://github.com/EasyNavigation/EasyNavigation.git
+   git clone -b 0.5.1 https://github.com/EasyNavigation/NavMap.git
+   git clone -b 0.4.2 https://github.com/EasyNavigation/easynav_plugins.git
+   git clone -b 1.1.0 https://github.com/fmrico/yaets.git
 
 Kilted
 ^^^^^^
@@ -280,10 +281,10 @@ Kilted
 .. code-block:: bash
 
    cd ~/easynav_ws/src
-   git clone -b kilted https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b kilted https://github.com/EasyNavigation/NavMap.git
-   git clone -b kilted https://github.com/EasyNavigation/easynav_plugins.git
-   git clone -b kilted https://github.com/fmrico/yaets.git
+   git clone -b 0.4.1 https://github.com/EasyNavigation/EasyNavigation.git
+   git clone -b 0.4.0 https://github.com/EasyNavigation/NavMap.git
+   git clone -b 0.4.1 https://github.com/EasyNavigation/easynav_plugins.git
+   git clone -b 1.0.3 https://github.com/fmrico/yaets.git
 
 Jazzy
 ^^^^^
@@ -291,10 +292,10 @@ Jazzy
 .. code-block:: bash
 
    cd ~/easynav_ws/src
-   git clone -b jazzy https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b jazzy https://github.com/EasyNavigation/NavMap.git
-   git clone -b jazzy https://github.com/EasyNavigation/easynav_plugins.git
-   git clone -b jazzy https://github.com/fmrico/yaets.git
+   git clone -b 0.4.0 https://github.com/EasyNavigation/EasyNavigation.git
+   git clone -b 0.3.0 https://github.com/EasyNavigation/NavMap.git
+   git clone -b 0.4.0 https://github.com/EasyNavigation/easynav_plugins.git
+   git clone -b 1.0.4 https://github.com/fmrico/yaets.git
 
 Install dependencies
 ~~~~~~~~~~~~~~~~~~~~
