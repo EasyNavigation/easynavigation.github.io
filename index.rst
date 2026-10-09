@@ -26,6 +26,8 @@ Overview
 - 🧩 **Modular**, through a plugin architecture and reusable navigation stacks.
 - 🚀 **Lightweight and simple to deploy**, using a single binary and a parameter file for configuration.
 - 🧪 **Simulation-ready**, thanks to a rich collection of **PlayGrounds** with different robots and environments.
+- 🛡️ **Built for safety and runtime reconfiguration**: a :ref:`safety mode <safety>` to deploy it next to a certified safety channel (validated configuration, velocity limits, real-time monitoring, heartbeat), and a :ref:`recovery system <recovery>` that detects failures and reacts to them, even reconfiguring the navigation while it runs.
+- 🎯 **Ready for every user**: hobbyists who want a robot navigating in minutes, academia and research labs that need to experiment with new methods, and industry that needs predictable, safe behavior on real robots.
 
 EasyNav is developed by the `Intelligent Robotics Lab <https://intelligentroboticslab.gsyc.urjc.es/>`_ at Universidad Rey Juan Carlos and aims to be a flexible, extensible, and practical alternative to existing ROS 2 navigation stacks like Nav2.
 

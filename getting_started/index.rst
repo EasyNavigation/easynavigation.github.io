@@ -41,13 +41,25 @@ this package.
 To build it from source instead, build EasyNav as described in :ref:`build_from_source`
 (``~/easynav_ws``), then clone the PlayGrounds into the same workspace:
 
-.. code-block:: bash
+.. only:: not latest
 
-   cd ~/easynav_ws/src
-   git clone -b rolling https://github.com/EasyNavigation/easynav_playgrounds.git
-   cd ~/easynav_ws
-   rosdep install --from-paths src --ignore-src -y -r
-   colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+   .. code-block:: bash
+
+      cd ~/easynav_ws/src
+      git clone -b 0.5.0 https://github.com/EasyNavigation/easynav_playgrounds.git
+      cd ~/easynav_ws
+      rosdep install --from-paths src --ignore-src -y -r
+      colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+.. only:: latest
+
+   .. code-block:: bash
+
+      cd ~/easynav_ws/src
+      git clone -b rolling https://github.com/EasyNavigation/easynav_playgrounds.git
+      cd ~/easynav_ws
+      rosdep install --from-paths src --ignore-src -y -r
+      colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 .. _gs_source_workspace:
 

@@ -8,6 +8,15 @@ EasyNav runs on Linux with ROS 2 **humble**, **jazzy**, **kilted**, **lyrical** 
 The recommended way to install it is with **APT**, using the packages of the ROS 2 buildfarm
 (all distros but rolling, which has no APT packages for now: use Pixi or build from source).
 
+.. only:: not latest
+
+   This documentation describes **EasyNav 0.5.0**, the version that APT installs on every distro.
+
+.. only:: latest
+
+   This is the **development** documentation, for the ``rolling`` branches of the repositories:
+   it may describe features not released yet. APT installs the latest release, **EasyNav 0.5.0**.
+
 .. _install_quick_apt:
 
 Install with APT (recommended)
@@ -39,21 +48,42 @@ develop EasyNav or a plugin, build it from source.
 Install from source
 -------------------
 
-You need `ROS 2 <https://docs.ros.org>`_ installed. The commands use **rolling**; on another
-distro, clone its branch instead (``-b humble``, ``-b jazzy``, ``-b kilted`` or ``-b lyrical``),
-see :ref:`release_status`.
+You need `ROS 2 <https://docs.ros.org>`_ installed.
+
+.. only:: not latest
+
+   The commands clone the **EasyNav 0.5.0** release (its git tags), the same on every distro.
+
+.. only:: latest
+
+   The commands clone the ``rolling`` branches (development). On another distro, clone its branch
+   instead (``-b humble``, ``-b jazzy``, ``-b kilted`` or ``-b lyrical``), see
+   :ref:`release_status`.
 
 1. **Create a workspace and clone EasyNav**, its plugins, NavMap and yaets (the tracing library
    EasyNav uses):
 
-   .. code-block:: bash
+   .. only:: not latest
 
-      mkdir -p ~/easynav_ws/src
-      cd ~/easynav_ws/src
-      git clone -b rolling https://github.com/EasyNavigation/EasyNavigation.git
-      git clone -b rolling https://github.com/EasyNavigation/easynav_plugins.git
-      git clone -b rolling https://github.com/EasyNavigation/NavMap.git
-      git clone -b rolling https://github.com/fmrico/yaets.git
+      .. code-block:: bash
+
+         mkdir -p ~/easynav_ws/src
+         cd ~/easynav_ws/src
+         git clone -b 0.5.0 https://github.com/EasyNavigation/EasyNavigation.git
+         git clone -b 0.5.0 https://github.com/EasyNavigation/easynav_plugins.git
+         git clone -b 0.6.0 https://github.com/EasyNavigation/NavMap.git
+         git clone -b 1.2.0 https://github.com/fmrico/yaets.git
+
+   .. only:: latest
+
+      .. code-block:: bash
+
+         mkdir -p ~/easynav_ws/src
+         cd ~/easynav_ws/src
+         git clone -b rolling https://github.com/EasyNavigation/EasyNavigation.git
+         git clone -b rolling https://github.com/EasyNavigation/easynav_plugins.git
+         git clone -b rolling https://github.com/EasyNavigation/NavMap.git
+         git clone -b rolling https://github.com/fmrico/yaets.git
 
 2. **Install the dependencies**:
 
@@ -74,7 +104,7 @@ see :ref:`release_status`.
 
    .. code-block:: bash
 
-      source /opt/ros/rolling/setup.bash
+      source /opt/ros/<distro>/setup.bash
       source ~/easynav_ws/install/setup.bash
 
 That's it: EasyNav and all its official plugins are installed. Continue with

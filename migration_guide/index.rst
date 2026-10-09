@@ -347,16 +347,35 @@ Option A: the Nav2 bridge
 ``nav2_msgs/action/NavigateToPose`` server on ``navigate_to_pose`` that forwards goals to EasyNav,
 and EasyNav's feedback and result back, so Nav2 clients work with EasyNav unchanged.
 
-It is built from source, in the workspace where you have EasyNav:
+Install it with APT (it is the only EasyNav package that depends on Nav2, for its messages):
 
 .. code-block:: bash
 
-   cd ~/easynav_ws/src
-   git clone https://github.com/EasyNavigation/easynav_nav2_bridge.git
-   cd ~/easynav_ws
-   rosdep install --from-paths src --ignore-src -y -r
-   colcon build --symlink-install --packages-select easynav_nav2_bridge
-   source install/setup.bash
+   sudo apt install ros-<distro>-easynav-nav2-bridge
+
+Or build it from source, in the workspace where you have EasyNav:
+
+.. only:: not latest
+
+   .. code-block:: bash
+
+      cd ~/easynav_ws/src
+      git clone -b 0.5.0 https://github.com/EasyNavigation/easynav_nav2_bridge.git
+      cd ~/easynav_ws
+      rosdep install --from-paths src --ignore-src -y -r
+      colcon build --symlink-install --packages-select easynav_nav2_bridge
+      source install/setup.bash
+
+.. only:: latest
+
+   .. code-block:: bash
+
+      cd ~/easynav_ws/src
+      git clone -b rolling https://github.com/EasyNavigation/easynav_nav2_bridge.git
+      cd ~/easynav_ws
+      rosdep install --from-paths src --ignore-src -y -r
+      colcon build --symlink-install --packages-select easynav_nav2_bridge
+      source install/setup.bash
 
 Run it next to EasyNav (or add it to your launch file):
 
