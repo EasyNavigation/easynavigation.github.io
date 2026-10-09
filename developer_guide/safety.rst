@@ -77,8 +77,9 @@ Status: **Provided** — available today; **Partial** — part of it; **Planned*
    * - Timing: real-time scheduling, no page faults in the RT cycle
      - IEC 61508-3 (timing behavior)
      - ``SCHED_FIFO`` priority 80, required in safety mode; optional memory locking. Real-time cycles
-       that start late are detected and reported, and stop EasyNav in safety mode. Not yet: a
-       worst-case execution time analysis. See :ref:`safety_rt`, :ref:`safety_memory`.
+       that start late are detected and reported, and stop EasyNav in safety mode; each component's
+       rate is monitored. Not yet: a worst-case execution time analysis. See :ref:`safety_rt`,
+       :ref:`component_frequencies`, :ref:`safety_memory`.
      - Partial
    * - Faulty software components
      - IEC 61508-3 (fault detection, fail-safe behavior)
@@ -292,11 +293,12 @@ default: more than 10 ms):
 - after a late cycle the status is ``LATE``; after ``safety.rt_monitor.max_late_cycles`` late cycles
   in a row (10 by default), ``ERROR``; a cycle on time makes it ``OK`` again, so isolated late
   cycles never add up to an error;
-- the status is reported in NavState as ``diagnostics.rt_cycle`` (``hardware_id: system_node``):
-  ``WARN`` for ``LATE``, ``ERROR`` for ``ERROR``, back to ``OK``, written only on changes and after
-  the first problem, so a recovery system can handle it;
-- in **safety mode**, ``ERROR`` stops EasyNav: it brakes, ends in ``Finalized`` and ``system_main``
-  exits with code 1. Outside it, it is only reported;
+- the status is reported in NavState as ``diagnostics.rt_cycle`` (``hardware_id: system_node``),
+  written only on changes and after the first problem: ``WARN`` for ``LATE``, back to ``OK``. For
+  ``ERROR``, in **safety mode** it is an ``ERROR`` and stops EasyNav: it brakes, ends in
+  ``Finalized`` and ``system_main`` exits with code 1, since this cycle receives the sensors and
+  publishes the commands. Outside safety mode it is only a ``WARN``, like a component that does not
+  keep its own frequency, which is reported separately (see :ref:`component_frequencies`);
 - after an activation, the monitor starts over: the time EasyNav was inactive is not a late cycle.
 
 **Heartbeat.** With ``safety.heartbeat.period`` > 0 (required in safety mode), a
@@ -319,7 +321,8 @@ check that the robot runs the validated configuration. What to do then is up to 
 **What they cover, and what not.** They complement each other: the monitor sees cycles that start
 **late**; the heartbeat lets others see that they do **not start at all**, which the monitor cannot,
 since it runs at the start of the next cycle. The monitor measures the time between cycle starts, not
-how long each cycle takes, and the non-real-time cycle (planning, maps) is not monitored. Neither is
+how long each cycle takes, and the non-real-time cycle (planning, maps) is not monitored by it: the
+components of both cycles are, by their rate diagnostics (:ref:`component_frequencies`). Neither is
 a worst-case execution time analysis: they detect delays when they happen, they do not show they
 cannot happen.
 
@@ -372,7 +375,7 @@ cycle. Its changes are reported as ``diagnostics.safety_status`` (``hardware_id:
 ``OK`` (with the speed limit, if any), ``WARN`` during a protective stop, ``ERROR`` without a valid
 status, with the active field and muting as values.
 
-**Long stops.** ``easynav_safety_channel_evaluator/SafetyChannelEvaluator``, a recovery evaluator,
+**Long stops.** ``easynav_diagnostic_recovery/SafetyChannelEvaluator``, a recovery evaluator,
 reports a protective stop as ``WARN`` (``hardware_id: safety_channel``), and as ``ERROR`` once it
 lasts ``max_stop_time`` seconds (0, the default: never), so a mitigation can handle it, e.g. asking
 for human assistance (see :ref:`recovery`).

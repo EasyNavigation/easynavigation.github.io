@@ -4,143 +4,148 @@
 Mapping with the Costmap Stack
 ==============================
 
-This HowTo explains how to perform mapping using the **Costmap Stack** in EasyNavigation (EasyNav).  
-It builds upon the concepts introduced in the *Simple Stack Mapping* tutorial, but replaces the binary map representation
-with a **graded Costmap2D** that encodes traversal costs and supports inflation around obstacles.
-
-If you have not set up EasyNav yet, please complete the steps in :doc:`../build_install/index` first.
+This HowTo explains how to build a map for the **Costmap Stack** in EasyNavigation (EasyNav) with
+**SLAM Toolbox**. The Costmap Stack uses a **graded Costmap2D** that encodes traversal costs and
+supports inflation around obstacles, and reads and writes maps in the same **YAML + image** format
+as Nav2.
 
 .. contents:: On this page
    :local:
    :depth: 2
 
-Setup
-------
-
-Complete the installation steps in :doc:`../build_install/index` first (any of
-APT, Pixi or source). The core ``easynav`` package does not include plugins, so
-also make sure the **Costmap Maps Manager** is installed in your ``~/easynav_ws``:
-
-- **APT**: ``sudo apt install ros-<distro>-easynav-costmap-maps-manager``
-- **Pixi**: ``pixi add ros-<distro>-easynav-costmap-maps-manager``
-- **Source**: already built if you cloned ``easynav_plugins`` as described in
-  :ref:`build_from_source`.
-
-You can run this tutorial either in simulation (e.g., Gazebo) or using a static map
-file/robot of your own. If you want to follow along in simulation (the easiest way
-to actually run this tutorial), also clone into ``~/easynav_ws/src``:
-
-- ``easynav_playground_kobuki`` — provides the simulator; **required** unless you
-  already have a robot or a static map to work from.
-- ``easynav_indoor_testcase`` *(optional)* — only used here as an example of a
-  package layout for storing maps; not required if you use your own package.
-
-Then source your workspace as described in :ref:`gs_source_workspace`.
-
 Overview
 --------
 
-The mapping workflow with the **Costmap Stack** mirrors the one used in the *Simple Stack*.
+.. raw:: html
 
-1. **Generate a map** — for example, using SLAM Toolbox. The result should be a **YAML + image** pair (`.yaml` + `.pgm/.png`) defining resolution, origin, and free/occupied thresholds.  
-2. **Place the map files** inside a ROS 2 package in your workspace. The **Costmap Maps Manager** will later load it using the `package` and `map_path_file` parameters (or via an absolute path).  
-3. **Prepare an EasyNav parameter file** specifying dummy plugins for planner, controller, and localizer, plus the Costmap Maps Manager.  
-   This configuration is sufficient to validate that the costmap loads and visualizes correctly.
+    <div align="center">
+      <iframe width="450" height="300" src="https://www.youtube.com/embed/n1vDA4ZeG6M" frameborder="0" allowfullscreen></iframe>
+    </div>
 
-Example parameters
-------------------
+This tutorial uses the :doc:`Kobuki PlayGround <../playgrounds/kobuki>`. The
+workflow is:
 
-Below is a minimal working configuration to verify the Costmap mapping pipeline.  
-It mirrors the *Simple Stack* structure but uses the Costmap-based maps manager.  
-Replace `my_maps_pkg` and the YAML path with your own package and map.
+1. Run the simulator.
+2. Build the map with **SLAM Toolbox**, driving the robot around.
+3. Run **EasyNav** in *mapping mode*, so that the Costmap Maps Manager receives and shows the map.
+4. Save the map (YAML + image) and use it for navigation.
 
-.. code-block:: yaml
+If you already have a Nav2 map, you can skip to :doc:`costmap_navigating`: the Costmap Maps
+Manager loads it as it is.
 
-    controller_node:
-      ros__parameters:
-        use_sim_time: true
-        controller_types: [dummy]
-        dummy:
-          rt_freq: 30.0
-          plugin: easynav_controller/DummyController
-          cycle_time_nort: 0.01
-          cycle_time_rt: 0.001
+Setup
+-----
 
-    localizer_node:
-      ros__parameters:
-        use_sim_time: true
-        localizer_types: [dummy]
-        dummy:
-          rt_freq: 50.0
-          freq: 5.0
-          reseed_freq: 0.1
-          plugin: easynav_localizer/DummyLocalizer
-          cycle_time_nort: 0.01
-          cycle_time_rt: 0.001
+Build EasyNav and the Kobuki PlayGround as described in :doc:`../getting_started/index`, and
+install **SLAM Toolbox**:
 
-    maps_manager_node:
-      ros__parameters:
-        use_sim_time: true
-        map_types: [costmap]
-        costmap:
-          freq: 10.0
-          plugin: easynav_costmap_maps_manager/CostmapMapsManager
-          package: my_maps_pkg
-          map_path_file: maps/office.yaml
+.. code-block:: bash
 
-    planner_node:
-      ros__parameters:
-        use_sim_time: true
-        planner_types: [dummy]
-        dummy:
-          freq: 1.0
-          plugin: easynav_planner/DummyPlanner
-          cycle_time_nort: 0.2
-          cycle_time_rt: 0.001
+   sudo apt install ros-${ROS_DISTRO}-slam-toolbox
 
-    sensors_node:
-      ros__parameters:
-        use_sim_time: true
-        forget_time: 0.5
+Step-by-Step Instructions
+-------------------------
 
-    system_node:
-      ros__parameters:
-        use_sim_time: true
-        position_tolerance: 0.1
-        angle_tolerance: 0.05
-
-Running and visualizing
------------------------
-
-1. Launch your simulator (for example, `easynav_playground_kobuki`) or start a static map server.  
-2. Run EasyNav using the parameter file above:
+1. **Launch the simulator**
 
    .. code-block:: bash
 
-      ros2 run easynav_system system_main \
-         --ros-args --params-file src/my_maps_pkg/config/costmap_mapping.yaml
+      ros2 launch easynav_playground_kobuki_worlds gazebo_sim.launch.yaml gui:=false
 
-3. Open **RViz2** and add an *OccupancyGrid* display for either:
+2. **Launch SLAM Toolbox**
 
-   - ``maps_manager_node/costmap/map`` (static)
-   - ``maps_manager_node/costmap/dynamic_map`` (dynamic)
+   SLAM Toolbox reads the laser on ``/scan``, but the Kobuki publishes it on ``/scan_raw``. Copy
+   its default parameter file and set ``scan_topic: /scan_raw`` in it:
 
-You should see the costmap as a grayscale image, where darker regions correspond to higher traversal cost.
+   .. code-block:: bash
 
-Saving maps
------------
+      cp /opt/ros/${ROS_DISTRO}/share/slam_toolbox/config/mapper_params_online_async.yaml ~/slam_kobuki.yaml
+      # edit ~/slam_kobuki.yaml: scan_topic: /scan_raw
 
-The **Costmap Maps Manager** reads and writes maps using the same **YAML + image** format as MoveBase and Nav2.  
-Therefore, you do not need to rely on internal save paths if your map is produced by an external SLAM node such as SLAM Toolbox.
+   Then launch it:
 
-- **Option A – Using the Maps Manager service:**  
-  Call the service ``maps_manager_node/costmap/savemap`` to save the current static map to the configured path.
+   .. code-block:: bash
 
-- **Option B – Using SLAM Toolbox (recommended):**  
-  Call the service ``/slam_toolbox/save_map`` (`slam_toolbox/srv/SaveMap`), which writes the map pair in the same format the Costmap Maps Manager can later load via `package` + `map_path_file`.
+      ros2 launch slam_toolbox online_async_launch.py \
+        use_sim_time:=true slam_params_file:=$HOME/slam_kobuki.yaml
+
+3. **Start EasyNav in mapping mode**
+
+   In *mapping mode* only the **Maps Manager** does something; the rest of the nodes use dummy
+   plugins. The Kobuki PlayGround ships this configuration as
+   ``params/costmap.mapping.params.yaml``. The Costmap Maps Manager receives external maps on
+   ``/maps_manager_node/costmap/incoming_map``, so remap SLAM Toolbox's ``/map`` to it:
+
+   .. code-block:: bash
+
+      ros2 run easynav_system system_main --ros-args \
+        --params-file $(ros2 pkg prefix easynav_playground_kobuki)/share/easynav_playground_kobuki/params/costmap.mapping.params.yaml \
+        -r /maps_manager_node/costmap/incoming_map:=/map
+
+   The relevant part of the configuration is the maps manager, with no map file:
+
+   .. code-block:: yaml
+
+       maps_manager_node:
+         ros__parameters:
+           use_sim_time: true
+           map_types: [costmap]
+           costmap:
+             freq: 10.0
+             plugin: easynav_costmap_maps_manager/CostmapMapsManager
+
+4. **Open RViz2**
+
+   .. code-block:: bash
+
+      ros2 run rviz2 rviz2 \
+        -d $(ros2 pkg prefix easynav_playground_kobuki)/share/easynav_playground_kobuki/rviz/easynav_costmap.rviz \
+        --ros-args -p use_sim_time:=true
+
+   The Costmap Maps Manager publishes the map on ``/maps_manager_node/costmap/map`` (static, QoS
+   *Transient Local*) and ``/maps_manager_node/costmap/dynamic_map`` (with obstacles and
+   inflation, when the configuration has those filters).
+
+5. **Teleoperate the robot to build the map**
+
+   .. code-block:: bash
+
+      ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+Saving the map
+--------------
+
+Save the map with SLAM Toolbox, which writes the YAML + image pair:
+
+.. code-block:: bash
+
+   ros2 service call /slam_toolbox/save_map slam_toolbox/srv/SaveMap "{name: {data: 'office'}}"
+
+It writes ``office.yaml`` and ``office.pgm`` in the directory where SLAM Toolbox was launched
+(or use Nav2's ``map_saver_cli``, if you have it). Put both files in a directory installed by a
+package of your workspace, e.g. ``my_maps_pkg/maps/office.yaml`` and ``office.pgm``. If you
+rename them, make sure the ``image`` field of the YAML matches the image file name.
+
+Then load it in your navigation parameter file. The map is located with ``package`` (a ROS 2
+package, searched in its share directory) and ``map_path_file`` (the path inside it); both are
+needed:
+
+.. code-block:: yaml
+
+   maps_manager_node:
+     ros__parameters:
+       map_types: [costmap]
+       costmap:
+         freq: 10.0
+         plugin: easynav_costmap_maps_manager/CostmapMapsManager
+         package: my_maps_pkg
+         map_path_file: maps/office.yaml
+
+Continue with :doc:`costmap_navigating`.
 
 .. note::
 
-   This tutorial is analogous to :doc:`simple_mapping`, with the only conceptual difference being the internal map representation.  
-   The Costmap2D structure encodes graded values (0–255) with inflation, allowing planners and controllers to reason about
-   proximity to obstacles instead of using a simple free/occupied binary map.
+   This tutorial is analogous to :doc:`simple_mapping`; the difference is the internal map
+   representation. The Costmap2D structure encodes graded values (0–255) with inflation, allowing
+   planners and controllers to reason about proximity to obstacles instead of using a simple
+   free/occupied binary map.

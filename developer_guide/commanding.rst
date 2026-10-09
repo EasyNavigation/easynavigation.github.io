@@ -26,6 +26,10 @@ Here is the full definition of the message:
   uint8 CANCEL=6
   uint8 CANCELLED=7
   uint8 ERROR=8
+  uint8 PAUSE=9
+  uint8 RESUME=10
+  uint8 PAUSED=11
+  uint8 RESUMED=12
 
   uint8 type
   std_msgs/Header header
@@ -54,6 +58,12 @@ The communication protocol over `/easynav_control` is designed around a type-bas
 - **CANCEL (6)**: The user requests to cancel the current navigation.
 - **CANCELLED (7)**: Navigation has been cancelled.
 - **ERROR (8)**: An error occurred during navigation.
+- **PAUSE (9)** / **RESUME (10)**: A client requests to pause or resume the active navigation.
+  Unlike ``CANCEL``, any client may do it, not only the goal's owner (e.g. an operator tool or a
+  fleet manager). While paused, EasyNav keeps running its full cycle but publishes zero velocity;
+  the goal is kept.
+- **PAUSED (11)** / **RESUMED (12)**: The system confirms the pause or the resume. A pause or
+  resume when no navigation is active is answered with ``REJECT``.
 
 Each message has a sequence number (`seq`), user ID (`user_id`), and optionally contains feedback fields if it is of a type that requires them.
 
@@ -91,7 +101,11 @@ Using `GoalManagerClient`
 Instead of manually implementing the communication protocol, developers are encouraged to use the `GoalManagerClient` class. It abstracts the handling of the `/easynav_control` topic and maintains the internal state machine automatically.
 
 - `send_goal(PoseStamped goal)` issues a goal with proper message formatting.
+- `send_goals(Goals goals)` issues several goals in one request, navigated in order.
 - `cancel()` sends a CANCEL message.
+- `pause()` and `resume()` pause and resume the active navigation; `is_paused()` tells whether it
+  is paused. From the command line: ``ros2 easynav pause`` / ``ros2 easynav resume`` (see
+  :doc:`../howtos/ros2_easynav_cli`).
 - `get_state()` returns the current state (e.g., `State::ACCEPTED_AND_NAVIGATING`, `State::NAVIGATION_FINISHED`, etc.).
 - After receiving a terminal state (`FINISHED`, `FAILED`, `CANCELLED`, `REJECTED`, or `ERROR`), you **must** call `reset()` to clear the state before issuing a new command.
 

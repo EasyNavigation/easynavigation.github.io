@@ -46,10 +46,6 @@ Our current team includes:
      - Universidad Rey Juan Carlos
      - `estherag <https://github.com/estherag>`__
      - Outdoor Stack
-   * - Francisco José Romero Ramírez
-     - Universidad Rey Juan Carlos
-     - `kiko2r <https://github.com/kiko2r>`__
-     - Outdoor Stack
    * - Miguel de Miguel Paraiso
      - Universidad Rey Juan Carlos
      - `midemig <https://github.com/midemig>`__
@@ -66,7 +62,6 @@ Our current team includes:
 .. _jmguerreroh: https://github.com/jmguerreroh
 .. _juanscelyg: https://github.com/juanscelyg
 .. _estherag: https://github.com/estherag
-.. _kiko2r: https://github.com/kiko2r
 .. _midemig: https://github.com/midemig
 .. _beltransen: https://github.com/beltransen
 

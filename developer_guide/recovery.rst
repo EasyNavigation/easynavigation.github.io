@@ -158,8 +158,8 @@ Controlled shutdown
 After ``request_shutdown()``, EasyNav stops the robot and leaves ``Active`` through the lifecycle's
 error path: deactivation returns ``ERROR``, ``on_error()`` shuts down every EasyNav node, and they
 all end in ``Finalized``. ``system_main`` acts as the supervisor: it leaves its loops, prints the
-reason and exits with code 1. The launch files of ``easynav_indoor_testcase`` end the whole launch
-(RViz included) when ``system_main`` exits.
+reason and exits with code 1. The launch files of the :doc:`PlayGrounds <../playgrounds/index>` end the whole
+launch (RViz included) when ``system_main`` exits (``on_exit: shutdown``).
 
 Reconfiguration as a mitigation
 -------------------------------
@@ -261,7 +261,8 @@ Besides its own evaluators, it sees the diagnostics other components write to Na
 ``diagnostics`` group, e.g. ``ControllerNode``'s ``diagnostics.cmd_vel`` when no new velocity command
 arrives or one is discarded (``hardware_id: controller_node``, see :ref:`safety_commands`).
 
-It ships evaluators (no path, obstacle too close, controller stuck, miswired ROS graph) and
+It ships a collision safety reflex, evaluators (no path, obstacle too close, controller stuck,
+miswired ROS graph, safety channel stops) and
 mitigations (safe retreat, advance, shutdown, wait for a human, cancel the mission). A component can
 ship recovery for its own failures: ``easynav_costmap_localizer`` provides
 ``AmclConvergenceEvaluator`` and ``AmclRelocalizeMitigation``. Its plugin interfaces live in the

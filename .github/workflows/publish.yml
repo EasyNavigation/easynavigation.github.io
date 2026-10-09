@@ -1,0 +1,37 @@
+# Builds every version of versions.json (latest from main) and publishes the site to gh-pages
+name: Publish website
+
+on:
+  push:
+    branches: [main]
+    tags: ['*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-website
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # The tags of the released versions
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Sphinx
+        run: pip install -r requirements.txt
+      - name: Build all versions
+        run: python3 scripts/build_site.py
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./_site
+          commit_message: "[skip ci] publish"

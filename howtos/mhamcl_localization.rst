@@ -53,10 +53,9 @@ The plugin is the EasyNav port of the original `mh_amcl <https://github.com/fmri
 Setup
 -----
 
-Complete the installation steps in :doc:`../build_install/index`. The localizer is in the
-``easynav_mhamcl_localizer`` package of ``easynav_plugins``, so it is already built if you cloned that
-repository as described in :ref:`build_from_source`. You will also need the Costmap Maps Manager and Planner,
-a controller, and the demo repositories, as in :doc:`costmap_navigating`.
+The localizer is in the ``easynav_mhamcl_localizer`` package of ``easynav_plugins``. This HowTo uses
+the :doc:`Kobuki PlayGround <../playgrounds/kobuki>`; build it as described in
+:doc:`../getting_started/index`.
 
 ---
 
@@ -109,8 +108,8 @@ The localizer reads the odometry as a perception, so add an odometry sensor to `
           topic: odom
           type: nav_msgs/msg/Odometry
 
-A complete, ready-to-use example (with the Regulated Pure Pursuit controller) is shipped in
-``easynav_indoor_testcase/robots_params/costmap.rpp.mhamcl.params.yaml``.
+A complete, ready-to-use example (with the Regulated Pure Pursuit controller) is
+``params/costmap.rpp.mhamcl.params.yaml`` of the Kobuki PlayGround.
 
 .. note::
    The recovery plugins ``AmclConvergenceEvaluator`` and ``AmclRelocalizeMitigation`` (for
@@ -122,19 +121,13 @@ A complete, ready-to-use example (with the Regulated Pure Pursuit controller) is
 Running the Simulation
 ----------------------
 
-1. **Launch the simulator:**
+1. **Launch the simulator, EasyNav and RViz2** with the PlayGround's launcher:
 
    .. code-block:: bash
 
-      ros2 launch easynav_playground_kobuki playground_kobuki.launch.py gui:=false
+      ros2 launch easynav_playground_kobuki easynav_costmap_rpp_mhamcl.launch.yaml
 
-2. **Launch EasyNav and RViz2** with the shipped launcher:
-
-   .. code-block:: bash
-
-      ros2 launch easynav_indoor_testcase easynav_costmap_rpp_mhamcl.launch.py
-
-3. In **RViz2**, add a ``MarkerArray`` display on the topic
+2. In **RViz2**, add a ``MarkerArray`` display on the topic
    ``/localizer_node/mhamcl/hypotheses``. Every hypothesis is drawn with its own color, with an arrow on its
    estimated pose. The arrow of the selected hypothesis is thicker. The particles of the selected hypothesis
    are also published as a ``PoseArray`` on ``/localizer_node/mhamcl/particles``.

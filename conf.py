@@ -87,7 +87,7 @@ language = 'en'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build','_themes','scripts' ]
+exclude_patterns = ['_build', '_site', '_themes', 'scripts']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -132,22 +132,8 @@ else:
 html_theme_path = ['_themes']
 html_theme = 'otc_tcs_sphinx_theme'
 
-# Here's where we (manually) list the document versions maintained on
-# the published doc website.  On a daily basis we publish to the
-# /latest folder but when releases are made, we publish to a /<relnum>
-# folder (specified via RELEASE=name on the make command).
-
-if tags.has('release'):
-   current_version = version
-else:
-   version = current_version = "latest"
-
-html_context = {
-   'current_version': current_version,
-   'versions': ( ("latest", "/latest/"),
-#                 ("0.1-rc4", "/0.1-rc4/"),
-               )
-    }
+# The published versions are in versions.json (built by scripts/build_site.py, selector in
+# _themes/otc_tcs_sphinx_theme/versions.html)
 
 
 # Theme options are theme-specific and customize the look and feel of a theme

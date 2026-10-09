@@ -1,462 +1,127 @@
-
 .. _build_and_install:
 
 =================
 Build & Install
 =================
 
-This page explains how to install and build the **EasyNavigation (EasyNav)** framework and how to set up your development environment.
+EasyNav runs on Linux with ROS 2 **humble**, **jazzy**, **kilted**, **lyrical** or **rolling**.
+The recommended way to install it is with **APT**, using the packages of the ROS 2 buildfarm
+(all distros but rolling, which has no APT packages for now: use Pixi or build from source).
 
-.. contents:: On this page
-   :local:
-   :depth: 2
+.. only:: not latest
 
-Supported platforms
--------------------
+   This documentation describes **EasyNav 0.5.0**, the version that APT installs on every distro.
 
-EasyNav targets modern Linux distributions and the following ROS 2 releases:
+.. only:: latest
 
-- **rolling** — tracks the latest supported Ubuntu release
-- **lyrical** — Ubuntu 26.04 (Resolute)
-- **kilted** — Ubuntu 24.04 (Noble)
-- **jazzy** — Ubuntu 24.04 (Noble)
+   This is the **development** documentation, for the ``rolling`` branches of the repositories:
+   it may describe features not released yet. APT installs the latest release, **EasyNav 0.5.0**.
 
-.. note::
-   If you are using a different ROS 2 release, contributions to extend the support
-   matrix are very welcome.
+.. _install_quick_apt:
 
-Installation methods
----------------------
+Install with APT (recommended)
+------------------------------
 
-EasyNav can be installed in three ways:
-
-- :ref:`install_apt` — precompiled Debian packages. Available for **jazzy**,
-  **kilted** and **lyrical** (not **rolling**).
-- :ref:`install_pixi` — precompiled Pixi/conda packages, self-contained (bundles
-  its own ROS 2). Available for **rolling**, **jazzy**, **kilted** and **lyrical**.
-- :ref:`build_from_source` — clone and build with colcon. Available for all four
-  supported distros.
-
-Prerequisites
--------------
-
-The prerequisites below apply to the **APT** and **build from source** methods. If you
-install via **Pixi**, everything (including ROS 2 itself) is provided by the Pixi
-environment and no system-wide ROS 2 installation is required — you can skip ahead to
-:ref:`install_pixi`.
-
-1. ROS 2 (jazzy, kilted, lyrical or rolling)
-
-   Follow the official ROS 2 installation instructions for your platform.
-   Ensure your ROS 2 environment is sourced before building EasyNav.
-
-   .. code-block:: bash
-
-      # Example (adjust to your ROS 2 distro):
-      source /opt/ros/kilted/setup.bash
-
-2. ROS dependencies
-
-   .. code-block:: bash
-
-      sudo rosdep init
-      rosdep update
-
-.. _install_apt:
-
-Install from binaries (APT)
-----------------------------
-
-EasyNav is released as binary Debian packages through the ROS 2 buildfarm for
-**jazzy**, **kilted** and **lyrical**.
-
-.. note::
-   **Rolling** does not have APT/binary packages, since ROS 2 Rolling is not released
-   through the Debian buildfarm. Use :ref:`install_pixi` or
-   :ref:`build_from_source` instead.
-
-Jazzy
-~~~~~
+You need `ROS 2 <https://docs.ros.org>`_ installed from its official APT repositories. Install
+EasyNav and the plugins your configuration uses; for example, for a costmap configuration with the
+Regulated Pure Pursuit controller:
 
 .. code-block:: bash
 
    sudo apt update
-   sudo apt install ros-jazzy-easynav
-
-Kilted
-~~~~~~
-
-.. code-block:: bash
-
-   sudo apt update
-   sudo apt install ros-kilted-easynav
-
-Lyrical
-~~~~~~~
-
-.. code-block:: bash
-
-   sudo apt update
-   sudo apt install ros-lyrical-easynav
-
-Installing plugins (APT)
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-``ros-<distro>-easynav`` only installs the **core** EasyNav framework (``easynav_system``,
-``easynav_sensors``, ...). Controllers, localizers, planners and maps managers are
-shipped as separate packages — see the full catalogue at :doc:`../plugins/index` — and
-you need to install the ones your configuration actually uses.
-
-For example, the ``costmap`` + ``rpp`` example configuration
-(``easynav_indoor_testcase/robots_params/costmap.rpp.params.yaml``) needs:
-
-.. code-block:: bash
-
-   sudo apt install \
+   sudo apt install ros-<distro>-easynav \
      ros-<distro>-easynav-costmap-maps-manager \
      ros-<distro>-easynav-costmap-localizer \
      ros-<distro>-easynav-costmap-planner \
      ros-<distro>-easynav-regulated-pp-controller
 
-And the ``simple`` + ``serest`` example configuration
-(``easynav_indoor_testcase/robots_params/simple.serest_params.yaml``) needs:
+Replace ``<distro>`` with yours (``humble``, ``jazzy``, ``kilted`` or ``lyrical``) and
+source ROS 2 in every new terminal (``source /opt/ros/<distro>/setup.bash``). See
+:ref:`install_apt` for the plugins and the PlayGrounds, and continue with
+:doc:`../getting_started/index`.
 
-.. code-block:: bash
-
-   sudo apt install \
-     ros-<distro>-easynav-simple-maps-manager \
-     ros-<distro>-easynav-simple-localizer \
-     ros-<distro>-easynav-simple-planner \
-     ros-<distro>-easynav-serest-controller
-
-.. note::
-   Plugin package availability via APT currently varies per distro: as of this
-   writing, ``easynav-costmap-localizer``, ``easynav-regulated-pp-controller`` and
-   ``easynav-simple-localizer`` are only published for **lyrical**. If a plugin
-   package is missing for your distro, use :ref:`install_pixi` (which has broader
-   plugin coverage) or :ref:`build_from_source`.
-
-.. _install_pixi:
-
-Install via Pixi
------------------
-
-EasyNav publishes prebuilt `Pixi <https://pixi.sh>`_/conda packages on
-`prefix.dev <https://prefix.dev>`_. A Pixi environment is fully self-contained: it
-ships its own ROS 2 distribution, so you do **not** need a system ROS 2 install.
-
-For each ROS 2 distro, download the corresponding ``pixi.toml`` below and save it as
-``~/easynav_ws/pixi.toml`` — the same workspace directory used throughout this guide
-and in :doc:`../getting_started/index`. Then run:
-
-.. code-block:: bash
-
-   cd ~/easynav_ws
-   pixi install
-   pixi shell
-
-``pixi shell`` opens a shell with ROS 2 and EasyNav ready to use (e.g. ``ros2 launch
-easynav ...``). You can also prefix any command with ``pixi run`` instead of entering
-the shell.
-
-Rolling
-~~~~~~~
-
-:download:`pixi.toml <pixi_envs/rolling/pixi.toml>`
-
-.. literalinclude:: pixi_envs/rolling/pixi.toml
-   :language: toml
-
-Lyrical
-~~~~~~~
-
-:download:`pixi.toml <pixi_envs/lyrical/pixi.toml>`
-
-.. literalinclude:: pixi_envs/lyrical/pixi.toml
-   :language: toml
-
-Kilted
-~~~~~~
-
-:download:`pixi.toml <pixi_envs/kilted/pixi.toml>`
-
-.. literalinclude:: pixi_envs/kilted/pixi.toml
-   :language: toml
-
-Jazzy
-~~~~~
-
-:download:`pixi.toml <pixi_envs/jazzy/pixi.toml>`
-
-.. literalinclude:: pixi_envs/jazzy/pixi.toml
-   :language: toml
-
-Installing plugins (Pixi)
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Just like the APT metapackage, ``ros-<distro>-easynav`` in the ``pixi.toml`` files
-above only pulls in the **core** framework. Controllers, localizers, planners and
-maps managers live in separate packages — browse the full catalogue at
-:doc:`../plugins/index` — and must be added on top with ``pixi add``.
-
-For example, to run the ``costmap`` + ``rpp`` example configuration
-(``easynav_indoor_testcase/robots_params/costmap.rpp.params.yaml``):
-
-.. code-block:: bash
-
-   pixi add \
-     ros-<distro>-easynav-costmap-maps-manager \
-     ros-<distro>-easynav-costmap-localizer \
-     ros-<distro>-easynav-costmap-planner \
-     ros-<distro>-easynav-regulated-pp-controller
-
-And for the ``simple`` + ``serest`` example configuration
-(``easynav_indoor_testcase/robots_params/simple.serest_params.yaml``):
-
-.. code-block:: bash
-
-   pixi add \
-     ros-<distro>-easynav-simple-maps-manager \
-     ros-<distro>-easynav-simple-localizer \
-     ros-<distro>-easynav-simple-planner \
-     ros-<distro>-easynav-serest-controller
-
-Replace ``<distro>`` with your target distro (``rolling``, ``jazzy``, ``kilted`` or
-``lyrical``). Unlike APT, these plugin packages are available on the Pixi channels
-for all four distros.
+On **rolling**, without a system ROS 2 or on another Linux, use :ref:`Pixi <install_pixi>`. To
+develop EasyNav or a plugin, build it from source.
 
 .. _build_from_source:
 
-Build from source
+Install from source
 -------------------
 
-Workspace layout
-~~~~~~~~~~~~~~~~
+You need `ROS 2 <https://docs.ros.org>`_ installed.
 
-We recommend a standard ROS 2 workspace:
+.. only:: not latest
 
-.. code-block:: bash
+   The commands clone the **EasyNav 0.5.0** release (its git tags), the same on every distro.
 
-   mkdir -p ~/easynav_ws/src
-   cd ~/easynav_ws
+.. only:: latest
 
-Clone sources
-~~~~~~~~~~~~~
+   The commands clone the ``rolling`` branches (development). On another distro, clone its branch
+   instead (``-b humble``, ``-b jazzy``, ``-b kilted`` or ``-b lyrical``), see
+   :ref:`release_status`.
 
-You can retrieve EasyNav sources by cloning the monorepo(s) you need. Each repository
-has one branch per supported ROS 2 distro — pick the block matching your target distro.
+1. **Create a workspace and clone EasyNav**, its plugins, NavMap and yaets (the tracing library
+   EasyNav uses):
 
-.. note::
-   Unlike the APT and Pixi methods, cloning ``easynav_plugins`` already brings in
-   **all** official plugins (see :doc:`../plugins/index`) — ``colcon build`` will
-   build every controller, localizer, planner and maps manager, so no extra
-   installation step is needed here.
+   .. only:: not latest
 
-Rolling
-^^^^^^^
+      .. code-block:: bash
 
-.. code-block:: bash
+         mkdir -p ~/easynav_ws/src
+         cd ~/easynav_ws/src
+         git clone -b 0.5.0 https://github.com/EasyNavigation/EasyNavigation.git
+         git clone -b 0.5.0 https://github.com/EasyNavigation/easynav_plugins.git
+         git clone -b 0.6.0 https://github.com/EasyNavigation/NavMap.git
+         git clone -b 1.2.0 https://github.com/fmrico/yaets.git
 
-   cd ~/easynav_ws/src
-   git clone -b rolling https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b rolling https://github.com/EasyNavigation/NavMap.git
-   git clone -b rolling https://github.com/EasyNavigation/easynav_plugins.git
-   git clone -b rolling https://github.com/fmrico/yaets.git
+   .. only:: latest
 
-Lyrical
-^^^^^^^
+      .. code-block:: bash
 
-.. code-block:: bash
+         mkdir -p ~/easynav_ws/src
+         cd ~/easynav_ws/src
+         git clone -b rolling https://github.com/EasyNavigation/EasyNavigation.git
+         git clone -b rolling https://github.com/EasyNavigation/easynav_plugins.git
+         git clone -b rolling https://github.com/EasyNavigation/NavMap.git
+         git clone -b rolling https://github.com/fmrico/yaets.git
 
-   cd ~/easynav_ws/src
-   git clone -b lyrical https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b lyrical https://github.com/EasyNavigation/NavMap.git
-   git clone -b lyrical https://github.com/EasyNavigation/easynav_plugins.git
-   git clone -b lyrical https://github.com/fmrico/yaets.git
+2. **Install the dependencies**:
 
-Kilted
-^^^^^^
+   .. code-block:: bash
 
-.. code-block:: bash
+      cd ~/easynav_ws
+      rosdep install --from-paths src --ignore-src -y -r
 
-   cd ~/easynav_ws/src
-   git clone -b kilted https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b kilted https://github.com/EasyNavigation/NavMap.git
-   git clone -b kilted https://github.com/EasyNavigation/easynav_plugins.git
-   git clone -b kilted https://github.com/fmrico/yaets.git
+   (If you never used rosdep, run ``sudo rosdep init`` and ``rosdep update`` first.)
 
-Jazzy
-^^^^^
+3. **Build**:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-   cd ~/easynav_ws/src
-   git clone -b jazzy https://github.com/EasyNavigation/EasyNavigation.git
-   git clone -b jazzy https://github.com/EasyNavigation/NavMap.git
-   git clone -b jazzy https://github.com/EasyNavigation/easynav_plugins.git
-   git clone -b jazzy https://github.com/fmrico/yaets.git
+      colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
-Install dependencies
-~~~~~~~~~~~~~~~~~~~~
+4. **Source the workspace**, in every new terminal:
 
-From the workspace root, resolve all package dependencies with rosdep:
+   .. code-block:: bash
 
-.. code-block:: bash
+      source /opt/ros/<distro>/setup.bash
+      source ~/easynav_ws/install/setup.bash
 
-   cd ~/easynav_ws
-   rosdep install --from-paths src --ignore-src -y -r
+That's it: EasyNav and all its official plugins are installed. Continue with
+:doc:`../getting_started/index`.
 
-Configure and build
-~~~~~~~~~~~~~~~~~~~
+Other options
+-------------
 
-Use colcon to build the workspace. You may enable symlink-install for faster iteration.
-
-.. code-block:: bash
-
-   cd ~/easynav_ws
-   colcon build --symlink-install
-
-Source the overlay
-~~~~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-   # Source ROS 2 first (jazzy / kilted / lyrical / rolling)
-   source /opt/ros/<distro>/setup.bash
-   # Then source the workspace
-   source ~/easynav_ws/install/setup.bash
-
-Run tests (optional)
-~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: bash
-
-   cd ~/easynav_ws
-   colcon test --ctest-args -R easynav  # run EasyNav-related tests
-   colcon test-result --verbose
-
-
-.. _realtime_setup:
-
-Real-time system setup (optional)
----------------------------------
-
-EasyNav runs its real-time cycle with ``SCHED_FIFO`` priority **80** (``system_node.use_real_time``,
-``true`` by default). Linux only lets a process use that priority if its ``RLIMIT_RTPRIO`` is at
-least 80; otherwise EasyNav warns and runs with normal priority, or, in safety mode, does not start
-(see :ref:`safety_mode`). If you enable ``system_node.safety.lock_memory``, ``RLIMIT_MEMLOCK`` must
-also be unlimited, or EasyNav does not start (see :ref:`safety_memory`).
-
-Check the current limits of your shell:
-
-.. code-block:: bash
-
-   ulimit -r   # RLIMIT_RTPRIO: must be >= 80
-   ulimit -l   # RLIMIT_MEMLOCK: must be "unlimited", only for safety.lock_memory
-
-Set them depending on how EasyNav is started.
-
-**From a user session** (terminal, SSH, ``ros2 launch``): create a ``realtime`` group, add your user
-to it, and give the group the limits in ``/etc/security/limits.d/``:
-
-.. code-block:: bash
-
-   sudo groupadd -f realtime
-   sudo usermod -aG realtime $USER
-   sudo tee /etc/security/limits.d/99-easynav-realtime.conf > /dev/null << 'EOF'
-   @realtime   -   rtprio    98
-   @realtime   -   memlock   unlimited
-   EOF
-
-Log out and in again (or reboot) and check ``ulimit -r`` and ``ulimit -l``. These limits apply to
-login sessions only, not to systemd services.
-
-**As a systemd service**: set the limits in the ``[Service]`` section of the unit:
-
-.. code-block:: ini
-
-   [Service]
-   LimitRTPRIO=98
-   LimitMEMLOCK=infinity
-
-**In Docker**:
-
-.. code-block:: bash
-
-   docker run --ulimit rtprio=98 --ulimit memlock=-1:-1 ...
-
-or, with Docker Compose:
-
-.. code-block:: yaml
-
-   services:
-     easynav:
-       ulimits:
-         rtprio: 98
-         memlock: -1
-
-If the host kernel uses real-time group scheduling (``CONFIG_RT_GROUP_SCHED``, not enabled in the
-standard Ubuntu kernels), the container also needs real-time CPU time (``--cpu-rt-runtime``).
-
-Leave out the ``memlock`` lines if you do not use ``safety.lock_memory``: locking memory has a cost
-(see :ref:`safety_memory`).
-
-**Check it worked**: EasyNav logs ``Selected Real-Time`` without a following
-``Failed to set Real Time`` warning, and ``[safety.lock_memory] Memory locked`` if enabled. The
-scheduling of its threads can be seen with:
-
-.. code-block:: bash
-
-   ps -eLo pid,tid,cls,rtprio,comm | grep system_main
-
-The real-time cycle's thread, and the TF listener thread it starts, show ``FF 80`` (``SCHED_FIFO``,
-priority 80); the rest, ``TS`` (normal scheduling).
-
-For lower and more predictable latencies, use a kernel with ``PREEMPT_RT``.
-
-Troubleshooting
----------------
-
-- **Missing rosdep keys**
-
-  Run ``rosdep check --from-paths src --ignore-src`` to diagnose. If a dependency
-  is truly missing on your platform, consider opening an issue with details.
-
-- **CMake not finding ROS packages**
-
-  Ensure you have sourced the correct ROS 2 distro and your workspace install
-  before building or running executables.
-
-  .. code-block:: bash
-
-     source /opt/ros/<distro>/setup.bash
-     source ~/easynav_ws/install/setup.bash
-
-- **ABI / compiler issues**
-
-  Remove the build, install, and log folders and rebuild:
-
-  .. code-block:: bash
-
-     cd ~/easynav_ws
-     rm -rf build install log
-     colcon build --merge-install
-
-Uninstall / clean
------------------
-
-Since this is a workspace overlay, you can remove it safely:
-
-.. code-block:: bash
-
-   rm -rf ~/easynav_ws
-
-Next steps
-----------
-
-- :doc:`../getting_started/index` — quick start with simulation and first launch
-- :doc:`../howtos/index` — step-by-step guides for mapping, navigation, and deployment
-- :doc:`../developer_guide/index` — in-depth documentation for developers and contributors
+- :doc:`binaries` — APT and Pixi packages: plugins, PlayGrounds and the versions available for each
+  distro.
+- :doc:`realtime` — let EasyNav run its control cycle with real-time priority (recommended on a
+  real robot).
+- :doc:`troubleshooting` — common problems, running the tests and uninstalling.
 
 .. toctree::
    :hidden:
+
+   binaries
+   realtime
+   troubleshooting
