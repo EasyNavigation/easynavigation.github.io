@@ -22,12 +22,12 @@ PUBLISHDIR    = /tmp/EasyNav
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	@echo ""
+	@echo "make site"
+	@echo "   build every version of versions.json in _site/ (the published website)"
 	@echo "make publish"
-	@echo "   publish generated html to thesofproject.github.io site:"
-	@echo "   specify RELEASE=name to publish as a tagged release version"
-	@echo "   and placed in a version subfolder.  Requires repo merge permission."
+	@echo "   build the site and push it to gh-pages (the GitHub Action does it on main)"
 
-.PHONY: help Makefile
+.PHONY: help Makefile site publish
 
 # Generate the doxygen xml (for Sphinx) and copy the doxygen html to the
 # api folder for publishing along with the Sphinx-generated API docs.
@@ -35,27 +35,30 @@ help:
 html:
 	$(Q)$(SPHINXBUILD) -t $(DOC_TAG) -b html -d $(BUILDDIR)/doctrees $(SOURCEDIR) $(BUILDDIR)/html $(SPHINXOPTS) $(O)
 
+# Every version of versions.json in _site/<version>/
+
+site:
+	$(Q)python3 scripts/build_site.py
+
 # Remove generated content (Sphinx and doxygen)
 
 clean:
-	rm -fr $(BUILDDIR)
+	rm -fr $(BUILDDIR) _site
 
 # Copy material over to the GitHub pages staging repo
 # along with a README
 
-publish:
+publish: site
 	rm -rf $(PUBLISHDIR)
 	git clone --reference . https://github.com/EasyNavigation/EasyNavigation.github.io.git $(PUBLISHDIR)
 	cd $(PUBLISHDIR) && \
 	git checkout gh-pages && \
-	rm -fr $(PUBLISHDIR)/*
-	cp -r $(BUILDDIR)/html/* $(PUBLISHDIR)
-	cp scripts/.nojekyll $(PUBLISHDIR)/.nojekyll
-	# cp scripts/CNAME $(PUBLISHDIR)/CNAME
+	git rm -rq . && git clean -fdq
+	cp -r _site/. $(PUBLISHDIR)
 	cd $(PUBLISHDIR) && \
 	git add -A && \
 	git diff-index --quiet HEAD || \
-	(git commit -s -m "[skip ci] publish $(RELEASE)" && git push origin)
+	(git commit -s -m "[skip ci] publish" && git push origin)
 	rm -rf $(PUBLISHDIR)
 
 

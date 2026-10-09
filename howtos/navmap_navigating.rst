@@ -20,8 +20,8 @@ using the :doc:`Summit PlayGround <../playgrounds/summit>`:
 Setup
 -----
 
-Build EasyNav from source (see :ref:`build_from_source`, which also clones NavMap) and the
-Summit PlayGround (see :ref:`playgrounds`).
+Install the Summit PlayGround (``sudo apt install ros-<distro>-easynav-playground-summit``, see
+:ref:`playgrounds`): it brings EasyNav, NavMap and the plugins used here.
 
 The two scenarios
 -----------------

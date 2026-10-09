@@ -23,12 +23,23 @@ We will run a ready-to-use simulation setup consisting of:
   Pure Pursuit controller
 - **Simulator:** Gazebo Harmonic with RViz2 visualization
 
-Setting up the workspace
-------------------------
+Setting up
+----------
 
-Build EasyNav from source as described in :ref:`build_from_source` (``~/easynav_ws``).
+Install the Kobuki PlayGround with APT (see :doc:`../build_install/index`). It brings EasyNav and
+every plugin its configurations use:
 
-Then clone the Kobuki PlayGround into the same workspace, install its dependencies and build it:
+.. code-block:: bash
+
+   sudo apt install ros-<distro>-easynav-playground-kobuki
+
+Use jazzy, kilted or lyrical: the PlayGrounds do not support humble's Gazebo, and rolling has no
+APT packages (use :ref:`Pixi <install_pixi>` or build from source). The PlayGround is
+self-contained: the robot model, the world, the maps and the EasyNav configurations are all in
+this package.
+
+To build it from source instead, build EasyNav as described in :ref:`build_from_source`
+(``~/easynav_ws``), then clone the PlayGrounds into the same workspace:
 
 .. code-block:: bash
 
@@ -37,9 +48,6 @@ Then clone the Kobuki PlayGround into the same workspace, install its dependenci
    cd ~/easynav_ws
    rosdep install --from-paths src --ignore-src -y -r
    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
-
-The PlayGround is self-contained: the robot model, the world, the maps and the EasyNav
-configurations are all in this package.
 
 .. _gs_source_workspace:
 
@@ -51,7 +59,7 @@ In every new terminal you open for the rest of this guide:
 .. code-block:: bash
 
    source /opt/ros/<distro>/setup.bash
-   source ~/easynav_ws/install/setup.bash
+   source ~/easynav_ws/install/setup.bash  # Only if you built from source
 
 First run: the Simple stack
 ---------------------------

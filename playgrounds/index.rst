@@ -60,9 +60,15 @@ robot's parameter file.
 Installation
 ------------
 
-The PlayGrounds are only distributed as source. Clone the repository into the workspace where you
-built EasyNav, install their dependencies and build them (all, or ``--packages-up-to`` the one you
-want):
+Install the PlayGround you want with APT in jazzy, kilted or lyrical, or with
+:ref:`Pixi <install_pixi>` (also rolling). They are not available for humble. Each one brings its robot, worlds and EasyNav launchers:
+
+.. code-block:: bash
+
+   sudo apt install ros-<distro>-easynav-playground-kobuki
+
+To modify them, build them from source instead: clone the repository into your workspace, install
+their dependencies and build them (all, or ``--packages-up-to`` the one you want):
 
 .. code-block:: bash
 

@@ -4,13 +4,9 @@
 Install from Binaries
 =====================
 
-EasyNav is also distributed as binary packages, with APT (Debian packages from the ROS 2
-buildfarm) and Pixi (self-contained conda packages).
-
-.. warning::
-   The binary packages are still **0.4.x**. This documentation describes EasyNav 0.5.0, not
-   released yet: its parameter files, the recovery system, the safety mode and the PlayGrounds do
-   not work with 0.4.x. Until 0.5.0 is released, :ref:`build from source <build_from_source>`.
+EasyNav is distributed as binary packages with APT (Debian packages from the ROS 2 buildfarm, the
+**recommended** way, for every distro but rolling) and Pixi (self-contained conda packages, for
+every distro).
 
 .. contents:: On this page
    :local:
@@ -21,9 +17,8 @@ buildfarm) and Pixi (self-contained conda packages).
 Release status
 --------------
 
-This documentation follows the ``rolling`` branch of the EasyNav repositories, which will be
-released as **0.5.0** for rolling, lyrical, kilted and jazzy. The binary packages (APT and Pixi) are still
-**0.4.x**:
+EasyNav **0.5.0** is released for every distro, with the same content in all of them. Each distro
+has its own branch in the repositories:
 
 .. list-table::
    :header-rows: 1
@@ -35,30 +30,33 @@ released as **0.5.0** for rolling, lyrical, kilted and jazzy. The binary package
      - Source branch
    * - rolling
      - —
-     - 0.4.2
-     - ``rolling`` (0.5.0 in development)
+     - 0.5.0
+     - ``rolling``
    * - lyrical
-     - 0.4.2
-     - 0.4.2
-     - ``lyrical`` (0.4.x)
+     - 0.5.0
+     - 0.5.0
+     - ``lyrical``
    * - kilted
-     - 0.4.1
-     - 0.4.1
-     - ``kilted`` (0.4.x)
+     - 0.5.0
+     - 0.5.0
+     - ``kilted``
    * - jazzy
-     - 0.4.0
-     - 0.4.0
-     - ``jazzy`` (0.4.x)
+     - 0.5.0
+     - 0.5.0
+     - ``jazzy``
+   * - humble
+     - 0.5.0
+     - 0.5.0
+     - ``humble``
 
 .. _install_apt:
 
-Install from binaries (APT)
-----------------------------
+Install from binaries (APT, recommended)
+----------------------------------------
 
-EasyNav is released as binary Debian packages through the ROS 2 buildfarm for
-**jazzy** (0.4.0), **kilted** (0.4.1) and **lyrical** (0.4.2). **Rolling** has no APT packages:
-use :ref:`build_from_source`.
-It needs ROS 2 installed from its official APT repositories.
+EasyNav is released as Debian packages through the ROS 2 buildfarm for **humble**, **jazzy**,
+**kilted** and **lyrical**. **Rolling** has no APT packages for now: use :ref:`Pixi <install_pixi>`
+or :ref:`build_from_source`. It needs ROS 2 installed from its official APT repositories.
 
 .. code-block:: bash
 
@@ -82,23 +80,42 @@ configuration with the Regulated Pure Pursuit controller:
      ros-<distro>-easynav-costmap-planner \
      ros-<distro>-easynav-regulated-pp-controller
 
-Not every plugin is packaged (see :ref:`package_availability`): in **jazzy**,
-``easynav-costmap-localizer`` and ``easynav-simple-localizer`` are missing.
+The :doc:`../playgrounds/index` are packaged too (except in humble), e.g.
+``ros-<distro>-easynav-playground-kobuki``.
 
 .. _install_pixi:
 
 Install via Pixi
 -----------------
 
-EasyNav publishes prebuilt `Pixi <https://pixi.sh>`_/conda packages on
-`prefix.dev <https://prefix.dev>`_, in the Intelligent Robotics Lab channels (``irl-<distro>``),
-built on top of `RoboStack <https://robostack.github.io>`_. A Pixi environment is fully
-self-contained: it ships its own ROS 2 distribution, so you do **not** need a system ROS 2
-install.
+Use `Pixi <https://pixi.sh>`_ when you cannot install ROS 2 from APT (another Linux, no root, or
+several distros side by side). A Pixi environment is fully self-contained: it ships its own ROS 2
+distribution, so you do **not** need a system ROS 2 install.
+
+The ROS 2 packages come from `RoboStack <https://robostack.github.io>`_ (``robostack-<distro>``
+channels). EasyNav's conda packages, and the few dependencies RoboStack lacks, are in the
+Intelligent Robotics Lab channels on `prefix.dev <https://prefix.dev>`_:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
+
+   * - Distro
+     - IRL channel
+   * - rolling
+     - https://prefix.dev/fmrico/irl-rolling
+   * - lyrical
+     - https://prefix.dev/fmrico/irl-lyrical
+   * - kilted
+     - https://prefix.dev/irl-kilted
+   * - jazzy
+     - https://prefix.dev/irl-jazzy
+   * - humble
+     - https://prefix.dev/fmrico/irl-humble
 
 .. note::
-   The official RoboStack channels only have EasyNav for **jazzy** (0.4.0). The ``pixi.toml``
-   files below use the IRL channels, which have it for all four distros.
+   Keep the IRL channel **before** RoboStack's in ``channels``: Pixi takes each package from the
+   first channel that has it, and some RoboStack channels have older EasyNav versions.
 
 For each ROS 2 distro, download the corresponding ``pixi.toml`` below and save it as
 ``~/easynav_ws/pixi.toml`` — the same workspace directory used throughout this guide
@@ -110,9 +127,8 @@ and in :doc:`../getting_started/index`. Then run:
    pixi install
    pixi shell
 
-``pixi shell`` opens a shell with ROS 2 and EasyNav ready to use (e.g. ``ros2 run
-easynav_system system_main ...``). You can also prefix any command with ``pixi run`` instead of
-entering the shell.
+``pixi shell`` opens a shell with ROS 2 and EasyNav ready to use. You can also prefix any command
+with ``pixi run`` instead of entering the shell.
 
 Rolling
 ~~~~~~~
@@ -146,13 +162,21 @@ Jazzy
 .. literalinclude:: pixi_envs/jazzy/pixi.toml
    :language: toml
 
+Humble
+~~~~~~
+
+:download:`pixi.toml <pixi_envs/humble/pixi.toml>`
+
+.. literalinclude:: pixi_envs/humble/pixi.toml
+   :language: toml
+
 Installing plugins (Pixi)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Just like the APT metapackage, ``ros-<distro>-easynav`` in the ``pixi.toml`` files
-above only pulls in the **core** framework. Controllers, localizers, planners and
-maps managers live in separate packages — browse the full catalogue at
-:doc:`../plugins/index` — and must be added on top with ``pixi add``. For example:
+Just like with APT, ``ros-<distro>-easynav`` in the ``pixi.toml`` files above only pulls in the
+**core** framework. Controllers, localizers, planners and maps managers live in separate
+packages — browse the full catalogue at :doc:`../plugins/index` — and must be added on top with
+``pixi add``. For example:
 
 .. code-block:: bash
 
@@ -162,45 +186,19 @@ maps managers live in separate packages — browse the full catalogue at
      ros-<distro>-easynav-costmap-planner \
      ros-<distro>-easynav-regulated-pp-controller
 
-Replace ``<distro>`` with your target distro (``rolling``, ``lyrical``, ``kilted`` or
-``jazzy``).
+Replace ``<distro>`` with your target distro (``humble``, ``jazzy``, ``kilted``, ``lyrical`` or
+``rolling``).
 
 .. _package_availability:
 
 Package availability
 --------------------
 
-Packages that are not in every installation method:
+Every package of EasyNav, its plugins, NavMap (including ``navmap_tools`` and
+``navmap_rviz_plugin``), yaets, ``easynav_nav2_bridge`` and the PlayGrounds is available with APT
+(humble, jazzy, kilted and lyrical) and Pixi (also rolling), except:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 34 22 22 22
-
-   * - Package
-     - APT (0.4.x)
-     - Pixi (0.4.x)
-     - Source (``rolling``)
-   * - ``easynav_recovery``, ``easynav_simple_recovery``, ``easynav_diagnostic_recovery``
-     - No
-     - No
-     - Yes
-   * - ``easynav_mhamcl_localizer``
-     - No
-     - No
-     - Yes
-   * - ``easynav_costmap_localizer``, ``easynav_simple_localizer``
-     - kilted, lyrical
-     - Yes
-     - Yes
-   * - ``navmap_tools`` (NavMap command-line tools)
-     - No
-     - No
-     - Yes
-   * - ``navmap_rviz_plugin``
-     - Yes
-     - No
-     - Yes
-
-The PlayGrounds, ``easynav_behaviors``, ``easynav_nav2_bridge`` and the other example packages
-are only distributed as source (see :doc:`../getting_started/index`).
-
+- The **PlayGrounds** are not available for **humble**: their simulation needs the Gazebo vendor
+  packages (``gz_sim_vendor``) of jazzy and later.
+- ``easynav_behaviors`` and the other example packages are only distributed as source (see
+  :doc:`../getting_started/index`).

@@ -1,5 +1,6 @@
 [workspace]
 name = "easynav-lyrical"
+# EasyNav's channel first: Pixi takes each package from the first channel that has it
 channels = [
   "https://prefix.dev/fmrico/irl-lyrical",
   "https://prefix.dev/robostack-lyrical",

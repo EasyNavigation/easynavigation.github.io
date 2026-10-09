@@ -18,8 +18,13 @@ or ``map`` frame.
 Setup
 -----
 
-Build EasyNav from source as described in :ref:`build_from_source` (which also clones
-``NavMap``). This tutorial uses the **Bonxai Maps Manager** and **NavMap Maps Manager** plugins.
+Install EasyNav (see :doc:`../build_install/index`) with the two plugins this tutorial uses, the
+**Bonxai Maps Manager** and the **NavMap Maps Manager**:
+
+.. code-block:: bash
+
+   sudo apt install ros-<distro>-easynav ros-<distro>-easynav-bonxai-maps-manager \
+     ros-<distro>-easynav-navmap-maps-manager
 
 You also need a recorded ROS bag containing a ``PointCloud2`` map, e.g. recorded while running a
 3D lidar SLAM. The commands below use a bag of the URJC excavation; use your own.

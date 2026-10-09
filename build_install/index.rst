@@ -4,17 +4,44 @@
 Build & Install
 =================
 
-EasyNav runs on Linux with ROS 2 **rolling**, **lyrical**, **kilted** or **jazzy**. The
-recommended way to install it is to build it from source, in a few minutes.
+EasyNav runs on Linux with ROS 2 **humble**, **jazzy**, **kilted**, **lyrical** or **rolling**.
+The recommended way to install it is with **APT**, using the packages of the ROS 2 buildfarm
+(all distros but rolling, which has no APT packages for now: use Pixi or build from source).
+
+.. _install_quick_apt:
+
+Install with APT (recommended)
+------------------------------
+
+You need `ROS 2 <https://docs.ros.org>`_ installed from its official APT repositories. Install
+EasyNav and the plugins your configuration uses; for example, for a costmap configuration with the
+Regulated Pure Pursuit controller:
+
+.. code-block:: bash
+
+   sudo apt update
+   sudo apt install ros-<distro>-easynav \
+     ros-<distro>-easynav-costmap-maps-manager \
+     ros-<distro>-easynav-costmap-localizer \
+     ros-<distro>-easynav-costmap-planner \
+     ros-<distro>-easynav-regulated-pp-controller
+
+Replace ``<distro>`` with yours (``humble``, ``jazzy``, ``kilted`` or ``lyrical``) and
+source ROS 2 in every new terminal (``source /opt/ros/<distro>/setup.bash``). See
+:ref:`install_apt` for the plugins and the PlayGrounds, and continue with
+:doc:`../getting_started/index`.
+
+On **rolling**, without a system ROS 2 or on another Linux, use :ref:`Pixi <install_pixi>`. To
+develop EasyNav or a plugin, build it from source.
 
 .. _build_from_source:
 
 Install from source
 -------------------
 
-You need `ROS 2 <https://docs.ros.org>`_ installed. The commands use **rolling**, the branch this
-documentation describes (EasyNav 0.5.0, soon released for all distros).
-On another distro, see :ref:`release_status` for the branches available.
+You need `ROS 2 <https://docs.ros.org>`_ installed. The commands use **rolling**; on another
+distro, clone its branch instead (``-b humble``, ``-b jazzy``, ``-b kilted`` or ``-b lyrical``),
+see :ref:`release_status`.
 
 1. **Create a workspace and clone EasyNav**, its plugins, NavMap and yaets (the tracing library
    EasyNav uses):
@@ -56,7 +83,7 @@ That's it: EasyNav and all its official plugins are installed. Continue with
 Other options
 -------------
 
-- :doc:`binaries` — APT and Pixi packages, with the versions and packages available for each
+- :doc:`binaries` — APT and Pixi packages: plugins, PlayGrounds and the versions available for each
   distro.
 - :doc:`realtime` — let EasyNav run its control cycle with real-time priority (recommended on a
   real robot).
