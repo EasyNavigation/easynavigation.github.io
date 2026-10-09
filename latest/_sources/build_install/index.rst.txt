@@ -22,6 +22,12 @@ The recommended way to install it is with **APT**, using the packages of the ROS
 Install with APT (recommended)
 ------------------------------
 
+.. warning::
+   EasyNav 0.5.0 was released to the ROS 2 buildfarm on **October 8, 2026**. Its APT packages are
+   available after the next sync of each distro: until then, APT installs the previous version
+   (0.4.0 on jazzy, 0.4.1 on kilted, 0.4.2 on lyrical) and nothing on humble. Meanwhile, install
+   0.5.0 with :ref:`Pixi <install_pixi>` or :ref:`build it from source <build_from_source>`.
+
 You need `ROS 2 <https://docs.ros.org>`_ installed from its official APT repositories. Install
 EasyNav and the plugins your configuration uses; for example, for a costmap configuration with the
 Regulated Pure Pursuit controller:

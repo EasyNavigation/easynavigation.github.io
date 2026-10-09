@@ -54,6 +54,12 @@ has its own branch in the repositories:
 Install from binaries (APT, recommended)
 ----------------------------------------
 
+.. warning::
+   EasyNav 0.5.0 was released to the ROS 2 buildfarm on **October 8, 2026**. Its APT packages are
+   available after the next sync of each distro: until then, APT installs the previous version
+   (0.4.0 on jazzy, 0.4.1 on kilted, 0.4.2 on lyrical) and nothing on humble. Meanwhile, install
+   0.5.0 with :ref:`Pixi <install_pixi>` or :ref:`build it from source <build_from_source>`.
+
 EasyNav is released as Debian packages through the ROS 2 buildfarm for **humble**, **jazzy**,
 **kilted** and **lyrical**. **Rolling** has no APT packages for now: use :ref:`Pixi <install_pixi>`
 or :ref:`build_from_source`. It needs ROS 2 installed from its official APT repositories.
