@@ -96,6 +96,10 @@ The ROS 2 packages come from `RoboStack <https://robostack.github.io>`_ (``robos
 channels). EasyNav's conda packages, and the few dependencies RoboStack lacks, are in the
 Intelligent Robotics Lab channels on `prefix.dev <https://prefix.dev>`_:
 
+.. note::
+   EasyNav 0.5.0 will soon be available in the RoboStack channels too. Meanwhile, use the IRL
+   channels below, as the ``pixi.toml`` files of this page do.
+
 .. list-table::
    :header-rows: 1
    :widths: 20 80
