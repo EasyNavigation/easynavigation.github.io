@@ -33,8 +33,10 @@ def run(*cmd, cwd=ROOT):
 
 
 def build(src, out, version):
-    # The version the theme shows under the logo, whatever conf.py says
-    run(sys.executable, '-m', 'sphinx', '-q', '-t', 'development', '-b', 'html',
+    # The version the theme shows under the logo, whatever conf.py says; 'latest' selects the
+    # ".. only:: latest" blocks (rolling branches), the releases the ".. only:: not latest" ones
+    tags = ['-t', 'development'] + (['-t', 'latest'] if version == 'latest' else [])
+    run(sys.executable, '-m', 'sphinx', '-q', *tags, '-b', 'html',
         '-D', f'version={version}', '-D', f'release={version}', str(src), str(out))
 
 
