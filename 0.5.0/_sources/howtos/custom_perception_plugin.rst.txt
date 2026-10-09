@@ -90,6 +90,9 @@ key, as listed under ``sensors:``).
 Walking through ``AltIMUPerceptionHandler``
 ---------------------------------------------
 
+The complete source code is in the
+`easynav_alt_imu_sensor repository <https://github.com/EasyNavigation/easynav_alt_imu_sensor>`_.
+
 **Header** (``include/easynav_alt_imu_sensor/AltIMUPerceptionHandler.hpp``): the class inherits
 directly from ``easynav::PerceptionHandler`` (not from the built-in ``IMUPerceptionHandler`` — it
 reimplements the subscription itself so it can add its own logic):
