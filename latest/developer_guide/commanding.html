@@ -375,6 +375,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#third-method-nav2-s-navigatetopose-action">Third Method: Nav2’s <cite>NavigateToPose</cite> Action</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
@@ -574,11 +575,41 @@ Publishing a pose here is equivalent to publishing a <cite>REQUEST</cite> comman
 <p>This interface is ideal for manual tools (such as RViz2 “2D Goal Pose”) or simple applications where feedback tracking is not required.
 However, users may still subscribe to <cite>/easynav_control</cite> to monitor navigation status and transitions.</p>
 </section>
+<section id="third-method-nav2-s-navigatetopose-action">
+<h2>Third Method: Nav2’s <cite>NavigateToPose</cite> Action<a class="headerlink" href="#third-method-nav2-s-navigatetopose-action" title="Permalink to this heading"></a></h2>
+<p>Applications and tools written for Nav2 (the Nav2 Simple Commander, a BehaviorTree
+<cite>NavigateToPose</cite> node, the Nav2 RViz2 panel, <cite>ros2 action send_goal</cite>) can command EasyNav unchanged
+through <a class="reference external" href="https://github.com/EasyNavigation/easynav_nav2_bridge">easynav_nav2_bridge</a>. The bridge
+is a <cite>nav2_msgs/action/NavigateToPose</cite> action server on <cite>navigate_to_pose</cite> that is, underneath, a
+<cite>GoalManagerClient</cite>: it forwards each goal to EasyNav through <cite>/easynav_control</cite>, and translates
+EasyNav’s feedback and result back into the action’s.</p>
+<p>Install it and run it next to EasyNav:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-&lt;distro&gt;-easynav-nav2-bridge
+ros2<span class="w"> </span>run<span class="w"> </span>easynav_nav2_bridge<span class="w"> </span>nav2_bridge_main
+</pre></div>
+</div>
+<p>and send goals as you would to Nav2:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/navigate_to_pose<span class="w"> </span>nav2_msgs/action/NavigateToPose<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"{pose: {header: {frame_id: map}, pose: {position: {x: 2.0, y: 1.0}, orientation: {w: 1.0}}}}"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--feedback
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>EasyNav’s <cite>FINISHED</cite> is the action’s success; <cite>FAILED</cite> and <cite>ERROR</cite> abort it.</p></li>
+<li><p>The action’s feedback carries EasyNav’s current pose, navigation time and estimated time remaining.</p></li>
+<li><p>Canceling the action cancels the navigation, and a new goal preempts the active one, as in Nav2.</p></li>
+<li><p>The action takes one goal: use <cite>GoalManagerClient</cite> for several goals in one request, pause and
+resume.</p></li>
+</ul>
+<p>See <a class="reference internal" href="../migration_guide/index.html#migration-goals"><span class="std std-ref">Step 5: Send goals from your applications</span></a> in the Nav2 migration guide for more examples, such as the Simple
+Commander.</p>
+</section>
 <section id="conclusion">
 <h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>For complete command and feedback control, use the <cite>/easynav_control</cite> topic with the <cite>GoalManagerClient</cite>.</p></li>
 <li><p>For basic use cases, publishing to <cite>/goal_pose</cite> is sufficient.</p></li>
+<li><p>For applications written for Nav2, use the <cite>navigate_to_pose</cite> action of <cite>easynav_nav2_bridge</cite>.</p></li>
 <li><p>After receiving any terminal state (FINISHED, FAILED, etc.), a RESET command is mandatory before a new REQUEST.</p></li>
 </ul>
 </section>

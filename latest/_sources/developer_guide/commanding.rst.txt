@@ -118,9 +118,44 @@ Publishing a pose here is equivalent to publishing a `REQUEST` command on `/easy
 This interface is ideal for manual tools (such as RViz2 "2D Goal Pose") or simple applications where feedback tracking is not required.
 However, users may still subscribe to `/easynav_control` to monitor navigation status and transitions.
 
+Third Method: Nav2's `NavigateToPose` Action
+============================================
+
+Applications and tools written for Nav2 (the Nav2 Simple Commander, a BehaviorTree
+`NavigateToPose` node, the Nav2 RViz2 panel, `ros2 action send_goal`) can command EasyNav unchanged
+through `easynav_nav2_bridge <https://github.com/EasyNavigation/easynav_nav2_bridge>`_. The bridge
+is a `nav2_msgs/action/NavigateToPose` action server on `navigate_to_pose` that is, underneath, a
+`GoalManagerClient`: it forwards each goal to EasyNav through `/easynav_control`, and translates
+EasyNav's feedback and result back into the action's.
+
+Install it and run it next to EasyNav:
+
+.. code-block:: bash
+
+   sudo apt install ros-<distro>-easynav-nav2-bridge
+   ros2 run easynav_nav2_bridge nav2_bridge_main
+
+and send goals as you would to Nav2:
+
+.. code-block:: bash
+
+   ros2 action send_goal /navigate_to_pose nav2_msgs/action/NavigateToPose \
+     "{pose: {header: {frame_id: map}, pose: {position: {x: 2.0, y: 1.0}, orientation: {w: 1.0}}}}" \
+     --feedback
+
+- EasyNav's `FINISHED` is the action's success; `FAILED` and `ERROR` abort it.
+- The action's feedback carries EasyNav's current pose, navigation time and estimated time remaining.
+- Canceling the action cancels the navigation, and a new goal preempts the active one, as in Nav2.
+- The action takes one goal: use `GoalManagerClient` for several goals in one request, pause and
+  resume.
+
+See :ref:`migration_goals` in the Nav2 migration guide for more examples, such as the Simple
+Commander.
+
 Conclusion
 ==========
 
 - For complete command and feedback control, use the `/easynav_control` topic with the `GoalManagerClient`.
 - For basic use cases, publishing to `/goal_pose` is sufficient.
+- For applications written for Nav2, use the `navigate_to_pose` action of `easynav_nav2_bridge`.
 - After receiving any terminal state (FINISHED, FAILED, etc.), a RESET command is mandatory before a new REQUEST.
