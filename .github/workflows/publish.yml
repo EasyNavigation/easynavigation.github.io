@@ -3,7 +3,7 @@ name: Publish website
 
 on:
   push:
-    branches: [main]
+    branches: [main, '0.5.x']
     tags: ['*']
   workflow_dispatch:
 
@@ -20,7 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # The tags of the released versions
+          ref: main  # Its versions.json and scripts, also when a release branch is pushed
+          fetch-depth: 0  # The tags and branches of the released versions
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
