@@ -49,7 +49,8 @@ Setup
    - ``easynav_plugins``
    - ``easynav_gridmap_stack`` *(for GridMap representation and planner)*
    - ``easynav_lidarslam_ros2`` *(for SLAM)*
-   - ``easynav_playground_summit`` *(for the Summit simulation world)*
+   - ``easynav_playgrounds`` *(for the Summit simulation world, in
+     ``easynav_playground_summit_worlds``)*
 
 If something is missing, clone the required repositories:
 
@@ -87,9 +88,9 @@ This environment includes outdoor terrain suitable for GridMap-based navigation.
 
 .. code-block:: bash
 
-   ros2 launch easynav_playground_summit playground_summit.launch.py
+   ros2 launch easynav_playground_summit_worlds gazebo_sim.launch.yaml
 
-Keep the RViz window open to visualize sensor topics and the simulated environment.
+RViz2 is started in step 3.
 
 ---
 
@@ -150,7 +151,7 @@ Save the following YAML file as
         sensors: [laser1]
         perception_default_frame: odom
         laser1:
-          topic: /front_laser_sensor/points
+          topic: /front_laser/points
           type: sensor_msgs/msg/PointCloud2
           group: points
 

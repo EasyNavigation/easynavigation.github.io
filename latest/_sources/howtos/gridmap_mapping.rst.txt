@@ -31,7 +31,8 @@ Before starting, ensure that:
    - ``easynav_plugins``
    - ``easynav_gridmap_stack`` *(for GridMap representation and planner)*
    - ``easynav_lidarslam_ros2`` *(for SLAM)*
-   - ``easynav_playground_summit`` *(for the Summit simulation world)*
+   - ``easynav_playgrounds`` *(for the Summit simulation world, in
+     ``easynav_playground_summit_worlds``)*
 
 .. warning::
 
@@ -75,13 +76,17 @@ The workflow consists of:
 1. Start the Simulator
 ----------------------
 
-Start the Summit world simulation in Gazebo with RViz configured automatically.
+Start the Summit simulation in Gazebo, in the outdoor URJC excavation world.
 
 .. code-block:: bash
 
-   ros2 launch easynav_playground_summit playground_summit.launch.py
+   ros2 launch easynav_playground_summit_worlds gazebo_sim.launch.yaml
 
-Keep the RViz window open to visualize topics such as the LIDAR scan and the map.
+In another terminal, start RViz2 to visualize topics such as the lidar and the map:
+
+.. code-block:: bash
+
+   ros2 run rviz2 rviz2 --ros-args -p use_sim_time:=true
 
 ---
 
@@ -95,7 +100,7 @@ If your package provides a consolidated launch file, you can start it directly:
 
    ros2 launch lidarslam lidarslam.launch.py
 
-You can close any *extra* RViz instance this launch may open; we will use the one started in step (1).
+You can close any *extra* RViz instance this launch may open; we will use the one started in step 1.
 
 As the robot moves, LidarSLAM will publish a **map point cloud**:
 
@@ -165,13 +170,13 @@ The **Gridmap Maps Manager** can ingest the GridMap published by the builder via
 .. code-block:: bash
 
    ros2 run easynav_system system_main \
-     --ros-args --params-file ~/ros/ros2/easynav_ws/src/easynav_playground_summit/config/summit_building_params.yaml \
+     --ros-args --params-file ~/gridmap_builder.params.yaml \
      -r /maps_manager_node/gridmap/incoming_map:=/map_builder_gridmap/gridmap
 
 **Option B (standalone):** if available, run a dedicated manager executable with the same remap.  
 If your workspace does not include a standalone binary, use **Option A**.
 
-Example parameter file (``summit_building_params.yaml``):
+Save this parameter file as ``~/gridmap_builder.params.yaml``:
 
 .. code-block:: yaml
 
@@ -211,8 +216,8 @@ Example parameter file (``summit_building_params.yaml``):
         sensors: [laser1]
         perception_default_frame: odom
         laser1:
-          topic: /scan_raw
-          type: sensor_msgs/msg/LaserScan
+          topic: /front_laser/points
+          type: sensor_msgs/msg/PointCloud2
           group: points
 
     system_node:
