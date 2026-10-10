@@ -126,6 +126,31 @@ In a third terminal, start RViz2 with the PlayGround's configuration:
    :align: center
    :alt: RViz2 with EasyNav loaded
 
+Setting the initial pose
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The robot must be localized before it can navigate. The localizer starts at the pose in its
+``initial_pose`` parameters, which the PlayGround sets to where the robot appears in the
+simulation:
+
+.. code-block:: yaml
+
+   localizer_node:
+     ros__parameters:
+       costmap:
+         plugin: easynav_costmap_localizer/AMCLLocalizer
+         initial_pose:
+           x: 0.0
+           y: 0.1
+           yaw: 0.0
+           std_dev_xy: 0.1
+           std_dev_yaw: 0.01
+
+If the robot is somewhere else (for example, a real robot), set its pose in RViz2 with the
+**"2D Pose Estimate"** tool: click where the robot is and drag in the direction it faces. RViz2
+sends the pose in its **Fixed Frame**, which must be the map frame (``map``): otherwise, the
+localizer ignores the pose and writes a warning in the terminal.
+
 Sending navigation goals
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
