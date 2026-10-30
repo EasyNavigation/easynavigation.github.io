@@ -37,6 +37,7 @@ extensions = [
     'sphinx.ext.extlinks',
     'sphinx.ext.graphviz',
     'sphinxcontrib.plantuml',
+    'sphinx_copybutton',
 ]
 
 graphviz_output_format='png'
