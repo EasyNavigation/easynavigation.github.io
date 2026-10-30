@@ -269,6 +269,49 @@ live state — it is read continuously from both the real-time and non-real-time
 below) while ``set_tf_info()`` can in principle be called again on a reconfigure, so the code
 above is safe to use exactly as written from either thread.
 
+.. _tf_future_extrapolation:
+
+Lookups slightly ahead of the latest TF
+---------------------------------------
+
+On a real robot, sensor data often carries a stamp a few milliseconds newer than the latest TF in
+the buffer: odometry published late, driver timestamps, CPU load. ``tf2`` never extrapolates into
+the future, so a lookup at the data's stamp would throw ``tf2::ExtrapolationException``.
+
+``RTTFBuffer`` answers these lookups itself, up to a small horizon ahead of the latest TF. It
+estimates the motion of the whole chain between its latest common time and a short window before
+it, and integrates it as a constant twist (the exact SE(3) motion, so arcs and turns are
+extrapolated along the arc, not along a straight line). The returned transform carries the
+requested stamp.
+
+- It only runs when ``tf2`` itself fails with a future extrapolation: lookups inside the buffer's
+  history behave and cost exactly as in ``tf2_ros::Buffer``.
+- It covers every ``lookupTransform`` and ``canTransform`` overload, including the ones with a
+  fixed frame, with a timeout and with ``rclcpp::Time``. With a timeout, a request within the
+  horizon is answered at once instead of blocking.
+- Unknown frames, disconnected trees, requests further ahead than the horizon and chains without
+  enough history still throw ``tf2``'s original exception.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 35 15 50
+
+   * - Parameter (on ``system_node``)
+     - Default
+     - Meaning
+   * - ``tf_max_future_extrapolation``
+     - ``0.05``
+     - Largest horizon ahead of the latest TF that a lookup may be extrapolated (s). ``0``
+       disables it.
+   * - ``tf_extrapolation_window``
+     - ``0.05``
+     - History used to estimate the motion of the chain (s).
+
+Components therefore look up the transform at the stamp of their data and do not need their own
+workaround (waiting for the TF, falling back to the latest TF) for a few milliseconds of TF lag.
+Keep the horizon short: the longer it is, the longer a TF that has really stopped arriving goes
+unnoticed, and the more the extrapolation drifts if the robot accelerates or turns within it.
+
 Robot Geometry
 ==============
 
