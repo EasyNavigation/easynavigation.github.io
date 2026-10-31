@@ -482,7 +482,8 @@
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>All information needed or produced by EasyNav modules flows through the <cite>NavState</cite>. Examples include:</p>
 <ul class="simple">
-<li><p>the robot’s estimated pose (<cite>robot_pose</cite>),</p></li>
+<li><p>the robot’s estimated pose and velocity (<cite>robot_pose</cite>, a <code class="docutils literal notranslate"><span class="pre">nav_msgs/Odometry</span></code>: its twist is the
+robot’s velocity, from the odometry),</p></li>
 <li><p>a list of navigation goals (<cite>goals</cite>),</p></li>
 <li><p>a path to follow (<cite>path</cite>),</p></li>
 <li><p>environment maps (e.g., <cite>map</cite>, <cite>map.base</cite>, <cite>map.navmap</cite>),</p></li>

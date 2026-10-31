@@ -703,7 +703,8 @@ is not finite;</p></li>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">safety.plc_limits</span></code></dt><dd><p>Not applied to the commands (<code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> are): they declare the limits the safety channel
 enforces, e.g. the safety PLC’s safely limited speed. <code class="docutils literal notranslate"><span class="pre">robot_limits.max_linear_vel</span></code>,
-<code class="docutils literal notranslate"><span class="pre">|min_linear_vel|</span></code> and <code class="docutils literal notranslate"><span class="pre">max_angular_vel</span></code> may not exceed them, so EasyNav is never configured
+<code class="docutils literal notranslate"><span class="pre">|min_linear_vel|</span></code>, <code class="docutils literal notranslate"><span class="pre">max_lateral_vel</span></code> and <code class="docutils literal notranslate"><span class="pre">max_angular_vel</span></code> may not exceed them (the
+lateral one, <code class="docutils literal notranslate"><span class="pre">plc_limits.max_linear_vel</span></code>), so EasyNav is never configured
 to command more than the channel allows, which would only end in safety stops. Checked whenever
 given; required in safety mode.</p>
 </dd>
@@ -834,7 +835,7 @@ the goal stays active, <code class="docutils literal notranslate"><span class="p
 when the stop is released navigation goes on by itself, starting <strong>from zero</strong> within the
 acceleration limits, never from what was commanded before;</p></li>
 <li><p><strong>safely limited speed</strong>: the limits enforced are <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> cut down to it
-(<code class="docutils literal notranslate"><span class="pre">max_linear_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">|min_linear_vel|</span></code> and <code class="docutils literal notranslate"><span class="pre">max_angular_vel</span></code>); a lower limit is reached
+(<code class="docutils literal notranslate"><span class="pre">max_linear_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">|min_linear_vel|</span></code>, <code class="docutils literal notranslate"><span class="pre">max_lateral_vel</span></code> and <code class="docutils literal notranslate"><span class="pre">max_angular_vel</span></code>); a lower limit is reached
 braking within the deceleration limits, and controllers that ask
 <code class="docutils literal notranslate"><span class="pre">get_robot_limits()</span></code> see it. When lifted, <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> apply again;</p></li>
 <li><p><strong>no valid status</strong>: none yet, none for longer than the timeout (counted with the monotonic clock

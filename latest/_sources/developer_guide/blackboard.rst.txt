@@ -10,7 +10,8 @@ Overview
 
 All information needed or produced by EasyNav modules flows through the `NavState`. Examples include:
 
-- the robot's estimated pose (`robot_pose`),
+- the robot's estimated pose and velocity (`robot_pose`, a ``nav_msgs/Odometry``: its twist is the
+  robot's velocity, from the odometry),
 - a list of navigation goals (`goals`),
 - a path to follow (`path`),
 - environment maps (e.g., `map`, `map.base`, `map.navmap`),

@@ -557,7 +557,9 @@ localization.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">controller_server</span></code> (RPP, MPPI, DWB)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">controller_node</span></code> with a controller plugin: Regulated Pure Pursuit, MPPI, MPC, SeReST, VFF.
-RPP and MPPI parameters keep Nav2’s names wherever they mean the same.</p></td>
+RPP parameters keep Nav2’s names wherever they mean the same. MPPI’s <code class="docutils literal notranslate"><span class="pre">motion_model</span></code> is
+<code class="docutils literal notranslate"><span class="pre">diff</span></code> or <code class="docutils literal notranslate"><span class="pre">omni</span></code> (Nav2’s <code class="docutils literal notranslate"><span class="pre">DiffDrive</span></code> and <code class="docutils literal notranslate"><span class="pre">Omni</span></code>); its other parameters are in its
+README.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">velocity_smoother</span></code></p></td>
 <td><p>Built into <code class="docutils literal notranslate"><span class="pre">controller_node</span></code>: the velocity and acceleration limits (<code class="docutils literal notranslate"><span class="pre">robot_limits</span></code>)
@@ -576,8 +578,9 @@ relocalize, ask for help, cancel). See <a class="reference internal" href="../de
 <td><p><code class="docutils literal notranslate"><span class="pre">sensors_node</span></code>: sensors are declared once, for every component.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">footprint</span></code> / <code class="docutils literal notranslate"><span class="pre">robot_radius</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">system_node.robot_geometry</span></code> (<code class="docutils literal notranslate"><span class="pre">radius</span></code>, <code class="docutils literal notranslate"><span class="pre">inscribed_radius</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>), shared by
-every component. Polygon footprints are not supported: use the circumscribed radius.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">system_node.robot_geometry</span></code> (<code class="docutils literal notranslate"><span class="pre">radius</span></code>, <code class="docutils literal notranslate"><span class="pre">inscribed_radius</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>,
+<code class="docutils literal notranslate"><span class="pre">footprint</span></code>), shared by every component. MPPI checks the polygon <code class="docutils literal notranslate"><span class="pre">footprint</span></code>; the other
+components use the radii (see <a class="reference internal" href="../developer_guide/design.html#robot-geometry"><span class="std std-ref">Robot Geometry</span></a>).</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NavigateToPose</span></code> action</p></td>
 <td><p>The <code class="docutils literal notranslate"><span class="pre">easynav_control</span></code> topic, through <code class="docutils literal notranslate"><span class="pre">GoalManagerClient</span></code> (C++ or Python), or the
@@ -765,7 +768,8 @@ updates, planning, AMCL correction).</p></li>
 to what your base listens to. AMCL reads odometry from <code class="docutils literal notranslate"><span class="pre">/odom</span></code>, or from TF with
 <code class="docutils literal notranslate"><span class="pre">compute_odom_from_tf:</span> <span class="pre">true</span></code>.</p></li>
 <li><p><strong>Other controllers</strong>: for MPPI, start from <code class="docutils literal notranslate"><span class="pre">params/costmap.mppi.params.yaml</span></code> of the
-<a class="reference internal" href="../playgrounds/kobuki.html"><span class="doc">Kobuki PlayGround</span></a>. Every plugin’s parameters are in its README
+<a class="reference internal" href="../playgrounds/kobuki.html"><span class="doc">Kobuki PlayGround</span></a>, or, for a holonomic robot, from
+<code class="docutils literal notranslate"><span class="pre">params/easynav_costmap_mppi.params.yaml</span></code> of the <a class="reference internal" href="../playgrounds/omni.html"><span class="doc">Omni PlayGround</span></a>. Every plugin’s parameters are in its README
 (see <a class="reference internal" href="../plugins/index.html"><span class="doc">EasyNav Plugins</span></a>).</p></li>
 <li><p><strong>Recoveries</strong> (<code class="docutils literal notranslate"><span class="pre">recovery_node</span></code>) do what Nav2’s recovery subtrees, <code class="docutils literal notranslate"><span class="pre">behavior_server</span></code> and
 <code class="docutils literal notranslate"><span class="pre">collision_monitor</span></code> do: the collision reflex brakes before a collision; evaluators diagnose

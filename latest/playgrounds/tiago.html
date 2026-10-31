@@ -482,6 +482,9 @@ simulates PAL Robotics’ <strong>TIAGo</strong> in the AWS RoboMaker small hous
 lifting torso, pan-tilt head with an RGBD camera, 7-DoF arm with the PAL gripper and wrist
 force/torque sensor, base laser, sonars and IMU. The base drives with EasyNav, and the torso,
 head, arm and gripper move under ros2_control.</p>
+<p>It also simulates <strong>TIAGo Pro</strong>: an omnidirectional base (four mecanum wheels) with two base lasers,
+two arms with grippers and a head with an RGBD camera. EasyNav drives it as a holonomic robot, with
+MPPI.</p>
 <p>See <a class="reference internal" href="index.html#playgrounds"><span class="std std-ref">PlayGrounds</span></a> to install it.</p>
 <section id="launching-easynav">
 <h2>Launching EasyNav<a class="headerlink" href="#launching-easynav" title="Permalink to this heading"></a></h2>
@@ -511,10 +514,22 @@ Pursuit.</p></td>
 Bonxai map with the base laser, NavMap A* and Regulated Pure Pursuit. The head camera can be
 added as a second sensor in the parameters.</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_mppi_tiago_pro.launch.yaml</span></code></p></td>
+<td><p><strong>TIAGo Pro</strong>, with the maps, localizer and planner of <code class="docutils literal notranslate"><span class="pre">easynav_costmap_rpp</span></code> and its two
+base lasers. MPPI as a holonomic robot (<code class="docutils literal notranslate"><span class="pre">motion_model:</span> <span class="pre">omni</span></code>), facing along the path
+(<code class="docutils literal notranslate"><span class="pre">heading_mode:</span> <span class="pre">path</span></code>), and checking the base’s real shape (<code class="docutils literal notranslate"><span class="pre">robot_geometry.footprint</span></code>)
+as it turns.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_mppi_goal_tiago_pro.launch.yaml</span></code></p></td>
+<td><p>The same, keeping the goal’s orientation from the start (<code class="docutils literal notranslate"><span class="pre">heading_mode:</span> <span class="pre">goal</span></code>, from
+<code class="docutils literal notranslate"><span class="pre">params/overlays/mppi_heading_goal.yaml</span></code>).</p></td>
+</tr>
 </tbody>
 </table>
 <p>They accept <code class="docutils literal notranslate"><span class="pre">params_file</span></code>, <code class="docutils literal notranslate"><span class="pre">rviz_config</span></code>, <code class="docutils literal notranslate"><span class="pre">gui</span></code> (<code class="docutils literal notranslate"><span class="pre">false</span></code> runs Gazebo headless) and
-<code class="docutils literal notranslate"><span class="pre">rviz</span></code> (<code class="docutils literal notranslate"><span class="pre">false</span></code> skips RViz2).</p>
+<code class="docutils literal notranslate"><span class="pre">rviz</span></code> (<code class="docutils literal notranslate"><span class="pre">false</span></code> skips RViz2). <code class="docutils literal notranslate"><span class="pre">easynav_gazebo_sim.launch.yaml</span></code>, which they include, also takes
+<code class="docutils literal notranslate"><span class="pre">robot</span></code> (<code class="docutils literal notranslate"><span class="pre">tiago</span></code> or <code class="docutils literal notranslate"><span class="pre">tiago_pro</span></code>) and <code class="docutils literal notranslate"><span class="pre">params_overlay</span></code>, a parameter file loaded over
+<code class="docutils literal notranslate"><span class="pre">params_file</span></code>.</p>
 <p>Notes for your own configurations:</p>
 <ul class="simple">
 <li><p>TIAGo’s base laser is 0.095 m above the floor. EasyNav’s localizers and obstacle filters drop
@@ -524,7 +539,11 @@ NavMap surface.</p></li>
 <li><p>The Bonxai map’s <code class="docutils literal notranslate"><span class="pre">resolution</span></code> must be the one <code class="docutils literal notranslate"><span class="pre">house.pcd</span></code> was built with (0.05 m): at the
 default 0.3 m, the laser shares a voxel layer with the floor and the NavMap AMCL sees every ray
 blocked.</p></li>
-<li><p>The base takes <code class="docutils literal notranslate"><span class="pre">geometry_msgs/TwistStamped</span></code>: EasyNav runs with <code class="docutils literal notranslate"><span class="pre">use_cmd_vel_stamped:</span> <span class="pre">true</span></code>,
+<li><p>TIAGo Pro’s two lasers (<code class="docutils literal notranslate"><span class="pre">/scan_front_raw</span></code>, <code class="docutils literal notranslate"><span class="pre">/scan_rear_raw</span></code>) are 0.21 m above the floor, each
+covering 270° from opposite corners of the base. Its base is 0.72 × 0.50 m: its parameters model
+it as a 0.4 m circle (<code class="docutils literal notranslate"><span class="pre">radius</span></code>) with a 0.3 m <code class="docutils literal notranslate"><span class="pre">inscribed_radius</span></code>, and give MPPI its rectangle
+(<code class="docutils literal notranslate"><span class="pre">footprint</span></code>).</p></li>
+<li><p>Both bases take <code class="docutils literal notranslate"><span class="pre">geometry_msgs/TwistStamped</span></code>: EasyNav runs with <code class="docutils literal notranslate"><span class="pre">use_cmd_vel_stamped:</span> <span class="pre">true</span></code>,
 and the launch files remap <code class="docutils literal notranslate"><span class="pre">cmd_vel_stamped</span></code> to <code class="docutils literal notranslate"><span class="pre">/mobile_base_controller/cmd_vel</span></code> and
 <code class="docutils literal notranslate"><span class="pre">odom</span></code> to <code class="docutils literal notranslate"><span class="pre">/mobile_base_controller/odom</span></code>.</p></li>
 </ul>
@@ -543,6 +562,17 @@ trajectories on <code class="docutils literal notranslate"><span class="pre">&lt
 <span class="w">  </span><span class="s2">"{joint_names: [head_1_joint, head_2_joint], points: [{positions: [0.0, -0.6], time_from_start: {sec: 1}}]}"</span>
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">robot:=tiago_pro</span></code> runs TIAGo Pro instead. Its arms start tucked, in PAL’s <code class="docutils literal notranslate"><span class="pre">home</span></code> posture. Its
+base also takes <code class="docutils literal notranslate"><span class="pre">linear.y</span></code> (sideways, positive to the left) on
+<code class="docutils literal notranslate"><span class="pre">/mobile_base_controller/cmd_vel</span></code>; with the keyboard (shift moves sideways):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_tiago_worlds<span class="w"> </span>gazebo_sim.launch.yaml<span class="w"> </span>robot:<span class="o">=</span>tiago_pro
+ros2<span class="w"> </span>run<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>--ros-args<span class="w"> </span>-p<span class="w"> </span>stamped:<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-r<span class="w"> </span>cmd_vel:<span class="o">=</span>/mobile_base_controller/cmd_vel
+</pre></div>
+</div>
+<p>Its torso, head, arms and grippers have <code class="docutils literal notranslate"><span class="pre">joint_trajectory_controller</span></code>s too: <code class="docutils literal notranslate"><span class="pre">torso_controller</span></code>,
+<code class="docutils literal notranslate"><span class="pre">head_controller</span></code>, <code class="docutils literal notranslate"><span class="pre">arm_left_controller</span></code>, <code class="docutils literal notranslate"><span class="pre">arm_right_controller</span></code>,
+<code class="docutils literal notranslate"><span class="pre">gripper_left_controller</span></code> and <code class="docutils literal notranslate"><span class="pre">gripper_right_controller</span></code>.</p>
 </section>
 <section id="packages">
 <h2>Packages<a class="headerlink" href="#packages" title="Permalink to this heading"></a></h2>
@@ -564,13 +594,17 @@ trajectories on <code class="docutils literal notranslate"><span class="pre">&lt
 <td><p>The small house world, its maps (costmap, NavMap and Bonxai) and the Gazebo launchers</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_playground_tiago_description</span></code></p></td>
-<td><p>The TIAGo model: URDF, meshes and ros2_control controllers</p></td>
+<td><p>The TIAGo and TIAGo Pro models: URDF, meshes and ros2_control controllers</p></td>
 </tr>
 </tbody>
 </table>
 <p>The TIAGo model is PAL Robotics’ work (Copyright (c) 2022-2024 PAL Robotics S.L., Apache-2.0),
 expanded from the Gazebo Harmonic ports of its <code class="docutils literal notranslate"><span class="pre">tiago_robot</span></code>, <code class="docutils literal notranslate"><span class="pre">pmb2_robot</span></code> and
-<code class="docutils literal notranslate"><span class="pre">pal_gripper</span></code> packages. TIAGo is a robot by <a class="reference external" href="https://pal-robotics.com/">PAL Robotics</a>.</p>
+<code class="docutils literal notranslate"><span class="pre">pal_gripper</span></code> packages. The TIAGo Pro model is also PAL Robotics’ work (Copyright (c) 2024 PAL
+Robotics S.L., Apache-2.0), expanded from its <code class="docutils literal notranslate"><span class="pre">tiago_pro_robot</span></code>, <code class="docutils literal notranslate"><span class="pre">omni_base_robot</span></code>,
+<code class="docutils literal notranslate"><span class="pre">tiago_pro_head_robot</span></code>, <code class="docutils literal notranslate"><span class="pre">pal_sea_arm</span></code>, <code class="docutils literal notranslate"><span class="pre">pal_pro_gripper</span></code> and <code class="docutils literal notranslate"><span class="pre">pal_urdf_utils</span></code> packages, with
+the camera frames of RealSense’s <code class="docutils literal notranslate"><span class="pre">realsense2_description</span></code> (Apache-2.0). TIAGo and TIAGo Pro are
+robots by <a class="reference external" href="https://pal-robotics.com/">PAL Robotics</a>.</p>
 </section>
 </section>
 

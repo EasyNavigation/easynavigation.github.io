@@ -479,7 +479,7 @@
 <span id="playground-omni"></span><h1>Omni PlayGround<a class="headerlink" href="#omni-playground" title="Permalink to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/EasyNavigation/easynav_playgrounds/tree/rolling/playground_omni">easynav_playground_omni</a> simulates
 three- to six-wheel <strong>omnidirectional robots</strong> in two mazes, navigating with the Costmap plugins
-and the Regulated Pure Pursuit controller.</p>
+and the MPPI controller as holonomic robots: they also move sideways.</p>
 <p>See <a class="reference internal" href="index.html#playgrounds"><span class="std std-ref">PlayGrounds</span></a> to install it.</p>
 <div align="center">
   <iframe width="450" height="300" src="https://www.youtube.com/embed/8tPknIoeD1M" frameborder="0" allowfullscreen></iframe>
@@ -490,9 +490,53 @@ and the Regulated Pure Pursuit controller.</p>
 </div>
 <p>It starts Gazebo, the <code class="docutils literal notranslate"><span class="pre">3w_v2</span></code> robot in <code class="docutils literal notranslate"><span class="pre">maze2</span></code>, EasyNav and RViz2. Send a goal with the
 <strong>2D Goal Pose</strong> tool.</p>
-<p>The configuration (<code class="docutils literal notranslate"><span class="pre">config/easynav_costmap_rpp.params.yaml</span></code>) uses the Costmap maps manager, AMCL
-over the costmap, A* (<code class="docutils literal notranslate"><span class="pre">CostmapPlanner</span></code>) and Regulated Pure Pursuit. All the robots share EasyNav
-limits of 0.6 m/s linear and 0.5 rad/s angular velocity.</p>
+<p>The configuration (<code class="docutils literal notranslate"><span class="pre">params/easynav_costmap_mppi.params.yaml</span></code>) uses the Costmap maps manager, AMCL
+over the costmap, A* (<code class="docutils literal notranslate"><span class="pre">CostmapPlanner</span></code>) and MPPI with <code class="docutils literal notranslate"><span class="pre">motion_model:</span> <span class="pre">omni</span></code>, which also commands
+<code class="docutils literal notranslate"><span class="pre">linear.y</span></code>. All the robots share EasyNav limits of 0.6 m/s in any direction and 0.5 rad/s angular
+velocity.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">heading_mode</span></code> argument sets the robot’s orientation while it moves; it always reaches the
+goal’s orientation at the end:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 50.0%" />
+<col style="width: 32.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">heading_mode</span></code></p></th>
+<th class="head"><p>Orientation while moving</p></th>
+<th class="head"><p>Launcher</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">path</span></code> (default)</p></td>
+<td><p>Facing along the path; it corrects sideways</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">easynav_mppi_path.launch.yaml</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">goal</span></code></p></td>
+<td><p>The goal’s orientation, from the start</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">easynav_mppi_goal.launch.yaml</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">free</span></code></p></td>
+<td><p>Any: the one that costs least</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">heading_mode:=free</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hold</span></code></p></td>
+<td><p>The robot’s when the goal is received</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">heading_mode:=hold</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fixed</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">heading_yaw</span></code> (1.5708 rad in <code class="docutils literal notranslate"><span class="pre">params/heading_modes/fixed.yaml</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">heading_mode:=fixed</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_omni<span class="w"> </span>easynav_mppi_goal.launch.yaml<span class="w"> </span>world:<span class="o">=</span>maze1
+</pre></div>
+</div>
+<p>An application can also set the heading while the robot moves, writing <code class="docutils literal notranslate"><span class="pre">heading_reference</span></code> (rad,
+map frame) in NavState: while present, it overrides <code class="docutils literal notranslate"><span class="pre">heading_mode</span></code> (see the MPPI README in
+<a class="reference internal" href="../plugins/index.html"><span class="doc">EasyNav Plugins</span></a>).</p>
 <section id="launch-arguments">
 <h3>Launch arguments<a class="headerlink" href="#launch-arguments" title="Permalink to this heading"></a></h3>
 <table class="docutils align-default">
@@ -516,17 +560,29 @@ limits of 0.6 m/s linear and 0.5 rad/s angular velocity.</p>
 <td><p><code class="docutils literal notranslate"><span class="pre">3w_v2</span></code></p></td>
 <td><p>Robot model: <code class="docutils literal notranslate"><span class="pre">3w</span></code>, <code class="docutils literal notranslate"><span class="pre">3w_v2</span></code>, <code class="docutils literal notranslate"><span class="pre">4w</span></code>, <code class="docutils literal notranslate"><span class="pre">5w</span></code> or <code class="docutils literal notranslate"><span class="pre">6w</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">params_file</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">config/easynav_costmap_rpp.params.yaml</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">heading_mode</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">path</span></code></p></td>
+<td><p>MPPI orientation while moving: <code class="docutils literal notranslate"><span class="pre">path</span></code>, <code class="docutils literal notranslate"><span class="pre">goal</span></code>, <code class="docutils literal notranslate"><span class="pre">free</span></code>, <code class="docutils literal notranslate"><span class="pre">hold</span></code> or <code class="docutils literal notranslate"><span class="pre">fixed</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">params_file</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">params/easynav_costmap_mppi.params.yaml</span></code></p></td>
 <td><p>EasyNav parameter file</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rviz_config</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rviz_config</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">rviz/easynav_costmap.rviz</span></code></p></td>
 <td><p>RViz2 configuration file</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">map_override_file</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">config/map_overrides/&lt;world&gt;/map.yaml</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">map_override_file</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">params/map_overrides/&lt;world&gt;/map.yaml</span></code></p></td>
 <td><p>Parameters that select the map matching <code class="docutils literal notranslate"><span class="pre">world</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gui</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code> runs Gazebo headless</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rviz</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code> does not start RViz2</p></td>
 </tr>
 </tbody>
 </table>
@@ -554,8 +610,10 @@ ros2_control spawner for the robot’s wheel controllers, and <code class="docut
 package that turns <code class="docutils literal notranslate"><span class="pre">cmd_vel</span></code> into wheel commands and publishes the odometry.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">easynav_navigation_gazebo_sim.launch.yaml</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">gazebo_sim.launch.yaml</span></code>, then, after 5 s, EasyNav (<code class="docutils literal notranslate"><span class="pre">easynav_system</span> <span class="pre">system_main</span></code>) with
-<code class="docutils literal notranslate"><span class="pre">params_file</span></code> and <code class="docutils literal notranslate"><span class="pre">map_override_file</span></code>, and RViz2 with <code class="docutils literal notranslate"><span class="pre">rviz_config</span></code>. If EasyNav exits, the
-whole launch ends.</p>
+<code class="docutils literal notranslate"><span class="pre">params_file</span></code>, <code class="docutils literal notranslate"><span class="pre">map_override_file</span></code> and <code class="docutils literal notranslate"><span class="pre">params/heading_modes/&lt;heading_mode&gt;.yaml</span></code>, and
+RViz2 with <code class="docutils literal notranslate"><span class="pre">rviz_config</span></code>. If EasyNav exits, the whole launch ends.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">easynav_mppi_path.launch.yaml</span></code>, <code class="docutils literal notranslate"><span class="pre">easynav_mppi_goal.launch.yaml</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">easynav_navigation_gazebo_sim.launch.yaml</span></code> with <code class="docutils literal notranslate"><span class="pre">heading_mode</span></code> <code class="docutils literal notranslate"><span class="pre">path</span></code> or <code class="docutils literal notranslate"><span class="pre">goal</span></code>.</p>
 </dd>
 </dl>
 </section>

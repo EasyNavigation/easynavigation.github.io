@@ -695,7 +695,8 @@ messages (s).</p></td>
 <td><p>How far ahead of the latest TF a lookup may be extrapolated (see
 <a class="reference internal" href="#tf-future-extrapolation"><span class="std std-ref">Lookups slightly ahead of the latest TF</span></a>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">robot_geometry.radius</span></code>, <code class="docutils literal notranslate"><span class="pre">robot_geometry.inscribed_radius</span></code>, <code class="docutils literal notranslate"><span class="pre">robot_geometry.height</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">robot_geometry.radius</span></code>, <code class="docutils literal notranslate"><span class="pre">robot_geometry.inscribed_radius</span></code>, <code class="docutils literal notranslate"><span class="pre">robot_geometry.height</span></code>,
+<code class="docutils literal notranslate"><span class="pre">robot_geometry.footprint</span></code></p></td>
 <td><p>see <a class="reference internal" href="#robot-geometry"><span class="std std-ref">Robot Geometry</span></a></p></td>
 <td><p>The robot’s shape, shared by every component.</p></td>
 </tr>
@@ -866,19 +867,39 @@ it (inflation filters, planners, safety reflexes, recovery systems…):</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">robot_geometry.radius</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">0.3</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.3</span></code> (or from <code class="docutils literal notranslate"><span class="pre">footprint</span></code>)</p></td>
 <td><p>Circumscribed radius: the smallest circle containing the robot (m).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">robot_geometry.inscribed_radius</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">radius</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">radius</span></code> (or from <code class="docutils literal notranslate"><span class="pre">footprint</span></code>)</p></td>
 <td><p>The largest circle inside the robot (m). Defaults to <code class="docutils literal notranslate"><span class="pre">radius</span></code> (a round robot).</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">robot_geometry.height</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">0.5</span></code></p></td>
 <td><p>The top of the robot, above the robot frame (m).</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">robot_geometry.footprint</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>The robot’s polygon, <code class="docutils literal notranslate"><span class="pre">[x1,</span> <span class="pre">y1,</span> <span class="pre">x2,</span> <span class="pre">y2,</span> <span class="pre">...]</span></code> in the robot frame (3 or more vertices, in
+order around it). Empty: a circle of <code class="docutils literal notranslate"><span class="pre">radius</span></code>.</p></td>
+</tr>
 </tbody>
 </table>
+<p>Without a footprint the robot is a circle. With one, the radii not configured follow from it (the
+farthest vertex, and the nearest side to the robot frame). Components that only know radii (costmap
+inflation, point-based planners, the collision reflex) keep using them, so configured radii may stay
+planning margins; components that check the footprint (MPPI) use the polygon, turned with the robot.
+A configured <code class="docutils literal notranslate"><span class="pre">radius</span></code> that does not contain the footprint is accepted with a warning: what uses it
+may let the corners touch obstacles. For instance, the Summit XL of the <a class="reference internal" href="../playgrounds/summit.html"><span class="doc">Summit PlayGround</span></a> plans as a 0.7 m circle and MPPI checks its 0.74 × 0.62 m body:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">system_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">robot_geometry</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span>
+<span class="w">      </span><span class="nt">inscribed_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span>
+<span class="w">      </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">      </span><span class="nt">footprint</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.35</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.31</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.39</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.31</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.39</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.31</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.35</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-0.31</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
 <p>As with frames, <code class="docutils literal notranslate"><span class="pre">SystemNode</span></code> reads them on every configure and shares them, before its subnodes
 configure, through a process-wide singleton (<code class="docutils literal notranslate"><span class="pre">RobotGeometryRegistry</span></code>). Plugins read them with
 <code class="docutils literal notranslate"><span class="pre">MethodBase::get_robot_geometry()</span></code>; any other code, with <code class="docutils literal notranslate"><span class="pre">easynav::get_robot_geometry(node)</span></code>
@@ -918,6 +939,10 @@ is.</p></li>
 <span class="w">      </span><span class="nt">max_angular_decel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span><span class="w">   </span><span class="c1"># rad/s^2</span>
 </pre></div>
 </div>
+<p>Holonomic robots also have <code class="docutils literal notranslate"><span class="pre">max_lateral_vel</span></code> (<code class="docutils literal notranslate"><span class="pre">linear.y</span></code>, either direction), <code class="docutils literal notranslate"><span class="pre">max_lateral_acc</span></code>
+and <code class="docutils literal notranslate"><span class="pre">max_lateral_decel</span></code>. Not configured, they take the linear ones (<code class="docutils literal notranslate"><span class="pre">max_linear_vel</span></code>,
+<code class="docutils literal notranslate"><span class="pre">max_linear_acc</span></code>, <code class="docutils literal notranslate"><span class="pre">max_linear_decel</span></code>); <code class="docutils literal notranslate"><span class="pre">max_lateral_vel:</span> <span class="pre">0.0</span></code> keeps the robot from moving
+sideways.</p>
 <p>Controller plugins read them with <code class="docutils literal notranslate"><span class="pre">ControllerMethodBase::get_robot_limits()</span></code> instead of declaring
 their own, and the smoother enforces the same limits on every command published. A controller’s
 former limit parameters (e.g. <code class="docutils literal notranslate"><span class="pre">max_linear_speed</span></code>) still work, with a deprecation warning, where
