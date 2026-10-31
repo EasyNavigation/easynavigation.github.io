@@ -6,7 +6,7 @@ Omni PlayGround
 
 `easynav_playground_omni <https://github.com/EasyNavigation/easynav_playgrounds/tree/rolling/playground_omni>`_ simulates
 three- to six-wheel **omnidirectional robots** in two mazes, navigating with the Costmap plugins
-and the Regulated Pure Pursuit controller.
+and the MPPI controller as holonomic robots: they also move sideways.
 
 See :ref:`playgrounds` to install it.
 
@@ -26,9 +26,44 @@ Launching EasyNav
 It starts Gazebo, the ``3w_v2`` robot in ``maze2``, EasyNav and RViz2. Send a goal with the
 **2D Goal Pose** tool.
 
-The configuration (``config/easynav_costmap_rpp.params.yaml``) uses the Costmap maps manager, AMCL
-over the costmap, A* (``CostmapPlanner``) and Regulated Pure Pursuit. All the robots share EasyNav
-limits of 0.6 m/s linear and 0.5 rad/s angular velocity.
+The configuration (``params/easynav_costmap_mppi.params.yaml``) uses the Costmap maps manager, AMCL
+over the costmap, A* (``CostmapPlanner``) and MPPI with ``motion_model: omni``, which also commands
+``linear.y``. All the robots share EasyNav limits of 0.6 m/s in any direction and 0.5 rad/s angular
+velocity.
+
+The ``heading_mode`` argument sets the robot's orientation while it moves; it always reaches the
+goal's orientation at the end:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 18 50 32
+
+   * - ``heading_mode``
+     - Orientation while moving
+     - Launcher
+   * - ``path`` (default)
+     - Facing along the path; it corrects sideways
+     - ``easynav_mppi_path.launch.yaml``
+   * - ``goal``
+     - The goal's orientation, from the start
+     - ``easynav_mppi_goal.launch.yaml``
+   * - ``free``
+     - Any: the one that costs least
+     - ``heading_mode:=free``
+   * - ``hold``
+     - The robot's when the goal is received
+     - ``heading_mode:=hold``
+   * - ``fixed``
+     - ``heading_yaw`` (1.5708 rad in ``params/heading_modes/fixed.yaml``)
+     - ``heading_mode:=fixed``
+
+.. code-block:: bash
+
+   ros2 launch easynav_playground_omni easynav_mppi_goal.launch.yaml world:=maze1
+
+An application can also set the heading while the robot moves, writing ``heading_reference`` (rad,
+map frame) in NavState: while present, it overrides ``heading_mode`` (see the MPPI README in
+:doc:`../plugins/index`).
 
 Launch arguments
 ~~~~~~~~~~~~~~~~
@@ -46,15 +81,24 @@ Launch arguments
    * - ``robot``
      - ``3w_v2``
      - Robot model: ``3w``, ``3w_v2``, ``4w``, ``5w`` or ``6w``
+   * - ``heading_mode``
+     - ``path``
+     - MPPI orientation while moving: ``path``, ``goal``, ``free``, ``hold`` or ``fixed``
    * - ``params_file``
-     - ``config/easynav_costmap_rpp.params.yaml``
+     - ``params/easynav_costmap_mppi.params.yaml``
      - EasyNav parameter file
    * - ``rviz_config``
      - ``rviz/easynav_costmap.rviz``
      - RViz2 configuration file
    * - ``map_override_file``
-     - ``config/map_overrides/<world>/map.yaml``
+     - ``params/map_overrides/<world>/map.yaml``
      - Parameters that select the map matching ``world``
+   * - ``gui``
+     - ``true``
+     - ``false`` runs Gazebo headless
+   * - ``rviz``
+     - ``true``
+     - ``false`` does not start RViz2
 
 For example:
 
@@ -85,5 +129,8 @@ Launch files
 
 ``easynav_navigation_gazebo_sim.launch.yaml``
    ``gazebo_sim.launch.yaml``, then, after 5 s, EasyNav (``easynav_system system_main``) with
-   ``params_file`` and ``map_override_file``, and RViz2 with ``rviz_config``. If EasyNav exits, the
-   whole launch ends.
+   ``params_file``, ``map_override_file`` and ``params/heading_modes/<heading_mode>.yaml``, and
+   RViz2 with ``rviz_config``. If EasyNav exits, the whole launch ends.
+
+``easynav_mppi_path.launch.yaml``, ``easynav_mppi_goal.launch.yaml``
+   ``easynav_navigation_gazebo_sim.launch.yaml`` with ``heading_mode`` ``path`` or ``goal``.
