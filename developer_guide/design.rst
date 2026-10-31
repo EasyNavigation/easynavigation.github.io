@@ -205,6 +205,73 @@ Below is an example configuration using dummy plugins for all components, effect
 This configuration is especially useful for testing system integration, message flow, and user interfaces without requiring sensor data or a simulated robot. You can later replace dummy plugins with functional ones as needed.
 
 
+.. _system_node_parameters:
+
+SystemNode parameters
+=====================
+
+All the parameters of ``system_node``, with a link to where each group is explained:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 38 14 48
+
+   * - Parameter (on ``system_node``)
+     - Default
+     - Meaning
+   * - ``use_real_time``
+     - ``true``
+     - Run the real-time cycle with ``SCHED_FIFO`` priority 80 (see :ref:`realtime_setup`).
+   * - ``rt_freq``
+     - ``200.0``
+     - Rate of the real-time system cycle (Hz). Upper bound of every ``<plugin>.rt_freq`` (see
+       :ref:`component_frequencies`).
+   * - ``freq``
+     - ``200.0``
+     - Rate of the non-real-time system cycle (Hz). Upper bound of every ``<plugin>.freq``.
+   * - ``spin_time_rt``
+     - ``0.001``
+     - Longest time each real-time cycle spends handling pending callbacks, such as sensor
+       messages (s).
+   * - ``spin_time_nort``
+     - ``0.001``
+     - The same for the non-real-time cycle (s).
+   * - ``tf_prefix``, ``map_frame``, ``odom_frame``, ``robot_frame``, ``robot_footprint_frame``,
+       ``world_frame``
+     - see :ref:`tf_frames`
+     - Frame names shared by every component.
+   * - ``tf_max_future_extrapolation``, ``tf_extrapolation_window``
+     - ``0.05``, ``0.05``
+     - How far ahead of the latest TF a lookup may be extrapolated (see
+       :ref:`tf_future_extrapolation`).
+   * - ``robot_geometry.radius``, ``robot_geometry.inscribed_radius``, ``robot_geometry.height``
+     - see :ref:`robot_geometry`
+     - The robot's shape, shared by every component.
+   * - ``safety.mode``, ``safety.lock_memory``
+     - ``false``, ``false``
+     - Safety mode and memory locking (see :ref:`safety_mode` and :ref:`safety_memory`).
+   * - ``safety.plc_limits.max_linear_vel``, ``safety.plc_limits.max_angular_vel``
+     - ``0.0`` (not given)
+     - Limits configured in the safety channel, checked against ``robot_limits`` (see
+       :ref:`safety_mode`).
+   * - ``safety.rt_monitor.max_period_factor``, ``safety.rt_monitor.max_late_cycles``
+     - ``2.0``, ``10``
+     - When a real-time cycle is late, and how many in a row are an error (see :ref:`safety_rt`).
+   * - ``safety.heartbeat.period``
+     - ``0.0`` (off)
+     - Period of the heartbeat published from the real-time cycle (s) (see :ref:`safety_rt`).
+   * - ``safety.status.timeout``
+     - ``0.0`` (off)
+     - Maximum age of the safety channel's status message (s) (see :ref:`safety_channel`).
+   * - ``safety.max_pose_age``
+     - ``1.0``
+     - Maximum age of the robot pose before the robot is stopped (s), ``0`` disables it (see
+       :ref:`safety_data_age`).
+
+The controller node and each plugin have their own parameters, documented with them.
+
+.. _tf_frames:
+
 Coordinate Frames (TF)
 ======================
 
@@ -311,6 +378,8 @@ Components therefore look up the transform at the stamp of their data and do not
 workaround (waiting for the TF, falling back to the latest TF) for a few milliseconds of TF lag.
 Keep the horizon short: the longer it is, the longer a TF that has really stopped arriving goes
 unnoticed, and the more the extrapolation drifts if the robot accelerates or turns within it.
+
+.. _robot_geometry:
 
 Robot Geometry
 ==============
