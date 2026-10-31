@@ -51,11 +51,11 @@ robot's parameter file.
      - Robotnik Summit XL in an outdoor excavation and in an indoor warehouse
      - NavMap and Bonxai (RPP, MPPI, MPC), GPS fusion, warehouse logistics
    * - :doc:`tiago`
-     - PAL Robotics' TIAGo in a small house
-     - Costmap with RPP; NavMap and Bonxai with NavMap AMCL
+     - PAL Robotics' TIAGo and TIAGo Pro (holonomic) in a small house
+     - Costmap with RPP; NavMap and Bonxai with NavMap AMCL; TIAGo Pro with holonomic MPPI
    * - :doc:`omni`
      - Three- to six-wheel omnidirectional robots in two mazes
-     - Costmap with RPP
+     - Costmap with holonomic MPPI, in each heading mode
 
 Installation
 ------------

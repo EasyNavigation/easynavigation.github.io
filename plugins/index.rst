@@ -102,7 +102,9 @@ ready-to-run configurations for each of them.
        The recommended controller for differential robots.
      - `README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_regulated_pp_controller/README.md>`__
    * - ``easynav_mppi_controller``
-     - Model Predictive Path Integral (MPPI) controller.
+     - Model Predictive Path Integral (MPPI) controller, for differential and holonomic robots
+       (``motion_model``), round or not (``robot_geometry.footprint``). The recommended controller
+       for holonomic robots.
      - `README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_mppi_controller/README.md>`__
    * - ``easynav_mpc_controller``
      - Model Predictive Controller (MPC) for trajectory tracking.

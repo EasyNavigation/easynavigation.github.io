@@ -227,7 +227,8 @@ The safety parameters are grouped in ``system_node``:
 ``safety.plc_limits``
    Not applied to the commands (``robot_limits`` are): they declare the limits the safety channel
    enforces, e.g. the safety PLC's safely limited speed. ``robot_limits.max_linear_vel``,
-   ``|min_linear_vel|`` and ``max_angular_vel`` may not exceed them, so EasyNav is never configured
+   ``|min_linear_vel|``, ``max_lateral_vel`` and ``max_angular_vel`` may not exceed them (the
+   lateral one, ``plc_limits.max_linear_vel``), so EasyNav is never configured
    to command more than the channel allows, which would only end in safety stops. Checked whenever
    given; required in safety mode.
 
@@ -361,7 +362,7 @@ scanner needs, faster than the timeout:
   when the stop is released navigation goes on by itself, starting **from zero** within the
   acceleration limits, never from what was commanded before;
 - **safely limited speed**: the limits enforced are ``robot_limits`` cut down to it
-  (``max_linear_vel``, ``|min_linear_vel|`` and ``max_angular_vel``); a lower limit is reached
+  (``max_linear_vel``, ``|min_linear_vel|``, ``max_lateral_vel`` and ``max_angular_vel``); a lower limit is reached
   braking within the deceleration limits, and controllers that ask
   ``get_robot_limits()`` see it. When lifted, ``robot_limits`` apply again;
 - **no valid status**: none yet, none for longer than the timeout (counted with the monotonic clock

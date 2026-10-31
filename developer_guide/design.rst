@@ -244,7 +244,8 @@ All the parameters of ``system_node``, with a link to where each group is explai
      - ``0.05``, ``0.05``
      - How far ahead of the latest TF a lookup may be extrapolated (see
        :ref:`tf_future_extrapolation`).
-   * - ``robot_geometry.radius``, ``robot_geometry.inscribed_radius``, ``robot_geometry.height``
+   * - ``robot_geometry.radius``, ``robot_geometry.inscribed_radius``, ``robot_geometry.height``,
+       ``robot_geometry.footprint``
      - see :ref:`robot_geometry`
      - The robot's shape, shared by every component.
    * - ``safety.mode``, ``safety.lock_memory``
@@ -395,14 +396,36 @@ it (inflation filters, planners, safety reflexes, recovery systems...):
      - Default
      - Meaning
    * - ``robot_geometry.radius``
-     - ``0.3``
+     - ``0.3`` (or from ``footprint``)
      - Circumscribed radius: the smallest circle containing the robot (m).
    * - ``robot_geometry.inscribed_radius``
-     - ``radius``
+     - ``radius`` (or from ``footprint``)
      - The largest circle inside the robot (m). Defaults to ``radius`` (a round robot).
    * - ``robot_geometry.height``
      - ``0.5``
      - The top of the robot, above the robot frame (m).
+   * - ``robot_geometry.footprint``
+     - ``[]``
+     - The robot's polygon, ``[x1, y1, x2, y2, ...]`` in the robot frame (3 or more vertices, in
+       order around it). Empty: a circle of ``radius``.
+
+Without a footprint the robot is a circle. With one, the radii not configured follow from it (the
+farthest vertex, and the nearest side to the robot frame). Components that only know radii (costmap
+inflation, point-based planners, the collision reflex) keep using them, so configured radii may stay
+planning margins; components that check the footprint (MPPI) use the polygon, turned with the robot.
+A configured ``radius`` that does not contain the footprint is accepted with a warning: what uses it
+may let the corners touch obstacles. For instance, the Summit XL of the :doc:`Summit PlayGround
+<../playgrounds/summit>` plans as a 0.7 m circle and MPPI checks its 0.74 × 0.62 m body:
+
+.. code-block:: yaml
+
+   system_node:
+     ros__parameters:
+       robot_geometry:
+         radius: 0.7
+         inscribed_radius: 0.7
+         height: 1.0
+         footprint: [0.35, 0.31, -0.39, 0.31, -0.39, -0.31, 0.35, -0.31]
 
 As with frames, ``SystemNode`` reads them on every configure and shares them, before its subnodes
 configure, through a process-wide singleton (``RobotGeometryRegistry``). Plugins read them with
@@ -449,6 +472,11 @@ The robot limits are configured once, in ``controller_node``:
          max_linear_decel: 1.0    # m/s^2, slowing down
          max_angular_acc: 2.0     # rad/s^2
          max_angular_decel: 2.0   # rad/s^2
+
+Holonomic robots also have ``max_lateral_vel`` (``linear.y``, either direction), ``max_lateral_acc``
+and ``max_lateral_decel``. Not configured, they take the linear ones (``max_linear_vel``,
+``max_linear_acc``, ``max_linear_decel``); ``max_lateral_vel: 0.0`` keeps the robot from moving
+sideways.
 
 Controller plugins read them with ``ControllerMethodBase::get_robot_limits()`` instead of declaring
 their own, and the smoother enforces the same limits on every command published. A controller's

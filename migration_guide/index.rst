@@ -60,7 +60,9 @@ Nav2 and EasyNav, piece by piece
      - ``planner_node`` with ``easynav_costmap_planner/CostmapPlanner`` (A* on the costmap).
    * - ``controller_server`` (RPP, MPPI, DWB)
      - ``controller_node`` with a controller plugin: Regulated Pure Pursuit, MPPI, MPC, SeReST, VFF.
-       RPP and MPPI parameters keep Nav2's names wherever they mean the same.
+       RPP parameters keep Nav2's names wherever they mean the same. MPPI's ``motion_model`` is
+       ``diff`` or ``omni`` (Nav2's ``DiffDrive`` and ``Omni``); its other parameters are in its
+       README.
    * - ``velocity_smoother``
      - Built into ``controller_node``: the velocity and acceleration limits (``robot_limits``)
        apply to every command published.
@@ -74,8 +76,9 @@ Nav2 and EasyNav, piece by piece
    * - Costmap ``observation_sources``
      - ``sensors_node``: sensors are declared once, for every component.
    * - ``footprint`` / ``robot_radius``
-     - ``system_node.robot_geometry`` (``radius``, ``inscribed_radius``, ``height``), shared by
-       every component. Polygon footprints are not supported: use the circumscribed radius.
+     - ``system_node.robot_geometry`` (``radius``, ``inscribed_radius``, ``height``,
+       ``footprint``), shared by every component. MPPI checks the polygon ``footprint``; the other
+       components use the radii (see :ref:`robot_geometry`).
    * - ``NavigateToPose`` action
      - The ``easynav_control`` topic, through ``GoalManagerClient`` (C++ or Python), or the
        **Nav2 bridge**, which serves ``navigate_to_pose`` on top of EasyNav.
@@ -268,7 +271,8 @@ A few things are worth knowing when you translate your own file:
   to what your base listens to. AMCL reads odometry from ``/odom``, or from TF with
   ``compute_odom_from_tf: true``.
 - **Other controllers**: for MPPI, start from ``params/costmap.mppi.params.yaml`` of the
-  :doc:`Kobuki PlayGround <../playgrounds/kobuki>`. Every plugin's parameters are in its README
+  :doc:`Kobuki PlayGround <../playgrounds/kobuki>`, or, for a holonomic robot, from
+  ``params/easynav_costmap_mppi.params.yaml`` of the :doc:`Omni PlayGround <../playgrounds/omni>`. Every plugin's parameters are in its README
   (see :doc:`../plugins/index`).
 - **Recoveries** (``recovery_node``) do what Nav2's recovery subtrees, ``behavior_server`` and
   ``collision_monitor`` do: the collision reflex brakes before a collision; evaluators diagnose
