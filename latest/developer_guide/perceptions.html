@@ -333,7 +333,11 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Developers Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="design.html">Core Design and Architecture</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#systemnode-parameters">SystemNode parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#coordinate-frames-tf">Coordinate Frames (TF)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="design.html#lookups-slightly-ahead-of-the-latest-tf">Lookups slightly ahead of the latest TF</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#robot-geometry">Robot Geometry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
 <li class="toctree-l3"><a class="reference internal" href="design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
@@ -631,7 +635,8 @@ only if your own configuration actually groups sensors that way.</p>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fuse(frame)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">PointPerceptionsOpsView</span> <span class="pre">&amp;</span></code></p></td>
-<td><p>Transforms all perceptions to a frame</p></td>
+<td><p>Transforms all perceptions to a frame (with <code class="docutils literal notranslate"><span class="pre">exact_time</span></code>, at each perception’s stamp;
+a stamp slightly ahead of the latest TF is extrapolated, see <a class="reference internal" href="design.html#tf-future-extrapolation"><span class="std std-ref">Lookups slightly ahead of the latest TF</span></a>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">collapse(dims)</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">PointPerceptionsOpsView</span> <span class="pre">&amp;</span></code></p></td>

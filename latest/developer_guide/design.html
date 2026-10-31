@@ -333,7 +333,11 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Developers Guide</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Core Design and Architecture</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#coordinate-frames-tf">Coordinate Frames (TF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#systemnode-parameters">SystemNode parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#coordinate-frames-tf">Coordinate Frames (TF)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lookups-slightly-ahead-of-the-latest-tf">Lookups slightly ahead of the latest TF</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#robot-geometry">Robot Geometry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
@@ -643,8 +647,90 @@ wall-clock delay. Set these thoughtfully: a large <code class="docutils literal 
 keep a core continuously busy.</p>
 </div>
 <p>This configuration is especially useful for testing system integration, message flow, and user interfaces without requiring sensor data or a simulated robot. You can later replace dummy plugins with functional ones as needed.</p>
+<section id="systemnode-parameters">
+<span id="system-node-parameters"></span><h2>SystemNode parameters<a class="headerlink" href="#systemnode-parameters" title="Permalink to this heading"></a></h2>
+<p>All the parameters of <code class="docutils literal notranslate"><span class="pre">system_node</span></code>, with a link to where each group is explained:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38.0%" />
+<col style="width: 14.0%" />
+<col style="width: 48.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter (on <code class="docutils literal notranslate"><span class="pre">system_node</span></code>)</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">use_real_time</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Run the real-time cycle with <code class="docutils literal notranslate"><span class="pre">SCHED_FIFO</span></code> priority 80 (see <a class="reference internal" href="../build_install/realtime.html#realtime-setup"><span class="std std-ref">Real-time System Setup</span></a>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rt_freq</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">200.0</span></code></p></td>
+<td><p>Rate of the real-time system cycle (Hz). Upper bound of every <code class="docutils literal notranslate"><span class="pre">&lt;plugin&gt;.rt_freq</span></code> (see
+<a class="reference internal" href="#component-frequencies"><span class="std std-ref">Frequencies: system cycles and components</span></a>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">freq</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">200.0</span></code></p></td>
+<td><p>Rate of the non-real-time system cycle (Hz). Upper bound of every <code class="docutils literal notranslate"><span class="pre">&lt;plugin&gt;.freq</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">spin_time_rt</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.001</span></code></p></td>
+<td><p>Longest time each real-time cycle spends handling pending callbacks, such as sensor
+messages (s).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">spin_time_nort</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.001</span></code></p></td>
+<td><p>The same for the non-real-time cycle (s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tf_prefix</span></code>, <code class="docutils literal notranslate"><span class="pre">map_frame</span></code>, <code class="docutils literal notranslate"><span class="pre">odom_frame</span></code>, <code class="docutils literal notranslate"><span class="pre">robot_frame</span></code>, <code class="docutils literal notranslate"><span class="pre">robot_footprint_frame</span></code>,
+<code class="docutils literal notranslate"><span class="pre">world_frame</span></code></p></td>
+<td><p>see <a class="reference internal" href="#tf-frames"><span class="std std-ref">Coordinate Frames (TF)</span></a></p></td>
+<td><p>Frame names shared by every component.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tf_max_future_extrapolation</span></code>, <code class="docutils literal notranslate"><span class="pre">tf_extrapolation_window</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code>, <code class="docutils literal notranslate"><span class="pre">0.05</span></code></p></td>
+<td><p>How far ahead of the latest TF a lookup may be extrapolated (see
+<a class="reference internal" href="#tf-future-extrapolation"><span class="std std-ref">Lookups slightly ahead of the latest TF</span></a>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">robot_geometry.radius</span></code>, <code class="docutils literal notranslate"><span class="pre">robot_geometry.inscribed_radius</span></code>, <code class="docutils literal notranslate"><span class="pre">robot_geometry.height</span></code></p></td>
+<td><p>see <a class="reference internal" href="#robot-geometry"><span class="std std-ref">Robot Geometry</span></a></p></td>
+<td><p>The robot’s shape, shared by every component.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">safety.mode</span></code>, <code class="docutils literal notranslate"><span class="pre">safety.lock_memory</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Safety mode and memory locking (see <a class="reference internal" href="safety.html#safety-mode"><span class="std std-ref">Safety parameters and safety mode</span></a> and <a class="reference internal" href="safety.html#safety-memory"><span class="std std-ref">Memory locking</span></a>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">safety.plc_limits.max_linear_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">safety.plc_limits.max_angular_vel</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code> (not given)</p></td>
+<td><p>Limits configured in the safety channel, checked against <code class="docutils literal notranslate"><span class="pre">robot_limits</span></code> (see
+<a class="reference internal" href="safety.html#safety-mode"><span class="std std-ref">Safety parameters and safety mode</span></a>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">safety.rt_monitor.max_period_factor</span></code>, <code class="docutils literal notranslate"><span class="pre">safety.rt_monitor.max_late_cycles</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2.0</span></code>, <code class="docutils literal notranslate"><span class="pre">10</span></code></p></td>
+<td><p>When a real-time cycle is late, and how many in a row are an error (see <a class="reference internal" href="safety.html#safety-rt"><span class="std std-ref">Real-time cycle monitoring and heartbeat</span></a>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">safety.heartbeat.period</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code> (off)</p></td>
+<td><p>Period of the heartbeat published from the real-time cycle (s) (see <a class="reference internal" href="safety.html#safety-rt"><span class="std std-ref">Real-time cycle monitoring and heartbeat</span></a>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">safety.status.timeout</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code> (off)</p></td>
+<td><p>Maximum age of the safety channel’s status message (s) (see <a class="reference internal" href="safety.html#safety-channel"><span class="std std-ref">Safety channel status</span></a>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">safety.max_pose_age</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Maximum age of the robot pose before the robot is stopped (s), <code class="docutils literal notranslate"><span class="pre">0</span></code> disables it (see
+<a class="reference internal" href="safety.html#safety-data-age"><span class="std std-ref">Data age</span></a>).</p></td>
+</tr>
+</tbody>
+</table>
+<p>The controller node and each plugin have their own parameters, documented with them.</p>
+</section>
 <section id="coordinate-frames-tf">
-<h2>Coordinate Frames (TF)<a class="headerlink" href="#coordinate-frames-tf" title="Permalink to this heading"></a></h2>
+<span id="tf-frames"></span><h2>Coordinate Frames (TF)<a class="headerlink" href="#coordinate-frames-tf" title="Permalink to this heading"></a></h2>
 <p>EasyNav follows <a class="reference external" href="http://www.ros.org/reps/rep-0105.html">REP-105</a> for its frame-naming
 convention, and centralizes all frame configuration in a single place: <code class="docutils literal notranslate"><span class="pre">system_node</span></code>. Rather
 than each node or plugin declaring its own frame parameters (an early version of EasyNav had, for
@@ -713,9 +799,57 @@ rather than through a per-node parameter.</p>
 live state — it is read continuously from both the real-time and non-real-time threads (see
 below) while <code class="docutils literal notranslate"><span class="pre">set_tf_info()</span></code> can in principle be called again on a reconfigure, so the code
 above is safe to use exactly as written from either thread.</p>
+<section id="lookups-slightly-ahead-of-the-latest-tf">
+<span id="tf-future-extrapolation"></span><h3>Lookups slightly ahead of the latest TF<a class="headerlink" href="#lookups-slightly-ahead-of-the-latest-tf" title="Permalink to this heading"></a></h3>
+<p>On a real robot, sensor data often carries a stamp a few milliseconds newer than the latest TF in
+the buffer: odometry published late, driver timestamps, CPU load. <code class="docutils literal notranslate"><span class="pre">tf2</span></code> never extrapolates into
+the future, so a lookup at the data’s stamp would throw <code class="docutils literal notranslate"><span class="pre">tf2::ExtrapolationException</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">RTTFBuffer</span></code> answers these lookups itself, up to a small horizon ahead of the latest TF. It
+estimates the motion of the whole chain between its latest common time and a short window before
+it, and integrates it as a constant twist (the exact SE(3) motion, so arcs and turns are
+extrapolated along the arc, not along a straight line). The returned transform carries the
+requested stamp.</p>
+<ul class="simple">
+<li><p>It only runs when <code class="docutils literal notranslate"><span class="pre">tf2</span></code> itself fails with a future extrapolation: lookups inside the buffer’s
+history behave and cost exactly as in <code class="docutils literal notranslate"><span class="pre">tf2_ros::Buffer</span></code>.</p></li>
+<li><p>It covers every <code class="docutils literal notranslate"><span class="pre">lookupTransform</span></code> and <code class="docutils literal notranslate"><span class="pre">canTransform</span></code> overload, including the ones with a
+fixed frame, with a timeout and with <code class="docutils literal notranslate"><span class="pre">rclcpp::Time</span></code>. With a timeout, a request within the
+horizon is answered at once instead of blocking.</p></li>
+<li><p>Unknown frames, disconnected trees, requests further ahead than the horizon and chains without
+enough history still throw <code class="docutils literal notranslate"><span class="pre">tf2</span></code>’s original exception.</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter (on <code class="docutils literal notranslate"><span class="pre">system_node</span></code>)</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tf_max_future_extrapolation</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code></p></td>
+<td><p>Largest horizon ahead of the latest TF that a lookup may be extrapolated (s). <code class="docutils literal notranslate"><span class="pre">0</span></code>
+disables it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tf_extrapolation_window</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code></p></td>
+<td><p>History used to estimate the motion of the chain (s).</p></td>
+</tr>
+</tbody>
+</table>
+<p>Components therefore look up the transform at the stamp of their data and do not need their own
+workaround (waiting for the TF, falling back to the latest TF) for a few milliseconds of TF lag.
+Keep the horizon short: the longer it is, the longer a TF that has really stopped arriving goes
+unnoticed, and the more the extrapolation drifts if the robot accelerates or turns within it.</p>
+</section>
 </section>
 <section id="robot-geometry">
-<h2>Robot Geometry<a class="headerlink" href="#robot-geometry" title="Permalink to this heading"></a></h2>
+<span id="id1"></span><h2>Robot Geometry<a class="headerlink" href="#robot-geometry" title="Permalink to this heading"></a></h2>
 <p>The robot’s shape is configured once, in <code class="docutils literal notranslate"><span class="pre">system_node</span></code>, and shared with every component that needs
 it (inflation filters, planners, safety reflexes, recovery systems…):</p>
 <table class="docutils align-default">
