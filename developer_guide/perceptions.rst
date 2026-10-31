@@ -155,7 +155,8 @@ Operation Summary
      - Voxel-grid downsampling
    * - ``fuse(frame)``
      - ``PointPerceptionsOpsView &``
-     - Transforms all perceptions to a frame
+     - Transforms all perceptions to a frame (with ``exact_time``, at each perception's stamp;
+       a stamp slightly ahead of the latest TF is extrapolated, see :ref:`tf_future_extrapolation`)
    * - ``collapse(dims)``
      - ``PointPerceptionsOpsView &``
      - Flattens/projects selected dimensions to fixed values (e.g. force z = 0)
