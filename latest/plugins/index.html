@@ -28,7 +28,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="HowTos and Practical Guides" href="../howtos/index.html" />
-    <link rel="prev" title="Omni PlayGround" href="../playgrounds/omni.html" />
+    <link rel="prev" title="Aerial PlayGround" href="../playgrounds/aerial.html" />
 
 <link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
 
@@ -135,6 +135,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launching-easynav">Launching EasyNav</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#simulation-only">Simulation only</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launch-files">Launch files</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/ackermann.html">Ackermann PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/ackermann.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/ackermann.html#simulation-only">Simulation only</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/aerial.html">Aerial PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/aerial.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/aerial.html#simulation-only">Simulation only</a></li>
 </ul>
 </li>
 </ul>
@@ -547,15 +557,19 @@ ready-to-run configurations for each of them.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_planner</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_bonxai_planner</span></code></p></td>
+<td><p>3D A* over a Bonxai map for aerial robots, keeping a clearance from obstacles.</p></td>
+<td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/planners/easynav_bonxai_planner/README.md">README</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_planner</span></code></p></td>
 <td><p>A* planner over <code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code>.</p></td>
 <td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/planners/easynav_costmap_planner/README.md">README</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_navmap_planner</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_navmap_planner</span></code></p></td>
 <td><p>A* planner over a NavMap mesh.</p></td>
 <td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/planners/easynav_navmap_planner/README.md">README</a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_simple_planner</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_simple_planner</span></code></p></td>
 <td><p>Simple A* planner for <code class="docutils literal notranslate"><span class="pre">SimpleMap</span></code>.</p></td>
 <td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/planners/easynav_simple_planner/README.md">README</a></p></td>
 </tr>
@@ -589,7 +603,8 @@ for holonomic robots.</p></td>
 <td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_mppi_controller/README.md">README</a></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_mpc_controller</span></code></p></td>
-<td><p>Model Predictive Controller (MPC) for trajectory tracking.</p></td>
+<td><p>Linear time-varying Model Predictive Controller (OSQP) for differential, omnidirectional,
+Ackermann and aerial robots, with obstacles as constraints.</p></td>
 <td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_mpc_controller/README.md">README</a></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_serest_controller</span></code></p></td>
@@ -678,7 +693,8 @@ for holonomic robots.</p></td>
 <td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_navmap_localizer/README.md">README</a></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_fusion_localizer</span></code></p></td>
-<td><p>Multi-sensor fusion (UKF, based on <code class="docutils literal notranslate"><span class="pre">robot_localization</span></code>): GPS, odometry, IMU.</p></td>
+<td><p>Multi-sensor fusion (UKF, based on <code class="docutils literal notranslate"><span class="pre">robot_localization</span></code>): GPS, odometry, IMU. GPS fixes
+in UTM or east-north-up maps, corrected for the antenna’s mounting.</p></td>
 <td><p><a class="reference external" href="https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_fusion_localizer/README.md">README</a></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">easynav_simple_localizer</span></code></p></td>

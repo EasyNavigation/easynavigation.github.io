@@ -137,6 +137,16 @@
 <li class="toctree-l4"><a class="reference internal" href="omni.html#launch-files">Launch files</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="ackermann.html">Ackermann PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ackermann.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ackermann.html#simulation-only">Simulation only</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="aerial.html">Aerial PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="aerial.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="aerial.html#simulation-only">Simulation only</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -547,6 +557,14 @@ multirobot</p></td>
 <td><p>Three- to six-wheel omnidirectional robots in two mazes</p></td>
 <td><p>Costmap with holonomic MPPI, in each heading mode</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ackermann.html"><span class="doc">Ackermann PlayGround</span></a></p></td>
+<td><p>Toyota Prius (Ackermann steering) on the Sonoma Raceway</p></td>
+<td><p>NavMap with RPP or Ackermann MPC, GPS fusion</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="aerial.html"><span class="doc">Aerial PlayGround</span></a></p></td>
+<td><p>A UFO (x, y, z, yaw) in a town</p></td>
+<td><p>Bonxai 3D planner, aerial MPC, GPS fusion, 3D goals</p></td>
+</tr>
 </tbody>
 </table>
 <section id="installation">
@@ -555,6 +573,11 @@ multirobot</p></td>
 <a class="reference internal" href="../build_install/binaries.html#install-pixi"><span class="std std-ref">Pixi</span></a> (also rolling). They are not available for humble. Each one brings its robot, worlds and EasyNav launchers:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-&lt;distro&gt;-easynav-playground-kobuki
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Ackermann and Aerial PlayGrounds are new in this development version: until the next
+release they are only available from source (below).</p>
 </div>
 <p>To modify them, build them from source instead: clone the repository into your workspace, install
 their dependencies and build them (all, or <code class="docutils literal notranslate"><span class="pre">--packages-up-to</span></code> the one you want):</p>

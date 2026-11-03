@@ -137,6 +137,16 @@
 <li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launch-files">Launch files</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/ackermann.html">Ackermann PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/ackermann.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/ackermann.html#simulation-only">Simulation only</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../playgrounds/aerial.html">Aerial PlayGround</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/aerial.html#launching-easynav">Launching EasyNav</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../playgrounds/aerial.html#simulation-only">Simulation only</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -946,6 +956,12 @@ is.</p></li>
 and <code class="docutils literal notranslate"><span class="pre">max_lateral_decel</span></code>. Not configured, they take the linear ones (<code class="docutils literal notranslate"><span class="pre">max_linear_vel</span></code>,
 <code class="docutils literal notranslate"><span class="pre">max_linear_acc</span></code>, <code class="docutils literal notranslate"><span class="pre">max_linear_decel</span></code>); <code class="docutils literal notranslate"><span class="pre">max_lateral_vel:</span> <span class="pre">0.0</span></code> keeps the robot from moving
 sideways.</p>
+<p>Aerial robots also have <code class="docutils literal notranslate"><span class="pre">max_vertical_vel</span></code> (<code class="docutils literal notranslate"><span class="pre">linear.z</span></code>, either direction), <code class="docutils literal notranslate"><span class="pre">max_vertical_acc</span></code>
+and <code class="docutils literal notranslate"><span class="pre">max_vertical_decel</span></code>. <code class="docutils literal notranslate"><span class="pre">max_vertical_vel</span></code> is 0 by default: the robot does not move
+vertically, and <code class="docutils literal notranslate"><span class="pre">linear.z</span></code> is always 0.</p>
+<p>Robots that cannot turn in place, like cars with Ackermann steering, set <code class="docutils literal notranslate"><span class="pre">min_turning_radius</span></code>
+(m). Every command then keeps <code class="docutils literal notranslate"><span class="pre">|angular.z|</span> <span class="pre">&lt;=</span> <span class="pre">|linear.x|</span> <span class="pre">/</span> <span class="pre">min_turning_radius</span></code>, also while the
+speed ramps up or down, so the turn follows the speed. It is 0 by default: no limit.</p>
 <p>Controller plugins read them with <code class="docutils literal notranslate"><span class="pre">ControllerMethodBase::get_robot_limits()</span></code> instead of declaring
 their own, and the smoother enforces the same limits on every command published. A controller’s
 former limit parameters (e.g. <code class="docutils literal notranslate"><span class="pre">max_linear_speed</span></code>) still work, with a deprecation warning, where

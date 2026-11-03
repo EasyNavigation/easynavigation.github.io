@@ -478,6 +478,14 @@ and ``max_lateral_decel``. Not configured, they take the linear ones (``max_line
 ``max_linear_acc``, ``max_linear_decel``); ``max_lateral_vel: 0.0`` keeps the robot from moving
 sideways.
 
+Aerial robots also have ``max_vertical_vel`` (``linear.z``, either direction), ``max_vertical_acc``
+and ``max_vertical_decel``. ``max_vertical_vel`` is 0 by default: the robot does not move
+vertically, and ``linear.z`` is always 0.
+
+Robots that cannot turn in place, like cars with Ackermann steering, set ``min_turning_radius``
+(m). Every command then keeps ``|angular.z| <= |linear.x| / min_turning_radius``, also while the
+speed ramps up or down, so the turn follows the speed. It is 0 by default: no limit.
+
 Controller plugins read them with ``ControllerMethodBase::get_robot_limits()`` instead of declaring
 their own, and the smoother enforces the same limits on every command published. A controller's
 former limit parameters (e.g. ``max_linear_speed``) still work, with a deprecation warning, where
