@@ -56,6 +56,12 @@ robot's parameter file.
    * - :doc:`omni`
      - Three- to six-wheel omnidirectional robots in two mazes
      - Costmap with holonomic MPPI, in each heading mode
+   * - :doc:`ackermann`
+     - Toyota Prius (Ackermann steering) on the Sonoma Raceway
+     - NavMap with RPP or Ackermann MPC, GPS fusion
+   * - :doc:`aerial`
+     - A UFO (x, y, z, yaw) in a town
+     - Bonxai 3D planner, aerial MPC, GPS fusion, 3D goals
 
 Installation
 ------------
@@ -66,6 +72,13 @@ Install the PlayGround you want with APT in jazzy, kilted or lyrical, or with
 .. code-block:: bash
 
    sudo apt install ros-<distro>-easynav-playground-kobuki
+
+.. only:: latest
+
+   .. note::
+
+      The Ackermann and Aerial PlayGrounds are new in this development version: until the next
+      release they are only available from source (below).
 
 To modify them, build them from source instead: clone the repository into your workspace, install
 their dependencies and build them (all, or ``--packages-up-to`` the one you want):
@@ -117,3 +130,5 @@ geometry and limits, and the map. See:
    summit
    tiago
    omni
+   ackermann
+   aerial

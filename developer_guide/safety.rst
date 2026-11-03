@@ -300,7 +300,11 @@ default: more than 10 ms):
   ``Finalized`` and ``system_main`` exits with code 1, since this cycle receives the sensors and
   publishes the commands. Outside safety mode it is only a ``WARN``, like a component that does not
   keep its own frequency, which is reported separately (see :ref:`component_frequencies`);
-- after an activation, the monitor starts over: the time EasyNav was inactive is not a late cycle.
+- after an activation, the monitor starts over: the time EasyNav was inactive is not a late cycle;
+- in the log, the first late cycle is a ``WARN``; after it, at most one ``WARN`` every 5 s counts
+  the late cycles since the previous one (e.g. "20 real-time cycles started late in the last 6 s,
+  the last one 30 ms after the previous one"). ``ERROR`` is always logged, and "on time again" only
+  when it ends.
 
 **Heartbeat.** With ``safety.heartbeat.period`` > 0 (required in safety mode), a
 ``easynav_interfaces/msg/Heartbeat`` is published on ``easynav_heartbeat`` at that period, **from the
