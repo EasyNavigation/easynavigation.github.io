@@ -77,6 +77,9 @@ ready-to-run configurations for each of them.
    * - Package
      - Description
      - Documentation
+   * - ``easynav_bonxai_planner``
+     - 3D A* over a Bonxai map for aerial robots, keeping a clearance from obstacles.
+     - `README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/planners/easynav_bonxai_planner/README.md>`__
    * - ``easynav_costmap_planner``
      - A* planner over ``Costmap2D``.
      - `README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/planners/easynav_costmap_planner/README.md>`__
@@ -107,7 +110,8 @@ ready-to-run configurations for each of them.
        for holonomic robots.
      - `README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_mppi_controller/README.md>`__
    * - ``easynav_mpc_controller``
-     - Model Predictive Controller (MPC) for trajectory tracking.
+     - Linear time-varying Model Predictive Controller (OSQP) for differential, omnidirectional,
+       Ackermann and aerial robots, with obstacles as constraints.
      - `README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/controllers/easynav_mpc_controller/README.md>`__
    * - ``easynav_serest_controller``
      - SeReST (Smooth Error-Responsive Speed and Turning) path tracking controller.
@@ -169,7 +173,8 @@ ready-to-run configurations for each of them.
      - AMCL for NavMap stacks, scoring 3D point clouds against a Bonxai map.
      - `README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_navmap_localizer/README.md>`__
    * - ``easynav_fusion_localizer``
-     - Multi-sensor fusion (UKF, based on ``robot_localization``): GPS, odometry, IMU.
+     - Multi-sensor fusion (UKF, based on ``robot_localization``): GPS, odometry, IMU. GPS fixes
+       in UTM or east-north-up maps, corrected for the antenna's mounting.
      - `README <https://github.com/EasyNavigation/easynav_plugins/blob/rolling/localizers/easynav_fusion_localizer/README.md>`__
    * - ``easynav_simple_localizer``
      - AMCL over ``SimpleMap``.
