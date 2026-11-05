@@ -90,6 +90,8 @@ geometry and limits, and the map. See:
 
 - :doc:`icreate3` — the configurations and launchers of an iRobot iCreate3 with a 2D lidar.
 - :doc:`../howtos/costmap_navigating_with_icreate` — how to deploy EasyNav on that iCreate3.
+- :doc:`tiago_robot` — the configurations and launchers of a PAL TIAGo, with EasyNav built on
+  ROS 2 Humble.
 - :doc:`../migration_guide/index` — moving a robot that runs Nav2 to EasyNav.
 - :ref:`realtime_setup` — the real-time limits EasyNav needs on the robot's computer.
 
@@ -97,3 +99,4 @@ geometry and limits, and the map. See:
    :hidden:
 
    icreate3
+   tiago_robot
