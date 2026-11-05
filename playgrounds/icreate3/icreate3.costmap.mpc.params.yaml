@@ -1,0 +1,159 @@
+controller_node:
+  ros__parameters:
+    use_sim_time: false
+    # Create 3 tops out at 0.306 m/s; the velocity smoother enforces these on every command
+    robot_limits:
+      max_linear_vel: 0.3
+      min_linear_vel: -0.1
+      max_angular_vel: 1.0
+      max_linear_acc: 0.5
+      max_linear_decel: 0.8
+      max_angular_acc: 2.0
+      max_angular_decel: 2.0
+    controller_types: [mpc]
+    mpc:
+      rt_freq: 30.0
+      plugin: easynav_mpc_controller/MPCController
+      safety_radius: 0.27         # robot_geometry.radius 0.17 + 0.1 m
+      min_height: 0.05            # laser points below 5 cm are the floor
+
+localizer_node:
+  ros__parameters:
+    use_sim_time: false
+    localizer_types: [costmap]
+    costmap:
+      rt_freq: 50.0
+      freq: 5.0
+      reseed_freq: 1.0
+      plugin: easynav_costmap_localizer/AMCLLocalizer
+      compute_odom_from_tf: true
+      num_particles: 300
+      # Random particles when the scan match drops: lets AMCL escape a wrong pose
+      random_particles_max_fraction: 0.1
+      noise_translation: 0.05
+      noise_rotation: 0.1
+      noise_translation_to_rotation: 0.1
+      initial_pose:
+        x: 0.0
+        y: 0.0
+        yaw: 0.0
+        std_dev_xy: 0.1
+        std_dev_yaw: 0.01
+
+maps_manager_node:
+  ros__parameters:
+    use_sim_time: false
+    map_types: [costmap]
+    costmap:
+      freq: 10.0
+      plugin: easynav_costmap_maps_manager/CostmapMapsManager
+      package: easynav_indoor_testcase
+      map_path_file: maps/casa.yaml
+      filters: [obstacles, inflation]
+      obstacles:
+        plugin: easynav_costmap_maps_manager/CostmapMapsManager/ObstaclesFilter
+      inflation:
+        plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
+        inflation_radius: 1.3
+        cost_scaling_factor: 3.0
+
+planner_node:
+  ros__parameters:
+    use_sim_time: false
+    planner_types: [simple]
+    simple:
+      freq: 1.0
+      plugin: easynav_costmap_planner/CostmapPlanner
+      cost_factor: 10.0
+      continuous_replan: true
+
+sensors_node:
+  ros__parameters:
+    use_sim_time: false
+    forget_time: 0.5
+    sensors: [laser1]
+    perception_default_frame: odom
+    laser1:
+      topic: scan
+      type: sensor_msgs/msg/LaserScan
+
+system_node:
+  ros__parameters:
+    use_sim_time: false
+    use_real_time: true
+    robot_frame: base_link
+    # iRobot Create 3: 339 mm diameter, circular base
+    robot_geometry:
+      radius: 0.17
+      inscribed_radius: 0.17
+      height: 0.35
+    position_tolerance: 0.15
+    angle_tolerance: 0.15
+
+recovery_node:
+  ros__parameters:
+    use_sim_time: false
+    recovery_manager:
+      plugin: easynav_diagnostic_recovery/DiagnosticRecoveryManager
+      # Level-0: stop on imminent collision, whoever produced cmd_vel
+      safety_reflex_types: [collision]
+      collision:
+        plugin: easynav_diagnostic_recovery/CollisionSafetyReflex
+        debug_markers: true
+        downsample_leaf_size: 0.05
+        brake_acc: 0.8
+        safety_margin: 0.05
+      # Level-1: evaluators diagnose, mitigations tried by priority (lower first)
+      evaluator_types: [no_path, obstacle_close, controller_stuck, amcl_convergence, ros_graph]
+      no_path:
+        plugin: easynav_diagnostic_recovery/NoPathEvaluator
+      obstacle_close:
+        plugin: easynav_diagnostic_recovery/ObstacleTooCloseEvaluator
+        safe_distance: 0.22         # 0.17 m body radius + 0.05 m
+        debounce_duration: 0.5
+      controller_stuck:
+        plugin: easynav_diagnostic_recovery/ControllerStuckEvaluator
+        linear_velocity_threshold: 0.02
+        progress_distance_threshold: 0.05
+        stuck_time_threshold: 3.0
+      amcl_convergence:
+        plugin: easynav_costmap_localizer/AmclConvergenceEvaluator
+        covariance_threshold: 1.0
+        match_threshold: 0.2        # well localized ~0.33 with the S2, lost ~0.10
+      ros_graph:
+        plugin: easynav_diagnostic_recovery/RosGraphEvaluator
+        freq: 1.0
+        startup_grace: 15.0
+        error_debounce: 2.0
+        ignored_topics: ["goal_pose", "initialpose", "incoming_map", "incoming_occ_map", "incoming_pc2_map"]
+        ignored_consumers: ["easynav_tui_*", "_ros2cli*"]
+      mitigation_types: [retreat, amcl_relocalize, advance, shutdown, human_assistance, cancel_mission]
+      retreat:
+        plugin: easynav_diagnostic_recovery/SafeRetreatRecovery
+        priority: 10
+        safe_distance: 0.35         # > obstacle_close.safe_distance
+        retreat_speed: 0.08
+      amcl_relocalize:
+        plugin: easynav_costmap_localizer/AmclRelocalizeMitigation
+        priority: 10
+        covariance_threshold: 1.0
+        match_threshold: 0.2        # same as amcl_convergence
+      advance:
+        plugin: easynav_diagnostic_recovery/AdvanceRecovery
+        priority: 10
+        advance_distance: 0.3
+        advance_speed: 0.08
+        escalate_after: 15.0
+        episode_gap: 10.0
+      shutdown:
+        plugin: easynav_diagnostic_recovery/ShutdownRecovery
+        priority: 100
+        handled_hardware_ids: ["ros_graph"]
+      human_assistance:
+        plugin: easynav_diagnostic_recovery/HumanAssistanceRecovery
+        priority: 1000
+        timeout: 30.0
+        ignored_hardware_ids: ["ros_graph"]
+      cancel_mission:
+        plugin: easynav_diagnostic_recovery/CancelMissionRecovery
+        priority: 2000
