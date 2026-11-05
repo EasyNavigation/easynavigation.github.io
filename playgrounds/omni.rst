@@ -8,7 +8,7 @@ Omni PlayGround
 three- to six-wheel **omnidirectional robots** in two mazes, navigating with the Costmap plugins
 and the MPPI controller as holonomic robots: they also move sideways.
 
-See :ref:`playgrounds` to install it.
+See :ref:`playgrounds_install` to install it.
 
 .. raw:: html
 

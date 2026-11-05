@@ -12,7 +12,7 @@ house, with costmap and simple map configurations.
    :align: center
    :alt: Turtlebot2 simulation in Gazebo
 
-See :ref:`playgrounds` to install it.
+See :ref:`playgrounds_install` to install it.
 
 Launching EasyNav
 -----------------

@@ -9,7 +9,7 @@ simulates a **Toyota Prius**, a car with Ackermann steering, on the **Sonoma Rac
 localized with GPS, IMU and odometry, plans with A* over a NavMap of the track and follows the path
 with RPP or MPC.
 
-See :ref:`playgrounds` to install it.
+See :ref:`playgrounds_install` to install it.
 
 Launching EasyNav
 -----------------
