@@ -21,7 +21,7 @@ Setup
 -----
 
 Install the Summit PlayGround (``sudo apt install ros-<distro>-easynav-playground-summit``, see
-:ref:`playgrounds`): it brings EasyNav, NavMap and the plugins used here.
+:ref:`playgrounds_install`): it brings EasyNav, NavMap and the plugins used here.
 
 The two scenarios
 -----------------

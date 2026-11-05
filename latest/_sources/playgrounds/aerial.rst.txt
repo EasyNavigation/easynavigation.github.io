@@ -9,7 +9,7 @@ simulates an **aerial robot**, a 1 m flying saucer (the UFO), in a **town**. The
 z and yaw. It plans 3D paths over a Bonxai map of the town, keeping its distance from buildings and
 the ground, and follows them with MPC.
 
-See :ref:`playgrounds` to install it.
+See :ref:`playgrounds_install` to install it.
 
 Launching EasyNav
 -----------------

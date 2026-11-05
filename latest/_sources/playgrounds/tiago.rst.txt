@@ -14,7 +14,7 @@ It also simulates **TIAGo Pro**: an omnidirectional base (four mecanum wheels) w
 two arms with grippers and a head with an RGBD camera. EasyNav drives it as a holonomic robot, with
 MPPI.
 
-See :ref:`playgrounds` to install it.
+See :ref:`playgrounds_install` to install it.
 
 Launching EasyNav
 -----------------

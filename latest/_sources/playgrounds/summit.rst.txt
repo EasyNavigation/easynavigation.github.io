@@ -11,7 +11,7 @@ a GPS, navigating with NavMap and Bonxai maps in two worlds:
 - the **URJC excavation**, an outdoor 3D terrain;
 - a **small warehouse**, an indoor logistics scenario with shelves, pallets and clutter.
 
-See :ref:`playgrounds` to install it.
+See :ref:`playgrounds_install` to install it.
 
 Launching EasyNav
 -----------------
