@@ -1,0 +1,163 @@
+controller_node:
+  ros__parameters:
+    use_sim_time: false
+    # The pmb2 base allows 1.0 m/s and 0.5 m/s^2: navigation runs well below it. The velocity
+    # smoother enforces these on every command published.
+    robot_limits:
+      max_linear_vel: 0.3
+      min_linear_vel: -0.1
+      max_angular_vel: 0.6
+      max_linear_acc: 0.5
+      max_linear_decel: 0.5
+      max_angular_acc: 1.0
+      max_angular_decel: 1.0
+    controller_types: [mppi]
+    mppi:
+      rt_freq: 30.0
+      plugin: easynav_mppi_controller/MPPIController
+      motion_model: diff
+      safety_radius: 0.35         # robot_geometry.radius 0.25 + 0.1 m
+      z_min_filter: 0.05          # the base laser is 0.095 m above the floor
+      xy_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.15
+
+localizer_node:
+  ros__parameters:
+    use_sim_time: false
+    localizer_types: [costmap]
+    costmap:
+      rt_freq: 50.0
+      freq: 5.0
+      reseed_freq: 1.0
+      plugin: easynav_costmap_localizer/AMCLLocalizer
+      # Odometry from the odom topic, remapped by the launcher to /direct_laser_odometry/odom
+      min_height: 0.05            # the base laser is 0.095 m above the floor
+      num_particles: 100
+      noise_translation: 0.05
+      noise_rotation: 0.1
+      noise_translation_to_rotation: 0.1
+      initial_pose:
+        x: 0.0
+        y: 0.1
+        yaw: 0.0
+        std_dev_xy: 0.1
+        std_dev_yaw: 0.01
+
+maps_manager_node:
+  ros__parameters:
+    use_sim_time: false
+    map_types: [costmap]
+    costmap:
+      freq: 10.0
+      plugin: easynav_costmap_maps_manager/CostmapMapsManager
+      package: easynav_indoor_testcase
+      map_path_file: maps/lab_nov_2026.yaml
+      filters: [obstacles, inflation]
+      obstacles:
+        plugin: easynav_costmap_maps_manager/CostmapMapsManager/ObstaclesFilter
+        min_height: 0.05          # the base laser is 0.095 m above the floor
+      inflation:
+        plugin: easynav_costmap_maps_manager/CostmapMapsManager/InflationFilter
+        inflation_radius: 0.7
+        cost_scaling_factor: 3.0
+
+planner_node:
+  ros__parameters:
+    use_sim_time: false
+    planner_types: [simple]
+    simple:
+      freq: 0.5
+      plugin: easynav_costmap_planner/CostmapPlanner
+      cost_factor: 10.0
+      continuous_replan: true
+
+sensors_node:
+  ros__parameters:
+    use_sim_time: false
+    forget_time: 0.5
+    # The base laser, already filtered of the robot's own body by PAL's laser_scan_footprint_filter
+    sensors: [base_laser]
+    base_laser:
+      topic: scan
+      type: sensor_msgs/msg/LaserScan
+
+system_node:
+  ros__parameters:
+    use_sim_time: false
+    use_real_time: true
+    # TIAGo (pmb2 base): a 0.50 m diameter cylinder (URDF collision mesh). The tucked arm stays
+    # within it.
+    robot_geometry:
+      radius: 0.25
+      inscribed_radius: 0.25
+      height: 1.45                # head, with the torso fully up
+    position_tolerance: 0.25
+    angle_tolerance: 0.15
+
+recovery_node:
+  ros__parameters:
+    use_sim_time: false
+    recovery_manager:
+      plugin: easynav_diagnostic_recovery/DiagnosticRecoveryManager
+      # Level-0: stop on imminent collision, whoever produced cmd_vel
+      safety_reflex_types: [collision]
+      collision:
+        plugin: easynav_diagnostic_recovery/CollisionSafetyReflex
+        debug_markers: true
+        downsample_leaf_size: 0.05
+        brake_acc: 0.5              # the base's acceleration limit
+        safety_margin: 0.05
+      # Level-1: evaluators diagnose, mitigations tried by priority (lower first)
+      evaluator_types: [no_path, obstacle_close, controller_stuck, amcl_convergence, ros_graph]
+      no_path:
+        plugin: easynav_diagnostic_recovery/NoPathEvaluator
+      obstacle_close:
+        plugin: easynav_diagnostic_recovery/ObstacleTooCloseEvaluator
+        safe_distance: 0.30         # 0.25 m body radius + 0.05 m
+        debounce_duration: 0.5
+      controller_stuck:
+        plugin: easynav_diagnostic_recovery/ControllerStuckEvaluator
+        linear_velocity_threshold: 0.02
+        progress_distance_threshold: 0.05
+        stuck_time_threshold: 3.0
+      amcl_convergence:
+        plugin: easynav_costmap_localizer/AmclConvergenceEvaluator
+        covariance_threshold: 1.0
+        match_threshold: 0.2
+      ros_graph:
+        plugin: easynav_diagnostic_recovery/RosGraphEvaluator
+        freq: 1.0
+        startup_grace: 15.0
+        error_debounce: 2.0
+        ignored_topics: ["goal_pose", "initialpose", "incoming_map", "incoming_occ_map", "incoming_pc2_map"]
+        ignored_consumers: ["easynav_tui_*", "_ros2cli*"]
+      mitigation_types: [retreat, amcl_relocalize, advance, shutdown, human_assistance, cancel_mission]
+      retreat:
+        plugin: easynav_diagnostic_recovery/SafeRetreatRecovery
+        priority: 10
+        safe_distance: 0.45         # > obstacle_close.safe_distance
+        retreat_speed: 0.08
+      amcl_relocalize:
+        plugin: easynav_costmap_localizer/AmclRelocalizeMitigation
+        priority: 10
+        covariance_threshold: 1.0
+        match_threshold: 0.2        # same as amcl_convergence
+      advance:
+        plugin: easynav_diagnostic_recovery/AdvanceRecovery
+        priority: 10
+        advance_distance: 0.3
+        advance_speed: 0.08
+        escalate_after: 15.0
+        episode_gap: 10.0
+      shutdown:
+        plugin: easynav_diagnostic_recovery/ShutdownRecovery
+        priority: 100
+        handled_hardware_ids: ["ros_graph"]
+      human_assistance:
+        plugin: easynav_diagnostic_recovery/HumanAssistanceRecovery
+        priority: 1000
+        timeout: 30.0
+        ignored_hardware_ids: ["ros_graph"]
+      cancel_mission:
+        plugin: easynav_diagnostic_recovery/CancelMissionRecovery
+        priority: 2000
