@@ -1,8 +1,8 @@
 .. _playgrounds:
 
-===========
-PlayGrounds
-===========
+======================
+Playgrounds and Robots
+======================
 
 The **PlayGrounds** are complete Gazebo Harmonic simulations integrated with EasyNav: a robot, its
 world, the maps and ready-to-run EasyNav configurations. They all live in one repository,
@@ -63,6 +63,16 @@ robot's parameter file.
      - A UFO (x, y, z, yaw) in a town
      - Bonxai 3D planner, aerial MPC, GPS fusion, 3D goals
 
+.. toctree::
+   :hidden:
+
+   kobuki
+   summit
+   tiago
+   omni
+   ackermann
+   aerial
+
 Installation
 ------------
 
@@ -119,16 +129,12 @@ Real robots
 EasyNav runs on real robots with the same parameter files: change the sensor topics, the robot's
 geometry and limits, and the map. See:
 
-- :doc:`../howtos/costmap_navigating_with_icreate` — an iRobot iCreate3 with a 2D lidar.
+- :doc:`icreate3` — the configurations and launchers of an iRobot iCreate3 with a 2D lidar.
+- :doc:`../howtos/costmap_navigating_with_icreate` — how to deploy EasyNav on that iCreate3.
 - :doc:`../migration_guide/index` — moving a robot that runs Nav2 to EasyNav.
 - :ref:`realtime_setup` — the real-time limits EasyNav needs on the robot's computer.
 
 .. toctree::
    :hidden:
 
-   kobuki
-   summit
-   tiago
-   omni
-   ackermann
-   aerial
+   icreate3

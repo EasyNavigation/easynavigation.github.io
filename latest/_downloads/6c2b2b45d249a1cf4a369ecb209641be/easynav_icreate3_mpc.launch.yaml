@@ -1,0 +1,30 @@
+# Copyright 2026 Intelligent Robotics Lab
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# iCreate3 at home (casa map): costmap stack with the MPC controller.
+
+launch:
+- arg:
+    name: params_file
+    default: $(find-pkg-share easynav_indoor_testcase)/robots_params/icreate3.costmap.mpc.params.yaml
+    description: EasyNav ROS 2 parameters file
+- arg: {name: lidar, default: 'true', description: Start the RPLIDAR S2 driver}
+- arg: {name: serial_port, default: /dev/ttyUSB0, description: RPLIDAR serial port}
+
+- include:
+    file: $(find-pkg-share easynav_indoor_testcase)/launch/easynav_icreate3.launch.yaml
+    arg:
+    - {name: params_file, value: $(var params_file)}
+    - {name: lidar, value: $(var lidar)}
+    - {name: serial_port, value: $(var serial_port)}
