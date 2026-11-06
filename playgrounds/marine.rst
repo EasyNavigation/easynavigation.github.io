@@ -65,11 +65,12 @@ Configuration
   the vehicle stays under the surface (``max_altitude: -1``) and at least 2 m from the relief, and
   prefers 5 m.
 - **Controller:** MPC with ``motion_model: aerial``, forward only and with no lateral motion, within
-  the Tethys' speed (1.5 m/s), vertical speed and yaw rate (0.2 rad/s).
+  the Tethys' speed (1.5 m/s), vertical speed and yaw rate (0.05 rad/s), with the path's corners
+  rounded to its turning circle.
 
-The Tethys is a torpedo: it turns and dives only while it moves forward. When the MPC asks it to
-turn at a standstill, to face a goal behind it, its autopilot does the turn on the move. With no
-thrust at the goal, it coasts on some 20-30 m.
+The Tethys is a torpedo: it turns and dives only while it moves forward, with a turning radius of
+some 30 m. When the MPC asks it to turn at a standstill, to face a goal behind it, its
+autopilot does the turn on the move. With no thrust at the goal, it coasts on some 10-30 m.
 
 The launcher accepts ``params_file``, ``gui`` (``false`` runs Gazebo headless), ``rviz`` (``false``
 does not start RViz2) and ``waves``.
