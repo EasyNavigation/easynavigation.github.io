@@ -1,6 +1,8 @@
-breathe==4.35.0
-sphinx_rtd_theme==2.0.0
-sphinx==5.3.0
+sphinx==9.2.0
+sphinx-immaterial==0.13.10
+breathe==5.1.0
 sphinxcontrib-plantuml
-standard-imghdr; python_version >= "3.13"
+# The released versions (0.5.0, 0.4.2) are built from their tags with the old theme
+sphinx_rtd_theme==3.1.0
 sphinx-copybutton
+standard-imghdr; python_version >= "3.13"

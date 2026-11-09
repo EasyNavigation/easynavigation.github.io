@@ -71,6 +71,11 @@ def main():
         (SITE / rel).parent.mkdir(parents=True, exist_ok=True)
         (SITE / rel).write_text(REDIRECT.format(url=f'/{default}/{rel.as_posix()}'))
     shutil.copy(ROOT / 'versions.json', SITE / 'versions.json')
+    # The same list for the Material theme's version selector (mike format), short names so
+    # that the site name fits in the header on phones
+    mike = [{'version': v['name'], 'title': v['name'], 'aliases': []}
+            for v in versions['versions']]
+    (SITE / 'mike_versions.json').write_text(json.dumps(mike, indent=2))
     (SITE / '.nojekyll').touch()
     print(f'Site in {SITE} (default: {default})')
 

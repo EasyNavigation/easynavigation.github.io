@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0  # The tags of the released versions
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.13'  # Sphinx 9 needs 3.13
       - name: Install Sphinx
         run: pip install -r requirements.txt
       - name: Build all versions
