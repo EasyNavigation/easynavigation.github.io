@@ -37,7 +37,7 @@ extensions = [
     'sphinx.ext.extlinks',
     'sphinx.ext.graphviz',
     'sphinxcontrib.plantuml',
-    'sphinx_copybutton',
+    'sphinx_immaterial',
 ]
 
 graphviz_output_format='png'
@@ -101,50 +101,52 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-try:
-    import sphinx_rtd_theme
-except ImportError:
-    html_theme = 'alabaster'
-    # This is required for the alabaster theme
-    # refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
-    html_sidebars = {
-        '**': [
-            'relations.html',  # needs 'show_related': True theme option to display
-            'searchbox.html',
-            ]
-        }
-    sys.stderr.write('Warning: sphinx_rtd_theme missing. Use pip to install it.\n')
-else:
-    html_theme = "sphinx_rtd_theme"
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-    html_theme_options = {
-        'canonical_url': '',
-        'analytics_id': '',
-        'logo_only': False,
-        'display_version': True,
-        'prev_next_buttons_location': 'None',
-        'style_nav_header_background': 'orange',
-        # Toc options
-        'collapse_navigation': False,
-        'sticky_navigation': True,
-        'navigation_depth': 4,
-    }
-
-html_theme_path = ['_themes']
-html_theme = 'otc_tcs_sphinx_theme'
-
-# The published versions are in versions.json (built by scripts/build_site.py, selector in
-# _themes/otc_tcs_sphinx_theme/versions.html)
-
-
-# Theme options are theme-specific and customize the look and feel of a theme
-# further.  For a list of options available for each theme, see the
-# documentation.
-#
-# html_theme_options = {}
-
-html_logo = 'images/easynav_logo.png'
+# Material theme (sphinx-immaterial); EasyNav colors and components in _static/extra.css
+html_theme = 'sphinx_immaterial'
+html_title = 'EasyNav'
+html_logo = 'images/easynav_logo_dark.png'
 html_favicon = 'images/easynav_48x48.png'
+html_static_path = ['_static']
+html_css_files = ['extra.css']
+html_js_files = ['easynav.js']
+
+html_theme_options = {
+    'site_url': 'https://easynavigation.github.io/',
+    'repo_url': 'https://github.com/EasyNavigation/EasyNavigation',
+    'repo_name': 'EasyNavigation',
+    'edit_uri': '',
+    'icon': {'repo': 'fontawesome/brands/github'},
+    'font': {'text': 'Inter', 'code': 'JetBrains Mono'},
+    'features': [
+        'navigation.top',
+        'navigation.footer',
+        'navigation.sections',
+        'search.share',
+        'search.highlight',
+        'toc.follow',
+        'content.code.copy',
+        'announce.dismiss',
+    ],
+    'palette': [
+        {'media': '(prefers-color-scheme)',
+         'toggle': {'icon': 'material/brightness-auto', 'name': 'Switch to light mode'}},
+        {'media': '(prefers-color-scheme: light)', 'scheme': 'default',
+         'primary': 'custom', 'accent': 'custom',
+         'toggle': {'icon': 'material/weather-night', 'name': 'Switch to dark mode'}},
+        {'media': '(prefers-color-scheme: dark)', 'scheme': 'slate',
+         'primary': 'custom', 'accent': 'custom',
+         'toggle': {'icon': 'material/brightness-auto', 'name': 'Switch to system preference'}},
+    ],
+    # Versions selector: scripts/build_site.py writes /mike_versions.json from versions.json
+    'version_dropdown': True,
+    'version_json': '../mike_versions.json',
+    'social': [
+        {'icon': 'fontawesome/brands/github', 'link': 'https://github.com/EasyNavigation',
+         'name': 'EasyNavigation on GitHub'},
+        {'icon': 'fontawesome/solid/flask', 'link': 'https://intelligentroboticslab.gsyc.urjc.es/',
+         'name': 'Intelligent Robotics Lab'},
+    ],
+}
 
 numfig = True
 #numfig_secnum_depth = (2)
@@ -153,7 +155,6 @@ numfig_format = {'figure': 'Figure %s', 'table': 'Table %s', 'code-block': 'Code
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = ['static']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
