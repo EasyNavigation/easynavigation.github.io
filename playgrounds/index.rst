@@ -68,6 +68,10 @@ robot's parameter file.
    * - :doc:`aerial`
      - A UFO (x, y, z, yaw) in a town
      - Bonxai 3D planner, aerial MPC, GPS fusion, 3D goals
+   * - :doc:`marine`
+     - A boat (WAM-V) and a submarine (Tethys LRAUV) in a synthetic sea
+     - Submarine: Bonxai 3D planner under the water, MPC, dead reckoning (IMU, DVL, depth gauge);
+       boat and submarine sensors, imaging sonar, waves
 
 See :doc:`installation` to install them.
 
@@ -81,6 +85,7 @@ See :doc:`installation` to install them.
    omni
    ackermann
    aerial
+   marine
 
 Real robots
 -----------

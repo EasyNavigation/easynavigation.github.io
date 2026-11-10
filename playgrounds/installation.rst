@@ -15,7 +15,7 @@ Install the PlayGround you want with APT in jazzy, kilted or lyrical, or with
 
    .. note::
 
-      The Ackermann and Aerial PlayGrounds are new in this development version: until the next
+      The Ackermann, Aerial and Marine PlayGrounds are new in this development version: until the next
       release they are only available from source (below).
 
 To modify them, build them from source instead: clone the repository into your workspace, install
