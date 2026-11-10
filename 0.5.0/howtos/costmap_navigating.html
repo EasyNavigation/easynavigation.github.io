@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Navigating with the Costmap Stack &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,7 +465,7 @@
            <div itemprop="articleBody">
              
   <section id="navigating-with-the-costmap-stack">
-<span id="costmap-navigating"></span><h1>Navigating with the Costmap Stack<a class="headerlink" href="#navigating-with-the-costmap-stack" title="Permalink to this heading"></a></h1>
+<span id="costmap-navigating"></span><h1>Navigating with the Costmap Stack<a class="headerlink" href="#navigating-with-the-costmap-stack" title="Link to this heading"></a></h1>
 <p>This HowTo shows how to perform <strong>navigation</strong> with the <strong>Costmap Stack</strong> in <strong>EasyNavigation
 (EasyNav)</strong>: a costmap with obstacles and inflation, AMCL, A* and the <strong>Regulated Pure Pursuit</strong>
 controller. It is EasyNav’s reference configuration for indoor robots with a 2D lidar.</p>
@@ -485,13 +479,13 @@ controller. It is EasyNav’s reference configuration for indoor robots with a 2
 </ul>
 </nav>
 <section id="setup">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <p>Build EasyNav and the Kobuki PlayGround as described in <a class="reference internal" href="../getting_started/index.html"><span class="doc">Getting Started</span></a>.</p>
 <p>The PlayGround ships a map of its world (<code class="docutils literal notranslate"><span class="pre">maps/home2.yaml</span></code>). To navigate in your own map, create
 it first following <a class="reference internal" href="costmap_mapping.html"><span class="doc">Mapping with the Costmap Stack</span></a>, or use an existing Nav2 map.</p>
 </section>
 <section id="running-it">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Running it</a><a class="headerlink" href="#running-it" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Running it</a><a class="headerlink" href="#running-it" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>easynav_costmap_rpp.launch.yaml
 </pre></div>
 </div>
@@ -500,7 +494,7 @@ it first following <a class="reference internal" href="costmap_mapping.html"><sp
 with <code class="docutils literal notranslate"><span class="pre">gui:=false</span></code>, and use your own parameter file with <code class="docutils literal notranslate"><span class="pre">params_file:=/path/to/my.params.yaml</span></code>.</p>
 </section>
 <section id="the-parameter-file">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">The Parameter File</a><a class="headerlink" href="#the-parameter-file" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">The Parameter File</a><a class="headerlink" href="#the-parameter-file" title="Link to this heading"></a></h2>
 <p>This is <code class="docutils literal notranslate"><span class="pre">params/costmap.rpp.params.yaml</span></code> of the Kobuki PlayGround:</p>
 <ul class="simple">
 <li><p>The <strong>Costmap Maps Manager</strong> loads the map, adds the obstacles the sensors see
@@ -634,7 +628,7 @@ the last resort, cancel the mission.</p></li>
 for its parameters.</p>
 </section>
 <section id="adapting-it-to-your-robot">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Adapting it to your robot</a><a class="headerlink" href="#adapting-it-to-your-robot" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Adapting it to your robot</a><a class="headerlink" href="#adapting-it-to-your-robot" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>Map</strong>: set <code class="docutils literal notranslate"><span class="pre">package</span></code> and <code class="docutils literal notranslate"><span class="pre">map_path_file</span></code> (both are needed: the map is looked up in the
 share directory of <code class="docutils literal notranslate"><span class="pre">package</span></code>). It must be a YAML + image pair, as Nav2’s, not the Simple

@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Global Localization and Kidnapping Recovery with MH-AMCL &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,7 +465,7 @@
            <div itemprop="articleBody">
              
   <section id="global-localization-and-kidnapping-recovery-with-mh-amcl">
-<span id="mhamcl-localization"></span><h1>Global Localization and Kidnapping Recovery with MH-AMCL<a class="headerlink" href="#global-localization-and-kidnapping-recovery-with-mh-amcl" title="Permalink to this heading"></a></h1>
+<span id="mhamcl-localization"></span><h1>Global Localization and Kidnapping Recovery with MH-AMCL<a class="headerlink" href="#global-localization-and-kidnapping-recovery-with-mh-amcl" title="Link to this heading"></a></h1>
 <p>This HowTo shows how to use the <strong>Multi-Hypothesis AMCL (MH-AMCL) localizer</strong> in <strong>EasyNavigation (EasyNav)</strong>.
 Unlike a regular AMCL, which tracks a single set of particles, MH-AMCL keeps <strong>several hypotheses</strong> about
 where the robot is at the same time. This lets the robot:</p>
@@ -498,7 +492,7 @@ the Costmap Stack (see <a class="reference internal" href="costmap_navigating.ht
 <div align="center">
   <iframe width="450" height="300" src="https://www.youtube.com/embed/AGpP1XzV-FY" frameborder="0" allowfullscreen></iframe>
 </div><section id="how-it-works">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">How it works</a><a class="headerlink" href="#how-it-works" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">How it works</a><a class="headerlink" href="#how-it-works" title="Link to this heading"></a></h2>
 <p>Each hypothesis is an independent particle filter (prediction, correction and reseed). On top of them,
 the localizer manages the population:</p>
 <ul class="simple">
@@ -520,14 +514,14 @@ The plugin is the EasyNav port of the original <a class="reference external" hre
 <p>—</p>
 </section>
 <section id="setup">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <p>The localizer is in the <code class="docutils literal notranslate"><span class="pre">easynav_mhamcl_localizer</span></code> package of <code class="docutils literal notranslate"><span class="pre">easynav_plugins</span></code>. This HowTo uses
 the <a class="reference internal" href="../playgrounds/kobuki.html"><span class="doc">Kobuki PlayGround</span></a>; build it as described in
 <a class="reference internal" href="../getting_started/index.html"><span class="doc">Getting Started</span></a>.</p>
 <p>—</p>
 </section>
 <section id="configuring-the-localizer">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Configuring the Localizer</a><a class="headerlink" href="#configuring-the-localizer" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Configuring the Localizer</a><a class="headerlink" href="#configuring-the-localizer" title="Link to this heading"></a></h2>
 <p>Replace the <code class="docutils literal notranslate"><span class="pre">localizer_node</span></code> section of a Costmap Stack parameter file with:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">localizer_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -581,7 +575,7 @@ They are not needed with MH-AMCL, which relocalizes by itself.</p>
 <p>—</p>
 </section>
 <section id="running-the-simulation">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Running the Simulation</a><a class="headerlink" href="#running-the-simulation" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Running the Simulation</a><a class="headerlink" href="#running-the-simulation" title="Link to this heading"></a></h2>
 <ol class="arabic">
 <li><p><strong>Launch the simulator, EasyNav and RViz2</strong> with the PlayGround’s launcher:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>easynav_costmap_rpp_mhamcl.launch.yaml
@@ -596,7 +590,7 @@ are also published as a <code class="docutils literal notranslate"><span class="
 <p>—</p>
 </section>
 <section id="testing-global-localization-and-kidnapping">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Testing Global Localization and Kidnapping</a><a class="headerlink" href="#testing-global-localization-and-kidnapping" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Testing Global Localization and Kidnapping</a><a class="headerlink" href="#testing-global-localization-and-kidnapping" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>Unknown initial pose:</strong> start the robot far from <code class="docutils literal notranslate"><span class="pre">initial_pose</span></code>. After a few seconds
 (<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">hypotheses_freq</span></code>), new hypotheses appear where the laser fits the map. When one of them is clearly
@@ -610,7 +604,7 @@ perception disambiguates them.</p></li>
 <p>—</p>
 </section>
 <section id="tuning">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Tuning</a><a class="headerlink" href="#tuning" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Tuning</a><a class="headerlink" href="#tuning" title="Link to this heading"></a></h2>
 <p>The most relevant parameters are:</p>
 <table class="docutils align-default">
 <colgroup>
@@ -665,7 +659,7 @@ flip-flopping between hypotheses.</p></td>
 <p>—</p>
 </section>
 <section id="notes">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>The localizer works over the <code class="docutils literal notranslate"><span class="pre">map.base</span></code> <code class="docutils literal notranslate"><span class="pre">Costmap2D</span></code>. Obstacles are the <code class="docutils literal notranslate"><span class="pre">LETHAL_OBSTACLE</span></code> cells and
 hypotheses must be in <code class="docutils literal notranslate"><span class="pre">FREE_SPACE</span></code> cells.</p></li>

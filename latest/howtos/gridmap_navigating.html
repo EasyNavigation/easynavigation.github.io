@@ -1,523 +1,932 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en">
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Outdoor Navigation with GridMaps (Summit) &mdash; EasyNavigation latest documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="gridmap_mapping.html">
+      
+      
+        <link rel="next" href="../developer_guide/index.html">
+      
+      
+      <link rel="icon" href="../_static/easynav_48x48.png">
+    
+    
+      
+        <title>Outdoor Navigation with GridMaps (Summit) - EasyNav</title>
+      
+    
+    
+      
+        
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.782bfc4cbc8aee405.min.css?v=9c8ec4b0" />
+        <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+        <link rel="stylesheet" type="text/css" href="../_static/extra.css?v=02bb7761" />
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
 
   
-    <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-        <script src="../_static/clipboard.min.js"></script>
-        <script src="../_static/copybutton.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Developers Guide" href="../developer_guide/index.html" />
-    <link rel="prev" title="GridMap Mapping with LidarSLAM and EasyNav" href="gridmap_mapping.html" />
 
-<link rel="stylesheet" href="../_static/tcs_theme.css" type="text/css" />
-
-
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: orange" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            EasyNavigation
-              <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
-          </a>
-              <div class="version">
-                latest
-              </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../build_install/index.html">Build &amp; Install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-with-apt-recommended">Install with APT (recommended)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#install-from-source">Install from source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../build_install/index.html#other-options">Other options</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../build_install/binaries.html">Install from Binaries</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#release-status">Release status</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#install-from-binaries-apt-recommended">Install from binaries (APT, recommended)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#install-via-pixi">Install via Pixi</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../build_install/binaries.html#package-availability">Package availability</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../build_install/realtime.html">Real-time System Setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../build_install/troubleshooting.html">Troubleshooting</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#common-problems">Common problems</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#uninstall-clean">Uninstall / clean</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../build_install/troubleshooting.html#running-the-tests">Running the tests</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#setting-up">Setting up</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#sourcing-the-workspace">Sourcing the workspace</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#first-run-the-simple-stack">First run: the Simple stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#launching-the-simulator">Launching the simulator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#launching-easynav">Launching EasyNav</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#visualizing-in-rviz2">Visualizing in RViz2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#setting-the-initial-pose">Setting the initial pose</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#sending-navigation-goals">Sending navigation goals</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#navigating-with-the-costmap-stack">Navigating with the Costmap stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/index.html#all-in-one-launch-file">All in one launch file</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#visualizing-internal-process-with-the-tui">Visualizing internal process with the TUI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#troubleshooting">Troubleshooting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/index.html#next-steps">Next steps</a><ul class="simple">
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../playgrounds/index.html">Playgrounds and Robots</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../playgrounds/index.html#id1">Playgrounds</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/installation.html">Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/kobuki.html">Kobuki PlayGround</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#launching-easynav">Launching EasyNav</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#multirobot">Multirobot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#simulation-only">Simulation only</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#launch-files">Launch files</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/kobuki.html#package-layout">Package layout</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/summit.html">Summit PlayGround</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#launching-easynav">Launching EasyNav</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#simulation-only">Simulation only</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#launch-files">Launch files</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#building-maps-of-a-world">Building maps of a world</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/summit.html#package-layout">Package layout</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/tiago.html">TIAGo PlayGround</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#launching-easynav">Launching EasyNav</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#simulation-only">Simulation only</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago.html#packages">Packages</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/omni.html">Omni PlayGround</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launching-easynav">Launching EasyNav</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#simulation-only">Simulation only</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/omni.html#launch-files">Launch files</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/ackermann.html">Ackermann PlayGround</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/ackermann.html#launching-easynav">Launching EasyNav</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/ackermann.html#simulation-only">Simulation only</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/aerial.html">Aerial PlayGround</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/aerial.html#launching-easynav">Launching EasyNav</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/aerial.html#simulation-only">Simulation only</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/marine.html">Marine PlayGround</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/marine.html#the-world">The world</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/marine.html#navigating-with-the-submarine">Navigating with the submarine</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/marine.html#sensors">Sensors</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/marine.html#simulation-only">Simulation only</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../playgrounds/index.html#real-robots">Real robots</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/icreate3.html">iCreate3</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/icreate3.html#hardware">Hardware</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/icreate3.html#launchers">Launchers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/icreate3.html#things-specific-to-this-robot">Things specific to this robot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/icreate3.html#configuration-files">Configuration files</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../playgrounds/tiago_robot.html">TIAGo</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago_robot.html#hardware">Hardware</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago_robot.html#building-easynav-on-humble">Building EasyNav on Humble</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago_robot.html#launchers">Launchers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago_robot.html#things-specific-to-this-robot">Things specific to this robot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../playgrounds/tiago_robot.html#configuration-files">Configuration files</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">EasyNav Plugins</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#supported-ros-2-versions">Supported ROS 2 versions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#repository-overview">Repository overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#planners">🧭 Planners</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#controllers">⚙️ Controllers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#maps-managers">🗺️ Maps Managers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#localizers">📍 Localizers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#recoveries">🛟 Recoveries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#other-plugins">Other plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.html#license">License</a><ul class="simple">
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTos and Practical Guides</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="index.html#overview">📘 Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#costmap-stack">Costmap Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="costmap_mapping.html">Mapping with the Costmap Stack</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_mapping.html#saving-the-map">Saving the map</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="costmap_navigating.html">Navigating with the Costmap Stack</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#running-it">Running it</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#the-parameter-file">The Parameter File</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating.html#adapting-it-to-your-robot">Adapting it to your robot</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="mhamcl_localization.html">Global Localization and Kidnapping Recovery with MH-AMCL</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#how-it-works">How it works</a></li>
-<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#configuring-the-localizer">Configuring the Localizer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#running-the-simulation">Running the Simulation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#testing-global-localization-and-kidnapping">Testing Global Localization and Kidnapping</a></li>
-<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#tuning">Tuning</a></li>
-<li class="toctree-l4"><a class="reference internal" href="mhamcl_localization.html#notes">Notes</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="routes_costmap_manager.html">Using the Routes Maps Manager with Costmaps</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#creating-routes">1) Creating routes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="routes_costmap_manager.html#using-the-routes-for-navigation">2) Using the routes for navigation</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="costmap_navigating_with_icreate.html">Deploying EasyNav on a Real iCreate3 Robot</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#hardware-setup">Hardware Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#ros-2-setup-on-the-raspberry-pi">ROS 2 Setup on the Raspberry Pi</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#easynav-setup-on-the-raspberry-pi">EasyNav Setup on the Raspberry Pi</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#mapping">Mapping</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#navigation">Navigation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_navigating_with_icreate.html#notes">Notes</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#navmap-bonxai-stack">NavMap + Bonxai Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="navmap_navigating.html">Navigating with the NavMap + Bonxai Stack</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#the-two-scenarios">The two scenarios</a></li>
-<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#the-parameter-file">The parameter file</a></li>
-<li class="toctree-l4"><a class="reference internal" href="navmap_navigating.html#building-the-maps">Building the maps</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="bonxai_navmap_from_rosbag.html">Building Bonxai and NavMap Maps from a Recorded ROSBag</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#align-the-frames-world-map">1. Align the Frames (world → map)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#play-the-rosbag">2. Play the ROSBag</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#launch-easynav-with-bonxai-and-navmap-maps-managers">3. Launch EasyNav with Bonxai and NavMap Maps Managers</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#navmap-build-parameters">4. NavMap Build Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#visualize-in-rviz2">5. Visualize in RViz2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#save-the-maps">6. Save the Maps</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bonxai_navmap_from_rosbag.html#summary">7. Summary</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#simple-stack">Simple Stack</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="simple_mapping.html">Mapping with SLAM Toolbox and EasyNav</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#step-by-step-instructions">Step-by-Step Instructions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#saving-and-reusing-the-map">Saving and Reusing the Map</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_mapping.html#notes">Notes</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="simple_navigating.html">Navigating with SimpleStack and EasyNav</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#the-parameter-file">The Parameter File</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#running-the-simulation">Running the Simulation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simple_navigating.html#notes">Notes</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#controllers">Controllers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="serest_controller.html">SeReST Controller Fine-Tuning</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#quick-start-defaults">Quick-Start Defaults</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#core-concepts">Core Concepts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#parameter-by-parameter-guidance">Parameter-by-Parameter Guidance</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#troubleshooting-by-symptom">Troubleshooting by Symptom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#recommended-tuning-order">Recommended Tuning Order</a></li>
-<li class="toctree-l4"><a class="reference internal" href="serest_controller.html#faq">FAQ</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#behaviors">Behaviors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="patrolling_behavior.html">Patrolling Behavior</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#waypoint-configuration">Waypoint Configuration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#launching-navigation">Launching Navigation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#running-the-patrolling-behavior">Running the Patrolling Behavior</a></li>
-<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#code-explanation-c-version">Code Explanation (C++ Version)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#code-explanation-python-version">Code Explanation (Python Version)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="patrolling_behavior.html#notes">Notes</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#general">General</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="costmap_multirobot.html">Multi-Robot Navigation with EasyNav</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#topic-naming-and-tf-management">1. Topic Naming and TF Management</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#launching-in-simulation">2. Launching in Simulation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#example-parameters">3. Example Parameters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="costmap_multirobot.html#tips-gotchas">Tips &amp; Gotchas</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="ros2_easynav_cli.html">ros2 easynav — EasyNav CLI Extensions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#name">NAME</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#synopsis">SYNOPSIS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#description">DESCRIPTION</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#commands">COMMANDS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#options-common">OPTIONS (Common)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#exit-status">EXIT STATUS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#examples">EXAMPLES</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ros2_easynav_cli.html#see-also">SEE ALSO</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="docker_crossdistro.html">Docker Setup with Zenoh Bridge (Cross-Distro)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-1-building-the-docker-image-rolling">Step 1: Building the Docker Image (Rolling)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-2-preparing-the-robot-host">Step 2: Preparing the Robot (Host)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-3-running-the-container">Step 3: Running the Container</a></li>
-<li class="toctree-l4"><a class="reference internal" href="docker_crossdistro.html#step-4-visualization-from-a-remote-pc">Step 4: Visualization from a Remote PC</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="custom_perception_plugin.html">Writing a Custom Perception Plugin</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#when-do-you-need-a-custom-perception-plugin">When do you need a custom perception plugin?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#the-perceptionhandler-interface">The <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> interface</a></li>
-<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#walking-through-altimuperceptionhandler">Walking through <code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#registering-the-plugin">Registering the plugin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#using-the-plugin">Using the plugin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#writing-a-plugin-for-a-genuinely-new-message-type">Writing a plugin for a genuinely new message type</a></li>
-<li class="toctree-l4"><a class="reference internal" href="custom_perception_plugin.html#notes">Notes</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#deprecated">Deprecated</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="gridmap_mapping.html">GridMap Mapping with LidarSLAM and EasyNav</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#start-the-simulator">1. Start the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#launch-lidarslam">2. Launch LidarSLAM</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#build-the-map-with-teleoperation">3. Build the Map with Teleoperation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-builder-pointcloud-gridmap">4. Run the GridMap Builder (PointCloud → GridMap)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#run-the-gridmap-maps-manager">5. Run the Gridmap Maps Manager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gridmap_mapping.html#save-the-gridmap-to-disk">6. Save the GridMap to Disk</a></li>
-</ul>
-</li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Outdoor Navigation with GridMaps (Summit)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#launch-the-simulator">1. Launch the Simulator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#launch-easynav-with-gridmap-and-lidarslam">2. Launch EasyNav with GridMap and LidarSLAM</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#commanding-navigation-goals">3. Commanding Navigation Goals</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#notes">Notes</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developers Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../developer_guide/design.html">Core Design and Architecture</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#systemnode-parameters">SystemNode parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#coordinate-frames-tf">Coordinate Frames (TF)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/design.html#lookups-slightly-ahead-of-the-latest-tf">Lookups slightly ahead of the latest TF</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#robot-geometry">Robot Geometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#velocity-output-robot-limits-mux-and-smoother">Velocity Output: Robot Limits, Mux and Smoother</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#reconfiguring-easynav-at-runtime">Reconfiguring EasyNav at Runtime</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#navstate-the-shared-blackboard">NavState: The Shared Blackboard</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/design.html#real-time-execution-model">Real-Time Execution Model</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/design.html#frequencies-system-cycles-and-components">Frequencies: system cycles and components</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../developer_guide/blackboard.html">How to use the NavState BlackBoard</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#basic-api">Basic API</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#examples-from-plugins">Examples from Plugins</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#advanced-features">Advanced Features</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#best-practices">Best Practices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/blackboard.html#conclusion">Conclusion</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../developer_guide/perceptions.html">Sensor Input and Perception Handling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#sensor-configuration">Sensor Configuration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#grouping-sensors-group-is-optional-and-changes-visibility">Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#processing-point-perceptions">Processing Point Perceptions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#operation-summary">Operation Summary</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#lazy-operations-frames-and-collapse">Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/perceptions.html#filter-min-bounds-max-bounds-lazy-post-fuse"><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/perceptions.html#collapse-collapse-dims-lazy"><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#example-updating-a-map">Example: Updating a Map</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#fused-visualization">Fused Visualization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#other-perception-types">Other Perception Types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/perceptions.html#extending-to-other-modalities">Extending to Other Modalities</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../developer_guide/commanding.html">Sending Navigation Commands to EasyNav</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#primary-method-easynav-control-topic">Primary Method: <cite>/easynav_control</cite> Topic</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#protocol-description">Protocol Description</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/commanding.html#using-goalmanagerclient">Using <cite>GoalManagerClient</cite></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#secondary-method-goal-pose-topic">Secondary Method: <cite>/goal_pose</cite> Topic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#third-method-nav2-s-navigatetopose-action">Third Method: Nav2’s <cite>NavigateToPose</cite> Action</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/commanding.html#conclusion">Conclusion</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../developer_guide/recovery.html">Recovery System</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-recovery-node">The Recovery Node</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#the-base-class-recoverymanagerbase">The Base Class: <code class="docutils literal notranslate"><span class="pre">RecoveryManagerBase</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#moving-the-robot">Moving the Robot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#system-actions">System Actions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#controlled-shutdown">Controlled shutdown</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#reconfiguration-as-a-mitigation">Reconfiguration as a mitigation</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#available-recovery-systems">Available Recovery Systems</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#dummyrecoverymanager">DummyRecoveryManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#simplerecoverymanager">SimpleRecoveryManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../developer_guide/recovery.html#diagnosticrecoverymanager">DiagnosticRecoveryManager</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/recovery.html#writing-a-recovery-system">Writing a Recovery System</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../developer_guide/safety.html">Safety</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#summary">Summary</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#overview">Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#stale-and-invalid-commands">Stale and invalid commands</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#configuration-checks">Configuration checks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#safety-parameters-and-safety-mode">Safety parameters and safety mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#real-time-cycle-monitoring-and-heartbeat">Real-time cycle monitoring and heartbeat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#safety-channel-status">Safety channel status</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#data-age">Data age</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#memory-locking">Memory locking</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#configuration-fingerprint">Configuration fingerprint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../developer_guide/safety.html#fault-injection">Fault injection</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer_guide/index.html#further-reading">Further Reading</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../migration_guide/index.html">Migration Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#what-stays-the-same">What stays the same</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#nav2-and-easynav-piece-by-piece">Nav2 and EasyNav, piece by piece</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-1-install-easynav">Step 1: Install EasyNav</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-2-your-map">Step 2: Your map</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-3-the-parameter-file">Step 3: The parameter file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-4-run-it">Step 4: Run it</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#step-5-send-goals-from-your-applications">Step 5: Send goals from your applications</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-a-the-nav2-bridge">Option A: the Nav2 bridge</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-b-goalmanagerclient">Option B: GoalManagerClient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../migration_guide/index.html#option-c-just-a-pose">Option C: just a pose</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#differences-to-keep-in-mind">Differences to keep in mind</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#troubleshooting">Troubleshooting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../migration_guide/index.html#next-steps">Next steps</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../about/index.html">About and Contact</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../about/index.html#id1">About</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../about/index.html#contact">Contact</a></li>
-</ul>
-</li>
-</ul>
-
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="EasyNav" class="md-header__button md-logo" aria-label="EasyNav" data-md-component="logo">
+      <img src="../_static/easynav_logo_dark.png" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            EasyNav
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Outdoor Navigation with GridMaps (Summit)
+            
+          </span>
         </div>
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: orange" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">EasyNavigation</a>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
       </nav>
-
-      <div class="wy-nav-content">
-
-<span style="float: right;" >
-    <a class="github-button" href="https://github.com/EasyNavigation/EasyNavigation.github.io" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Edit IntelligentRoboticsLabs/EasyNav.github.io on GitHub" ">Edit</a>
-</span>
-
-
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">HowTos and Practical Guides</a></li>
-      <li class="breadcrumb-item active">Outdoor Navigation with GridMaps (Summit)</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="outdoor-navigation-with-gridmaps-summit">
-<span id="gridmap-outdoor-navigation"></span><h1>Outdoor Navigation with GridMaps (Summit)<a class="headerlink" href="#outdoor-navigation-with-gridmaps-summit" title="Permalink to this heading"></a></h1>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/EasyNavigation/EasyNavigation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    EasyNavigation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="EasyNav" class="md-nav__button md-logo" aria-label="EasyNav" data-md-component="logo">
+      <img src="../_static/easynav_logo_dark.png" alt="logo">
+    </a>
+    EasyNav
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/EasyNavigation/EasyNavigation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    EasyNavigation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build_install/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Build &amp; Install</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Getting Started</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../playgrounds/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Playgrounds and Robots</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugins/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Easy<wbr>Nav Plugins</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    <span>How<wbr>Tos and Practical Guides</span>
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            <span>How<wbr>Tos and Practical Guides</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html#costmap-stack" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Costmap Stack</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html#navmap-bonxai-stack" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Nav<wbr>Map + Bonxai Stack</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html#simple-stack" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Simple Stack</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html#controllers" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Controllers</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html#behaviors" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Behaviors</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html#general" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>General</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_7" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html#deprecated" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    <span>Deprecated</span>
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            <span>Deprecated</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gridmap_mapping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Grid<wbr>Map Mapping with Lidar<wbr>SLAM and Easy<wbr>Nav</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    <span>Outdoor Navigation with Grid<wbr>Maps <wbr>(Summit)</span>
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Outdoor Navigation with Grid<wbr>Maps <wbr>(Summit)</span>
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Overview</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Setup</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch-the-simulator" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>1.<wbr> Launch the Simulator</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch-easynav-with-gridmap-and-lidarslam" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>2.<wbr> Launch Easy<wbr>Nav with Grid<wbr>Map and Lidar<wbr>SLAM</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commanding-navigation-goals" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>3.<wbr> Commanding Navigation Goals</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Notes</span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer_guide/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Developers Guide</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration_guide/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Migration Guide</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>About and Contact</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Overview</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Setup</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch-the-simulator" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>1.<wbr> Launch the Simulator</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch-easynav-with-gridmap-and-lidarslam" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>2.<wbr> Launch Easy<wbr>Nav with Grid<wbr>Map and Lidar<wbr>SLAM</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commanding-navigation-goals" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>3.<wbr> Commanding Navigation Goals</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Notes</span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                
+                
+                  
+
+
+<h1 id="outdoor-navigation-with-gridmaps-summit"><span id="gridmap-outdoor-navigation"></span>Outdoor Navigation with GridMaps (Summit)<a class="headerlink" href="#outdoor-navigation-with-gridmaps-summit" title="Link to this heading">¶</a></h1>
 <p>This HowTo demonstrates how to run <strong>EasyNav</strong> outdoors using <strong>GridMap</strong> representation and the <strong>Summit robot</strong>.
 It uses the <em>GridMap Maps Manager</em> for environment representation and the <em>LidarSLAM Localizer plugin</em> for real-time localization.</p>
-<div class="admonition warning">
+<div class="warning admonition">
 <p class="admonition-title">Warning</p>
 <p><strong>Deprecated.</strong> The GridMap stack
 (<a class="reference external" href="https://github.com/EasyNavigation/easynav_gridmap_stack">easynav_gridmap_stack</a>) and
@@ -537,8 +946,7 @@ distributions. This page is kept as a reference of the workflow. For 3D terrain,
 <li><p><a class="reference internal" href="#notes" id="id6">Notes</a></p></li>
 </ul>
 </nav>
-<section id="overview">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<h2 id="overview"><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
 <div align="center">
   <iframe width="450" height="300" src="https://www.youtube.com/embed/mxivTYNY1yY" frameborder="0" allowfullscreen></iframe>
 </div><p>In this tutorial, you will:</p>
@@ -550,9 +958,7 @@ distributions. This page is kept as a reference of the workflow. For 3D terrain,
 <p>This example combines the <strong>GridMap</strong> framework (for multi-layer terrain representation) and <strong>LidarSLAM</strong> (for localization from point clouds).
 It showcases how EasyNav seamlessly integrates mapping, localization, planning, and control in outdoor environments.</p>
 <p>—</p>
-</section>
-<section id="setup">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2 id="setup"><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>You have completed the installation described in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a>.</p></li>
 <li><p>You have a working workspace containing the following repositories:</p>
@@ -567,45 +973,41 @@ It showcases how EasyNav seamlessly integrates mapping, localization, planning, 
 </li>
 </ol>
 <p>If something is missing, clone the required repositories:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/ros/ros2/easynav_ws/src
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/ros/ros2/easynav_ws/src
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_plugins.git
 git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/EasyNavigation/easynav_playgrounds.git
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/EasyNavigation/easynav_outdoor_testcase.git
 git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling<span class="w"> </span>https://github.com/EasyNavigation/easynav_lidarslam_ros2.git
 git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>rolling_ament_fixed<span class="w"> </span>https://github.com/fmrico/grid_map.git
-</pre></div>
+</code></pre></div>
 </div>
-<div class="admonition warning">
+<div class="warning admonition">
 <p class="admonition-title">Warning</p>
 <p>The official <cite>grid_map</cite> repository still uses <code class="docutils literal notranslate"><span class="pre">ament_target_dependencies()</span></code>,
 which is deprecated in recent ROS 2 distributions.
 Use the patched fork above (branch <code class="docutils literal notranslate"><span class="pre">rolling_ament_fixed</span></code>) to ensure successful builds.</p>
 </div>
 <p>Then build and source your workspace:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/ros/ros2/easynav_ws
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/ros/ros2/easynav_ws
 rosdep<span class="w"> </span>install<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>-r<span class="w"> </span>-y
 colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 <span class="nb">source</span><span class="w"> </span>install/setup.bash
-</pre></div>
+</code></pre></div>
 </div>
 <p>—</p>
-</section>
-<section id="launch-the-simulator">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">1. Launch the Simulator</a><a class="headerlink" href="#launch-the-simulator" title="Permalink to this heading"></a></h2>
+<h2 id="launch-the-simulator"><a class="toc-backref" href="#id3" role="doc-backlink">1. Launch the Simulator</a><a class="headerlink" href="#launch-the-simulator" title="Link to this heading">¶</a></h2>
 <p>Start the <strong>Summit</strong> world simulation.
 This environment includes outdoor terrain suitable for GridMap-based navigation.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_summit_worlds<span class="w"> </span>gazebo_sim.launch.yaml
-</pre></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_summit_worlds<span class="w"> </span>gazebo_sim.launch.yaml
+</code></pre></div>
 </div>
 <p>RViz2 is started in step 3.</p>
 <p>—</p>
-</section>
-<section id="launch-easynav-with-gridmap-and-lidarslam">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">2. Launch EasyNav with GridMap and LidarSLAM</a><a class="headerlink" href="#launch-easynav-with-gridmap-and-lidarslam" title="Permalink to this heading"></a></h2>
+<h2 id="launch-easynav-with-gridmap-and-lidarslam"><a class="toc-backref" href="#id4" role="doc-backlink">2. Launch EasyNav with GridMap and LidarSLAM</a><a class="headerlink" href="#launch-easynav-with-gridmap-and-lidarslam" title="Link to this heading">¶</a></h2>
 <p>Next, launch <strong>EasyNav</strong> with the following parameter file configuration.</p>
 <p>Save the following YAML file as
 <code class="docutils literal notranslate"><span class="pre">~/ros/ros2/easynav_ws/src/easynav_outdoor_testcase/robots_params/gridmap.lidarslam.params.yaml</span></code></p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><code><span class="nt">controller_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">use_sim_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">robot_limits</span><span class="p">:</span>
@@ -709,27 +1111,25 @@ This environment includes outdoor terrain suitable for GridMap-based navigation.
 <span class="w">    </span><span class="nt">num_adjacent_pose_cnstraints</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 <span class="w">    </span><span class="nt">use_save_map_in_loop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">debug_flag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</pre></div>
+</code></pre></div>
 </div>
-<div class="admonition note">
+<div class="note admonition">
 <p class="admonition-title">Note</p>
 <p>The <strong>LidarSLAM parameters</strong> (<code class="docutils literal notranslate"><span class="pre">scan_matcher</span></code> and <code class="docutils literal notranslate"><span class="pre">graph_based_slam</span></code>) are defined <strong>after</strong> the main EasyNav nodes.
 These settings are used internally by the <code class="docutils literal notranslate"><span class="pre">easynav_lidarslam_localizer/LidarSlamLocalizer</span></code> plugin, which encapsulates
 <cite>lidarslam_ros2</cite> for seamless integration into the EasyNav localization framework.</p>
 </div>
 <p>Then, launch EasyNav with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_system<span class="w"> </span>system_main<span class="w"> </span><span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>run<span class="w"> </span>easynav_system<span class="w"> </span>system_main<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>~/ros/ros2/easynav_ws/src/easynav_outdoor_testcase/robots_params/gridmap.lidarslam.params.yaml
-</pre></div>
+</code></pre></div>
 </div>
 <p>You should now see console logs from the GridMap Maps Manager, the planner, and the LidarSLAM localizer starting up.</p>
 <p>—</p>
-</section>
-<section id="commanding-navigation-goals">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">3. Commanding Navigation Goals</a><a class="headerlink" href="#commanding-navigation-goals" title="Permalink to this heading"></a></h2>
+<h2 id="commanding-navigation-goals"><a class="toc-backref" href="#id5" role="doc-backlink">3. Commanding Navigation Goals</a><a class="headerlink" href="#commanding-navigation-goals" title="Link to this heading">¶</a></h2>
 <p>Once EasyNav is running, open <strong>RViz2</strong> (if not already open) and add the <strong>2D Goal Pose</strong> tool.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span>--ros-args<span class="w"> </span>-p<span class="w"> </span>use_sim_time:<span class="o">=</span><span class="nb">true</span>
-</pre></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span>--ros-args<span class="w"> </span>-p<span class="w"> </span>use_sim_time:<span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
 </div>
 <p>Click anywhere in the map to send navigation goals to the system.
 The robot will compute paths using the <strong>GridMap A* Planner</strong> and execute them via the <strong>Simple Controller</strong>.</p>
@@ -740,9 +1140,7 @@ The robot will compute paths using the <strong>GridMap A* Planner</strong> and e
 <li><p>The <strong>robot trajectory</strong> updated in real time as the LidarSLAM localizer refines the pose.</p></li>
 </ul>
 <p>—</p>
-</section>
-<section id="notes">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
+<h2 id="notes"><a class="toc-backref" href="#id6" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>This tutorial uses the <strong>LidarSLAM Localizer plugin</strong>, which wraps <cite>lidarslam_ros2</cite> internally for tighter integration with EasyNav.</p></li>
 <li><p>GridMap enables <strong>multi-layer outdoor representation</strong>, supporting elevation, traversability, and slope data.</p></li>
@@ -752,52 +1150,129 @@ The robot will compute paths using the <strong>GridMap A* Planner</strong> and e
 <p>—</p>
 <p>With this setup, your Summit robot navigates outdoor environments using real-time LidarSLAM localization and GridMap-based path planning.
 It provides a complete example of <strong>EasyNav’s 3D-aware navigation stack</strong> in simulation.</p>
-</section>
-</section>
 
 
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2026, Various.</p>
-  </div>
-
-   
-
-</footer>
-        </div>
 
 
-      </div>
-    </section>
-  </div>
+
+
+
   
-<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" id="easynav-versions" style="display: none;">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    <span class="fa fa-book"> EasyNav</span>
-    v: <span id="easynav-current-version"></span>
-    <span class="fa fa-caret-down"></span>
-  </span>
-  <div class="rst-other-versions">
-    <dl id="easynav-version-list">
-      <dt>Versions</dt>
-    </dl>
-  </div>
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="gridmap_mapping.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: GridMap Mapping with LidarSLAM and EasyNav">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                GridMap Mapping with LidarSLAM and EasyNav
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../developer_guide/index.html" class="md-footer__link md-footer__link--next" aria-label="Next: Developers Guide">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Developers Guide
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2026, Various.
+        
+    </div>
+  
+  
 </div>
-<script src="../_static/version_switcher.js"></script><script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-<script type="text/javascript" src="../_static/tcs_theme.js"></script>
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-
-
-
-</body>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/EasyNavigation" target="_blank" rel="noopener" title="EasyNavigation on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://intelligentroboticslab.gsyc.urjc.es/" target="_blank" rel="noopener" title="Intelligent Robotics Lab" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M288 0H128c-17.7 0-32 14.3-32 32s14.3 32 32 32v132.8c0 11.8-3.3 23.5-9.5 33.5L10.3 406.2C3.6 417.2 0 429.7 0 442.6 0 480.9 31.1 512 69.4 512h309.2c38.3 0 69.4-31.1 69.4-69.4 0-12.8-3.6-25.4-10.3-36.4L329.5 230.4c-6.2-10.1-9.5-21.7-9.5-33.5V64c17.7 0 32-14.3 32-32S337.7 0 320 0zm-96 196.8V64h64v132.8c0 23.7 6.6 46.9 19 67.1l34.5 56.1h-171l34.5-56.1c12.4-20.2 19-43.4 19-67.1"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.top", "navigation.footer", "navigation.sections", "search.share", "search.highlight", "toc.follow", "content.code.copy", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../mike_versions.json"}}</script>
+    
+      
+        <script src="../_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
+        <script src="../_static/easynav.js?v=6d60e931"></script>
+    
+  </body>
 </html>

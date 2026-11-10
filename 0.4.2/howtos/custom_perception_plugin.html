@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Writing a Custom Perception Plugin &mdash; EasyNavigation 0.4.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ff822928"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.4.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -381,7 +375,7 @@
            <div itemprop="articleBody">
              
   <section id="writing-a-custom-perception-plugin">
-<span id="custom-perception-plugin"></span><h1>Writing a Custom Perception Plugin<a class="headerlink" href="#writing-a-custom-perception-plugin" title="Permalink to this heading"></a></h1>
+<span id="custom-perception-plugin"></span><h1>Writing a Custom Perception Plugin<a class="headerlink" href="#writing-a-custom-perception-plugin" title="Link to this heading"></a></h1>
 <p>This HowTo shows how to write your own <strong>PerceptionHandler</strong> plugin for EasyNavigation (EasyNav),
 using the real, shipped example package <code class="docutils literal notranslate"><span class="pre">easynav_alt_imu_sensor</span></code> as a guide. It also shows how
 to actually use that plugin in a working configuration.</p>
@@ -401,7 +395,7 @@ auto-detection, groups) before working through this guide.</p>
 </ul>
 </nav>
 <section id="when-do-you-need-a-custom-perception-plugin">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">When do you need a custom perception plugin?</a><a class="headerlink" href="#when-do-you-need-a-custom-perception-plugin" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">When do you need a custom perception plugin?</a><a class="headerlink" href="#when-do-you-need-a-custom-perception-plugin" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">SensorsNode</span></code> already ships handlers for six message types (<code class="docutils literal notranslate"><span class="pre">LaserScan</span></code>/<code class="docutils literal notranslate"><span class="pre">PointCloud2</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Image</span></code>, <code class="docutils literal notranslate"><span class="pre">Imu</span></code>, <code class="docutils literal notranslate"><span class="pre">NavSatFix</span></code>, <code class="docutils literal notranslate"><span class="pre">Odometry</span></code>, <code class="docutils literal notranslate"><span class="pre">Detection3DArray</span></code>), auto-selected from the
 sensor’s <code class="docutils literal notranslate"><span class="pre">type:</span></code>. You need a custom plugin when:</p>
@@ -416,7 +410,7 @@ reuses <code class="docutils literal notranslate"><span class="pre">sensor_msgs/
 every received sample.</p>
 </section>
 <section id="setup">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <p>Writing and compiling a new plugin requires the EasyNav headers, so this guide builds
 everything <strong>from source</strong> — regardless of whether you normally use APT or Pixi for
 day-to-day EasyNav use, see <a class="reference internal" href="../build_install/index.html#build-from-source"><span class="std std-ref">Build from source</span></a>. Replace <code class="docutils literal notranslate"><span class="pre">&lt;distro&gt;</span></code> below with
@@ -446,7 +440,7 @@ distributed as source.)</p>
 <p>—</p>
 </section>
 <section id="the-perceptionhandler-interface">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">The <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> interface</a><a class="headerlink" href="#the-perceptionhandler-interface" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">The <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> interface</a><a class="headerlink" href="#the-perceptionhandler-interface" title="Link to this heading"></a></h2>
 <p>Every perception plugin derives from <code class="docutils literal notranslate"><span class="pre">easynav::PerceptionHandler</span></code>
 (<code class="docutils literal notranslate"><span class="pre">easynav_sensors/types/Perceptions.hpp</span></code>). The base class only requires two overrides:</p>
 <table class="docutils align-default">
@@ -486,7 +480,7 @@ the header (<code class="docutils literal notranslate"><span class="pre">Percept
 </div>
 </section>
 <section id="walking-through-altimuperceptionhandler">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Walking through <code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code></a><a class="headerlink" href="#walking-through-altimuperceptionhandler" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Walking through <code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code></a><a class="headerlink" href="#walking-through-altimuperceptionhandler" title="Link to this heading"></a></h2>
 <p><strong>Header</strong> (<code class="docutils literal notranslate"><span class="pre">include/easynav_alt_imu_sensor/AltIMUPerceptionHandler.hpp</span></code>): the class inherits
 directly from <code class="docutils literal notranslate"><span class="pre">easynav::PerceptionHandler</span></code> (not from the built-in <code class="docutils literal notranslate"><span class="pre">IMUPerceptionHandler</span></code> — it
 reimplements the subscription itself so it can add its own logic):</p>
@@ -562,7 +556,7 @@ and reset the flag. The only custom part is the <code class="docutils literal no
 </div>
 </section>
 <section id="registering-the-plugin">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Registering the plugin</a><a class="headerlink" href="#registering-the-plugin" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Registering the plugin</a><a class="headerlink" href="#registering-the-plugin" title="Link to this heading"></a></h2>
 <p>Three pieces wire the class into pluginlib so <code class="docutils literal notranslate"><span class="pre">SensorsNode</span></code> can load it by name.</p>
 <p><strong>1. The plugin descriptor</strong> (<code class="docutils literal notranslate"><span class="pre">easynav_alt_imu_sensor_plugins.xml</span></code>):</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;class_libraries&gt;</span>
@@ -598,7 +592,7 @@ colcon<span class="w"> </span>build<span class="w"> </span>--packages-select<spa
 </div>
 </section>
 <section id="using-the-plugin">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Using the plugin</a><a class="headerlink" href="#using-the-plugin" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Using the plugin</a><a class="headerlink" href="#using-the-plugin" title="Link to this heading"></a></h2>
 <p>Set <code class="docutils literal notranslate"><span class="pre">plugin:</span></code> explicitly on the sensor that should use your handler — this overrides
 <code class="docutils literal notranslate"><span class="pre">SensorsNode</span></code>’s auto-detected default for that message type:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sensors_node</span><span class="p">:</span>
@@ -623,7 +617,7 @@ the terminal running <code class="docutils literal notranslate"><span class="pre
 since <code class="docutils literal notranslate"><span class="pre">cycle_rt()</span></code> stores the same <code class="docutils literal notranslate"><span class="pre">IMUPerception</span></code> type under the same key.</p>
 </section>
 <section id="writing-a-plugin-for-a-genuinely-new-message-type">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Writing a plugin for a genuinely new message type</a><a class="headerlink" href="#writing-a-plugin-for-a-genuinely-new-message-type" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Writing a plugin for a genuinely new message type</a><a class="headerlink" href="#writing-a-plugin-for-a-genuinely-new-message-type" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">AltIMUPerceptionHandler</span></code> reuses an existing perception type (<code class="docutils literal notranslate"><span class="pre">IMUPerception</span></code>). To support a
 ROS 2 message type that has no built-in equivalent at all, you additionally need a new
 <code class="docutils literal notranslate"><span class="pre">PerceptionBase</span></code>-derived class to hold the data (following <code class="docutils literal notranslate"><span class="pre">IMUPerception</span></code>, <code class="docutils literal notranslate"><span class="pre">GNSSPerception</span></code>,
@@ -633,7 +627,7 @@ identical: implement <code class="docutils literal notranslate"><span class="pre
 <code class="docutils literal notranslate"><span class="pre">easynav_sensors</span></code> from <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>.</p>
 </section>
 <section id="notes">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">plugin:</span></code> is matched against the <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute in the plugin’s XML descriptor, not the
 C++ class name — make sure your configuration uses the former

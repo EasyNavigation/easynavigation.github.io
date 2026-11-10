@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TIAGo PlayGround &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,7 +465,7 @@
            <div itemprop="articleBody">
              
   <section id="tiago-playground">
-<span id="playground-tiago"></span><h1>TIAGo PlayGround<a class="headerlink" href="#tiago-playground" title="Permalink to this heading"></a></h1>
+<span id="playground-tiago"></span><h1>TIAGo PlayGround<a class="headerlink" href="#tiago-playground" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/EasyNavigation/easynav_playgrounds/tree/rolling/playground_tiago">easynav_playground_tiago</a>
 simulates PAL Robotics’ <strong>TIAGo</strong> in the AWS RoboMaker small house: its mobile base (pmb2),
 lifting torso, pan-tilt head with an RGBD camera, 7-DoF arm with the PAL gripper and wrist
@@ -479,7 +473,7 @@ force/torque sensor, base laser, sonars and IMU. The base drives with EasyNav, a
 head, arm and gripper move under ros2_control.</p>
 <p>See <a class="reference internal" href="index.html#playgrounds"><span class="std std-ref">PlayGrounds</span></a> to install it.</p>
 <section id="launching-easynav">
-<h2>Launching EasyNav<a class="headerlink" href="#launching-easynav" title="Permalink to this heading"></a></h2>
+<h2>Launching EasyNav<a class="headerlink" href="#launching-easynav" title="Link to this heading"></a></h2>
 <p>Each <code class="docutils literal notranslate"><span class="pre">easynav_&lt;config&gt;.launch.yaml</span></code> starts Gazebo, TIAGo, EasyNav with that configuration and
 RViz2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_tiago<span class="w"> </span>easynav_costmap_rpp.launch.yaml
@@ -525,7 +519,7 @@ and the launch files remap <code class="docutils literal notranslate"><span clas
 </ul>
 </section>
 <section id="simulation-only">
-<h2>Simulation only<a class="headerlink" href="#simulation-only" title="Permalink to this heading"></a></h2>
+<h2>Simulation only<a class="headerlink" href="#simulation-only" title="Link to this heading"></a></h2>
 <p>To run Gazebo and TIAGo without EasyNav or RViz2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_tiago_worlds<span class="w"> </span>gazebo_sim.launch.yaml
 </pre></div>
@@ -540,7 +534,7 @@ trajectories on <code class="docutils literal notranslate"><span class="pre">&lt
 </div>
 </section>
 <section id="packages">
-<h2>Packages<a class="headerlink" href="#packages" title="Permalink to this heading"></a></h2>
+<h2>Packages<a class="headerlink" href="#packages" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 40.0%" />

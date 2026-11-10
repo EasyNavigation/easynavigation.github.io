@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Patrolling Behavior &mdash; EasyNavigation 0.4.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ff822928"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.4.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -381,7 +375,7 @@
            <div itemprop="articleBody">
              
   <section id="patrolling-behavior">
-<span id="id1"></span><h1>Patrolling Behavior<a class="headerlink" href="#patrolling-behavior" title="Permalink to this heading"></a></h1>
+<span id="id1"></span><h1>Patrolling Behavior<a class="headerlink" href="#patrolling-behavior" title="Link to this heading"></a></h1>
 <p>This HowTo demonstrates how to run a <strong>patrolling behavior</strong> on top of EasyNav’s navigation stack.
 The robot repeatedly navigates through a predefined list of waypoints, automatically looping back
 to the first point when the sequence finishes.</p>
@@ -404,7 +398,7 @@ to the first point when the sequence finishes.</p>
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <div align="center">
   <iframe width="450" height="300" src="https://www.youtube.com/embed/yN80Dqan5rE" frameborder="0" allowfullscreen></iframe>
 </div><p>The <strong>Patrolling Behavior</strong> shows how to send navigation goals programmatically, monitor their
@@ -422,7 +416,7 @@ whichever language fits your own application.</p>
 <p>—</p>
 </section>
 <section id="setup">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <p>Before starting, complete the installation steps in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a>
 (any of APT, Pixi or source). The navigation stack launched below
 (<code class="docutils literal notranslate"><span class="pre">costmap.serest.params.yaml</span></code>) uses the <strong>SeReST Controller</strong>, <strong>Costmap
@@ -469,7 +463,7 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install
 <p>—</p>
 </section>
 <section id="waypoint-configuration">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Waypoint Configuration</a><a class="headerlink" href="#waypoint-configuration" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Waypoint Configuration</a><a class="headerlink" href="#waypoint-configuration" title="Link to this heading"></a></h2>
 <p>Both packages read the same parameter shape. Waypoints are declared as a list of <strong>names</strong> under
 <code class="docutils literal notranslate"><span class="pre">waypoints:</span></code>, and each name is itself a parameter holding a 3-element <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span> <span class="pre">yaw]</span></code> array
 (<code class="docutils literal notranslate"><span class="pre">yaw</span></code> in radians) — not a list of <code class="docutils literal notranslate"><span class="pre">{x,</span> <span class="pre">y,</span> <span class="pre">yaw}</span></code> maps.</p>
@@ -493,7 +487,7 @@ corresponding <code class="docutils literal notranslate"><span class="pre">wpN:<
 <p>—</p>
 </section>
 <section id="launching-navigation">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Launching Navigation</a><a class="headerlink" href="#launching-navigation" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Launching Navigation</a><a class="headerlink" href="#launching-navigation" title="Link to this heading"></a></h2>
 <p>Before starting the patrol, launch the Costmap-based navigation stack.</p>
 <p><strong>Terminal 1 – Simulator:</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>playground_kobuki.launch.py<span class="w"> </span>gui:<span class="o">=</span><span class="nb">false</span>
@@ -511,7 +505,7 @@ corresponding <code class="docutils literal notranslate"><span class="pre">wpN:<
 <p>—</p>
 </section>
 <section id="running-the-patrolling-behavior">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Running the Patrolling Behavior</a><a class="headerlink" href="#running-the-patrolling-behavior" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Running the Patrolling Behavior</a><a class="headerlink" href="#running-the-patrolling-behavior" title="Link to this heading"></a></h2>
 <p><strong>C++ version.</strong> <code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior</span></code> builds a <code class="docutils literal notranslate"><span class="pre">patrolling_main</span></code> executable, but does
 <strong>not</strong> currently ship a working launch file (its <code class="docutils literal notranslate"><span class="pre">launch/</span></code> directory only contains an empty
 placeholder file). Run it directly with its own parameter file:</p>
@@ -527,13 +521,13 @@ config automatically:</p>
 <p>—</p>
 </section>
 <section id="code-explanation-c-version">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Code Explanation (C++ Version)</a><a class="headerlink" href="#code-explanation-c-version" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Code Explanation (C++ Version)</a><a class="headerlink" href="#code-explanation-c-version" title="Link to this heading"></a></h2>
 <p>The C++ node (<code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior/src/easynav_patrolling_behavior/PatrollingNode.cpp</span></code>)
 runs its own simple state machine — <code class="docutils literal notranslate"><span class="pre">PatrolState</span> <span class="pre">{IDLE,</span> <span class="pre">PATROLLING,</span> <span class="pre">FINISHED,</span> <span class="pre">ERROR}</span></code> — on a
 100 ms timer, layered on top of the real <code class="docutils literal notranslate"><span class="pre">easynav_system::GoalManagerClient</span></code> API
 (<code class="docutils literal notranslate"><span class="pre">easynav_system/include/easynav_system/GoalManagerClient.hpp</span></code>).</p>
 <section id="loading-waypoints">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">1. Loading waypoints</a><a class="headerlink" href="#loading-waypoints" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">1. Loading waypoints</a><a class="headerlink" href="#loading-waypoints" title="Link to this heading"></a></h3>
 <p>On the first tick, <code class="docutils literal notranslate"><span class="pre">initialize()</span></code> reads <code class="docutils literal notranslate"><span class="pre">waypoints</span></code> and <code class="docutils literal notranslate"><span class="pre">frame_id</span></code>, then reads each named
 waypoint’s <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span> <span class="pre">yaw]</span></code> array and converts it into a <code class="docutils literal notranslate"><span class="pre">geometry_msgs::msg::PoseStamped</span></code>,
 appended to a <code class="docutils literal notranslate"><span class="pre">nav_msgs::msg::Goals</span></code>:</p>
@@ -553,7 +547,7 @@ appended to a <code class="docutils literal notranslate"><span class="pre">nav_m
 </div>
 </section>
 <section id="the-state-machine">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">2. The state machine</a><a class="headerlink" href="#the-state-machine" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">2. The state machine</a><a class="headerlink" href="#the-state-machine" title="Link to this heading"></a></h3>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">state_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">PatrolState</span><span class="o">::</span><span class="no">IDLE</span><span class="p">:</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">initialized_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -603,7 +597,7 @@ if you want the patrol to recover from a failed/rejected/cancelled goal instead 
 </section>
 </section>
 <section id="code-explanation-python-version">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink">Code Explanation (Python Version)</a><a class="headerlink" href="#code-explanation-python-version" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Code Explanation (Python Version)</a><a class="headerlink" href="#code-explanation-python-version" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">easynav_patrolling_behavior_py/patrolling_node.py</span></code> mirrors the same four-state machine using
 <code class="docutils literal notranslate"><span class="pre">easynav_goalmanager_py</span></code>’s <code class="docutils literal notranslate"><span class="pre">GoalManagerClient</span></code>/<code class="docutils literal notranslate"><span class="pre">ClientState</span></code>, on a 0.2 s timer. Two details
 differ from the C++ version:</p>
@@ -642,7 +636,7 @@ assuming it succeeded.</p></li>
 <p>—</p>
 </section>
 <section id="notes">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Notes</a><a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>The <strong>patrolling behavior</strong> is a simple example of commanding navigation goals
 programmatically. It can be extended to perform inspection, delivery, or monitoring tasks.</p></li>

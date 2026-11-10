@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Troubleshooting &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,9 +465,9 @@
            <div itemprop="articleBody">
              
   <section id="troubleshooting">
-<span id="install-troubleshooting"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading"></a></h1>
+<span id="install-troubleshooting"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h1>
 <section id="common-problems">
-<h2>Common problems<a class="headerlink" href="#common-problems" title="Permalink to this heading"></a></h2>
+<h2>Common problems<a class="headerlink" href="#common-problems" title="Link to this heading"></a></h2>
 <ul>
 <li><p><strong>Missing rosdep keys</strong></p>
 <p>Run <code class="docutils literal notranslate"><span class="pre">rosdep</span> <span class="pre">check</span> <span class="pre">--from-paths</span> <span class="pre">src</span> <span class="pre">--ignore-src</span></code> to diagnose. If a dependency
@@ -498,14 +492,14 @@ colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install<spa
 </ul>
 </section>
 <section id="uninstall-clean">
-<h2>Uninstall / clean<a class="headerlink" href="#uninstall-clean" title="Permalink to this heading"></a></h2>
+<h2>Uninstall / clean<a class="headerlink" href="#uninstall-clean" title="Link to this heading"></a></h2>
 <p>Since this is a workspace overlay, you can remove it safely:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm<span class="w"> </span>-rf<span class="w"> </span>~/easynav_ws
 </pre></div>
 </div>
 </section>
 <section id="running-the-tests">
-<h2>Running the tests<a class="headerlink" href="#running-the-tests" title="Permalink to this heading"></a></h2>
+<h2>Running the tests<a class="headerlink" href="#running-the-tests" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/easynav_ws
 colcon<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--parallel-workers<span class="w"> </span><span class="m">1</span><span class="w"> </span>--ctest-args<span class="w"> </span>-R<span class="w"> </span>easynav<span class="w">  </span><span class="c1"># run EasyNav-related tests</span>
 colcon<span class="w"> </span>test-result<span class="w"> </span>--verbose

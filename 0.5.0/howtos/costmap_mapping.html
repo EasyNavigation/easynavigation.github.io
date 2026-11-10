@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapping with the Costmap Stack &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,7 +465,7 @@
            <div itemprop="articleBody">
              
   <section id="mapping-with-the-costmap-stack">
-<span id="costmap-mapping"></span><h1>Mapping with the Costmap Stack<a class="headerlink" href="#mapping-with-the-costmap-stack" title="Permalink to this heading"></a></h1>
+<span id="costmap-mapping"></span><h1>Mapping with the Costmap Stack<a class="headerlink" href="#mapping-with-the-costmap-stack" title="Link to this heading"></a></h1>
 <p>This HowTo explains how to build a map for the <strong>Costmap Stack</strong> in EasyNavigation (EasyNav) with
 <strong>SLAM Toolbox</strong>. The Costmap Stack uses a <strong>graded Costmap2D</strong> that encodes traversal costs and
 supports inflation around obstacles, and reads and writes maps in the same <strong>YAML + image</strong> format
@@ -486,7 +480,7 @@ as Nav2.</p>
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <div align="center">
   <iframe width="450" height="300" src="https://www.youtube.com/embed/n1vDA4ZeG6M" frameborder="0" allowfullscreen></iframe>
 </div><p>This tutorial uses the <a class="reference internal" href="../playgrounds/kobuki.html"><span class="doc">Kobuki PlayGround</span></a>. The
@@ -501,7 +495,7 @@ workflow is:</p>
 Manager loads it as it is.</p>
 </section>
 <section id="setup">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <p>Build EasyNav and the Kobuki PlayGround as described in <a class="reference internal" href="../getting_started/index.html"><span class="doc">Getting Started</span></a>, and
 install <strong>SLAM Toolbox</strong>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-<span class="si">${</span><span class="nv">ROS_DISTRO</span><span class="si">}</span>-slam-toolbox
@@ -509,7 +503,7 @@ install <strong>SLAM Toolbox</strong>:</p>
 </div>
 </section>
 <section id="step-by-step-instructions">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Step-by-Step Instructions</a><a class="headerlink" href="#step-by-step-instructions" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Step-by-Step Instructions</a><a class="headerlink" href="#step-by-step-instructions" title="Link to this heading"></a></h2>
 <ol class="arabic">
 <li><p><strong>Launch the simulator</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki_worlds<span class="w"> </span>gazebo_sim.launch.yaml<span class="w"> </span>gui:<span class="o">=</span><span class="nb">false</span>
@@ -568,7 +562,7 @@ inflation, when the configuration has those filters).</p>
 </ol>
 </section>
 <section id="saving-the-map">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Saving the map</a><a class="headerlink" href="#saving-the-map" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Saving the map</a><a class="headerlink" href="#saving-the-map" title="Link to this heading"></a></h2>
 <p>Save the map with SLAM Toolbox, which writes the YAML + image pair:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/slam_toolbox/save_map<span class="w"> </span>slam_toolbox/srv/SaveMap<span class="w"> </span><span class="s2">"{name: {data: 'office'}}"</span>
 </pre></div>

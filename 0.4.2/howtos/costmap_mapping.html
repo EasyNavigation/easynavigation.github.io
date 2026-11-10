@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapping with the Costmap Stack &mdash; EasyNavigation 0.4.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ff822928"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.4.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -381,7 +375,7 @@
            <div itemprop="articleBody">
              
   <section id="mapping-with-the-costmap-stack">
-<span id="costmap-mapping"></span><h1>Mapping with the Costmap Stack<a class="headerlink" href="#mapping-with-the-costmap-stack" title="Permalink to this heading"></a></h1>
+<span id="costmap-mapping"></span><h1>Mapping with the Costmap Stack<a class="headerlink" href="#mapping-with-the-costmap-stack" title="Link to this heading"></a></h1>
 <p>This HowTo explains how to perform mapping using the <strong>Costmap Stack</strong> in EasyNavigation (EasyNav).
 It builds upon the concepts introduced in the <em>Simple Stack Mapping</em> tutorial, but replaces the binary map representation
 with a <strong>graded Costmap2D</strong> that encodes traversal costs and supports inflation around obstacles.</p>
@@ -397,7 +391,7 @@ with a <strong>graded Costmap2D</strong> that encodes traversal costs and suppor
 </ul>
 </nav>
 <section id="setup">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <p>Complete the installation steps in <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a> first (any of
 APT, Pixi or source). The core <code class="docutils literal notranslate"><span class="pre">easynav</span></code> package does not include plugins, so
 also make sure the <strong>Costmap Maps Manager</strong> is installed in your <code class="docutils literal notranslate"><span class="pre">~/easynav_ws</span></code>:</p>
@@ -419,7 +413,7 @@ package layout for storing maps; not required if you use your own package.</p></
 <p>Then source your workspace as described in <a class="reference internal" href="../getting_started/index.html#gs-source-workspace"><span class="std std-ref">Build and source the workspace</span></a>.</p>
 </section>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>The mapping workflow with the <strong>Costmap Stack</strong> mirrors the one used in the <em>Simple Stack</em>.</p>
 <ol class="arabic simple">
 <li><p><strong>Generate a map</strong> — for example, using SLAM Toolbox. The result should be a <strong>YAML + image</strong> pair (<cite>.yaml</cite> + <cite>.pgm/.png</cite>) defining resolution, origin, and free/occupied thresholds.</p></li>
@@ -429,7 +423,7 @@ This configuration is sufficient to validate that the costmap loads and visualiz
 </ol>
 </section>
 <section id="example-parameters">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Example parameters</a><a class="headerlink" href="#example-parameters" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Example parameters</a><a class="headerlink" href="#example-parameters" title="Link to this heading"></a></h2>
 <p>Below is a minimal working configuration to verify the Costmap mapping pipeline.
 It mirrors the <em>Simple Stack</em> structure but uses the Costmap-based maps manager.
 Replace <cite>my_maps_pkg</cite> and the YAML path with your own package and map.</p>
@@ -489,7 +483,7 @@ Replace <cite>my_maps_pkg</cite> and the YAML path with your own package and map
 </div>
 </section>
 <section id="running-and-visualizing">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Running and visualizing</a><a class="headerlink" href="#running-and-visualizing" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Running and visualizing</a><a class="headerlink" href="#running-and-visualizing" title="Link to this heading"></a></h2>
 <ol class="arabic">
 <li><p>Launch your simulator (for example, <cite>easynav_playground_kobuki</cite>) or start a static map server.</p></li>
 <li><p>Run EasyNav using the parameter file above:</p>
@@ -508,7 +502,7 @@ Replace <cite>my_maps_pkg</cite> and the YAML path with your own package and map
 <p>You should see the costmap as a grayscale image, where darker regions correspond to higher traversal cost.</p>
 </section>
 <section id="saving-maps">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Saving maps</a><a class="headerlink" href="#saving-maps" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Saving maps</a><a class="headerlink" href="#saving-maps" title="Link to this heading"></a></h2>
 <p>The <strong>Costmap Maps Manager</strong> reads and writes maps using the same <strong>YAML + image</strong> format as MoveBase and Nav2.
 Therefore, you do not need to rely on internal save paths if your map is produced by an external SLAM node such as SLAM Toolbox.</p>
 <ul class="simple">

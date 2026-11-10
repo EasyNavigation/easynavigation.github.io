@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kobuki PlayGround &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,14 +465,14 @@
            <div itemprop="articleBody">
              
   <section id="kobuki-playground">
-<span id="playground-kobuki"></span><h1>Kobuki PlayGround<a class="headerlink" href="#kobuki-playground" title="Permalink to this heading"></a></h1>
+<span id="playground-kobuki"></span><h1>Kobuki PlayGround<a class="headerlink" href="#kobuki-playground" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/EasyNavigation/easynav_playgrounds/tree/rolling/playground_kobuki">easynav_playground_kobuki</a> is
 EasyNav’s <strong>indoor reference</strong>: a Turtlebot2 (Kobuki) with a 2D lidar in the AWS RoboMaker small
 house, with costmap and simple map configurations.</p>
 <img alt="Turtlebot2 simulation in Gazebo" class="align-center" src="../_images/kobuki_sim.png" />
 <p>See <a class="reference internal" href="index.html#playgrounds"><span class="std std-ref">PlayGrounds</span></a> to install it.</p>
 <section id="launching-easynav">
-<h2>Launching EasyNav<a class="headerlink" href="#launching-easynav" title="Permalink to this heading"></a></h2>
+<h2>Launching EasyNav<a class="headerlink" href="#launching-easynav" title="Link to this heading"></a></h2>
 <p>Each <code class="docutils literal notranslate"><span class="pre">easynav_&lt;config&gt;.launch.yaml</span></code> starts Gazebo, the Kobuki, EasyNav with that configuration
 and RViz2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>easynav_costmap_rpp.launch.yaml
@@ -486,7 +480,7 @@ and RViz2:</p>
 </div>
 <p>Once RViz2 is up, send a goal with the <strong>2D Goal Pose</strong> tool.</p>
 <section id="costmap-configurations">
-<h3>Costmap configurations<a class="headerlink" href="#costmap-configurations" title="Permalink to this heading"></a></h3>
+<h3>Costmap configurations<a class="headerlink" href="#costmap-configurations" title="Link to this heading"></a></h3>
 <p>All of them use the <code class="docutils literal notranslate"><span class="pre">maps/home2.yaml</span></code> occupancy map, the Costmap maps manager, AMCL over the
 costmap and A* (<code class="docutils literal notranslate"><span class="pre">CostmapPlanner</span></code>). <code class="docutils literal notranslate"><span class="pre">easynav_costmap_rpp</span></code> is the recommended one.</p>
 <table class="docutils align-default">
@@ -558,7 +552,7 @@ costmap and A* (<code class="docutils literal notranslate"><span class="pre">Cos
 </table>
 </section>
 <section id="simple-map-configurations">
-<h3>Simple map configurations<a class="headerlink" href="#simple-map-configurations" title="Permalink to this heading"></a></h3>
+<h3>Simple map configurations<a class="headerlink" href="#simple-map-configurations" title="Link to this heading"></a></h3>
 <p>They use the <code class="docutils literal notranslate"><span class="pre">maps/home.map</span></code> binary map and the Simple plugins (maps manager, AMCL localizer and
 A* planner). The Simple stack is a minimal example, not meant for real use.</p>
 <table class="docutils align-default">
@@ -590,7 +584,7 @@ A* planner). The Simple stack is a minimal example, not meant for real use.</p>
 </table>
 </section>
 <section id="launch-arguments">
-<h3>Launch arguments<a class="headerlink" href="#launch-arguments" title="Permalink to this heading"></a></h3>
+<h3>Launch arguments<a class="headerlink" href="#launch-arguments" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 20.0%" />
@@ -637,7 +631,7 @@ A* planner). The Simple stack is a minimal example, not meant for real use.</p>
 </div>
 </section>
 <section id="safety-mode">
-<h3>Safety mode<a class="headerlink" href="#safety-mode" title="Permalink to this heading"></a></h3>
+<h3>Safety mode<a class="headerlink" href="#safety-mode" title="Link to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">easynav_costmap_rpp_safe.launch.yaml</span></code> runs EasyNav in safety mode (see <a class="reference internal" href="../developer_guide/safety.html#safety-mode"><span class="std std-ref">Safety parameters and safety mode</span></a>) with
 the process memory locked. It needs the real-time limits of <a class="reference internal" href="../build_install/realtime.html#realtime-setup"><span class="std std-ref">Real-time System Setup</span></a>
 (<code class="docutils literal notranslate"><span class="pre">rtprio</span></code> &gt;= 80 and <code class="docutils literal notranslate"><span class="pre">memlock</span></code> unlimited); otherwise EasyNav does not start.</p>
@@ -647,7 +641,7 @@ publish your own status, for example a protective stop.</p>
 </section>
 </section>
 <section id="multirobot">
-<h2>Multirobot<a class="headerlink" href="#multirobot" title="Permalink to this heading"></a></h2>
+<h2>Multirobot<a class="headerlink" href="#multirobot" title="Link to this heading"></a></h2>
 <p>Two Kobukis, <code class="docutils literal notranslate"><span class="pre">r1</span></code> at (0, 0) and <code class="docutils literal notranslate"><span class="pre">r2</span></code> at (2, 1), each with its own EasyNav and RViz2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>easynav_multirobot.launch.yaml
 </pre></div>
@@ -658,7 +652,7 @@ prefixed frames (<code class="docutils literal notranslate"><span class="pre">r1
 <a class="reference internal" href="../howtos/costmap_multirobot.html"><span class="doc">Multi-Robot Navigation with EasyNav</span></a>.</p>
 </section>
 <section id="simulation-only">
-<h2>Simulation only<a class="headerlink" href="#simulation-only" title="Permalink to this heading"></a></h2>
+<h2>Simulation only<a class="headerlink" href="#simulation-only" title="Link to this heading"></a></h2>
 <p>To run Gazebo and the Kobuki without EasyNav or RViz2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki_worlds<span class="w"> </span>gazebo_sim.launch.yaml
 </pre></div>
@@ -671,7 +665,7 @@ simulation, use <code class="docutils literal notranslate"><span class="pre">kob
 <code class="docutils literal notranslate"><span class="pre">/rgbd_camera/{image,depth_image,points,camera_info}</span></code>.</p>
 </section>
 <section id="launch-files">
-<h2>Launch files<a class="headerlink" href="#launch-files" title="Permalink to this heading"></a></h2>
+<h2>Launch files<a class="headerlink" href="#launch-files" title="Link to this heading"></a></h2>
 <p>The launch files (in <code class="docutils literal notranslate"><span class="pre">launch/</span></code>, in YAML) build on each other:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>easynav_&lt;config&gt;.launch.yaml            # sets params_file and rviz_config
 └── easynav_gazebo_sim.launch.yaml      # + EasyNav + RViz2
@@ -786,7 +780,7 @@ and with its TF topics, all with <code class="docutils literal notranslate"><spa
 </table>
 </section>
 <section id="package-layout">
-<h2>Package layout<a class="headerlink" href="#package-layout" title="Permalink to this heading"></a></h2>
+<h2>Package layout<a class="headerlink" href="#package-layout" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25.0%" />

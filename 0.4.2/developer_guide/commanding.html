@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sending Navigation Commands to EasyNav &mdash; EasyNavigation 0.4.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ff822928"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.4.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -381,11 +375,11 @@
            <div itemprop="articleBody">
              
   <section id="sending-navigation-commands-to-easynav">
-<span id="commanding"></span><h1>Sending Navigation Commands to EasyNav<a class="headerlink" href="#sending-navigation-commands-to-easynav" title="Permalink to this heading"></a></h1>
+<span id="commanding"></span><h1>Sending Navigation Commands to EasyNav<a class="headerlink" href="#sending-navigation-commands-to-easynav" title="Link to this heading"></a></h1>
 <p>EasyNav is designed to be easy to control from user applications or higher-level decision-making modules.
 Instead of relying on ROS 2 Actions, which can be complex and hard to integrate across systems, EasyNav follows a simpler and more transparent communication model using topics and message protocols.</p>
 <section id="primary-method-easynav-control-topic">
-<h2>Primary Method: <cite>/easynav_control</cite> Topic<a class="headerlink" href="#primary-method-easynav-control-topic" title="Permalink to this heading"></a></h2>
+<h2>Primary Method: <cite>/easynav_control</cite> Topic<a class="headerlink" href="#primary-method-easynav-control-topic" title="Link to this heading"></a></h2>
 <p>The main interface to control navigation is the topic <cite>/easynav_control</cite>, which uses the message type <cite>easynav_interfaces/msg/NavigationControl</cite>.
 This message encapsulates both commands and feedback for the navigation process.</p>
 <p>Here is the full definition of the message:</p>
@@ -414,7 +408,7 @@ This message encapsulates both commands and feedback for the navigation process.
 </pre></div>
 </div>
 <section id="protocol-description">
-<h3>Protocol Description<a class="headerlink" href="#protocol-description" title="Permalink to this heading"></a></h3>
+<h3>Protocol Description<a class="headerlink" href="#protocol-description" title="Link to this heading"></a></h3>
 <p>The communication protocol over <cite>/easynav_control</cite> is designed around a type-based message system. Each message indicates a specific type of interaction or feedback:</p>
 <ul class="simple">
 <li><p><strong>REQUEST (0)</strong>: A new navigation goal is requested. The <cite>goals</cite> field must be filled.</p></li>
@@ -446,7 +440,7 @@ This message encapsulates both commands and feedback for the navigation process.
 <p>The system will then respond with messages of type ACCEPT, FEEDBACK, FINISHED, etc., according to the internal state.</p>
 </section>
 <section id="using-goalmanagerclient">
-<h3>Using <cite>GoalManagerClient</cite><a class="headerlink" href="#using-goalmanagerclient" title="Permalink to this heading"></a></h3>
+<h3>Using <cite>GoalManagerClient</cite><a class="headerlink" href="#using-goalmanagerclient" title="Link to this heading"></a></h3>
 <p>Instead of manually implementing the communication protocol, developers are encouraged to use the <cite>GoalManagerClient</cite> class. It abstracts the handling of the <cite>/easynav_control</cite> topic and maintains the internal state machine automatically.</p>
 <ul class="simple">
 <li><p><cite>send_goal(PoseStamped goal)</cite> issues a goal with proper message formatting.</p></li>
@@ -457,14 +451,14 @@ This message encapsulates both commands and feedback for the navigation process.
 </section>
 </section>
 <section id="secondary-method-goal-pose-topic">
-<h2>Secondary Method: <cite>/goal_pose</cite> Topic<a class="headerlink" href="#secondary-method-goal-pose-topic" title="Permalink to this heading"></a></h2>
+<h2>Secondary Method: <cite>/goal_pose</cite> Topic<a class="headerlink" href="#secondary-method-goal-pose-topic" title="Link to this heading"></a></h2>
 <p>For simplicity, EasyNav also listens to the topic <cite>/goal_pose</cite> of type <cite>geometry_msgs/msg/PoseStamped</cite>.
 Publishing a pose here is equivalent to publishing a <cite>REQUEST</cite> command on <cite>/easynav_control</cite>.</p>
 <p>This interface is ideal for manual tools (such as RViz2 “2D Goal Pose”) or simple applications where feedback tracking is not required.
 However, users may still subscribe to <cite>/easynav_control</cite> to monitor navigation status and transitions.</p>
 </section>
 <section id="conclusion">
-<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading"></a></h2>
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>For complete command and feedback control, use the <cite>/easynav_control</cite> topic with the <cite>GoalManagerClient</cite>.</p></li>
 <li><p>For basic use cases, publishing to <cite>/goal_pose</cite> is sufficient.</p></li>

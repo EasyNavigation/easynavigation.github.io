@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Migration Guide &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -470,7 +464,7 @@
            <div itemprop="articleBody">
              
   <section id="migration-guide">
-<span id="migration-nav2"></span><h1>Migration Guide<a class="headerlink" href="#migration-guide" title="Permalink to this heading"></a></h1>
+<span id="migration-nav2"></span><h1>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h1>
 <p>If your robot already navigates with Nav2, trying EasyNav on it takes little work: both build on
 the same ROS 2 conventions. This guide shows what you can reuse, how Nav2’s components map to
 EasyNav’s, how to write the parameter file and how your applications send goals. Both can live
@@ -497,7 +491,7 @@ side by side: EasyNav does not change your robot, your maps or your TF tree.</p>
 </ul>
 </nav>
 <section id="what-stays-the-same">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">What stays the same</a><a class="headerlink" href="#what-stays-the-same" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">What stays the same</a><a class="headerlink" href="#what-stays-the-same" title="Link to this heading"></a></h2>
 <p>Most of what you built for Nav2 is reused as is:</p>
 <ul class="simple">
 <li><p><strong>Your robot</strong>: URDF, <code class="docutils literal notranslate"><span class="pre">robot_state_publisher</span></code>, drivers, the <code class="docutils literal notranslate"><span class="pre">odom</span></code> → <code class="docutils literal notranslate"><span class="pre">base_footprint</span></code>
@@ -513,7 +507,7 @@ transform, and <code class="docutils literal notranslate"><span class="pre">/odo
 where each component loads the plugin you choose.</p>
 </section>
 <section id="nav2-and-easynav-piece-by-piece">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Nav2 and EasyNav, piece by piece</a><a class="headerlink" href="#nav2-and-easynav-piece-by-piece" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Nav2 and EasyNav, piece by piece</a><a class="headerlink" href="#nav2-and-easynav-piece-by-piece" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 30.0%" />
@@ -585,7 +579,7 @@ every component. Polygon footprints are not supported: use the circumscribed rad
 </table>
 </section>
 <section id="step-1-install-easynav">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Step 1: Install EasyNav</a><a class="headerlink" href="#step-1-install-easynav" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Step 1: Install EasyNav</a><a class="headerlink" href="#step-1-install-easynav" title="Link to this heading"></a></h2>
 <p>Follow <a class="reference internal" href="../build_install/index.html"><span class="doc">Build &amp; Install</span></a>: it installs EasyNav with all the plugins used in this
 guide.</p>
 <p><strong>Let EasyNav run in real time.</strong> This is a one-time system setting your Nav2 setup may not have
@@ -601,7 +595,7 @@ with normal priority, and warns at startup: <code class="docutils literal notran
 <span class="pre">priority.</span></code></p>
 </section>
 <section id="step-2-your-map">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Step 2: Your map</a><a class="headerlink" href="#step-2-your-map" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Step 2: Your map</a><a class="headerlink" href="#step-2-your-map" title="Link to this heading"></a></h2>
 <p><strong>If you already have a Nav2 map</strong>, use it as it is. Put the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> and the image in a package
 of your workspace that installs them (e.g. <code class="docutils literal notranslate"><span class="pre">my_robot_maps/maps/office.yaml</span></code>, with
 <code class="docutils literal notranslate"><span class="pre">install(DIRECTORY</span> <span class="pre">maps</span> <span class="pre">DESTINATION</span> <span class="pre">share/${PROJECT_NAME})</span></code> in its <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>): the
@@ -611,7 +605,7 @@ map is located by package and path inside it (see Step 3).</p>
 step by step in simulation.</p>
 </section>
 <section id="step-3-the-parameter-file">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Step 3: The parameter file</a><a class="headerlink" href="#step-3-the-parameter-file" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Step 3: The parameter file</a><a class="headerlink" href="#step-3-the-parameter-file" title="Link to this heading"></a></h2>
 <p>A single YAML file configures everything, one section per node. Each node lists the plugin it uses
 in <code class="docutils literal notranslate"><span class="pre">&lt;kind&gt;_types</span></code> (one entry), and that entry holds the plugin and its parameters. This is a
 complete file for a robot with a 2D lidar, Nav2-style: AMCL, A* on a costmap and Regulated Pure
@@ -775,7 +769,7 @@ graph. See <a class="reference internal" href="../developer_guide/recovery.html#
 </ul>
 </section>
 <section id="step-4-run-it">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Step 4: Run it</a><a class="headerlink" href="#step-4-run-it" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Step 4: Run it</a><a class="headerlink" href="#step-4-run-it" title="Link to this heading"></a></h2>
 <p>Start your robot or simulator as usual, then EasyNav, instead of <code class="docutils literal notranslate"><span class="pre">nav2_bringup</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>easynav_system<span class="w"> </span>system_main<span class="w"> </span>--ros-args<span class="w"> </span>--params-file<span class="w"> </span>my_robot_easynav.yaml
 </pre></div>
@@ -815,7 +809,7 @@ terminal dashboard in another terminal:</p>
 <p>and see <a class="reference internal" href="../howtos/ros2_easynav_cli.html"><span class="doc">ros2 easynav — EasyNav CLI Extensions</span></a> for the <code class="docutils literal notranslate"><span class="pre">ros2</span> <span class="pre">easynav</span></code> commands.</p>
 </section>
 <section id="step-5-send-goals-from-your-applications">
-<span id="migration-goals"></span><h2><a class="toc-backref" href="#id7" role="doc-backlink">Step 5: Send goals from your applications</a><a class="headerlink" href="#step-5-send-goals-from-your-applications" title="Permalink to this heading"></a></h2>
+<span id="migration-goals"></span><h2><a class="toc-backref" href="#id7" role="doc-backlink">Step 5: Send goals from your applications</a><a class="headerlink" href="#step-5-send-goals-from-your-applications" title="Link to this heading"></a></h2>
 <p>Choose by what you already have:</p>
 <ul class="simple">
 <li><p><strong>Code that uses Nav2’s action</strong> (the Simple Commander, a BT <code class="docutils literal notranslate"><span class="pre">NavigateToPose</span></code> node, the Nav2
@@ -824,7 +818,7 @@ RViz panel, <code class="docutils literal notranslate"><span class="pre">ros2</s
 interface, and it also does several goals in one request, pause and resume.</p></li>
 </ul>
 <section id="option-a-the-nav2-bridge">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">Option A: the Nav2 bridge</a><a class="headerlink" href="#option-a-the-nav2-bridge" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Option A: the Nav2 bridge</a><a class="headerlink" href="#option-a-the-nav2-bridge" title="Link to this heading"></a></h3>
 <p><a class="reference external" href="https://github.com/EasyNavigation/easynav_nav2_bridge">easynav_nav2_bridge</a> is a
 <code class="docutils literal notranslate"><span class="pre">nav2_msgs/action/NavigateToPose</span></code> server on <code class="docutils literal notranslate"><span class="pre">navigate_to_pose</span></code> that forwards goals to EasyNav,
 and EasyNav’s feedback and result back, so Nav2 clients work with EasyNav unchanged.</p>
@@ -877,7 +871,7 @@ logged by the bridge); <code class="docutils literal notranslate"><span class="p
 </ul>
 </section>
 <section id="option-b-goalmanagerclient">
-<h3><a class="toc-backref" href="#id9" role="doc-backlink">Option B: GoalManagerClient</a><a class="headerlink" href="#option-b-goalmanagerclient" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Option B: GoalManagerClient</a><a class="headerlink" href="#option-b-goalmanagerclient" title="Link to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">GoalManagerClient</span></code> talks to EasyNav on the <code class="docutils literal notranslate"><span class="pre">easynav_control</span></code> topic (see <a class="reference internal" href="../developer_guide/commanding.html#commanding"><span class="std std-ref">Sending Navigation Commands to EasyNav</span></a>).
 It is a small state machine you drive from your node, usually from a timer:</p>
 <ul class="simple">
@@ -965,13 +959,13 @@ method called after the node is created, or in the first timer callback. For a f
 with several waypoints, see <a class="reference internal" href="../howtos/patrolling_behavior.html"><span class="doc">Patrolling Behavior</span></a> (C++ and Python).</p>
 </section>
 <section id="option-c-just-a-pose">
-<h3><a class="toc-backref" href="#id10" role="doc-backlink">Option C: just a pose</a><a class="headerlink" href="#option-c-just-a-pose" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Option C: just a pose</a><a class="headerlink" href="#option-c-just-a-pose" title="Link to this heading"></a></h3>
 <p>EasyNav also listens to <code class="docutils literal notranslate"><span class="pre">/goal_pose</span></code> (<code class="docutils literal notranslate"><span class="pre">geometry_msgs/PoseStamped</span></code>), which is what RViz’s
 <em>2D Goal Pose</em> publishes. It is the quickest way to try, without feedback or result.</p>
 </section>
 </section>
 <section id="differences-to-keep-in-mind">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink">Differences to keep in mind</a><a class="headerlink" href="#differences-to-keep-in-mind" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Differences to keep in mind</a><a class="headerlink" href="#differences-to-keep-in-mind" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>Mission logic lives outside.</strong> EasyNav plans, follows, replans and recovers by itself,
 without a behavior tree. What you did with a custom tree on top (sequences of goals, tasks between them, conditions) goes in a
@@ -992,7 +986,7 @@ aborts the mission: the client gets the reason (<code class="docutils literal no
 </ul>
 </section>
 <section id="troubleshooting">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>EasyNav exits right after starting</strong>: a parameter is wrong or a plugin is not installed. The
 message just before it exits names it.</p></li>
@@ -1011,7 +1005,7 @@ the computer is loaded.</p></li>
 </ul>
 </section>
 <section id="next-steps">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink">Next steps</a><a class="headerlink" href="#next-steps" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Next steps</a><a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="../getting_started/index.html"><span class="doc">Getting Started</span></a>: a first run in simulation, if you want to see EasyNav working
 before touching your robot.</p></li>

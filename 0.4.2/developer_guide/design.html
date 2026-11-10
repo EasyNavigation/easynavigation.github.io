@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Core Design and Architecture &mdash; EasyNavigation 0.4.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ff822928"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.4.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -381,7 +375,7 @@
            <div itemprop="articleBody">
              
   <section id="core-design-and-architecture">
-<span id="design"></span><h1>Core Design and Architecture<a class="headerlink" href="#core-design-and-architecture" title="Permalink to this heading"></a></h1>
+<span id="design"></span><h1>Core Design and Architecture<a class="headerlink" href="#core-design-and-architecture" title="Link to this heading"></a></h1>
 <p><strong>EasyNav</strong> is designed with three core principles in mind: modularity, real-time performance, and extensibility. Its architecture separates concerns into well-defined components, making it both easy to adapt and efficient to execute.</p>
 <img alt="EasyNav architecture diagram" class="align-center" src="../_images/easynav_simple_design_v2.png" />
 <p>The figure above illustrates the general architecture of EasyNav.</p>
@@ -538,7 +532,7 @@ angle_tolerance: 0.05</p>
 </div>
 <p>This configuration is especially useful for testing system integration, message flow, and user interfaces without requiring sensor data or a simulated robot. You can later replace dummy plugins with functional ones as needed.</p>
 <section id="coordinate-frames-tf">
-<h2>Coordinate Frames (TF)<a class="headerlink" href="#coordinate-frames-tf" title="Permalink to this heading"></a></h2>
+<h2>Coordinate Frames (TF)<a class="headerlink" href="#coordinate-frames-tf" title="Link to this heading"></a></h2>
 <p>EasyNav follows <a class="reference external" href="http://www.ros.org/reps/rep-0105.html">REP-105</a> for its frame-naming
 convention, and centralizes all frame configuration in a single place: <code class="docutils literal notranslate"><span class="pre">system_node</span></code>. Rather
 than each node or plugin declaring its own frame parameters (an early version of EasyNav had, for
@@ -609,7 +603,7 @@ below) while <code class="docutils literal notranslate"><span class="pre">set_tf
 above is safe to use exactly as written from either thread.</p>
 </section>
 <section id="navstate-the-shared-blackboard">
-<h2>NavState: The Shared Blackboard<a class="headerlink" href="#navstate-the-shared-blackboard" title="Permalink to this heading"></a></h2>
+<h2>NavState: The Shared Blackboard<a class="headerlink" href="#navstate-the-shared-blackboard" title="Link to this heading"></a></h2>
 <p>A key architectural component of EasyNav is the <strong>NavState</strong>, a shared <em>blackboard</em> that holds all the internal state information required by the navigation system.</p>
 <p>Each module in EasyNav—such as the Localizer, Planner, or Controller—reads its inputs from the NavState and writes its outputs back to it. This central structure replaces the need for internal ROS 2 communications between modules.</p>
 <p>The motivation behind using a shared blackboard is to:</p>
@@ -631,7 +625,7 @@ above is safe to use exactly as written from either thread.</p>
 <p>Future versions of EasyNav may include graphical or CLI-based tools to explore and trace the NavState over time.</p>
 </section>
 <section id="real-time-execution-model">
-<h2>Real-Time Execution Model<a class="headerlink" href="#real-time-execution-model" title="Permalink to this heading"></a></h2>
+<h2>Real-Time Execution Model<a class="headerlink" href="#real-time-execution-model" title="Link to this heading"></a></h2>
 <p>Another key feature of EasyNav is its emphasis on <strong>real-time performance</strong>. The navigation system is designed to react with strict timing constraints, minimizing latency from perception to action.</p>
 <p>To achieve this, EasyNav separates execution into two distinct control loops:</p>
 <ul class="simple">

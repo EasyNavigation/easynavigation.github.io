@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sensor Input and Perception Handling &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,7 +465,7 @@
            <div itemprop="articleBody">
              
   <section id="sensor-input-and-perception-handling">
-<span id="perceptions"></span><h1>Sensor Input and Perception Handling<a class="headerlink" href="#sensor-input-and-perception-handling" title="Permalink to this heading"></a></h1>
+<span id="perceptions"></span><h1>Sensor Input and Perception Handling<a class="headerlink" href="#sensor-input-and-perception-handling" title="Link to this heading"></a></h1>
 <p>In EasyNav, <strong>all sensor input flows through a single component</strong>: the <code class="docutils literal notranslate"><span class="pre">SensorsNode</span></code>. This node is responsible for:</p>
 <ul class="simple">
 <li><p>subscribing to sensor topics defined in the parameter file, loading a <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> plugin
@@ -484,7 +478,7 @@ explicitly configured, registering that key as a member of a named group,</p></l
 subscribers on that topic).</p></li>
 </ul>
 <section id="sensor-configuration">
-<h2>Sensor Configuration<a class="headerlink" href="#sensor-configuration" title="Permalink to this heading"></a></h2>
+<h2>Sensor Configuration<a class="headerlink" href="#sensor-configuration" title="Link to this heading"></a></h2>
 <p>Sensors are defined via ROS 2 parameters under the <cite>sensors_node</cite> configuration. For example
 (from <code class="docutils literal notranslate"><span class="pre">params/costmap.rpp.params.yaml</span></code> of the <a class="reference internal" href="../playgrounds/kobuki.html"><span class="doc">Kobuki PlayGround</span></a>):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sensors_node</span><span class="p">:</span>
@@ -542,7 +536,7 @@ mapping is:</p>
 explicitly for it.</p>
 </section>
 <section id="grouping-sensors-group-is-optional-and-changes-visibility">
-<h2>Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility<a class="headerlink" href="#grouping-sensors-group-is-optional-and-changes-visibility" title="Permalink to this heading"></a></h2>
+<h2>Grouping sensors: <code class="docutils literal notranslate"><span class="pre">group:</span></code> is optional and changes visibility<a class="headerlink" href="#grouping-sensors-group-is-optional-and-changes-visibility" title="Link to this heading"></a></h2>
 <p>By default (no <code class="docutils literal notranslate"><span class="pre">group:</span></code> set), a sensor’s perception is written to the <code class="docutils literal notranslate"><span class="pre">NavState</span></code> under its
 own key only. This is what almost every built-in controller, localizer and maps manager expects:
 they retrieve point-based perceptions with <code class="docutils literal notranslate"><span class="pre">nav_state.get_no_group&lt;PointPerception&gt;()</span></code> (see
@@ -581,7 +575,7 @@ perceptions with <code class="docutils literal notranslate"><span class="pre">ge
 </div>
 </section>
 <section id="processing-point-perceptions">
-<h2>Processing Point Perceptions<a class="headerlink" href="#processing-point-perceptions" title="Permalink to this heading"></a></h2>
+<h2>Processing Point Perceptions<a class="headerlink" href="#processing-point-perceptions" title="Link to this heading"></a></h2>
 <p>To work with fused or filtered 3D points, EasyNav provides the utility class <strong>`PointPerceptionsOpsView`</strong>.</p>
 <p>Almost every built-in plugin retrieves point perceptions with <code class="docutils literal notranslate"><span class="pre">get_no_group</span></code>, since sensors are
 ungrouped by default (see above). It is recommended to use <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">auto</span> <span class="pre">&amp;</span></code> to avoid unnecessary
@@ -606,7 +600,7 @@ only if your own configuration actually groups sensors that way.</p>
 <cite>PointPerceptionsOpsView</cite> (or a lightweight wrapper) so that calls can be chained with <cite>.</cite>.</p>
 </section>
 <section id="operation-summary">
-<h2>Operation Summary<a class="headerlink" href="#operation-summary" title="Permalink to this heading"></a></h2>
+<h2>Operation Summary<a class="headerlink" href="#operation-summary" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 20.0%" />
@@ -644,13 +638,13 @@ only if your own configuration actually groups sensors that way.</p>
 </table>
 </section>
 <section id="lazy-operations-frames-and-collapse">
-<h2>Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code><a class="headerlink" href="#lazy-operations-frames-and-collapse" title="Permalink to this heading"></a></h2>
+<h2>Lazy operations, frames and <code class="docutils literal notranslate"><span class="pre">collapse</span></code><a class="headerlink" href="#lazy-operations-frames-and-collapse" title="Link to this heading"></a></h2>
 <p>Some operations in <code class="docutils literal notranslate"><span class="pre">PointPerceptionsOpsView</span></code> accept a <code class="docutils literal notranslate"><span class="pre">lazy</span></code> flag. This flag controls
 <strong>when</strong> the operation is applied and in <strong>which frame</strong> the bounds or collapse values
 are interpreted, and it is designed to significantly reduce execution time by delaying
 expensive work until the latest possible moment.</p>
 <section id="filter-min-bounds-max-bounds-lazy-post-fuse">
-<h3><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code><a class="headerlink" href="#filter-min-bounds-max-bounds-lazy-post-fuse" title="Permalink to this heading"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">filter(min_bounds,</span> <span class="pre">max_bounds,</span> <span class="pre">lazy_post_fuse)</span></code><a class="headerlink" href="#filter-min-bounds-max-bounds-lazy-post-fuse" title="Link to this heading"></a></h3>
 <p>Signature (simplified):</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PointPerceptionsOpsView</span><span class="w"> </span><span class="o">&amp;</span>
 <span class="nf">filter</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">min_bounds</span><span class="p">,</span>
@@ -659,7 +653,7 @@ expensive work until the latest possible moment.</p>
 </pre></div>
 </div>
 <section id="behavior">
-<h4>Behavior<a class="headerlink" href="#behavior" title="Permalink to this heading"></a></h4>
+<h4>Behavior<a class="headerlink" href="#behavior" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>If you have called <code class="docutils literal notranslate"><span class="pre">fuse(&quot;frame&quot;)</span></code> before and <code class="docutils literal notranslate"><span class="pre">lazy_post_fuse</span> <span class="pre">==</span> <span class="pre">true</span></code>:</p>
 <ul>
@@ -679,7 +673,7 @@ expensive work until the latest possible moment.</p>
 </ul>
 </section>
 <section id="recommended-usage">
-<h4>Recommended usage<a class="headerlink" href="#recommended-usage" title="Permalink to this heading"></a></h4>
+<h4>Recommended usage<a class="headerlink" href="#recommended-usage" title="Link to this heading"></a></h4>
 <ul>
 <li><p>Use <code class="docutils literal notranslate"><span class="pre">lazy_post_fuse</span> <span class="pre">=</span> <span class="pre">true</span></code> when you fuse to a frame and define your bounding box
 in that frame:</p>
@@ -702,7 +696,7 @@ data early in the sensor frame:</p>
 </ul>
 </section>
 <section id="pitfalls">
-<h4>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this heading"></a></h4>
+<h4>Pitfalls<a class="headerlink" href="#pitfalls" title="Link to this heading"></a></h4>
 <ul>
 <li><p>Avoid chaining multiple <code class="docutils literal notranslate"><span class="pre">fuse()</span></code> calls with lazy filters between them:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">view</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
@@ -722,7 +716,7 @@ lazy filters.</p>
 </section>
 </section>
 <section id="collapse-collapse-dims-lazy">
-<h3><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code><a class="headerlink" href="#collapse-collapse-dims-lazy" title="Permalink to this heading"></a></h3>
+<h3><code class="docutils literal notranslate"><span class="pre">collapse(collapse_dims,</span> <span class="pre">lazy)</span></code><a class="headerlink" href="#collapse-collapse-dims-lazy" title="Link to this heading"></a></h3>
 <p>Signature (simplified):</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PointPerceptionsOpsView</span><span class="w"> </span><span class="o">&amp;</span>
 <span class="nf">collapse</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">collapse_dims</span><span class="p">,</span>
@@ -730,7 +724,7 @@ lazy filters.</p>
 </pre></div>
 </div>
 <section id="id1">
-<h4>Behavior<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h4>
+<h4>Behavior<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">lazy</span> <span class="pre">==</span> <span class="pre">true</span></code>:</p>
 <ul>
@@ -752,7 +746,7 @@ values).</p></li>
 </ul>
 </section>
 <section id="id2">
-<h4>Recommended usage<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
+<h4>Recommended usage<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
 <ul>
 <li><p>Prefer <code class="docutils literal notranslate"><span class="pre">lazy</span> <span class="pre">=</span> <span class="pre">true</span></code> in most plugins:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">ground_2d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PointPerceptionsOpsView</span><span class="p">(</span><span class="n">perceptions</span><span class="p">)</span>
@@ -776,7 +770,7 @@ intentionally want to rewrite it for later reuse:</p>
 </ul>
 </section>
 <section id="id3">
-<h4>Pitfalls<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
+<h4>Pitfalls<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
 <ul>
 <li><p>Calling <code class="docutils literal notranslate"><span class="pre">collapse(...,</span> <span class="pre">false)</span></code> on a non-owning view does <strong>nothing useful</strong>:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PointPerceptionsOpsView</span><span class="w"> </span><span class="nf">view</span><span class="p">(</span><span class="n">perceptions</span><span class="p">);</span><span class="w">          </span><span class="c1">// non-owning</span>
@@ -792,7 +786,7 @@ data.</p>
 </section>
 </section>
 <section id="example-updating-a-map">
-<h2>Example: Updating a Map<a class="headerlink" href="#example-updating-a-map" title="Permalink to this heading"></a></h2>
+<h2>Example: Updating a Map<a class="headerlink" href="#example-updating-a-map" title="Link to this heading"></a></h2>
 <p>Many components use fused and filtered points to update occupancy maps. For example, the
 <cite>ObstacleFilter</cite> used by <code class="docutils literal notranslate"><span class="pre">easynav_costmap_maps_manager</span></code> does the following:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">perceptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="p">.</span><span class="n">get_no_group</span><span class="o">&lt;</span><span class="n">PointPerception</span><span class="o">&gt;</span><span class="p">();</span>
@@ -814,7 +808,7 @@ data.</p>
 </div>
 </section>
 <section id="fused-visualization">
-<h2>Fused Visualization<a class="headerlink" href="#fused-visualization" title="Permalink to this heading"></a></h2>
+<h2>Fused Visualization<a class="headerlink" href="#fused-visualization" title="Link to this heading"></a></h2>
 <p>If the <cite>SensorsNode</cite> has subscribers on its output topic, it will publish the fused perception result after processing:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">points_perceptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nav_state</span><span class="o">-&gt;</span><span class="n">get_by_type</span><span class="o">&lt;</span><span class="n">PointPerception</span><span class="o">&gt;</span><span class="p">();</span>
 
@@ -841,7 +835,7 @@ via the <code class="docutils literal notranslate"><span class="pre">robot_footp
 per-sensor parameter.</p>
 </section>
 <section id="other-perception-types">
-<h2>Other Perception Types<a class="headerlink" href="#other-perception-types" title="Permalink to this heading"></a></h2>
+<h2>Other Perception Types<a class="headerlink" href="#other-perception-types" title="Link to this heading"></a></h2>
 <p>Beyond <code class="docutils literal notranslate"><span class="pre">PointPerception</span></code> and <code class="docutils literal notranslate"><span class="pre">ImagePerception</span></code>, EasyNav ships four more built-in perception
 types, each with its own <code class="docutils literal notranslate"><span class="pre">PerceptionHandler</span></code> and message type:</p>
 <table class="docutils align-default">
@@ -884,7 +878,7 @@ types, each with its own <code class="docutils literal notranslate"><span class=
 </ul>
 </section>
 <section id="extending-to-other-modalities">
-<h2>Extending to Other Modalities<a class="headerlink" href="#extending-to-other-modalities" title="Permalink to this heading"></a></h2>
+<h2>Extending to Other Modalities<a class="headerlink" href="#extending-to-other-modalities" title="Link to this heading"></a></h2>
 <p>To support a ROS 2 message type not covered by the built-in table, implement a new
 <cite>PerceptionBase</cite>-derived class and a corresponding <cite>PerceptionHandler</cite> (following the same pattern
 as <code class="docutils literal notranslate"><span class="pre">PointPerceptionHandler</span></code>/<code class="docutils literal notranslate"><span class="pre">ImagePerceptionHandler</span></code>), register it as a pluginlib plugin, and

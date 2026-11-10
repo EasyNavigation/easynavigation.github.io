@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Install from Binaries &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,7 +465,7 @@
            <div itemprop="articleBody">
              
   <section id="install-from-binaries">
-<span id="install-binaries"></span><h1>Install from Binaries<a class="headerlink" href="#install-from-binaries" title="Permalink to this heading"></a></h1>
+<span id="install-binaries"></span><h1>Install from Binaries<a class="headerlink" href="#install-from-binaries" title="Link to this heading"></a></h1>
 <p>EasyNav is distributed as binary packages with APT (Debian packages from the ROS 2 buildfarm, the
 <strong>recommended</strong> way, for every distro but rolling) and Pixi (self-contained conda packages, for
 every distro).</p>
@@ -485,7 +479,7 @@ every distro).</p>
 </ul>
 </nav>
 <section id="release-status">
-<span id="id1"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">Release status</a><a class="headerlink" href="#release-status" title="Permalink to this heading"></a></h2>
+<span id="id1"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">Release status</a><a class="headerlink" href="#release-status" title="Link to this heading"></a></h2>
 <p>EasyNav <strong>0.5.0</strong> is released for every distro, with the same content in all of them. Each distro
 has its own branch in the repositories:</p>
 <table class="docutils align-default">
@@ -532,7 +526,7 @@ has its own branch in the repositories:</p>
 </table>
 </section>
 <section id="install-from-binaries-apt-recommended">
-<span id="install-apt"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Install from binaries (APT, recommended)</a><a class="headerlink" href="#install-from-binaries-apt-recommended" title="Permalink to this heading"></a></h2>
+<span id="install-apt"></span><h2><a class="toc-backref" href="#id4" role="doc-backlink">Install from binaries (APT, recommended)</a><a class="headerlink" href="#install-from-binaries-apt-recommended" title="Link to this heading"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>EasyNav 0.5.0 was released to the ROS 2 buildfarm on <strong>October 8, 2026</strong>. Its APT packages are
@@ -548,7 +542,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </pre></div>
 </div>
 <section id="installing-plugins-apt">
-<h3>Installing plugins (APT)<a class="headerlink" href="#installing-plugins-apt" title="Permalink to this heading"></a></h3>
+<h3>Installing plugins (APT)<a class="headerlink" href="#installing-plugins-apt" title="Link to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">ros-&lt;distro&gt;-easynav</span></code> only installs the <strong>core</strong> EasyNav framework (<code class="docutils literal notranslate"><span class="pre">easynav_system</span></code>,
 <code class="docutils literal notranslate"><span class="pre">easynav_sensors</span></code>, …). Controllers, localizers, planners and maps managers are
 shipped as separate packages — see the full catalogue at <a class="reference internal" href="../plugins/index.html"><span class="doc">EasyNav Plugins</span></a> — and
@@ -566,7 +560,7 @@ configuration with the Regulated Pure Pursuit controller:</p>
 </section>
 </section>
 <section id="install-via-pixi">
-<span id="install-pixi"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Install via Pixi</a><a class="headerlink" href="#install-via-pixi" title="Permalink to this heading"></a></h2>
+<span id="install-pixi"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Install via Pixi</a><a class="headerlink" href="#install-via-pixi" title="Link to this heading"></a></h2>
 <p>Use <a class="reference external" href="https://pixi.sh">Pixi</a> when you cannot install ROS 2 from APT (another Linux, no root, or
 several distros side by side). A Pixi environment is fully self-contained: it ships its own ROS 2
 distribution, so you do <strong>not</strong> need a system ROS 2 install.</p>
@@ -622,7 +616,7 @@ pixi<span class="w"> </span>shell
 <p><code class="docutils literal notranslate"><span class="pre">pixi</span> <span class="pre">shell</span></code> opens a shell with ROS 2 and EasyNav ready to use. You can also prefix any command
 with <code class="docutils literal notranslate"><span class="pre">pixi</span> <span class="pre">run</span></code> instead of entering the shell.</p>
 <section id="rolling">
-<h3>Rolling<a class="headerlink" href="#rolling" title="Permalink to this heading"></a></h3>
+<h3>Rolling<a class="headerlink" href="#rolling" title="Link to this heading"></a></h3>
 <p><a class="reference download internal" download="" href="../_downloads/c7a489173fc7363abed548f391337115/pixi.toml"><code class="xref download docutils literal notranslate"><span class="pre">pixi.toml</span></code></a></p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[workspace]</span>
 <span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"easynav-rolling"</span>
@@ -644,7 +638,7 @@ with <code class="docutils literal notranslate"><span class="pre">pixi</span> <s
 </div>
 </section>
 <section id="lyrical">
-<h3>Lyrical<a class="headerlink" href="#lyrical" title="Permalink to this heading"></a></h3>
+<h3>Lyrical<a class="headerlink" href="#lyrical" title="Link to this heading"></a></h3>
 <p><a class="reference download internal" download="" href="../_downloads/14c75d5b04c39128431713b57192f63a/pixi.toml"><code class="xref download docutils literal notranslate"><span class="pre">pixi.toml</span></code></a></p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[workspace]</span>
 <span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"easynav-lyrical"</span>
@@ -662,7 +656,7 @@ with <code class="docutils literal notranslate"><span class="pre">pixi</span> <s
 </div>
 </section>
 <section id="kilted">
-<h3>Kilted<a class="headerlink" href="#kilted" title="Permalink to this heading"></a></h3>
+<h3>Kilted<a class="headerlink" href="#kilted" title="Link to this heading"></a></h3>
 <p><a class="reference download internal" download="" href="../_downloads/033809136f9b17a0dcc5cd7918388023/pixi.toml"><code class="xref download docutils literal notranslate"><span class="pre">pixi.toml</span></code></a></p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[workspace]</span>
 <span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"easynav-kilted"</span>
@@ -684,7 +678,7 @@ with <code class="docutils literal notranslate"><span class="pre">pixi</span> <s
 </div>
 </section>
 <section id="jazzy">
-<h3>Jazzy<a class="headerlink" href="#jazzy" title="Permalink to this heading"></a></h3>
+<h3>Jazzy<a class="headerlink" href="#jazzy" title="Link to this heading"></a></h3>
 <p><a class="reference download internal" download="" href="../_downloads/262e3fc9e2e5c037fa9b013ccb1d25e9/pixi.toml"><code class="xref download docutils literal notranslate"><span class="pre">pixi.toml</span></code></a></p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[workspace]</span>
 <span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"easynav-jazzy"</span>
@@ -702,7 +696,7 @@ with <code class="docutils literal notranslate"><span class="pre">pixi</span> <s
 </div>
 </section>
 <section id="humble">
-<h3>Humble<a class="headerlink" href="#humble" title="Permalink to this heading"></a></h3>
+<h3>Humble<a class="headerlink" href="#humble" title="Link to this heading"></a></h3>
 <p><a class="reference download internal" download="" href="../_downloads/884894ef5f6314a70ec0fd227600887a/pixi.toml"><code class="xref download docutils literal notranslate"><span class="pre">pixi.toml</span></code></a></p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[workspace]</span>
 <span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"easynav-humble"</span>
@@ -720,7 +714,7 @@ with <code class="docutils literal notranslate"><span class="pre">pixi</span> <s
 </div>
 </section>
 <section id="installing-plugins-pixi">
-<h3>Installing plugins (Pixi)<a class="headerlink" href="#installing-plugins-pixi" title="Permalink to this heading"></a></h3>
+<h3>Installing plugins (Pixi)<a class="headerlink" href="#installing-plugins-pixi" title="Link to this heading"></a></h3>
 <p>Just like with APT, <code class="docutils literal notranslate"><span class="pre">ros-&lt;distro&gt;-easynav</span></code> in the <code class="docutils literal notranslate"><span class="pre">pixi.toml</span></code> files above only pulls in the
 <strong>core</strong> framework. Controllers, localizers, planners and maps managers live in separate
 packages — browse the full catalogue at <a class="reference internal" href="../plugins/index.html"><span class="doc">EasyNav Plugins</span></a> — and must be added on top with
@@ -737,7 +731,7 @@ packages — browse the full catalogue at <a class="reference internal" href="..
 </section>
 </section>
 <section id="package-availability">
-<span id="id2"></span><h2><a class="toc-backref" href="#id6" role="doc-backlink">Package availability</a><a class="headerlink" href="#package-availability" title="Permalink to this heading"></a></h2>
+<span id="id2"></span><h2><a class="toc-backref" href="#id6" role="doc-backlink">Package availability</a><a class="headerlink" href="#package-availability" title="Link to this heading"></a></h2>
 <p>Every package of EasyNav, its plugins, NavMap (including <code class="docutils literal notranslate"><span class="pre">navmap_tools</span></code> and
 <code class="docutils literal notranslate"><span class="pre">navmap_rviz_plugin</span></code>), yaets, <code class="docutils literal notranslate"><span class="pre">easynav_nav2_bridge</span></code> and the PlayGrounds is available with APT
 (humble, jazzy, kilted and lyrical) and Pixi (also rolling), except:</p>

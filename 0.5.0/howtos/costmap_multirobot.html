@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Multi-Robot Navigation with EasyNav &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,7 +465,7 @@
            <div itemprop="articleBody">
              
   <section id="multi-robot-navigation-with-easynav">
-<span id="costmap-multirobot"></span><h1>Multi-Robot Navigation with EasyNav<a class="headerlink" href="#multi-robot-navigation-with-easynav" title="Permalink to this heading"></a></h1>
+<span id="costmap-multirobot"></span><h1>Multi-Robot Navigation with EasyNav<a class="headerlink" href="#multi-robot-navigation-with-easynav" title="Link to this heading"></a></h1>
 <p>This HowTo demonstrates how to run multiple EasyNav robots simultaneously in a shared simulation.
 Each robot operates independently using its own namespaced set of nodes, topics, and frames.</p>
 <nav class="contents local" id="on-this-page">
@@ -492,7 +486,7 @@ Each robot operates independently using its own namespaced set of nodes, topics,
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <div align="center">
   <iframe width="450" height="300" src="https://www.youtube.com/embed/BDOEr_L4mq8" frameborder="0" allowfullscreen></iframe>
 </div><p>Multi-robot navigation with EasyNav is straightforward, but it <strong>requires discipline</strong> when naming
@@ -500,13 +494,13 @@ topics and managing TF frames. This tutorial explains how to set up multiple rob
 or TF conflicts, using the <a class="reference internal" href="../playgrounds/kobuki.html"><span class="doc">Kobuki PlayGround</span></a>.</p>
 </section>
 <section id="setup">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Setup</a><a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
 <p>Build EasyNav and the Kobuki PlayGround as described in <a class="reference internal" href="../getting_started/index.html"><span class="doc">Getting Started</span></a>.</p>
 </section>
 <section id="topic-naming-and-tf-management">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">1. Topic Naming and TF Management</a><a class="headerlink" href="#topic-naming-and-tf-management" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">1. Topic Naming and TF Management</a><a class="headerlink" href="#topic-naming-and-tf-management" title="Link to this heading"></a></h2>
 <section id="fully-qualified-topic-names-plugin-developers">
-<h3><a class="toc-backref" href="#id4" role="doc-backlink">Fully-qualified topic names (plugin developers)</a><a class="headerlink" href="#fully-qualified-topic-names-plugin-developers" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Fully-qualified topic names (plugin developers)</a><a class="headerlink" href="#fully-qualified-topic-names-plugin-developers" title="Link to this heading"></a></h3>
 <p>Each plugin should publish topics under its <strong>fully qualified name</strong>, which includes the node and
 plugin names. This prevents collisions when several robots run the same plugins.</p>
 <p>Example (in C++):</p>
@@ -519,7 +513,7 @@ plugin names. This prevents collisions when several robots run the same plugins.
 instead of clashing on <code class="docutils literal notranslate"><span class="pre">/path</span></code>.</p>
 </section>
 <section id="tf-topic-remapping">
-<h3><a class="toc-backref" href="#id5" role="doc-backlink">TF topic remapping</a><a class="headerlink" href="#tf-topic-remapping" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">TF topic remapping</a><a class="headerlink" href="#tf-topic-remapping" title="Link to this heading"></a></h3>
 <p>Each robot typically has its <strong>own TF tree</strong>. To isolate TF data, remap the global TF topics
 (<code class="docutils literal notranslate"><span class="pre">/tf</span></code> and <code class="docutils literal notranslate"><span class="pre">/tf_static</span></code>) to <strong>relative ones</strong>, so they are automatically namespaced:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>-r<span class="w"> </span>/tf:<span class="o">=</span>tf<span class="w"> </span>-r<span class="w"> </span>/tf_static:<span class="o">=</span>tf_static
@@ -533,7 +527,7 @@ instead of clashing on <code class="docutils literal notranslate"><span class="p
 </div>
 </section>
 <section id="namespaced-frames">
-<h3><a class="toc-backref" href="#id6" role="doc-backlink">Namespaced frames</a><a class="headerlink" href="#namespaced-frames" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Namespaced frames</a><a class="headerlink" href="#namespaced-frames" title="Link to this heading"></a></h3>
 <p>If you configure a TF prefix for each system node (<code class="docutils literal notranslate"><span class="pre">system_node.tf_prefix</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">r1</span></code>), then
 all frames include this prefix: <code class="docutils literal notranslate"><span class="pre">r1/map</span></code>, <code class="docutils literal notranslate"><span class="pre">r1/odom</span></code>, <code class="docutils literal notranslate"><span class="pre">r1/base_link</span></code>, etc.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">r1/system_node</span><span class="p">:</span>
@@ -546,7 +540,7 @@ all frames include this prefix: <code class="docutils literal notranslate"><span
 </section>
 </section>
 <section id="launching-in-simulation">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">2. Launching in Simulation</a><a class="headerlink" href="#launching-in-simulation" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">2. Launching in Simulation</a><a class="headerlink" href="#launching-in-simulation" title="Link to this heading"></a></h2>
 <p>The whole system (two Kobukis, <code class="docutils literal notranslate"><span class="pre">r1</span></code> at (0, 0) and <code class="docutils literal notranslate"><span class="pre">r2</span></code> at (2, 1), each with its own EasyNav and
 RViz2) starts with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_kobuki<span class="w"> </span>easynav_multirobot.launch.yaml
@@ -584,7 +578,7 @@ as fixed frame:</p>
 </ol>
 </section>
 <section id="example-parameters">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink">3. Example Parameters</a><a class="headerlink" href="#example-parameters" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">3. Example Parameters</a><a class="headerlink" href="#example-parameters" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">params/costmap_multirobot.params.yaml</span></code> has one section per robot (<code class="docutils literal notranslate"><span class="pre">r1/...</span></code>, <code class="docutils literal notranslate"><span class="pre">r2/...</span></code>),
 because each EasyNav runs in its namespace. Each section is the configuration of
 <a class="reference internal" href="costmap_navigating.html"><span class="doc">Navigating with the Costmap Stack</span></a>, with that robot’s <code class="docutils literal notranslate"><span class="pre">tf_prefix</span></code> and initial pose. Robot <code class="docutils literal notranslate"><span class="pre">r1</span></code>:</p>
@@ -682,7 +676,7 @@ because each EasyNav runs in its namespace. Each section is the configuration of
 <code class="docutils literal notranslate"><span class="pre">x:</span> <span class="pre">2.0,</span> <span class="pre">y:</span> <span class="pre">1.0</span></code>.</p>
 </section>
 <section id="tips-gotchas">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink">Tips &amp; Gotchas</a><a class="headerlink" href="#tips-gotchas" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Tips &amp; Gotchas</a><a class="headerlink" href="#tips-gotchas" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><strong>Namespaces everywhere:</strong>
 Verify all relative topics (e.g., <code class="docutils literal notranslate"><span class="pre">scan_raw</span></code>) are correctly resolved under each robot namespace (<code class="docutils literal notranslate"><span class="pre">/r1/scan_raw</span></code>, <code class="docutils literal notranslate"><span class="pre">/r2/scan_raw</span></code>).</p></li>

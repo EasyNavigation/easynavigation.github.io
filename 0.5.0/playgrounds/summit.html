@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Summit PlayGround &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,7 +465,7 @@
            <div itemprop="articleBody">
              
   <section id="summit-playground">
-<span id="playground-summit"></span><h1>Summit PlayGround<a class="headerlink" href="#summit-playground" title="Permalink to this heading"></a></h1>
+<span id="playground-summit"></span><h1>Summit PlayGround<a class="headerlink" href="#summit-playground" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/EasyNavigation/easynav_playgrounds/tree/rolling/playground_summit">easynav_playground_summit</a> is
 EasyNav’s <strong>outdoor reference</strong>: a Robotnik Summit XL with a 3D lidar, a depth camera, an IMU and
 a GPS, navigating with NavMap and Bonxai maps in two worlds:</p>
@@ -481,7 +475,7 @@ a GPS, navigating with NavMap and Bonxai maps in two worlds:</p>
 </ul>
 <p>See <a class="reference internal" href="index.html#playgrounds"><span class="std std-ref">PlayGrounds</span></a> to install it.</p>
 <section id="launching-easynav">
-<h2>Launching EasyNav<a class="headerlink" href="#launching-easynav" title="Permalink to this heading"></a></h2>
+<h2>Launching EasyNav<a class="headerlink" href="#launching-easynav" title="Link to this heading"></a></h2>
 <p>Each <code class="docutils literal notranslate"><span class="pre">easynav_&lt;config&gt;.launch.yaml</span></code> starts Gazebo, the Summit XL, EasyNav with that configuration
 and RViz2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_summit<span class="w"> </span>easynav_bonxai_amcl.launch.yaml
@@ -489,7 +483,7 @@ and RViz2:</p>
 </div>
 <p>Once RViz2 is up, send a goal with the <strong>2D Goal Pose</strong> tool.</p>
 <section id="outdoor-configurations-excavation">
-<h3>Outdoor configurations (excavation)<a class="headerlink" href="#outdoor-configurations-excavation" title="Permalink to this heading"></a></h3>
+<h3>Outdoor configurations (excavation)<a class="headerlink" href="#outdoor-configurations-excavation" title="Link to this heading"></a></h3>
 <p>All of them plan with A* over the NavMap <code class="docutils literal notranslate"><span class="pre">maps/excavation_urjc.navmap</span></code>.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -540,7 +534,7 @@ the Gazebo world’s (<code class="docutils literal notranslate"><span class="pr
 <code class="docutils literal notranslate"><span class="pre">spherical_coordinates</span></code>).</p>
 </section>
 <section id="warehouse-configuration">
-<h3>Warehouse configuration<a class="headerlink" href="#warehouse-configuration" title="Permalink to this heading"></a></h3>
+<h3>Warehouse configuration<a class="headerlink" href="#warehouse-configuration" title="Link to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_summit<span class="w"> </span>easynav_warehouse_amcl.launch.yaml
 </pre></div>
 </div>
@@ -573,7 +567,7 @@ RViz2 view (<code class="docutils literal notranslate"><span class="pre">rviz/ea
 0.15 m. See <a class="reference internal" href="../howtos/navmap_navigating.html"><span class="doc">Navigating with the NavMap + Bonxai Stack</span></a> for a walk through this configuration.</p>
 </section>
 <section id="launch-arguments">
-<h3>Launch arguments<a class="headerlink" href="#launch-arguments" title="Permalink to this heading"></a></h3>
+<h3>Launch arguments<a class="headerlink" href="#launch-arguments" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 20.0%" />
@@ -607,7 +601,7 @@ RViz2 view (<code class="docutils literal notranslate"><span class="pre">rviz/ea
 </table>
 </section>
 <section id="real-time-cycle">
-<h3>Real-time cycle<a class="headerlink" href="#real-time-cycle" title="Permalink to this heading"></a></h3>
+<h3>Real-time cycle<a class="headerlink" href="#real-time-cycle" title="Link to this heading"></a></h3>
 <p>The configurations run EasyNav’s real-time cycle (<code class="docutils literal notranslate"><span class="pre">use_real_time:</span> <span class="pre">true</span></code>) at 50 Hz
 (<code class="docutils literal notranslate"><span class="pre">system_node.rt_freq</span></code>; the default 200 Hz is too tight for this simulation). The recovery
 system watches it: if many cycles in a row start late, it holds the mission, asks for human
@@ -615,7 +609,7 @@ assistance and finally cancels it. See <a class="reference internal" href="../bu
 </section>
 </section>
 <section id="simulation-only">
-<h2>Simulation only<a class="headerlink" href="#simulation-only" title="Permalink to this heading"></a></h2>
+<h2>Simulation only<a class="headerlink" href="#simulation-only" title="Link to this heading"></a></h2>
 <p>To run Gazebo and the Summit XL without EasyNav or RViz2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>easynav_playground_summit_worlds<span class="w"> </span>gazebo_sim.launch.yaml
 </pre></div>
@@ -658,7 +652,7 @@ assistance and finally cancels it. See <a class="reference internal" href="../bu
 <p>It also publishes TF, and listens on <code class="docutils literal notranslate"><span class="pre">/cmd_vel</span></code> (<code class="docutils literal notranslate"><span class="pre">geometry_msgs/Twist</span></code>).</p>
 </section>
 <section id="launch-files">
-<h2>Launch files<a class="headerlink" href="#launch-files" title="Permalink to this heading"></a></h2>
+<h2>Launch files<a class="headerlink" href="#launch-files" title="Link to this heading"></a></h2>
 <p>The launch files (in <code class="docutils literal notranslate"><span class="pre">launch/</span></code>, in YAML) build on each other:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>easynav_&lt;config&gt;.launch.yaml            # sets params_file, rviz_config (and world)
 └── easynav_gazebo_sim.launch.yaml      # + EasyNav + RViz2
@@ -738,7 +732,7 @@ that configuration:</p>
 </table>
 </section>
 <section id="building-maps-of-a-world">
-<h2>Building maps of a world<a class="headerlink" href="#building-maps-of-a-world" title="Permalink to this heading"></a></h2>
+<h2>Building maps of a world<a class="headerlink" href="#building-maps-of-a-world" title="Link to this heading"></a></h2>
 <p>The warehouse maps were generated from the simulation with NavMap’s <code class="docutils literal notranslate"><span class="pre">navmap_tools</span></code>:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">navmap_map_builder</span></code> builds the 3D cloud (<code class="docutils literal notranslate"><span class="pre">warehouse.pcd</span></code>, for Bonxai). It teleports the
@@ -757,7 +751,7 @@ ros2<span class="w"> </span>run<span class="w"> </span>navmap_tools<span class="
 explains the whole process.</p>
 </section>
 <section id="package-layout">
-<h2>Package layout<a class="headerlink" href="#package-layout" title="Permalink to this heading"></a></h2>
+<h2>Package layout<a class="headerlink" href="#package-layout" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 40.0%" />

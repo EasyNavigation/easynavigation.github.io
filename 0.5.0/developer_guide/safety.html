@@ -1,26 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Safety &mdash; EasyNavigation 0.5.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
 
   
     <link rel="shortcut icon" href="../_static/easynav_48x48.png"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -44,9 +41,6 @@
             EasyNavigation
               <img src="../_static/easynav_logo.png" class="logo" alt="Logo"/>
           </a>
-              <div class="version">
-                0.5.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -471,7 +465,7 @@
            <div itemprop="articleBody">
              
   <section id="safety">
-<span id="id1"></span><h1>Safety<a class="headerlink" href="#safety" title="Permalink to this heading"></a></h1>
+<span id="id1"></span><h1>Safety<a class="headerlink" href="#safety" title="Link to this heading"></a></h1>
 <p><strong>EasyNav is not a certified safety component.</strong> It runs on Linux and ROS 2, for which no
 certification evidence exists. It is designed to be the <strong>non-safety</strong> part of a robot whose safety
 functions (protective stop, safely limited speed, emergency stop) are implemented by an independent,
@@ -479,7 +473,7 @@ certified <strong>safety channel</strong>: a safety laser scanner, a safety PLC 
 drives, typically PL d / SIL 2 under ISO 3691-4 or ISO 13482. EasyNav makes integrating with that
 channel easier, keeps it from being triggered needlessly, and never stands in its way.</p>
 <section id="summary">
-<span id="safety-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<span id="safety-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
 <p>Status: <strong>Provided</strong> — available today; <strong>Partial</strong> — part of it; <strong>Planned</strong> — on the roadmap;
 <strong>Integrator</strong> — the integrator’s responsibility, outside EasyNav.</p>
 <table class="docutils align-default">
@@ -609,7 +603,7 @@ requirements traceability.</p></td>
 </table>
 </section>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>What EasyNav provides, in short:</p>
 <ul class="simple">
 <li><p>the robot is never left executing a stale or invalid velocity command;</p></li>
@@ -627,7 +621,7 @@ it: <code class="docutils literal notranslate"><span class="pre">safety::Command
 <code class="docutils literal notranslate"><span class="pre">easynav_system</span></code>.</p>
 </section>
 <section id="stale-and-invalid-commands">
-<span id="safety-commands"></span><h2>Stale and invalid commands<a class="headerlink" href="#stale-and-invalid-commands" title="Permalink to this heading"></a></h2>
+<span id="safety-commands"></span><h2>Stale and invalid commands<a class="headerlink" href="#stale-and-invalid-commands" title="Link to this heading"></a></h2>
 <p>Drivers keep executing the last command they received, so <code class="docutils literal notranslate"><span class="pre">ControllerNode</span></code> makes sure it is never
 a stale or invalid one:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_node</span><span class="p">:</span>
@@ -660,7 +654,7 @@ problem lasts and back to <code class="docutils literal notranslate"><span class
 problem, so a recovery system can handle it (see <a class="reference internal" href="recovery.html#recovery"><span class="std std-ref">Recovery System</span></a>).</p>
 </section>
 <section id="configuration-checks">
-<span id="safety-checks"></span><h2>Configuration checks<a class="headerlink" href="#configuration-checks" title="Permalink to this heading"></a></h2>
+<span id="safety-checks"></span><h2>Configuration checks<a class="headerlink" href="#configuration-checks" title="Link to this heading"></a></h2>
 <p>In any mode, configuring fails, naming the parameter, when:</p>
 <ul class="simple">
 <li><p>a robot limit is out of range or not finite: velocities <code class="docutils literal notranslate"><span class="pre">max_*</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">min_linear_vel</span> <span class="pre">&lt;=</span> <span class="pre">0</span></code>,
@@ -675,7 +669,7 @@ is not finite;</p></li>
 <p>Every configure also fingerprints the configuration (see <a class="reference internal" href="#safety-fingerprint"><span class="std std-ref">Configuration fingerprint</span></a>).</p>
 </section>
 <section id="safety-parameters-and-safety-mode">
-<span id="safety-mode"></span><h2>Safety parameters and safety mode<a class="headerlink" href="#safety-parameters-and-safety-mode" title="Permalink to this heading"></a></h2>
+<span id="safety-mode"></span><h2>Safety parameters and safety mode<a class="headerlink" href="#safety-parameters-and-safety-mode" title="Link to this heading"></a></h2>
 <p>The safety parameters are grouped in <code class="docutils literal notranslate"><span class="pre">system_node</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">system_node</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -761,7 +755,7 @@ on the hardware and the deployment, not on wanting the rest of the safety mode.<
 </table>
 </section>
 <section id="real-time-cycle-monitoring-and-heartbeat">
-<span id="safety-rt"></span><h2>Real-time cycle monitoring and heartbeat<a class="headerlink" href="#real-time-cycle-monitoring-and-heartbeat" title="Permalink to this heading"></a></h2>
+<span id="safety-rt"></span><h2>Real-time cycle monitoring and heartbeat<a class="headerlink" href="#real-time-cycle-monitoring-and-heartbeat" title="Link to this heading"></a></h2>
 <p><strong>Late cycles.</strong> At the start of each real-time cycle, EasyNav measures, with the monotonic clock
 (not ROS time, so simulation or clock jumps do not fool it), the time since the previous cycle
 started. The expected period is <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">system_node.rt_freq</span></code> (5 ms at 200 Hz). A cycle is <strong>late</strong> if
@@ -802,7 +796,7 @@ a worst-case execution time analysis: they detect delays when they happen, they 
 cannot happen.</p>
 </section>
 <section id="safety-channel-status">
-<span id="safety-channel"></span><h2>Safety channel status<a class="headerlink" href="#safety-channel-status" title="Permalink to this heading"></a></h2>
+<span id="safety-channel"></span><h2>Safety channel status<a class="headerlink" href="#safety-channel-status" title="Link to this heading"></a></h2>
 <p>The safety channel stops the robot or limits its speed by itself. If EasyNav does not know, it works
 against it: it keeps commanding a robot that cannot move, its evaluators take the stop for a stuck
 robot and start recoveries, and it commands more than the safely limited speed (SLS), which only
@@ -849,7 +843,7 @@ for human assistance (see <a class="reference internal" href="recovery.html#reco
 <p>Without <code class="docutils literal notranslate"><span class="pre">safety.status.timeout</span></code> (the default outside safety mode), nothing of this applies.</p>
 </section>
 <section id="data-age">
-<span id="safety-data-age"></span><h2>Data age<a class="headerlink" href="#data-age" title="Permalink to this heading"></a></h2>
+<span id="safety-data-age"></span><h2>Data age<a class="headerlink" href="#data-age" title="Link to this heading"></a></h2>
 <p>Navigating with old data is navigating blind: a sensor driver that dies leaves its last scan
 behind, and a localizer that stops leaves the robot where it was. EasyNav checks the age of both.</p>
 <p><strong>Sensor data.</strong> <code class="docutils literal notranslate"><span class="pre">sensors_node.forget_time</span></code> (s, 1.0 by default, <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code>) is the maximum age of a
@@ -879,7 +873,7 @@ as soon as the pose is usable.</p></li>
 e.g. a GPS localizer at 1 Hz.</p>
 </section>
 <section id="memory-locking">
-<span id="safety-memory"></span><h2>Memory locking<a class="headerlink" href="#memory-locking" title="Permalink to this heading"></a></h2>
+<span id="safety-memory"></span><h2>Memory locking<a class="headerlink" href="#memory-locking" title="Link to this heading"></a></h2>
 <p><strong>The problem.</strong> Linux gives each process virtual memory: which of its pages (4 KB each) are really in
 RAM at a given moment is up to the kernel. A page may not be there because it was never touched yet
 (memory is only given when first written), because it was moved to swap, or because it holds code of
@@ -912,7 +906,7 @@ pages can still be dropped without swap. In a safety argument it matters to be a
 there are no page faults from evicted pages, rather than to measure it and trust it does not happen.</p>
 </section>
 <section id="configuration-fingerprint">
-<span id="safety-fingerprint"></span><h2>Configuration fingerprint<a class="headerlink" href="#configuration-fingerprint" title="Permalink to this heading"></a></h2>
+<span id="safety-fingerprint"></span><h2>Configuration fingerprint<a class="headerlink" href="#configuration-fingerprint" title="Link to this heading"></a></h2>
 <p>Every time EasyNav configures successfully, it computes a fingerprint of its configuration: a
 SHA-256, 64 hex characters. The same fingerprint means the same configuration; changing a single
 parameter gives a different one.</p>
@@ -995,7 +989,7 @@ the map but not its name leaves the fingerprint unchanged.</p></li>
 </ul>
 </section>
 <section id="fault-injection">
-<span id="safety-faults"></span><h2>Fault injection<a class="headerlink" href="#fault-injection" title="Permalink to this heading"></a></h2>
+<span id="safety-faults"></span><h2>Fault injection<a class="headerlink" href="#fault-injection" title="Link to this heading"></a></h2>
 <p>To test how EasyNav copes with components that misbehave, fault-injection plugins live next to the
 <code class="docutils literal notranslate"><span class="pre">Dummy*</span></code> plugin of their component. Each one works normally and, after <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault_after</span></code>
 updates, injects the fault in <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.fault</span></code> (<code class="docutils literal notranslate"><span class="pre">hang</span></code> blocks for <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.hang_time</span></code> s):</p>
